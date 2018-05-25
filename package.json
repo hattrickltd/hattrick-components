@@ -1,0 +1,52 @@
+{
+  "name": "ht-components",
+  "version": "0.0.1",
+  "description": "Web components for Hattrick",
+  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "dev": "sd concurrent \"stencil build --dev --watch\" \"stencil-dev-server\" ",
+    "serve": "stencil-dev-server",
+    "start": "npm run dev",
+    "test": "jest",
+    "test.watch": "jest --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@stencil/core": "^0.9.5",
+    "@stencil/dev-server": "latest",
+    "@stencil/sass": "latest",
+    "@stencil/utils": "latest",
+    "@types/jest": "^22.2.3",
+    "jest": "^22.4.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hattrickltd/ht-components.git"
+  },
+  "author": "Ionic Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hattrickltd/ht-components"
+  },
+  "homepage": "https://github.com/hattrickltd/ht-components",
+  "jest": {
+    "transform": {
+      "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/@stencil/core/testing/jest.preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json",
+      "jsx"
+    ]
+  }
+}

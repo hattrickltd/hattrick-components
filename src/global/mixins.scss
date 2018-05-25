@@ -1,0 +1,25 @@
+@mixin rtl() {
+//   @if $app-direction == multi {
+    $root: #{&};
+    @at-root [dir="rtl"] {
+      #{$root} {
+        @content;
+      }
+    }
+//   } @else if $app-direction == rtl {
+//     @content;
+//   }
+}
+
+@mixin ltr() {
+//   @if $app-direction == multi {
+    $root: #{&};
+    @at-root [dir="ltr"] {
+      #{$root} {
+        @content;
+      }
+    }
+//   } @else if $app-direction == ltr {
+//     @content;
+//   }
+}

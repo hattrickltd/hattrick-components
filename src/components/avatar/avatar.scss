@@ -1,0 +1,37 @@
+
+:host {
+  position: relative;
+  display: inline-block;
+
+  width: calc(92px * var(--avatar-size, 1));
+  height: calc(123px * var(--avatar-size, 1));
+}
+:host(.ht-avatar-has-facecard) {
+  width: calc(110px * var(--avatar-size, 1));
+  height: calc(155px * var(--avatar-size, 1));
+}
+
+:host(.ht-avatar-round),
+:host(.ht-avatar-square) {
+  height: calc(92px * var(--avatar-size, 1));
+}
+:host(.ht-avatar-has-facecard.ht-avatar-round),
+:host(.ht-avatar-has-facecard.ht-avatar-square) {
+  height: calc(110px * var(--avatar-size, 1));
+}
+
+div {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+
+  :host(.ht-avatar-round) & {
+    border-radius: 100%;
+  }
+}
+img {
+  position: absolute;
+
+  // &.composite { width: 100%; height: 100%; }
+}
