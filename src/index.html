@@ -389,6 +389,7 @@
 
   <h2>Avatars:</h2>
   <section style="min-height: 300px">
+
     <p><a role="button" id="addAvatars" href="javascript:void(0)">Load avatars</a></p>
     
     <p style="display: flex; align-items: center;">
@@ -466,14 +467,16 @@
         { facecard: false, square: true, background: false },
         { facecard: false, round: true },
         { facecard: false, round: true, background: false },
-      ].forEach(function (config) {
+      ].forEach(function (config, idx) {
+        // JSON.stringify a few to prove that works too.
+
         const avatar = document.createElement("ht-avatar");
-        avatar.parts = avatarParts;
+        avatar.parts = (idx % 5 === 0) ? JSON.stringify(avatarParts) : avatarParts;
         Object.assign(avatar, config);
         avatarHolder.appendChild(avatar);
         
         const smaller = document.createElement("ht-avatar");
-        smaller.parts = avatarParts;
+        smaller.parts = (idx % 3 === 0) ? JSON.stringify(avatarParts) : avatarParts;
         Object.assign(smaller, config);
         avatarHolderSmaller.appendChild(smaller);
       });

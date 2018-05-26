@@ -32,6 +32,31 @@ div {
 }
 img {
   position: absolute;
-
-  // &.composite { width: 100%; height: 100%; }
 }
+
+
+// background-color: rgba(lightgrey, 1);
+
+// &:after {
+//   content: "";
+//   display:block;
+//   width: 100%;
+//   height: 100%;
+
+  
+//   background: linear-gradient(
+//     90deg, 
+//     rgba(lightgrey, 1) 0%, 
+//     rgba(white, .2) 50%, 
+//     rgba(lightgrey, 1) 100%
+//   ) -150% 0 no-repeat;
+//   background-size: 300% 100%;
+  
+//   animation: loading 1.5s infinite;
+// }
+
+// @keyframes loading {
+//   to {
+//     background-position: 350% 0;
+//   }
+// }

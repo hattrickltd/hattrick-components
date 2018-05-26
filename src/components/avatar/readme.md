@@ -92,9 +92,9 @@ Set this to false to remove the bandages on injured and bruised players.
 
 #### parts
 
-`{ url: string; x: number; y: number; }[]` | number
+`{ url: string; x: number; y: number; }[]` | number | string
 
-The parts that builds up the avatar, or a number to display a silhouette.
+An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
 
 
 #### round
@@ -136,9 +136,9 @@ Set this to false to remove the bandages on injured and bruised players.
 
 #### parts
 
-`{ url: string; x: number; y: number; }[]` | number
+`{ url: string; x: number; y: number; }[]` | number | string
 
-The parts that builds up the avatar, or a number to display a silhouette.
+An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
 
 
 #### round

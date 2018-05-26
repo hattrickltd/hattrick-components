@@ -44,9 +44,9 @@ declare global {
        */
       'injury': boolean;
       /**
-       * The parts that builds up the avatar, or a number to display a silhouette. 
+       * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. 
        */
-      'parts': IAvatarPart[] | number;
+      'parts': IAvatarPart[] | number | string;
       /**
        * Set to true to generate a circular avatar by cutting off the bottom. 
        */
@@ -90,9 +90,9 @@ declare global {
        */
       'injury'?: boolean;
       /**
-       * The parts that builds up the avatar, or a number to display a silhouette. 
+       * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. 
        */
-      'parts'?: IAvatarPart[] | number;
+      'parts'?: IAvatarPart[] | number | string;
       /**
        * Set to true to generate a circular avatar by cutting off the bottom. 
        */

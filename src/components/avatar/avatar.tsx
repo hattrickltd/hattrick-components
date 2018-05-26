@@ -19,23 +19,23 @@ export class Avatar {
   private silhouettePath: string = "silhouettes/sil[nr].png";
   private facecardPath: string = "backgrounds/card1.png";
 
-  /** The parts that builds up the avatar, or a number to display a silhouette. */
-  @Prop() parts: IAvatarPart[] | number;
+  /** An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. */
+  @Prop() parts: IAvatarPart[] | number | string;
 
   /** Set whether or not the background should be shown. */
   @Prop() background?: boolean = true;
 
   /** Set whether or not the surrounding card should be shown. */
-  @Prop() facecard: boolean = true;
+  @Prop() facecard?: boolean = true;
   
   /** Set this to false to remove the bandages on injured and bruised players. */
   @Prop() injury?: boolean = true;
 
   /** Set to true to generate a circular avatar by cutting off the bottom. */
-  @Prop() round: boolean = false;
+  @Prop() round?: boolean = false;
 
   /** Set to true to generate a square avatar by cutting off the bottom. */
-  @Prop() square: boolean = false;
+  @Prop() square?: boolean = false;
 
   @State() private images: any[] = [];
 
@@ -57,18 +57,13 @@ export class Avatar {
       facecard: this.facecard,
     };
 
-    this.avatarSize = {...(options.facecard) ? facecardSize : originalSize};
+    this.avatarSize = {...(options.facecard) ? facecardSize : originalSize}; // make a new copy so we can safely change it later without affecting other instances.
 
     this.loadAvatar(this.parts, options);
 
     if (this.round || this.square) {
       this.avatarSize.height = this.avatarSize.width;
     }
-
-    // console.log("--avatar-size", getComputedStyle(this.host).getPropertyValue("--avatar-size") || "-", this.host.style.getPropertyValue("--avatar-size") || "-");
-
-    // this.host.style.setProperty("width", `calc(${this.avatarSize.width}px * var(--avatar-size, 1))`);
-    // this.host.style.setProperty("height", `calc(${this.avatarSize.height}px * var(--avatar-size, 1))`);
 
     // this.host.style.width = `calc(${this.avatarSize.width}px * var(--avatar-size, 1))`;
     // this.host.style.height = `calc(${this.avatarSize.height}px * var(--avatar-size, 1))`;
@@ -84,130 +79,125 @@ export class Avatar {
     // ) * this.size) + "px";
   }
 
-  loadAvatar(parts: IAvatarPart[] | number, options: IAvatarOptions): Promise<any> {
+  loadAvatar(parts: IAvatarPart[] | number | string, options: IAvatarOptions): Promise<any> {
 
     options = { background: false, injury: false, facecard: false, ...options };
 
-    let canvas = document.createElement("canvas");
-    let context = canvas.getContext("2d");
-
-    canvas.width = this.avatarSize.width;
-    canvas.height = this.avatarSize.height;
-
     let promises: Promise<any>[] = [];
 
-    // If avatar.parts doesn't contain an array, a number maybe sent in
+    if (typeof parts === "string") {
+      parts = JSON.parse(parts);
+    }
+
+    // If avatar.parts doesn't contain an array, a number may be sent
     // instead which will act as a seed to generate the silhouette.
     if (parts instanceof Array && parts.length > 0) {
+      let insertIdx = 0;
       
       if (options.facecard) {
-        promises.push(new Promise((resolve) => {
-          let img = new Image();
-          img.setAttribute("crossOrigin", "anonymous");
-
-          let obj = {
-            img: img,
-            x: 0,
-            y: 0,
-          };
-
-          img.onload = () => resolve(obj);
-
-          img.src = this.baseAvatarPartPath + this.facecardPath;
-
-          this.images = [...this.images, obj];
+        insertIdx++;
+        promises.push(this.loadFacecard().then((img) => {
+          // this.images = [...this.images, img];
+          this.addImage(img, 0);
+          return img;
         }));
       }
 
       parts.forEach((a) => {
-        if (!a || !a.url) return;
-        if (!options.background && a.url.indexOf("background") > -1) return;
-        if (!options.injury && a.url.indexOf("injur") > -1) return; // filenames are: fXinjury.png or injuredbutplaying
+        if (!this.shouldIncludePart(a, options)) return;
 
-        promises.push(new Promise((resolve) => {
-          let img = new Image();
-          img.setAttribute("async", "true");
-          img.setAttribute("crossOrigin", "anonymous");
+        let idx = insertIdx++;
 
-          let obj = {
-            img: img,
-            x: a.x - ((options.facecard) ? 0 : 9),
-            y: a.y - ((options.facecard) ? 0 : 10),
-          };
-
-          img.onload = () => resolve(obj);
-
-          let src: string = a.url;
-
-          if (src.indexOf("silhouettes/") > -1) {
-            // strip away everything before silhouettes, let the baseAvatarPartPath be used instead below
-            src = src.substring(src.indexOf("silhouettes/"));
-          }
-
-          src = (src.indexOf("//") > -1)
-            ? src.replace("//", "https://")
-            : this.baseAvatarPartPath + src;
-
-          img.src = src;
-
-          this.images = [...this.images, obj];
+        promises.push(this.loadAvatarPart(a, options).then((img) => {
+          // this.images = [...this.images, img];
+          this.addImage(img, idx);
+          return img;
         }));
       });
     } else {
-
-      promises.push(new Promise((resolve) => {
-        let img = new Image();
-        img.setAttribute("crossOrigin", "anonymous");
-
-        img.onload = () => {
-          let obj = {
-            img: img,
-            x: ((options.facecard) ? 0 : -9),
-            y: ((options.facecard) ? 0 : -9),
-          };
-          this.images = [...this.images, obj];
-          resolve(obj);
-        };
-
-        img.src = this._getSilhouetteUrl(parts as number);
+      promises.push(this.loadSilhouette(parts as number, options).then((img) => {
+        this.addImage(img);
+        return img;
       }));
     }
 
-    // return Promise.all(promises).then((imageInfos: any[]) => {
-    //   // imageInfos.forEach((info) => {
-    //   //   let img = info.img;
-    //   //   img.style.top = `${info.top}px`;
-    //   //   img.style.left = `${info.left}px`;
-    //   //   this.host.shadowRoot.appendChild(img);
-    //   // });
-    //   // this.images = imageInfos.map((info) => {
-    //   //   let img = info.img;
-    //   //   img.style.top = `${info.top}px`;
-    //   //   img.style.left = `${info.left}px`;
-    //   //   return img;
-    //   // });
-    //   this.images = imageInfos;
-    // });
+    return Promise.all(promises)
+      // .then((images) => {
+      //   this.images = images;
+      // });
+    // return Promise.all(promises).then((images) => this.printToCanvas(images));
+  }
 
-    return Promise.all(promises).then((images) => {
-      images.forEach((a) => {
-        context.drawImage(a.img, a.x, a.y);
-      });
-      let canvasUrl = canvas.toDataURL();
-      // let canvasUrl = this._avatars[this._getKey(key, options)] = canvas.toDataURL();
+  private addImage(img: IAvatarImage, atIdx: number = 0) {
+    let temp = this.images.slice();
+    temp[atIdx] = img;
+    this.images = temp;
+  }
 
-      let obj = {
-        img: new Image(),
-        x: 0,
-        y: 0,
+  private shouldIncludePart(part: IAvatarPart, options: IAvatarOptions): boolean {
+    if (!part || !part.url) return false;
+    if (!options.background && part.url.indexOf("background") > -1) return false;
+    if (!options.injury && part.url.indexOf("injur") > -1) return false; // filenames are: fXinjury.png or injuredbutplaying
+
+    return true;
+  }
+
+  private loadAvatarPart(part: IAvatarPart, options: IAvatarOptions): Promise<IAvatarImage> {
+    return new Promise((resolve) => {
+      let img = this.createImage();
+
+      let src: string = part.url;
+
+      if (src.indexOf("silhouettes/") > -1) {
+        // strip away everything before silhouettes, let the baseAvatarPartPath be used instead below
+        src = src.substring(src.indexOf("silhouettes/"));
+      }
+
+      src = (src.indexOf("//") > -1)
+        ? src.replace("//", "https://")
+        : this.baseAvatarPartPath + src;
+
+      img.onload = () => {
+        resolve({
+          img: img,
+          x: part.x - ((options.facecard) ? 0 : 9),
+          y: part.y - ((options.facecard) ? 0 : 10),
+        });
       };
 
-      obj.img.src = canvasUrl;
+      img.src = src;
+    });
+  }
 
-      // this.images = [obj];
-      this.images = images;
+  private loadFacecard(): Promise<IAvatarImage> {
+    return new Promise((resolve) => {
+      let img = this.createImage();
 
-      return canvasUrl;
+      img.onload = () => {
+        resolve({
+          img: img,
+          x: 0,
+          y: 0,
+        });
+      };
+
+      img.src = this.baseAvatarPartPath + this.facecardPath;
+    });
+  }
+
+  private loadSilhouette(silhouetteId: number, options: IAvatarOptions): Promise<IAvatarImage> {
+    return new Promise((resolve) => {
+      let img = this.createImage();
+
+      img.onload = () => {
+        resolve({
+          img: img,
+          x: ((options.facecard) ? 0 : -9),
+          y: ((options.facecard) ? 0 : -9),
+        });
+      };
+
+      img.src = this._getSilhouetteUrl(silhouetteId);
     });
   }
   
@@ -217,26 +207,71 @@ export class Avatar {
     return this.baseAvatarPartPath + this.silhouettePath.replace("[nr]", rnd.toString());
   }
 
-  render() {
-    if (this.images) {
-      return (
-        <div>
-          {this.images.map((part) => 
-            <img src={part.img.src} style={{
-              "width": part.img.naturalWidth / this.avatarSize.width * 100 + "%",
-              "height": part.img.naturalHeight / this.avatarSize.height * 100 + "%",
-              "left": part.x / this.avatarSize.width * 100 + "%",
-              "top": part.y / this.avatarSize.height * 100 + "%",
-              // "width": `calc(${part.img.naturalWidth}px * var(--avatar-size, 1))`,
-              // "height": `calc(${part.img.naturalHeight}px * var(--avatar-size, 1))`,
-              // "top": `calc(${part.y}px * var(--avatar-size, 1))`,
-              // "left": `calc(${part.x}px * var(--avatar-size, 1))`,
-            }} />
-          )}
-        </div>
-      )
-    }
+  private createImage(): HTMLImageElement {
+    let img = new Image();
+    img.setAttribute("async", "true");
+    img.setAttribute("crossOrigin", "anonymous");
+
+    return img;
   }
+
+  // printToCanvas(images: IAvatarImage[]): HTMLCanvasElement {
+    
+  //   let canvas = document.createElement("canvas");
+  //   let context = canvas.getContext("2d");
+
+  //   canvas.width = this.avatarSize.width;
+  //   canvas.height = this.avatarSize.height;
+
+  //   images.forEach((a) => {
+  //     context.drawImage(a.img, a.x, a.y);
+  //   });
+
+  //   return canvas;
+  // }
+
+  // private replaceWithCanvas(canvas: HTMLCanvasElement): Promise<IAvatarImage> {
+  //   return new Promise((resolve) => {
+
+  //     let obj = {
+  //       img: new Image(),
+  //       x: 0,
+  //       y: 0,
+  //     };
+  
+  //     obj.img.onload = () => {
+  //       this.images = [obj];
+  //       resolve(obj);
+  //     };
+
+  //     obj.img.src = canvas.toDataURL();
+  //   });
+  // }
+
+  render() {
+    return (
+      <div>
+        {this.images.map((part) => 
+          <img src={part.img.src} style={{
+            "width": part.img.naturalWidth / this.avatarSize.width * 100 + "%",
+            "height": part.img.naturalHeight / this.avatarSize.height * 100 + "%",
+            "left": part.x / this.avatarSize.width * 100 + "%",
+            "top": part.y / this.avatarSize.height * 100 + "%",
+            // "width": `calc(${part.img.naturalWidth}px * var(--avatar-size, 1))`,
+            // "height": `calc(${part.img.naturalHeight}px * var(--avatar-size, 1))`,
+            // "top": `calc(${part.y}px * var(--avatar-size, 1))`,
+            // "left": `calc(${part.x}px * var(--avatar-size, 1))`,
+          }} />
+        )}
+      </div>
+    )
+  }
+}
+
+export interface IAvatarPart {
+  url: string;
+  x: number;
+  y: number;
 }
 
 interface IAvatarOptions {
@@ -245,8 +280,8 @@ interface IAvatarOptions {
   facecard?: boolean;
 }
 
-export interface IAvatarPart {
-  url: string;
+interface IAvatarImage {
+  img: HTMLImageElement;
   x: number;
   y: number;
 }
