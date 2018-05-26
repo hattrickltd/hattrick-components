@@ -62,23 +62,23 @@ export class ProgressArc {
       <svg style={{ width: this.size + "px", height: this.size + "px" }}>
         <circle id="background"
                 fill="none"
-                cx={this.size/2}
-                cy={this.size/2}
+                cx={this.size / 2}
+                cy={this.size / 2}
                 r={this.radius}
                 // stroke="none"
                 // stroke-width="var(--progress-arc-stroke-width, 8px)" //{this.strokeWidthCapped}
                 stroke-dasharray={this.circumference}
-                stroke-dashoffset={(this.counterClockwise?1:-1)*(this.complete)*this.circumference}
+                stroke-dashoffset={(this.counterClockwise ? 1 : -1) * (this.complete) * this.circumference}
                 transform={this.transformValue}
         />
         <circle fill="none"
-                cx={this.size/2}
-                cy={this.size/2}
+                cx={this.size / 2}
+                cy={this.size / 2}
                 r={this.radius}
                 // stroke="none"
                 // stroke-width="var(--progress-arc-stroke-width, 8px)" //{this.strokeWidthCapped}
                 stroke-dasharray={this.circumference}
-                stroke-dashoffset={(this.counterClockwise?-1:1)*(1-this.complete)*this.circumference}
+                stroke-dashoffset={(this.counterClockwise ? -1 : 1) * (1 - this.complete) * this.circumference}
                 transform={this.transformValue}
         />
       </svg>

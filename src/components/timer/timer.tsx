@@ -1,9 +1,12 @@
-import { Component, Prop, State, Watch } from '@stencil/core';
+import { Component, Prop, State, Watch } from "@stencil/core";
 
 @Component({
-  tag: 'ht-timer',
-  styleUrl: 'timer.scss',
-  shadow: true
+  tag: "ht-timer",
+  styleUrl: "timer.scss",
+  shadow: true,
+  host: {
+    "role": "timer",
+  }
 })
 export class Timer {
 
@@ -26,7 +29,7 @@ export class Timer {
 
   // /** The number of seconds left (or negative if `keepCounting` is set to `true`. */
   // @Prop({ reflectToAttr: true, mutable: true }) seconds: number;
-  
+
   componentWillLoad() {
     // if (!this.deadline) {
     //   if (this._seconds) this._deadline = Date.now() + this._seconds * 1000;
@@ -67,15 +70,13 @@ export class Timer {
     if (this.shouldShowDaysText()) {
       const days = Math.floor(this.seconds / 24 / 60 / 60);
       return `${days} ${this.daysText}`;
-    }
-    else if (this.seconds >= 0) {
+    } else if (this.seconds >= 0) {
       const hours = Math.floor(this.seconds / 60 / 60);
       const minutes = Math.floor(this.seconds / 60 % 60);
       const seconds = Math.floor(this.seconds % 60);
 
       return this.format(hours, minutes, seconds);
-    }
-    else if (this.seconds < 0 && this.keepCounting) {
+    } else if (this.seconds < 0 && this.keepCounting) {
       const hours = Math.floor(-this.seconds / 60 / 60);
       const minutes = Math.floor(-this.seconds / 60 % 60);
       const seconds = Math.floor(-this.seconds % 60);
@@ -107,7 +108,7 @@ export class Timer {
         "ht-timer-passed-zero": this.keepCounting && this.seconds < 0,
         "ht-timer-finished": !this.keepCounting && this.seconds <= 0,
       }
-    }
+    };
   }
 
   render() {

@@ -1,12 +1,15 @@
-import { Component, Element, Prop, State } from '@stencil/core';
+import { Component, Element, Prop, State } from "@stencil/core";
 
 const originalSize = { width: 92, height: 123 };
 const facecardSize = { width: 110, height: 155 };
 
 @Component({
-  tag: 'ht-avatar',
-  styleUrl: 'avatar.scss',
-  shadow: true
+  tag: "ht-avatar",
+  styleUrl: "avatar.scss",
+  shadow: true,
+  host: {
+    "role": "img",
+  }
 })
 export class Avatar {
   @Element() private host: HTMLElement;
@@ -27,7 +30,7 @@ export class Avatar {
 
   /** Set whether or not the surrounding card should be shown. */
   @Prop() facecard?: boolean = true;
-  
+
   /** Set this to false to remove the bandages on injured and bruised players. */
   @Prop() injury?: boolean = true;
 
@@ -68,7 +71,7 @@ export class Avatar {
     // this.host.style.width = `calc(${this.avatarSize.width}px * var(--avatar-size, 1))`;
     // this.host.style.height = `calc(${this.avatarSize.height}px * var(--avatar-size, 1))`;
   }
-  
+
   private updateSize() {
     // this.size = parseInt(this.host.style.getPropertyValue("--avatar-size")) || 1;
 
@@ -93,7 +96,7 @@ export class Avatar {
     // instead which will act as a seed to generate the silhouette.
     if (parts instanceof Array && parts.length > 0) {
       let insertIdx = 0;
-      
+
       if (options.facecard) {
         insertIdx++;
         promises.push(this.loadFacecard().then((img) => {
@@ -200,7 +203,7 @@ export class Avatar {
       img.src = this._getSilhouetteUrl(silhouetteId);
     });
   }
-  
+
   private _getSilhouetteUrl(seed: number): string {
     let rnd = (seed) ? seed % 12 + 1 : Math.floor(Math.random() * 11) + 1;
 
@@ -216,7 +219,7 @@ export class Avatar {
   }
 
   // printToCanvas(images: IAvatarImage[]): HTMLCanvasElement {
-    
+
   //   let canvas = document.createElement("canvas");
   //   let context = canvas.getContext("2d");
 
@@ -238,7 +241,7 @@ export class Avatar {
   //       x: 0,
   //       y: 0,
   //     };
-  
+
   //     obj.img.onload = () => {
   //       this.images = [obj];
   //       resolve(obj);
@@ -251,7 +254,7 @@ export class Avatar {
   render() {
     return (
       <div>
-        {this.images.map((part) => 
+        {this.images.map((part) =>
           <img src={part.img.src} style={{
             "width": part.img.naturalWidth / this.avatarSize.width * 100 + "%",
             "height": part.img.naturalHeight / this.avatarSize.height * 100 + "%",
@@ -264,7 +267,7 @@ export class Avatar {
           }} />
         )}
       </div>
-    )
+    );
   }
 }
 

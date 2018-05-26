@@ -1,9 +1,15 @@
-import { Component, Prop, Listen, State, Element } from '@stencil/core';
+import { Component, Prop, Listen, State, Element } from "@stencil/core";
 
 @Component({
-  tag: 'ht-tooltip',
-  styleUrl: 'tooltip.scss',
-  shadow: true
+  tag: "ht-tooltip",
+  styleUrl: "tooltip.scss",
+  shadow: true,
+  host: {
+    "theme": "tooltip",
+    "role": "tooltip",
+    "aria-describedby": "tooltip",
+    "aria-controls": "tooltip",
+  }
 })
 export class Tooltip {
 
@@ -51,7 +57,7 @@ export class Tooltip {
     this.calculatePosition(ev);
     this.showTooltip = true;
   }
-  
+
   @Listen("mouseleave")
   @Listen("blur", { capture: true })
   onMouseLeave() {
@@ -78,9 +84,8 @@ export class Tooltip {
       return this.cssPos = {
         top: top + "px",
         left: left + "px",
-      }
-    }
-    else if (this.position === "top") {
+      };
+    } else if (this.position === "top") {
       this.cssPos = { bottom: `calc(100% - ${hostRect.top}px)` };
 
       if (this.arrow === "end") this.cssPos.right = `calc(100% - ${hostRect.right}px)`;
@@ -88,41 +93,35 @@ export class Tooltip {
       else this.cssPos.left = `${hostRect.left}px`;
 
       return this.cssPos;
-    }
-    else if (this.position === "bottom") {
+    } else if (this.position === "bottom") {
       this.cssPos = { top: hostRect.bottom + "px" };
 
       if (this.arrow === "end") this.cssPos.right = `calc(100% - ${hostRect.right}px)`;
-      else if (this.arrow === "middle") this.cssPos.left = `calc(${hostRect.left}px + ${hostRect.width}px / 2`
+      else if (this.arrow === "middle") this.cssPos.left = `calc(${hostRect.left}px + ${hostRect.width}px / 2`;
       else this.cssPos.left = `${hostRect.left}px`;
 
       return this.cssPos;
-    }
-    else if (this.position === "left") {
+    } else if (this.position === "left") {
       this.cssPos = { right: `calc(100% - ${hostRect.left}px)` };
 
       // if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px - ${tooltipRect.height}px / 2)`
-      if (this.arrow === "end") this.cssPos.bottom = `calc(100% - ${hostRect.bottom}px`
-      else if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px + ${hostRect.height}px / 2`
-      else this.cssPos.top = `calc(${hostRect.top}px`
-    }
-    else if (this.position === "right") {
+      if (this.arrow === "end") this.cssPos.bottom = `calc(100% - ${hostRect.bottom}px`;
+      else if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px + ${hostRect.height}px / 2`;
+      else this.cssPos.top = `calc(${hostRect.top}px`;
+    } else if (this.position === "right") {
       this.cssPos = { left: hostRect.right + "px" };
 
       // if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px - ${tooltipRect.height}px / 2)`
-      if (this.arrow === "end") this.cssPos.bottom = `calc(100% - ${hostRect.bottom}px`
-      else if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px + ${hostRect.height}px / 2`
-      else this.cssPos.top = `calc(${hostRect.top}px`
+      if (this.arrow === "end") this.cssPos.bottom = `calc(100% - ${hostRect.bottom}px`;
+      else if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px + ${hostRect.height}px / 2`;
+      else this.cssPos.top = `calc(${hostRect.top}px`;
     }
   }
 
   hostData() {
     return {
-      "role": "tooltip",
-      "aria-describedby": "tooltip",
-      "aria-controls": "tooltip",
       "aria-expanded": this.showTooltip,
-    }
+    };
   }
 
   render() {
