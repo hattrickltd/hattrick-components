@@ -7,9 +7,6 @@ const facecardSize = { width: 110, height: 155 };
   tag: "ht-avatar",
   styleUrl: "avatar.scss",
   shadow: true,
-  host: {
-    "role": "img",
-  }
 })
 export class Avatar {
   @Element() private host: HTMLElement;
@@ -246,6 +243,12 @@ export class Avatar {
   //     obj.img.src = canvas.toDataURL();
   //   });
   // }
+
+  hostData() {
+    return {
+      "role": "img",
+    };
+  }
 
   render() {
     return (

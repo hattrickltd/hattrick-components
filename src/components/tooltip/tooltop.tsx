@@ -4,11 +4,6 @@ import { Component, Prop, Listen, State, Element } from "@stencil/core";
   tag: "ht-tooltip",
   styleUrl: "tooltip.scss",
   shadow: true,
-  host: {
-    "role": "tooltip",
-    "aria-describedby": "tooltip",
-    "aria-controls": "tooltip",
-  }
 })
 export class Tooltip {
 
@@ -119,6 +114,9 @@ export class Tooltip {
 
   hostData() {
     return {
+      "role": "tooltip",
+      "aria-describedby": "tooltip",
+      "aria-controls": "tooltip",
       "aria-expanded": this.showTooltip,
     };
   }

@@ -4,9 +4,6 @@ import { Component, Prop, State, Watch } from "@stencil/core";
   tag: "ht-timer",
   styleUrl: "timer.scss",
   shadow: true,
-  host: {
-    "role": "timer",
-  }
 })
 export class Timer {
 
@@ -103,8 +100,9 @@ export class Timer {
 
   hostData() {
     return {
-      seconds: this.seconds,
-      class: {
+      "seconds": this.seconds,
+      "role": "timer",
+      "class": {
         "ht-timer-passed-zero": this.keepCounting && this.seconds < 0,
         "ht-timer-finished": !this.keepCounting && this.seconds <= 0,
       }
