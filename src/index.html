@@ -433,20 +433,32 @@
       wrapper.appendChild(holder1);
       wrapper.appendChild(holder2);
 
-      for (let i = 1; i <= 20; i++) {
+      for (let i = 1; i <= 24; i++) {
         let bar = document.createElement("ht-bar");
         bar.level = i;
         bar.label = "Set pieces";
+        bar.max = 20;
         holder1.appendChild(bar);
       }
 
-      for (let i = 1; i <= 20; i++) {
+      for (let i = 1; i <= 21; i++) {
         let bar = document.createElement("ht-bar");
         bar.level = i;
         bar.label = "Set pieces";
-        bar.cap = Math.floor((i - 1) / 5) * 5 + 5;
-        bar.isCap = (bar.level === bar.cap);
+        bar.cap = Math.floor((i - 1) / 7) * 7 + 7;
+        bar.isCap = false;
+        bar.max = 21;
         holder2.appendChild(bar);
+
+        if (i % 7 === 0) {
+          let bar = document.createElement("ht-bar");
+          bar.level = i;
+          bar.label = "Set pieces";
+          bar.cap = Math.floor((i - 1) / 7) * 7 + 7;
+          bar.isCap = true;
+          bar.max = 21;
+          holder2.appendChild(bar);
+        }
       }
     }
 

@@ -310,6 +310,61 @@ declare global {
   }
 }
 
+
+declare global {
+
+  namespace StencilComponents {
+    interface HtTooltip {
+      /**
+       * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
+       */
+      'arrow': "start" | "middle" | "end" | "none";
+      /**
+       * The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip. 
+       */
+      'content': string;
+      /**
+       * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
+       */
+      'position': "top" | "bottom" | "left" | "right" | "cursor";
+    }
+  }
+
+  interface HTMLHtTooltipElement extends StencilComponents.HtTooltip, HTMLStencilElement {}
+
+  var HTMLHtTooltipElement: {
+    prototype: HTMLHtTooltipElement;
+    new (): HTMLHtTooltipElement;
+  };
+  interface HTMLElementTagNameMap {
+    'ht-tooltip': HTMLHtTooltipElement;
+  }
+  interface ElementTagNameMap {
+    'ht-tooltip': HTMLHtTooltipElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'ht-tooltip': JSXElements.HtTooltipAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface HtTooltipAttributes extends HTMLAttributes {
+      /**
+       * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
+       */
+      'arrow'?: "start" | "middle" | "end" | "none";
+      /**
+       * The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip. 
+       */
+      'content'?: string;
+      /**
+       * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
+       */
+      'position'?: "top" | "bottom" | "left" | "right" | "cursor";
+    }
+  }
+}
+
 declare global { namespace JSX { interface StencilJSX {} } }
 
 export declare function defineCustomElements(window: any): void;

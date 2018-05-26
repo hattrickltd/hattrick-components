@@ -1,8 +1,8 @@
-import { Component, Element, Prop, State } from '@stencil/core';
+import { Component, Element, Prop, State } from "@stencil/core";
 
 @Component({
-  tag: 'ht-bar',
-  styleUrl: 'bar.scss',
+  tag: "ht-bar",
+  styleUrl: "bar.scss",
   shadow: true,
 })
 export class Bar {
@@ -25,13 +25,13 @@ export class Bar {
   @Prop() label: string = "";
   /** The denomination of the skill level */
   @Prop() denomination: string = "";
-  
+
   /** The text for the level when denomination is not used */
   @State() private levelText: string = "";
- 
+
   /** Which column the skill level should be shown in. */
   @State() private showSkillInColumn: BarPart = 2;
- 
+
   /** The width of the skill level column. */
   @State() private skillWidth: number;
   /** The width of the cap column. */
@@ -82,7 +82,7 @@ export class Bar {
   /** Get how much padding the skill text should have (in case skill label `name` is longer than skill column + cap column) */
   private getNumberPadding(): number {
     let textWidth = getTextWidth(this.label, this._hostStyle.font);
-    
+
     let paddingLeft = 0;
     let skillWidth = this.getActualWidth(this.getSkillWidth() + this.getCapWidth());
 
@@ -95,7 +95,7 @@ export class Bar {
 
   private getLevelText(): string {
     if (this.cap > 0) {
-      return `${this.getSkillNumberText(this.level)} / ${this.getSkillNumberText(this.cap)}`;
+      return `${this.getSkillNumberText(this.level)} / ${this.cap}`;
     } else {
       return this.getSkillNumberText(this.level);
     }
@@ -144,7 +144,7 @@ export class Bar {
   hostData() {
     return {
       "aria-label": this.label + ": " + (this.denomination || `${this.level} / ${this.cap || this.max}`),
-    }
+    };
   }
 
   render() {
@@ -162,7 +162,7 @@ export class Bar {
           </td>
           {this.hasCapBar() &&
             <td class="bar-cap" style={{ "width": this.capWidth + "%" }}>
-              {this.showSkillInColumn === BarPart.Cap && 
+              {this.showSkillInColumn === BarPart.Cap &&
                 <span class="number">{this.levelText}</span>
               }
             </td>
@@ -171,7 +171,7 @@ export class Bar {
             <td class="bar-max" style={{ "padding-left": this.numberPadding + "px" }}>
               {this.showSkillInColumn === BarPart.Max &&
                 <span class="number">{this.levelText}</span>
-              }              
+              }
             </td>
           }
         </tr>

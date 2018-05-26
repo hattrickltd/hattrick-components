@@ -1,8 +1,8 @@
 
 :host {
     display: block;
-    font-size: 11px;
-    line-height: 11px;
+    font-size: 1em;
+    line-height: 1em;
 }
 table {
     table-layout: fixed;
@@ -11,7 +11,7 @@ table {
 }
 
 td {
-    height: 14px;
+    height: calc(1em + 0.25em);
     padding: 1px;
     vertical-align: middle;
 }
