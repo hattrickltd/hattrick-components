@@ -5,7 +5,6 @@ import { Component, Prop, Listen, State, Element } from "@stencil/core";
   styleUrl: "tooltip.scss",
   shadow: true,
   host: {
-    "theme": "tooltip",
     "role": "tooltip",
     "aria-describedby": "tooltip",
     "aria-controls": "tooltip",

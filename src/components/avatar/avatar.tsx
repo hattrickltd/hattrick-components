@@ -124,11 +124,7 @@ export class Avatar {
       }));
     }
 
-    return Promise.all(promises)
-      // .then((images) => {
-      //   this.images = images;
-      // });
-    // return Promise.all(promises).then((images) => this.printToCanvas(images));
+    return Promise.all(promises);
   }
 
   private addImage(img: IAvatarImage, atIdx: number = 0) {
