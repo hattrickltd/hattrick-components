@@ -72,10 +72,15 @@
     This page shows of the stencil components and various ways to use them.
   </p>
 
+  <p>
+    Bars and Avatars are lazy loaded. If you look in the networks tab and then click on "load bars" or "load avatars" you'll see that new files are loaded automatically. There's no manual work for this, it happens as soon as a &lt;ht-bar&gt; or &lt;ht-avatar&gt; is added to the DOM.
+  </p>
+  
   <h2>Tooltips</h2>
   <section>
     <p>
-      These tooltips are inspired by <a href="https://github.com/swimlane/ngx-charts">https://github.com/swimlane/ngx-charts</a>
+      These tooltips are inspired by <a href="https://github.com/swimlane/ngx-charts">https://github.com/swimlane/ngx-charts</a>.
+      Mouseover all the centered content below to see it in action.
     </p>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Attributes</h3>
@@ -380,6 +385,7 @@
       <ht-progress-arc size="40" complete="0.1" class="verylow"></ht-progress-arc>
     </div>
   </section>
+
 
   <h2>Bars</h2>
   <section>
