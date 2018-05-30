@@ -7,7 +7,15 @@ import { Component, Prop, Listen, State, Element } from "@stencil/core";
 })
 export class Tooltip {
 
-  @Element() host: HTMLElement;
+  @Element() host: HTMLStencilElement;
+
+  @Prop({ reflectToAttr: true, mutable: true }) dir: string;
+  private get ltr(): boolean {
+    return !this.rtl;
+  }
+  private get rtl(): boolean {
+    return this.dir === "rtl";
+  }
 
   /**
    * The position of the arrow. Will be ignored if `position` is not set.
@@ -24,7 +32,7 @@ export class Tooltip {
    * Which side of the element the tooltip should be shown.
    * `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
    */
-  @Prop({ reflectToAttr: true }) position: "top" | "bottom" | "left" | "right" | "cursor" = "cursor";
+  @Prop({ reflectToAttr: true }) position: "top" | "bottom" | "start" | "end" | "cursor" = "cursor";
 
   @State() showTooltip: boolean = false;
   @State() cssPos: {
@@ -34,6 +42,8 @@ export class Tooltip {
     right?: string;
   } = {};
 
+  @Prop({ context: "window" }) win!: Window;
+
   // private _hostStyle: CSSStyleDeclaration;
 
   componentWillLoad() {
@@ -42,6 +52,9 @@ export class Tooltip {
     //   console.log("focus");
     //   this.onMouseOver(ev);
     // }, { capture: true })
+    if (typeof this.dir === "undefined") {
+      this.dir = getComputedStyle(this.host).direction || "ltr";
+    }
   }
 
   @Listen("mouseover")
@@ -79,37 +92,53 @@ export class Tooltip {
         top: top + "px",
         left: left + "px",
       };
-    } else if (this.position === "top") {
+    }
+    else if (this.position === "top") {
       this.cssPos = { bottom: `calc(100% - ${hostRect.top}px)` };
 
-      if (this.arrow === "end") this.cssPos.right = `calc(100% - ${hostRect.right}px)`;
-      else if (this.arrow === "middle") this.cssPos.left = `calc(${hostRect.left}px + ${hostRect.width}px / 2`;
-      else this.cssPos.left = `${hostRect.left}px`;
+      this.calculateHorizontalPosition(hostRect);
 
       return this.cssPos;
-    } else if (this.position === "bottom") {
+    }
+    else if (this.position === "bottom") {
       this.cssPos = { top: hostRect.bottom + "px" };
 
-      if (this.arrow === "end") this.cssPos.right = `calc(100% - ${hostRect.right}px)`;
-      else if (this.arrow === "middle") this.cssPos.left = `calc(${hostRect.left}px + ${hostRect.width}px / 2`;
-      else this.cssPos.left = `${hostRect.left}px`;
+      this.calculateHorizontalPosition(hostRect);
 
       return this.cssPos;
-    } else if (this.position === "left") {
+    }
+    else if ((this.ltr && this.position === "start") || (this.rtl && this.position === "end")) {
       this.cssPos = { right: `calc(100% - ${hostRect.left}px)` };
 
-      // if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px - ${tooltipRect.height}px / 2)`
-      if (this.arrow === "end") this.cssPos.bottom = `calc(100% - ${hostRect.bottom}px`;
-      else if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px + ${hostRect.height}px / 2`;
-      else this.cssPos.top = `calc(${hostRect.top}px`;
-    } else if (this.position === "right") {
+      this.calculateVerticalPosition(hostRect);
+
+      return this.cssPos;
+    }
+    else if ((this.ltr && this.position === "end") || (this.rtl && this.position === "start")) {
       this.cssPos = { left: hostRect.right + "px" };
 
-      // if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px - ${tooltipRect.height}px / 2)`
-      if (this.arrow === "end") this.cssPos.bottom = `calc(100% - ${hostRect.bottom}px`;
-      else if (this.arrow === "middle") this.cssPos.top = `calc(${hostRect.top}px + ${hostRect.height}px / 2`;
-      else this.cssPos.top = `calc(${hostRect.top}px`;
+      this.calculateVerticalPosition(hostRect);
+
+      return this.cssPos;
     }
+  }
+
+  private calculateVerticalPosition(hostRect: ClientRect | DOMRect) {
+    if (this.arrow === "end")
+      this.cssPos.bottom = `calc(100% - ${hostRect.bottom}px`;
+    else if (this.arrow === "middle")
+      this.cssPos.top = `calc(${hostRect.top}px + ${hostRect.height}px / 2`;
+    else
+      this.cssPos.top = `calc(${hostRect.top}px`;
+  }
+
+  private calculateHorizontalPosition(hostRect: ClientRect | DOMRect) {
+    if ((this.ltr && this.arrow === "end") || (this.rtl && this.arrow === "start"))
+      this.cssPos.right = `calc(100% - ${hostRect.right}px)`;
+    else if (this.arrow === "middle")
+      this.cssPos.left = `calc(${hostRect.left}px + ${hostRect.width}px / 2`;
+    else
+      this.cssPos.left = `${hostRect.left}px`;
   }
 
   hostData() {

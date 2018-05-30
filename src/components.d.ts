@@ -13,9 +13,12 @@ declare global {
   }
   namespace JSXElements {}
 
+  interface HTMLElement {
+    componentOnReady?: () => Promise<this | null>;
+  }
+
   interface HTMLStencilElement extends HTMLElement {
     componentOnReady(): Promise<this>;
-    componentOnReady(done: (ele?: this) => void): void;
 
     forceUpdate(): void;
   }
@@ -323,10 +326,11 @@ declare global {
        * The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip. 
        */
       'content': string;
+      'dir': string;
       /**
        * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
        */
-      'position': "top" | "bottom" | "left" | "right" | "cursor";
+      'position': "top" | "bottom" | "start" | "end" | "cursor";
     }
   }
 
@@ -357,10 +361,11 @@ declare global {
        * The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip. 
        */
       'content'?: string;
+      'dir'?: string;
       /**
        * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
        */
-      'position'?: "top" | "bottom" | "left" | "right" | "cursor";
+      'position'?: "top" | "bottom" | "start" | "end" | "cursor";
     }
   }
 }
