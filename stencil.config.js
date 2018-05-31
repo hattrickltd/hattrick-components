@@ -14,9 +14,7 @@ exports.config = {
   globalStyle: 'src/global/variables.css',
   plugins: [
     sass({
-      // https://github.com/ionic-team/stencil-sass/pull/2
       injectGlobalPaths: [
-        // 'src/global/variables.scss',
         'src/global/mixins.scss'
       ]
     })
