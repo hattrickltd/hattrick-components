@@ -141,6 +141,15 @@ export class Bar {
     return (levelTextWidth < capColumnWidth);
   }
 
+  getPadding() {
+    if ((this._hostStyle.direction || "ltr") === "ltr") {
+      return { "padding-left": this.numberPadding + "px" };
+    } else {
+      return { "padding-right": this.numberPadding + "px" };
+    }
+
+  }
+
   hostData() {
     return {
       "aria-label": this.label + ": " + (this.denomination || `${this.level} / ${this.cap || this.max}`),
@@ -168,7 +177,7 @@ export class Bar {
             </td>
           }
           {this.hasMaxBar() &&
-            <td class="bar-max" style={{ "padding-left": this.numberPadding + "px" }}>
+            <td class="bar-max" style={ this.getPadding() }>
               {this.showSkillInColumn === BarPart.Max &&
                 <span class="number">{this.levelText}</span>
               }
