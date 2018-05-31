@@ -26,6 +26,7 @@
   border-radius: var(--tooltop-border-radius, 0px);
   padding: var(--tooltip-padding, 0.2em 0.35em);
   box-shadow: var(--tooltip-box-shadow, 4px 4px 2px -3px #767676);
+  z-index: 10000;
 
   pointer-events: var(--tooltip-pointer-events, none);
 
