@@ -39,6 +39,10 @@ declare global {
        */
       'background': boolean;
       /**
+       * the base route to the avatars, can be either a relative or absolute url 
+       */
+      'base': string;
+      /**
        * Set whether or not the surrounding card should be shown. 
        */
       'facecard': boolean;
@@ -84,6 +88,10 @@ declare global {
        * Set whether or not the background should be shown. 
        */
       'background'?: boolean;
+      /**
+       * the base route to the avatars, can be either a relative or absolute url 
+       */
+      'base'?: string;
       /**
        * Set whether or not the surrounding card should be shown. 
        */
@@ -246,6 +254,69 @@ declare global {
        * Width of progress arc stroke. 
        */
       'strokeWidth'?: number;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface HtRating {
+      /**
+       * The rating to show inside the stamina. 
+       */
+      'rating': number;
+      /**
+       * Size of element in pixels. 
+       */
+      'size': number | "small" | "large";
+      /**
+       * Stamina in percentage between 0 and 1. 
+       */
+      'stamina': number;
+      /**
+       * Label for the mouseover stamina 
+       */
+      'staminaLabel': string;
+    }
+  }
+
+  interface HTMLHtRatingElement extends StencilComponents.HtRating, HTMLStencilElement {}
+
+  var HTMLHtRatingElement: {
+    prototype: HTMLHtRatingElement;
+    new (): HTMLHtRatingElement;
+  };
+  interface HTMLElementTagNameMap {
+    'ht-rating': HTMLHtRatingElement;
+  }
+  interface ElementTagNameMap {
+    'ht-rating': HTMLHtRatingElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'ht-rating': JSXElements.HtRatingAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface HtRatingAttributes extends HTMLAttributes {
+      /**
+       * The rating to show inside the stamina. 
+       */
+      'rating'?: number;
+      /**
+       * Size of element in pixels. 
+       */
+      'size'?: number | "small" | "large";
+      /**
+       * Stamina in percentage between 0 and 1. 
+       */
+      'stamina'?: number;
+      /**
+       * Label for the mouseover stamina 
+       */
+      'staminaLabel'?: string;
     }
   }
 }
