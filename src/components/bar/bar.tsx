@@ -46,6 +46,9 @@ export class Bar {
   componentDidLoad() {
     this.calculatePartWidths();
   }
+  componentWillUpdate() {
+    this.calculatePartWidths();
+  }
 
   private calculatePartWidths(): void {
     this.skillWidth = this.getSkillWidth();
@@ -147,7 +150,6 @@ export class Bar {
     } else {
       return { "padding-right": this.numberPadding + "px" };
     }
-
   }
 
   hostData() {
