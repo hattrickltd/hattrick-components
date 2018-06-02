@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State } from "@stencil/core";
+import { Component, Element, Prop, State, Watch } from "@stencil/core";
 
 const originalSize = { width: 92, height: 123 };
 const facecardSize = { width: 110, height: 155 };
@@ -13,11 +13,13 @@ export class Avatar {
 
   private avatarSize: { width: number, height: number } = facecardSize;
 
-  /** the base route to the avatars, can be either a relative or absolute url, but should end with trailing slash! */
-  baseAvatarPartPath: string = "http://localhost/htweb/Img/Avatar/";
-
   private silhouettePath: string = "silhouettes/sil[nr].png";
   private facecardPath: string = "backgrounds/card1.png";
+
+  private avatarPath: string = "/Img/Avatar/";
+
+  /** the base route to the avatars, can be either a relative or absolute url */
+  @Prop() base: string = "";
 
   /** An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. */
   @Prop() parts: IAvatarPart[] | number | string;
@@ -37,7 +39,7 @@ export class Avatar {
   /** Set to true to generate a square avatar by cutting off the bottom. */
   @Prop() square?: boolean = false;
 
-  @State() private images: any[] = [];
+  @State() private images: Array<IAvatarImage> = [];
 
   componentDidLoad() {
     if (typeof this.facecard === "undefined") this.facecard = true;
@@ -47,9 +49,9 @@ export class Avatar {
     if (this.facecard) this.host.classList.add("ht-avatar-has-facecard");
 
     this.updateAvatar();
-    this.updateSize();
   }
 
+  @Watch("parts")
   private updateAvatar() {
     let options: IAvatarOptions = {
       background: this.background,
@@ -67,16 +69,6 @@ export class Avatar {
 
     // this.host.style.width = `calc(${this.avatarSize.width}px * var(--avatar-size, 1))`;
     // this.host.style.height = `calc(${this.avatarSize.height}px * var(--avatar-size, 1))`;
-  }
-
-  private updateSize() {
-    // this.size = parseInt(this.host.style.getPropertyValue("--avatar-size")) || 1;
-
-    // this.host.style.width = (this.avatarSize.width * this.size) + "px";
-    // this.host.style.height = ((this.round || this.square
-    //   ? this.avatarSize.width
-    //   : this.avatarSize.height
-    // ) * this.size) + "px";
   }
 
   loadAvatar(parts: IAvatarPart[] | number | string, options: IAvatarOptions): Promise<any> {
@@ -151,7 +143,7 @@ export class Avatar {
 
       src = (src.indexOf("//") > -1)
         ? src.replace("//", "https://")
-        : this.baseAvatarPartPath + src;
+        : this.base + this.avatarPath + src;
 
       img.onload = () => {
         resolve({
@@ -177,7 +169,7 @@ export class Avatar {
         });
       };
 
-      img.src = this.baseAvatarPartPath + this.facecardPath;
+      img.src = this.base + this.avatarPath + this.facecardPath;
     });
   }
 
@@ -200,7 +192,7 @@ export class Avatar {
   private _getSilhouetteUrl(seed: number): string {
     let rnd = (seed) ? seed % 12 + 1 : Math.floor(Math.random() * 11) + 1;
 
-    return this.baseAvatarPartPath + this.silhouettePath.replace("[nr]", rnd.toString());
+    return this.base + this.avatarPath + this.silhouettePath.replace("[nr]", rnd.toString());
   }
 
   private createImage(): HTMLImageElement {
@@ -210,6 +202,24 @@ export class Avatar {
 
     return img;
   }
+
+  // private getUrl(): string {
+  //   let anchor = this.getAnchor(location.href);
+  //   if (this.isLocalDomain(anchor.hostname)) {
+  //     return
+  //   }
+  // }
+
+  // private isLocalDomain(hostname: string): boolean {
+  //   return !!/localhost|.*\.hattrick\.local|192.168\..*|10\..*/.exec(hostname);
+  // }
+
+  // private getAnchor(url: string): HTMLAnchorElement  {
+  //   const a = document.createElement("a");
+  //   a.setAttribute("href", url);
+
+  //   return a;
+  // }
 
   // printToCanvas(images: IAvatarImage[]): HTMLCanvasElement {
 
