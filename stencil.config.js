@@ -1,7 +1,7 @@
 const sass = require('@stencil/sass');
 
 exports.config = {
-  namespace: 'ht-stencil',
+  namespace: 'ht-components',
   outputTargets:[
     { 
       type: 'dist' 
