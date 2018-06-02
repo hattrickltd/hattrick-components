@@ -68,6 +68,15 @@
 
     ht-tooltip.delay { --tooltip-delay: .5s; }
     ht-tooltip.pointer-events { --tooltip-pointer-events: all; }
+
+    ht-flip {
+      --flip-width: 100px;
+      --flip-height: 100px;
+      --avatar-size: .6;
+
+      border: 1px solid blue;
+    }
+    ht-flip div[slot] { background-color: #ff000066; }
   </style>
 
 </head>
@@ -82,6 +91,25 @@
   <p>
     Bars and Avatars are lazy loaded. If you look in the networks tab and then click on "load bars" or "load avatars" you'll see that new files are loaded automatically. There's no manual work for this, it happens as soon as a &lt;ht-bar&gt; or &lt;ht-avatar&gt; is added to the DOM.
   </p>
+
+  <h2>Flip</h2>
+  <section>
+    <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
+    <div>
+      <ht-flip direction="x" onclick="toggleFlip(this)">
+        <div slot="front">Front</div>
+        <div slot="back">Back</div>
+      </ht-flip>
+      <ht-flip direction="x" onclick="toggleFlip(this)">
+        <div slot="front">
+          <ht-avatar base="http://localhost/htweb" parts='[{"url":"backgrounds/bg_blue_int.png","x":9,"y":10},{"url":"//res.hattrick.org/kits/17/167/1664/1663296/body12.png","x":9,"y":10},{"url":"faces/f4h.png","x":9,"y":10},{"url":"eyes/e34c.png","x":25,"y":16},{"url":"mouths/m5c.png","x":29,"y":66},{"url":"noses/n3.png","x":20,"y":27},{"url":"hair/f4h6f.png","x":9,"y":10}]'></ht-avatar>
+        </div>
+        <div slot="back">
+          <ht-rating size="large" rating="14.5" stamina="1"></ht-rating>
+        </div>
+      </ht-flip>
+    </div>
+  </section>
   
   <h2>Tooltips</h2>
   <section>
@@ -698,6 +726,10 @@
         avatarHolderSmaller.style.setProperty("--avatar-size", parseInt(e.target.value) / 100 / 2);
       });
     };
+
+    function toggleFlip(el) {
+      el.flipped = !el.flipped;
+    }
 
   </script>
 

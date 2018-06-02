@@ -199,6 +199,41 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface HtFlip {
+      'direction': "x" | "y";
+      'flipped': boolean;
+    }
+  }
+
+  interface HTMLHtFlipElement extends StencilComponents.HtFlip, HTMLStencilElement {}
+
+  var HTMLHtFlipElement: {
+    prototype: HTMLHtFlipElement;
+    new (): HTMLHtFlipElement;
+  };
+  interface HTMLElementTagNameMap {
+    'ht-flip': HTMLHtFlipElement;
+  }
+  interface ElementTagNameMap {
+    'ht-flip': HTMLHtFlipElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'ht-flip': JSXElements.HtFlipAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface HtFlipAttributes extends HTMLAttributes {
+      'direction'?: "x" | "y";
+      'flipped'?: boolean;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface HtProgressArc {
       /**
        * Expression evaluating to float [0.0, 1.0] 

@@ -34,4 +34,8 @@
   --tooltop-border-radius: 3px;
   --tooltip-pointer-events: none;
   --tooltip-delay: 0s;
+
+  --flip-height: auto;
+  --flip-width: auto;
+  --flip-duration: 1s;
 }
