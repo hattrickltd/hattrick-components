@@ -2,7 +2,7 @@ import { Component, Prop } from "@stencil/core";
 
 @Component({
   tag: "ht-rating",
-  styleUrl: "rating.css",
+  styleUrl: "rating.scss",
   shadow: true,
 })
 export class ProgressArc {
