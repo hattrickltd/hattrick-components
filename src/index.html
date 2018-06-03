@@ -13,9 +13,11 @@
     h3 { cursor: pointer; }
     h3:after { content: ' [\00b1]' }
 
-    h3 + div { background-color: #ccc; padding: 1px 10px; }
+    h3 + div[attributes], h3 + div[variables] { background-color: #ccc; padding: 1px 10px; }
     
     h4 { text-align: center; }
+    
+    [attributes] code, [variables] code { display: block; margin: 1em 0; }
 
     #barWrapper { display: flex; width: auto; }
     #barWrapper > div { width: calc(50% - 12px); }
@@ -31,8 +33,7 @@
     ht-progress-arc.low { --progress-arc-color: #F5A104; }
     ht-progress-arc.high { --progress-arc-color: #F1C40A; }
     ht-progress-arc.veryhigh { --progress-arc-color: #31A94B; }
-    /* ht-progress-arc { --progress-arc-rest-color: #cccccc; } */
-    .has-fill-color ht-progress-arc { --progress-arc-rest-color: #000000; }
+    .add-fill-color ht-progress-arc { --progress-arc-rest-color: #000000; }
 
     div[ratings] div { line-height: 1.3em; }
     ht-rating { font-size: 11px; }
@@ -43,8 +44,9 @@
       display: block;
     }
 
-    [ratings] pre, ht-tooltip pre { display: inline-block; margin: 0; }
 
+    ht-tooltip[dir="rtl"] #tooltip { direction: ltr; }
+    ht-tooltip[dir="rtl"] [slot="content"] { direction: ltr; }
     ht-tooltip.fancy-styling {
       --tooltip-background: black;
       --tooltip-color: orange;
@@ -92,56 +94,37 @@
     Bars and Avatars are lazy loaded. If you look in the networks tab and then click on "load bars" or "load avatars" you'll see that new files are loaded automatically. There's no manual work for this, it happens as soon as a &lt;ht-bar&gt; or &lt;ht-avatar&gt; is added to the DOM.
   </p>
 
-  <h2>Flip</h2>
-  <section>
-    <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
-    <div>
-      <ht-flip direction="x" onclick="toggleFlip(this)">
-        <div slot="front">Front</div>
-        <div slot="back">Back</div>
-      </ht-flip>
-      <ht-flip direction="x" onclick="toggleFlip(this)">
-        <div slot="front">
-          <ht-avatar base="http://localhost/htweb" parts='[{"url":"backgrounds/bg_blue_int.png","x":9,"y":10},{"url":"//res.hattrick.org/kits/17/167/1664/1663296/body12.png","x":9,"y":10},{"url":"faces/f4h.png","x":9,"y":10},{"url":"eyes/e34c.png","x":25,"y":16},{"url":"mouths/m5c.png","x":29,"y":66},{"url":"noses/n3.png","x":20,"y":27},{"url":"hair/f4h6f.png","x":9,"y":10}]'></ht-avatar>
-        </div>
-        <div slot="back">
-          <ht-rating size="large" rating="14.5" stamina="1"></ht-rating>
-        </div>
-      </ht-flip>
-    </div>
-  </section>
-  
   <h2>Tooltips</h2>
-  <section>
+  <section tooltip>
     <p>
       These tooltips are inspired by <a href="https://github.com/swimlane/ngx-charts">https://github.com/swimlane/ngx-charts</a>.
       Mouseover all the centered content below to see it in action.
     </p>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Attributes</h3>
-    <div hidden>
-      <pre>content | &lt;any slot="content"&gt;&lt;/any&gt;</pre>
-      <pre>position: "top" | "bottom" | "start" | "end" | "cursor" = "cursor"</pre>
-      <pre>arrow: "start" | "middle" | "end" | "none" = "none"</pre>
+    <div hidden attributes>
+      <code>content | &lt;any slot="content"&gt;&lt;/any&gt;</code>
+      <code>position: "top" | "bottom" | "start" | "end" | "cursor" = "cursor"</code>
+      <code>arrow: "start" | "middle" | "end" | "none" = "none"</code>
     </div>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Css variables</h3>
-    <div hidden>
-      <pre>--tooltip-background: rgba(0, 0, 0, .75)</pre>
-      <pre>--tooltip-color: white</pre>
-      <pre>--tooltip-font-size: 12px</pre>
-      <pre>--tooltip-border: 0</pre>
-      <pre>--tooltip-padding: 5px 10px</pre>
-      <pre>--tooltip-box-shadow: none</pre>
-      <pre>--tooltip-max-width: 400px</pre>
-      <pre>--tooltop-arrow-size: 7px</pre>
-      <pre>--tooltop-border-radius: 3px</pre>
-      <pre>--tooltip-pointer-events: none</pre>
-      <pre>--tooltip-delay: 0s</pre>
+    <div hidden variables>
+      <code>--tooltip-background: rgba(0, 0, 0, .75)</code>
+      <code>--tooltip-color: white</code>
+      <code>--tooltip-font-size: 12px</code>
+      <code>--tooltip-border: 0</code>
+      <code>--tooltip-padding: 5px 10px</code>
+      <code>--tooltip-box-shadow: none</code>
+      <code>--tooltip-max-width: 400px</code>
+      <code>--tooltop-arrow-size: 7px</code>
+      <code>--tooltop-border-radius: 3px</code>
+      <code>--tooltip-pointer-events: none</code>
+      <code>--tooltip-delay: 0s</code>
     </div>
     
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
-    <div>
+    <div examples>
       <h4>Basic</h4>
 
       <div style="text-align: center">
@@ -155,7 +138,7 @@
 
 
         <ht-tooltip>
-          <span slot="content"><b>Use</b> <pre>slot="content"</pre> <i>for</i> <u>HTML</u></span>
+          <span slot="content"><b>Use</b> <code>slot="content"</code> <i>for</i> <u>HTML</u></span>
           <span style="cursor: pointer">HTML</span>
         </ht-tooltip>
 
@@ -165,7 +148,7 @@
         </ht-tooltip>
 
         <ht-tooltip arrow="none">
-          <span slot="content">By default there's no arrows, which is the same as setting <pre>arrow="none"</pre></span>
+          <span slot="content">By default there's no arrows, which is the same as setting <code>arrow="none"</code></span>
           no arrow
         </ht-tooltip>
       </div>
@@ -176,17 +159,17 @@
         </ht-tooltip>
 
         <ht-tooltip tabindex="0">
-          <span slot="content">But can be made tabbable same as any element by adding <pre>tabindex="0"</pre></span>
+          <span slot="content">But can be made tabbable same as any element by adding <code>tabindex="0"</code></span>
           tabindex
         </ht-tooltip>
 
         <ht-tooltip>
-          <span slot="content">Or by simply using a tabbable element like <pre>a</pre></span>
+          <span slot="content">Or by simply using a tabbable element like <code>a</code></span>
           <a href="javascript:void(0)" onclick="alert('clickable!')">link</a>
         </ht-tooltip>
 
         <ht-tooltip>
-          <span slot="content">Or <pre>button</pre></span>
+          <span slot="content">Or <code>button</code></span>
           <button onclick="alert('clickable!')">Button</button>
         </ht-tooltip>
 
@@ -198,27 +181,27 @@
         
       <div style="text-align: center" position>
         <ht-tooltip position="top">
-          <span slot="content"><pre>position</pre> fixes the tooltip location based on the element</span>
+          <span slot="content"><code>position</code> fixes the tooltip location based on the element</span>
           <b>Positions:</b>
         </ht-tooltip>
       
         <ht-tooltip position="top">
-          <pre slot="content">position="top"</pre>
+          <code slot="content">position="top"</code>
           top
         </ht-tooltip>
 
         <ht-tooltip position="bottom">
-          <pre slot="content">position="bottom"</pre>
+          <code slot="content">position="bottom"</code>
           bottom
         </ht-tooltip>
 
         <ht-tooltip position="start">
-          <pre slot="content">position="start"</pre>
+          <code slot="content">position="start"</code>
           start
         </ht-tooltip>
 
         <ht-tooltip position="end">
-          <pre slot="content">position="end"</pre>
+          <code slot="content">position="end"</code>
           end
         </ht-tooltip>
       </div>
@@ -227,81 +210,81 @@
       
       <div style="text-align: center" start>
         <ht-tooltip>
-          <span slot="content"><pre>arrow="start"</pre> puts the arrow at the top or the left</span>
+          <span slot="content"><code>arrow="start"</code> puts the arrow at the top or the left</span>
           <b>Arrow Start:</b>
         </ht-tooltip>
         
         <ht-tooltip position="top" arrow="start">
-          <pre slot="content">position="top" arrow="start"</pre>
+          <code slot="content">position="top" arrow="start"</code>
           top
         </ht-tooltip>
 
         <ht-tooltip position="bottom" arrow="start">
-          <pre slot="content">position="bottom" arrow="start"</pre>
+          <code slot="content">position="bottom" arrow="start"</code>
           bottom
         </ht-tooltip>
 
         <ht-tooltip position="start" arrow="start">
-          <pre slot="content">position="start" arrow="start"</pre>
+          <code slot="content">position="start" arrow="start"</code>
           start
         </ht-tooltip>
 
         <ht-tooltip position="end" arrow="start">
-          <pre slot="content">position="end" arrow="start"</pre>
+          <code slot="content">position="end" arrow="start"</code>
           end
         </ht-tooltip>
       </div>
 
       <div style="text-align: center" middle>
         <ht-tooltip>
-          <span slot="content"><pre>arrow="middle"</pre> puts the arrow at the middle of the tooltip</span>
+          <span slot="content"><code>arrow="middle"</code> puts the arrow at the middle of the tooltip</span>
           <b>Arrow middle:</b>
         </ht-tooltip>
         
         <ht-tooltip position="top" arrow="middle">
-            <pre slot="content">position="top" arrow="middle"</pre>
+            <code slot="content">position="top" arrow="middle"</code>
           top
         </ht-tooltip>
 
         <ht-tooltip position="bottom" arrow="middle">
-            <pre slot="content">position="bottom" arrow="middle"</pre>
+            <code slot="content">position="bottom" arrow="middle"</code>
           bottom
         </ht-tooltip>
 
         <ht-tooltip position="start" arrow="middle">
-            <pre slot="content">position="start" arrow="middle"</pre>
+            <code slot="content">position="start" arrow="middle"</code>
           start
         </ht-tooltip>
 
         <ht-tooltip position="end" arrow="middle">
-            <pre slot="content">position="end" arrow="middle"</pre>
+            <code slot="content">position="end" arrow="middle"</code>
           end
         </ht-tooltip>
       </div>
 
       <div style="text-align: center" end>
         <ht-tooltip>
-          <span slot="content"><pre>arrow="end"</pre> puts the arrow at the bottom or the right</span>
+          <span slot="content"><code>arrow="end"</code> puts the arrow at the bottom or the right</span>
           <b>Arrow end:</b>
         </ht-tooltip>
         
         <ht-tooltip position="top" arrow="end">
-          <pre slot="content">position="top" arrow="end"</pre>
+          <code slot="content">position="top" arrow="end"</code>
           top
         </ht-tooltip>
 
         <ht-tooltip position="bottom" arrow="end">
-          <pre slot="content">position="bottom" arrow="end"</pre>
+          <code slot="content">position="bottom" arrow="end"</code>
           bottom
         </ht-tooltip>
 
         <ht-tooltip position="start" arrow="end">
-          <pre slot="content">position="start" arrow="end"</pre>
+          <code slot="content">position="start" arrow="end"</code>
           start
         </ht-tooltip>
 
         <ht-tooltip position="end" arrow="end">
-          <pre slot="content">position="end" arrow="end"</pre>
+          <code slot="content">position="end" arrow="end"</code>
           end
         </ht-tooltip>
       </div>
@@ -310,108 +293,108 @@
       
       <div style="text-align: center" start dir="rtl">
         <ht-tooltip>
-          <span slot="content"><pre>arrow="start"</pre> puts the arrow at the top or the left</span>
+          <span slot="content" dir="ltr"><code>arrow="start"</code> puts the arrow at the top or the left</span>
           <b>Arrow Start:</b>
         </ht-tooltip>
         
         <ht-tooltip position="top" arrow="start">
-          <pre slot="content">position="top" arrow="start"</pre>
+          <code slot="content" dir="ltr">position="top" arrow="start"</code>
           top
         </ht-tooltip>
 
         <ht-tooltip position="bottom" arrow="start">
-          <pre slot="content">position="bottom" arrow="start"</pre>
+          <code slot="content" dir="ltr">position="bottom" arrow="start"</code>
           bottom
         </ht-tooltip>
 
         <ht-tooltip position="start" arrow="start">
-          <pre slot="content">position="start" arrow="start"</pre>
+          <code slot="content" dir="ltr">position="start" arrow="start"</code>
           start
         </ht-tooltip>
 
         <ht-tooltip position="end" arrow="start">
-          <pre slot="content">position="end" arrow="start"</pre>
+          <code slot="content" dir="ltr">position="end" arrow="start"</code>
           end
         </ht-tooltip>
       </div>
 
       <div style="text-align: center" middle dir="rtl">
         <ht-tooltip>
-          <span slot="content"><pre>arrow="middle"</pre> puts the arrow at the middle of the tooltip</span>
+          <span slot="content" dir="ltr"><code>arrow="middle"</code> puts the arrow at the middle of the tooltip</span>
           <b>Arrow middle:</b>
         </ht-tooltip>
         
         <ht-tooltip position="top" arrow="middle">
-            <pre slot="content">position="top" arrow="middle"</pre>
+            <code slot="content" dir="ltr">position="top" arrow="middle"</code>
           top
         </ht-tooltip>
 
         <ht-tooltip position="bottom" arrow="middle">
-            <pre slot="content">position="bottom" arrow="middle"</pre>
+            <code slot="content" dir="ltr">position="bottom" arrow="middle"</code>
           bottom
         </ht-tooltip>
 
         <ht-tooltip position="start" arrow="middle">
-            <pre slot="content">position="start" arrow="middle"</pre>
+            <code slot="content" dir="ltr">position="start" arrow="middle"</code>
           start
         </ht-tooltip>
 
         <ht-tooltip position="end" arrow="middle">
-            <pre slot="content">position="end" arrow="middle"</pre>
+            <code slot="content" dir="ltr">position="end" arrow="middle"</code>
           end
         </ht-tooltip>
       </div>
 
       <div style="text-align: center" end dir="rtl">
         <ht-tooltip>
-          <span slot="content"><pre>arrow="end"</pre> puts the arrow at the bottom or the right</span>
+          <span slot="content" dir="ltr"><code>arrow="end"</code> puts the arrow at the bottom or the right</span>
           <b>Arrow end:</b>
         </ht-tooltip>
         
         <ht-tooltip position="top" arrow="end">
-          <pre slot="content">position="top" arrow="end"</pre>
+          <code slot="content" dir="ltr">position="top" arrow="end"</code>
           top
         </ht-tooltip>
 
         <ht-tooltip position="bottom" arrow="end">
-          <pre slot="content">position="bottom" arrow="end"</pre>
+          <code slot="content" dir="ltr">position="bottom" arrow="end"</code>
           bottom
         </ht-tooltip>
 
         <ht-tooltip position="start" arrow="end">
-          <pre slot="content">position="start" arrow="end"</pre>
+          <code slot="content" dir="ltr">position="start" arrow="end"</code>
           start
         </ht-tooltip>
 
         <ht-tooltip position="end" arrow="end">
-          <pre slot="content">position="end" arrow="end"</pre>
+          <code slot="content" dir="ltr">position="end" arrow="end"</code>
           end
         </ht-tooltip>
       </div>
       
       <!-- <div style="text-align: center" dir="rtl">
         <ht-tooltip>
-          <span slot="content"><pre>dir="rtl"</pre> puts the <pre>position="start"</pre> to the right instead, and on the left for <pre>position="end"</pre></pre></span>
+          <span slot="content"><code>dir="rtl"</code> puts the <code>position="start"</code> to the right instead, and on the left for <code>position="end"</code></code></span>
           RTL:
         </ht-tooltip>
         
         <ht-tooltip position="top" arrow="start">
-          <pre slot="content">position="top" arrow="start"</pre>
+          <code slot="content">position="top" arrow="start"</code>
           top
         </ht-tooltip>
 
         <ht-tooltip position="bottom" arrow="start">
-          <pre slot="content">position="bottom" arrow="start"</pre>
+          <code slot="content">position="bottom" arrow="start"</code>
           bottom
         </ht-tooltip>
 
         <ht-tooltip position="start" arrow="start">
-          <pre slot="content">position="start" arrow="start"</pre>
+          <code slot="content">position="start" arrow="start"</code>
           start
         </ht-tooltip>
 
         <ht-tooltip position="end" arrow="start">
-          <pre slot="content">position="end" arrow="start"</pre>
+          <code slot="content">position="end" arrow="start"</code>
           end
         </ht-tooltip>
       </div> -->
@@ -434,21 +417,21 @@
       
       <div style="text-align: center">
         <ht-tooltip position="bottom" arrow="start">
-          <span slot="content">With <pre>position</pre> and <pre>arrow</pre> attribute set there's an animation</span>
+          <span slot="content">With <code>position</code> and <code>arrow</code> attribute set there's an animation</span>
           <b>Animations:</b>
         </ht-tooltip>
         
         <ht-tooltip position="bottom" arrow="start" no-animate>
-          <span slot="content">But you can always disable animations with <pre>no-animate</pre></span>
+          <span slot="content">But you can always disable animations with <code>no-animate</code></span>
           no-animate
         </ht-tooltip>
         <ht-tooltip position="cursor" arrow="start">
-          <span slot="content">But <pre>position="cursor"</pre> there's neither arrows nor animations</span>
+          <span slot="content">But <code>position="cursor"</code> there's neither arrows nor animations</span>
           Not with cursor
         </ht-tooltip>
 
         <ht-tooltip position="bottom" arrow="start" class="delay">
-          <span slot="content">You can also delay the animation with the CSS variable <pre>--tooltip-delay</pre></span>
+          <span slot="content">You can also delay the animation with the CSS variable <code>--tooltip-delay</code></span>
           Delay
         </ht-tooltip>
       </div>
@@ -460,7 +443,7 @@
         </ht-tooltip>
         
         <ht-tooltip position="bottom" arrow="start" class="pointer-events">
-          <span slot="content">But you can customize this with CSS variable <pre>--tooltip-pointer-events</pre>. Try to select this text.</span>
+          <span slot="content">But you can customize this with CSS variable <code>--tooltip-pointer-events</code>. Try to select this text.</span>
           no-animate
         </ht-tooltip>
       </div>
@@ -480,45 +463,45 @@
   </section>
   
   <h2>Timers</h2>
-  <section>
+  <section timers>
     <p>
       These are basic timers. They count down to 00:00:00, and optionally start counting upwards after reaching 0.
       If time is too far from 0, it can optionally just count days instead of hours:minutes:seconds.
     </p>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Attributes</h3>
-    <div hidden>
-      <pre>daysText: string = "days"</pre>
-      <pre>deadline: Date | string | number</pre>
-      <pre>keepCounting: boolean = false</pre>
-      <pre>maxHours: number = 72</pre>
+    <div hidden attributes>
+      <code>daysText: string = "days"</code>
+      <code>deadline: Date | string | number</code>
+      <code>keepCounting: boolean = false</code>
+      <code>maxHours: number = 72</code>
     </div>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
-    <div id="timerWrapper"></div>
+    <div id="timerWrapper" examples></div>
   </section>
 
   <h2>Progress arcs</h2>
-  <section>
+  <section progress-arc>
     <p>
       These are progress arcs. They're useful to show anything between 0% and 100%.
     </p>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Attributes</h3>
-    <div hidden>
-      <pre>size: number</pre>
-      <pre>complete: number [0-1]</pre>
+    <div hidden attributes>
+      <code>size: number</code>
+      <code>complete: number [0-1]</code>
     </div>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Css variables</h3>
-    <div hidden>
-      <pre>--progress-arc-stroke-width: 8px</pre>
-      <pre>--progress-arc-color: #00aa00</pre>
-      <pre>--progress-arc-rest-color: transparent | #000000</pre>
+    <div hidden variables>
+      <code>--progress-arc-stroke-width: 8px</code>
+      <code>--progress-arc-color: #00aa00</code>
+      <code>--progress-arc-rest-color: transparent | #000000</code>
     </div>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
-    <div>
+    <div examples>
       <ht-progress-arc size="40" complete="1.0" class="veryhigh"></ht-progress-arc>
       <ht-progress-arc size="40" complete="0.9" class="veryhigh"></ht-progress-arc>
       <ht-progress-arc size="40" complete="0.8" class="high"></ht-progress-arc>
@@ -530,7 +513,7 @@
       <ht-progress-arc size="40" complete="0.2" class="verylow"></ht-progress-arc>
       <ht-progress-arc size="40" complete="0.1" class="verylow"></ht-progress-arc>
       <br />
-      <div class="has-fill-color">
+      <div class="add-fill-color">
         <ht-progress-arc size="40" complete="1.0" class="veryhigh"></ht-progress-arc>
         <ht-progress-arc size="40" complete="0.9" class="veryhigh"></ht-progress-arc>
         <ht-progress-arc size="40" complete="0.8" class="high"></ht-progress-arc>
@@ -546,35 +529,35 @@
   </section>
 
   <h2>Rating</h2>
-  <section>
+  <section rating>
     <p>
-      Here we use the <pre>ht-progress-bar</pre> above to create a rating component.
+      Here we use the <code>ht-progress-bar</code> above to create a rating component.
     </p>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Attributes</h3>
-    <div hidden>
-      <pre>size: number | "small" | "large"</pre>
-      <pre>coratingmplete: number</pre>
-      <pre>stamina: number [0-1]</pre>
-      <pre>staminaLabel: string</pre>
+    <div hidden attributes>
+      <code>size: number | "small" | "large"</code>
+      <code>coratingmplete: number</code>
+      <code>stamina: number [0-1]</code>
+      <code>staminaLabel: string</code>
     </div>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Css variables</h3>
-    <div hidden>
-      <pre>--rating-background: white;</pre>
-      <pre>--rating-color: #666;</pre>
-      <pre>--rating-font-weight: bold;</pre>
-      <pre>--rating-stamina-arc-very-low: #DD4140;</pre>
-      <pre>--rating-stamina-arc-low: #F5A104;</pre>
-      <pre>--rating-stamina-arc-high: #F1C40A;</pre>
-      <pre>--rating-stamina-arc-very-high: #31A94B;</pre>
-      <pre>--rating-stamina-arc-rest: #CCCCCC;</pre>
+    <div hidden variables>
+      <code>--rating-background: white;</code>
+      <code>--rating-color: #666;</code>
+      <code>--rating-font-weight: bold;</code>
+      <code>--rating-stamina-arc-very-low: #DD4140;</code>
+      <code>--rating-stamina-arc-low: #F5A104;</code>
+      <code>--rating-stamina-arc-high: #F1C40A;</code>
+      <code>--rating-stamina-arc-very-high: #31A94B;</code>
+      <code>--rating-stamina-arc-rest: #CCCCCC;</code>
     </div>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
-    <div style="background-color: #40823c8a; padding: 10px;" ratings>
+    <div style="background-color: #40823c8a; padding: 10px;" examples>
       <div>
-        You can use predefined size: <pre>size="large"</pre> (same as size="44")*
+        You can use predefined size: <code>size="large"</code> (same as size="44")*
       </div>
       <ht-rating size="large" rating="7" stamina="0.2"></ht-rating>
       <ht-rating size="large" rating="7.5" stamina="0.4"></ht-rating>
@@ -582,7 +565,7 @@
       <ht-rating size="large" rating="14.5" stamina="0.8"></ht-rating>
       <br /><br />
       <div>
-        Or: <pre>size="small"</pre> (same as size="29")*
+        Or: <code>size="small"</code> (same as size="29")*
       </div>
       <ht-rating size="small" rating="7" stamina="0.2" stamina-label="Kondition"></ht-rating>
       <ht-rating size="small" rating="7.5" stamina="0.4" stamina-label="Kondition"></ht-rating>
@@ -590,9 +573,9 @@
       <ht-rating size="small" rating="14.5" stamina="0.8" stamina-label="Kondition"></ht-rating>
       <br /><br />
       <div>
-        Or you can define yourself <pre>size="29"</pre>.
+        Or you can define yourself <code>size="29"</code>.
         Note however how the second stamina bar and font doesn't adjust with manual sizes.
-        You have to manually set <pre>font-size</pre> and <pre>--progress-arc-stroke-width</pre>.
+        You have to manually set <code>font-size</code> and <code>--progress-arc-stroke-width</code>.
       </div>
       <ht-rating size="44" rating="14.5" stamina="0.2"></ht-rating>
       <ht-rating size="29" rating="14.5" stamina="0.6"></ht-rating>
@@ -600,6 +583,43 @@
     </div>
   </section>
 
+  <h2>Flip</h2>
+  <section flip>
+    <p>
+      The flip component allows us to have a component with both a front and a back which we can flip.
+    </p>
+
+    <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Attributes</h3>
+    <div hidden attributes>
+      <code>flipped: boolean</code>
+      <code>direction: "x" | "y"</code>
+    </div>
+
+    <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Css variables</h3>
+    <div hidden variables>
+      <code>--flip-height: auto;</code>
+      <code>--flip-width: auto;</code>
+      <code>--flip-duration: 1s;</code>
+      <i>Note: At the very minimum you will want to set height for <code>direction="x"</code> or width for <code>direction="y"</code></i>
+    </div>
+
+    <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
+    <div examples>
+      <ht-flip direction="x" onclick="toggleFlip(this)">
+        <div slot="front">Front</div>
+        <div slot="back">Back</div>
+      </ht-flip>
+      <ht-flip direction="x" onclick="toggleFlip(this)">
+        <div slot="front">
+          <ht-avatar base="http://localhost/htweb" parts='[{"url":"backgrounds/bg_blue_int.png","x":9,"y":10},{"url":"//res.hattrick.org/kits/17/167/1664/1663296/body12.png","x":9,"y":10},{"url":"faces/f4h.png","x":9,"y":10},{"url":"eyes/e34c.png","x":25,"y":16},{"url":"mouths/m5c.png","x":29,"y":66},{"url":"noses/n3.png","x":20,"y":27},{"url":"hair/f4h6f.png","x":9,"y":10}]'></ht-avatar>
+        </div>
+        <div slot="back">
+          <ht-rating size="large" rating="14.5" stamina="1"></ht-rating>
+        </div>
+      </ht-flip>
+    </div>
+  </section>
+  
   <h2>Bars</h2>
   <section>
     <p><a role="button" id="addBars" href="javascript:void(0)">Load bars</a></p>
