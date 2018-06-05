@@ -64,8 +64,7 @@ Expression evaluating to float [0.0, 1.0]
 
 boolean
 
-Color/appearance of stroke 
-Boolean value indicating
+Indicating if the progress should instead be counter clockwise
 
 
 #### size

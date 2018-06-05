@@ -34,6 +34,7 @@ The text color of the title (e.g. skill name) in the bar. The text color of the 
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 #### cap

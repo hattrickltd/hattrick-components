@@ -71,15 +71,13 @@ If you want a short delay before the tooltip shows up, e.g. `--tooltip-delay: 30
 
 string
 
-The position of the arrow. Will be ignored if `position` is not set.
+The position of the arrow. Will be ignored if `position` is not set. Defaults to `none`.
 
 Possible values:
 * `start` will put the arrow to the left or top.
 * `middle` will put the arrow to the middle or center.
 * `end` will put the arrow to the right or bottom.
 * `none` will remove the arrow.
-
-Defaults to `none`
 
 
 #### content
@@ -89,20 +87,25 @@ string
 The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.
 
 
+#### dir
+
+string
+
+direction, if omitted the component will calculate itself
+
+
 #### position
 
 string
 
-Which side of the element the tooltip should be shown.
+Which side of the element the tooltip should be shown. Defaults to `cursor`. Using `cursor` will also disable animations.
 
 Possible values:
-* `top`
-* `bottom`
-* `left`
-* `right`
-* `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
-
-Defaults to `cursor`
+* `top` above the container
+* `bottom` below the container
+* `start` to the left of the container in LTR, right in RTL.
+* `end` to the right of the container in LTR, left in RTL.
+* `cursor` will put it approximately below the cursor.
 
 ## Attributes
 
@@ -110,15 +113,12 @@ Defaults to `cursor`
 
 string
 
-The position of the arrow. Will be ignored if `position` is not set.
-
+The position of the arrow. Will be ignored if `position` is not set. Defaults to `none`.
 Possible values:
 * `start` will put the arrow to the left or top.
 * `middle` will put the arrow to the middle or center.
 * `end` will put the arrow to the right or bottom.
 * `none` will remove the arrow.
-
-Defaults to `none`
 
 
 #### content
@@ -128,25 +128,31 @@ string
 The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.
 
 
+#### dir
+
+string
+
+direction, if omitted the component will calculate itself
+
+
 #### position
 
 string
 
 Which side of the element the tooltip should be shown.
+Defaults to `cursor`. Using `cursor` will also disable animations.
 
 Possible values:
-* `top`
-* `bottom`
-* `left`
-* `right`
-* `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
-
-Defaults to `cursor`
-
+* `top` above the container
+* `bottom` below the container
+* `start` to the left of the container in LTR, right in RTL.
+* `end` to the right of the container in LTR, left in RTL.
+* `cursor` will put it approximately below the cursor. 
 
 #### no-animate
 
 Add this attribute to disable animations.
+
 
 
 ----------------------------------------------

@@ -22,31 +22,43 @@ There are the currently available Hattrick Components. For more details, see the
 
 Used to display avatar in various styles by providing a JSON representation of the avatar parts.
 
-[more info](https://github.com/ht-components/src/components/avatar/)
+[more info](src/components/avatar/)
 
 ### Bar
 
 Used to display various bars, e.g. skill bars or formation experiences (not to be mistaken with sliders!).
 
-[more info](https://github.com/ht-components/src/components/bar/)
+[more info](src/components/bar/)
+
+### Flip
+
+Used to display an element with both a front and a back which you can toggle vertically or horizontally.
+
+[more info](src/components/flip/)
 
 ### Progress-arc
 
 This is a Stencil fork of [angular-progress-arc](https://github.com/jesujcastillom/angular-progress-arc) (thanks to [jesujcastillom](https://github.com/jesujcastillom)), used to display circular progress meters, or in Hattrick used to display stamina.
 
-[more info](https://github.com/ht-components/src/components/progress-arc/)
+[more info](src/components/progress-arc/)
+
+### Rating
+
+Used to display a Hattrick rating. Uses [progress-arc](../progress-arc/) to display stamina.
+
+[more info](src/components/rating/)
 
 ### Timer
 
 A simple timer to display hh:mm:ss, optionally it can also start counting upwards if the deadline has passed, making it useful also as a match clock.
 
-[more info](https://github.com/ht-components/src/components/timer/)
+[more info](src/components/timer/)
 
 ### Tooltip
 
 Inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-charts) this provides a relatively customizable tooltip for custom mouseover titles that also supports HTML.
 
-[more info](https://github.com/ht-components/src/components/tooltip/)
+[more info](src/components/tooltip/)
 
 
 ## Using these components

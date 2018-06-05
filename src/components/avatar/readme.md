@@ -76,6 +76,13 @@ boolean
 Set whether or not the background should be shown.
 
 
+#### base
+
+string
+
+the base route to the avatars, can be either a relative or absolute url
+
+
 #### facecard
 
 boolean
@@ -118,6 +125,13 @@ Set to true to generate a square avatar by cutting off the bottom.
 boolean
 
 Set whether or not the background should be shown.
+
+
+#### base
+
+string
+
+the base route to the avatars, can be either a relative or absolute url
 
 
 #### facecard
