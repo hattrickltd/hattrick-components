@@ -32,7 +32,7 @@ export class Bar {
   @State() private levelText: string = "";
 
   /** Which column the skill level should be shown in. */
-  @State() private showSkillInColumn: BarPart = 2;
+  @State() private showSkillInColumn: BarPart = BarPart.Max;
 
   /** The width of the skill level column. */
   @State() private skillWidth: number;
@@ -47,7 +47,7 @@ export class Bar {
   @State() private levelTextWidth: number = 0;
 
   /** If the level text doesn't fit anywhere, we need to force it in. */
-  private forceLevelTextPosition: boolean = false;
+  @State() private forceLevelTextPosition: boolean = false;
 
   private get totalWidth(): number {
     return this.host.clientWidth;
@@ -55,7 +55,7 @@ export class Bar {
 
   componentWillLoad() {
     this._hostStyle = window.getComputedStyle(this.host, null);
-    this.setCalculations();
+    this.setCalculations(false);
   }
 
   componentDidLoad() {
@@ -65,7 +65,7 @@ export class Bar {
     this.setCalculations();
   }
 
-  private setCalculations(): void {
+  private setCalculations(didLoad = true): void {
     // WARNING! The order these calculations are called is very important.
     // That's why we check `!this.hideContent` twice!
 
@@ -77,17 +77,29 @@ export class Bar {
       this.labelTextWidth = getTextWidth(this.label, this._hostStyle.font);
       this.levelTextWidth = getTextWidth(this.levelText, this._hostStyle.font);
 
-      this.forceLevelTextPosition = false;
-
-      if (this.denomination) this.showSkillInColumn = BarPart.None;
-      else if (this.doesLevelTextFitInMaxColumn()) this.showSkillInColumn = BarPart.Max;
-      else if (this.doesLevelTextFitInCapColumn()) this.showSkillInColumn = BarPart.Cap;
-      else if (this.doesLevelTextFitInLevelColumn()) this.showSkillInColumn = BarPart.Level;
-      else {
-        this.forceLevelTextPosition = true;
-        if (this.hasMaxBar()) this.showSkillInColumn = BarPart.Max;
-        else if (this.hasCapBar()) this.showSkillInColumn = BarPart.Cap;
-        else this.showSkillInColumn = BarPart.Level;
+      if (didLoad) {
+        if (this.denomination) {
+          this.forceLevelTextPosition = false;
+          this.showSkillInColumn = BarPart.None;
+        }
+        else if (this.doesLevelTextFitInMaxColumn()) {
+          this.forceLevelTextPosition = false;
+          this.showSkillInColumn = BarPart.Max;
+        }
+        else if (this.doesLevelTextFitInCapColumn()) {
+          this.forceLevelTextPosition = false;
+          this.showSkillInColumn = BarPart.Cap;
+        }
+        else if (this.doesLevelTextFitInLevelColumn()) {
+          this.forceLevelTextPosition = false;
+          this.showSkillInColumn = BarPart.Level;
+        }
+        else {
+          this.forceLevelTextPosition = true;
+          if (this.hasMaxBar()) this.showSkillInColumn = BarPart.Max;
+          else if (this.hasCapBar()) this.showSkillInColumn = BarPart.Cap;
+          else this.showSkillInColumn = BarPart.Level;
+        }
       }
     }
 
@@ -161,6 +173,8 @@ export class Bar {
 
     const lastColumnWidth = this.percentageToPixels(100 - this.capWidth - this.skillWidth);
     const levelTextWidth = this.levelTextWidth + 10;
+
+    console.log(levelTextWidth, lastColumnWidth, levelTextWidth < lastColumnWidth);
 
     return (levelTextWidth < lastColumnWidth);
   }
