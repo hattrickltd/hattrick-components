@@ -174,8 +174,6 @@ export class Bar {
     const lastColumnWidth = this.percentageToPixels(100 - this.capWidth - this.skillWidth);
     const levelTextWidth = this.levelTextWidth + 10;
 
-    console.log(levelTextWidth, lastColumnWidth, levelTextWidth < lastColumnWidth);
-
     return (levelTextWidth < lastColumnWidth);
   }
   private doesLevelTextFitInCapColumn(): boolean {
