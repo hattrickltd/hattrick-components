@@ -180,8 +180,6 @@ export class Bar {
     let overflow = this.labelTextWidth - this.percentageToPixels(this.skillWidth);
     if (overflow > 0) levelColumnWidth -= overflow;
 
-    // console.log(this.level, levelTextWidth, levelColumnWidth, levelTextWidth < levelColumnWidth);
-
     return (levelTextWidth < levelColumnWidth);
   }
 
