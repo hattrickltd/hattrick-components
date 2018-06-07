@@ -24,7 +24,9 @@ export class Bar {
   /** The label shown inside the bar */
   @Prop() label: string = "";
   /** The denomination of the skill level */
-  @Prop() denomination: string = "";
+  @Prop({ reflectToAttr: true }) denomination: string = "";
+
+  @Prop() hideContent: boolean = false;
 
   /** The text for the level when denomination is not used */
   @State() private levelText: string = "";
@@ -39,34 +41,63 @@ export class Bar {
   /** How much padding the number need to not overlap with the label. */
   @State() private numberPadding: number;
 
+  /** The width of the label text */
+  @State() private labelTextWidth: number = 0;
+  /** The width of the level text */
+  @State() private levelTextWidth: number = 0;
+
+  /** If the level text doesn't fit anywhere, we need to force it in. */
+  private forceLevelTextPosition: boolean = false;
+
+  private get totalWidth(): number {
+    return this.host.clientWidth;
+  }
+
   componentWillLoad() {
     this._hostStyle = window.getComputedStyle(this.host, null);
+    // this.setCalculations();
   }
 
   componentDidLoad() {
-    this.calculatePartWidths();
+    this.setCalculations();
   }
-  componentWillUpdate() {
-    this.calculatePartWidths();
-  }
+  // componentWillUpdate() {
+  //   this.setCalculations();
+  // }
 
-  private calculatePartWidths(): void {
+  private setCalculations(): void {
+    // WARNING! The order these calculations are called is very important.
+    // That's why we check `!this.hideContent` twice!
+
     this.skillWidth = this.getSkillWidth();
     this.capWidth = this.getCapWidth();
+
+    if (!this.hideContent) {
+      this.levelText = this.getLevelText();
+      this.labelTextWidth = getTextWidth(this.label, this._hostStyle.font);
+      this.levelTextWidth = getTextWidth(this.levelText, this._hostStyle.font);
+
+      this.forceLevelTextPosition = false;
+
+      if (this.denomination) this.showSkillInColumn = BarPart.None;
+      else if (this.doesLevelTextFitInMaxColumn()) this.showSkillInColumn = BarPart.Max;
+      else if (this.doesLevelTextFitInCapColumn()) this.showSkillInColumn = BarPart.Cap;
+      else if (this.doesLevelTextFitInLevelColumn()) this.showSkillInColumn = BarPart.Level;
+      else {
+        this.forceLevelTextPosition = true;
+        if (this.hasMaxBar()) this.showSkillInColumn = BarPart.Max;
+        else if (this.hasCapBar()) this.showSkillInColumn = BarPart.Cap;
+        else this.showSkillInColumn = BarPart.Level;
+      }
+    }
+
     this.numberPadding = this.getNumberPadding();
-
-    this.levelText = this.getLevelText();
-
-    if (this.denomination) this.showSkillInColumn = BarPart.None;
-    else if (this.doesLevelTextFitInLastColumn()) this.showSkillInColumn = BarPart.Max;
-    else if (this.doesLevelTextFitInCapColumn()) this.showSkillInColumn = BarPart.Cap;
-    else this.showSkillInColumn = BarPart.Level;
   }
 
   /** Convert percentage width to actual width based on the component width */
-  private getActualWidth(percentage: number): number {
+  private percentageToPixels(percentage: number): number {
     if (percentage > 1) percentage /= 100;
-    return this.host.clientWidth * percentage;
+    return this.totalWidth * percentage;
   }
 
   /** Get the percentage width of the skill column */
@@ -79,15 +110,15 @@ export class Bar {
   /** Get the percentage width of the cap column */
   private getCapWidth(): number {
     if (!this.hasCapBar()) return 0;
-    return (this.cap / this.max * 100) - this.getSkillWidth();
+    return (this.cap / this.max * 100) - this.skillWidth;
   }
 
   /** Get how much padding the skill text should have (in case skill label `name` is longer than skill column + cap column) */
   private getNumberPadding(): number {
-    let textWidth = getTextWidth(this.label, this._hostStyle.font);
+    let textWidth = this.labelTextWidth;
 
     let paddingLeft = 0;
-    let skillWidth = this.getActualWidth(this.getSkillWidth() + this.getCapWidth());
+    let skillWidth = this.percentageToPixels(this.skillWidth + this.capWidth);
 
     if (skillWidth < textWidth) {
       paddingLeft = textWidth - skillWidth + 5;
@@ -123,25 +154,35 @@ export class Bar {
     return this.level < this.max && this.cap < this.max;
   }
 
-  private doesLevelTextFitInLastColumn(): boolean {
+  private doesLevelTextFitInMaxColumn(): boolean {
     // const numberEl = this._root.querySelectorAll(".number")[0];
     // const numberStyle = window.getComputedStyle(numberEl, null);
     // const spacing = numberStyle.marginLeft + numberStyle.marginRight + numberStyle.paddingLeft + numberStyle.paddingRight;
 
-    const lastColumnWidth = this.getActualWidth(100 - this.getCapWidth() - this.getSkillWidth());
-    const levelTextWidth = getTextWidth(this.levelText, this._hostStyle.font) + 10;
+    const lastColumnWidth = this.percentageToPixels(100 - this.capWidth - this.skillWidth);
+    const levelTextWidth = this.levelTextWidth + 10;
 
     return (levelTextWidth < lastColumnWidth);
   }
   private doesLevelTextFitInCapColumn(): boolean {
-    let capColumnWidth = this.getActualWidth(this.getCapWidth());
-    let levelTextWidth = getTextWidth(this.levelText, this._hostStyle.font) + 10;
+    let capColumnWidth = this.percentageToPixels(this.capWidth);
+    let levelTextWidth = this.levelTextWidth + 10;
 
-    let skillTextWidth = getTextWidth(this.label, this._hostStyle.font);
-    let overflow = skillTextWidth - this.getActualWidth(this.getSkillWidth());
+    let overflow = this.labelTextWidth - this.percentageToPixels(this.capWidth);
     if (overflow > 0) capColumnWidth -= overflow;
 
     return (levelTextWidth < capColumnWidth);
+  }
+  private doesLevelTextFitInLevelColumn(): boolean {
+    let levelColumnWidth = this.percentageToPixels(this.levelTextWidth);
+    let levelTextWidth = this.levelTextWidth + 10;
+
+    let overflow = this.labelTextWidth - this.percentageToPixels(this.skillWidth);
+    if (overflow > 0) levelColumnWidth -= overflow;
+
+    // console.log(this.level, levelTextWidth, levelColumnWidth, levelTextWidth < levelColumnWidth);
+
+    return (levelTextWidth < levelColumnWidth);
   }
 
   getPadding() {
@@ -160,27 +201,30 @@ export class Bar {
 
   render() {
     return (
-      <table>
+      <table class={{
+        "level-text-dont-fit": this.forceLevelTextPosition,
+        "has-cap-bar": this.hasCapBar(),
+      }}>
         <tr>
           <td class={{ "bar-level": true, "maxed": this.isCap }} style={{ "width": this.skillWidth + "%" }}>
             <span class="title">{this.label}</span>
             {this.denomination &&
               <span class="denomination">{this.denomination}</span>
             }
-            {this.showSkillInColumn === BarPart.Level &&
+            {(this.showSkillInColumn === BarPart.Level) &&
               <span class="number">{this.levelText}</span>
             }
           </td>
           {this.hasCapBar() &&
             <td class="bar-cap" style={{ "width": this.capWidth + "%" }}>
-              {this.showSkillInColumn === BarPart.Cap &&
+              {(this.showSkillInColumn === BarPart.Cap) &&
                 <span class="number">{this.levelText}</span>
               }
             </td>
           }
           {this.hasMaxBar() &&
             <td class="bar-max" style={ this.getPadding() }>
-              {this.showSkillInColumn === BarPart.Max &&
+              {(this.showSkillInColumn === BarPart.Max) &&
                 <span class="number">{this.levelText}</span>
               }
             </td>

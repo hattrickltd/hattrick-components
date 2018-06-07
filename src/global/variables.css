@@ -6,6 +6,7 @@
   --bar-max-background: #ECECEC;
   --bar-capped-background: #FFEB99;
   --bar-title-color: #000000;
+  --bar-denomination-color: var(--var-title-color, #000000);
 
   --avatar-size: 1;
 

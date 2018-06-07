@@ -19,8 +19,8 @@
     
     [attributes] code, [variables] code { display: block; margin: 1em 0; }
 
-    #barWrapper { display: flex; width: auto; }
-    #barWrapper > div { width: calc(50% - 12px); }
+    #barWrapper { display: flex; }
+    #barWrapper > div { margin: 0 10px; }
 
     #avatarHolder { white-space: nowrap; }
     #avatarHolderSmaller { --avatar-size: 0.5; }
@@ -647,11 +647,13 @@
   </section>
 
   <script>
-  
+
+    const denominations = ["non-existent", "disastrous", "wretched", "poor", "weak", "inadequate", "passable", "solid", "excellent", "formidable", "outstanding", "brilliant", "magnificent", "world class", "supernatural", "titanic", "extra-terrestrial", "mythical", "magical", "utopian", "divine"];
+
     document.getElementById("addBars").addEventListener("click", addBars);
     document.getElementById("addAvatars").addEventListener("click", addAvatars);
 
-    // document.getElementById("addBars").click();
+    document.getElementById("addBars").click();
     // document.getElementById("addAvatars").click();
 
     addTimers();
@@ -673,35 +675,56 @@
       const wrapper = document.getElementById("barWrapper");
       const holder1 = document.createElement("div");
       const holder2 = document.createElement("div");
+      const holder3 = document.createElement("div");
+      const holder4 = document.createElement("div");
       
       wrapper.appendChild(holder1);
       wrapper.appendChild(holder2);
+      wrapper.appendChild(holder3);
+      wrapper.appendChild(holder4);
 
-      for (let i = 1; i <= 24; i++) {
+      for (let i = 0; i <= 20; i++) {
         let bar = document.createElement("ht-bar");
         bar.level = i;
-        bar.label = "Set pieces";
         bar.max = 20;
+        bar.hideContent = true;
         holder1.appendChild(bar);
       }
-
-      for (let i = 1; i <= 21; i++) {
+      
+      for (let i = 0; i <= 20; i++) {
         let bar = document.createElement("ht-bar");
         bar.level = i;
+        bar.max = 20;
+        bar.label = "Set pieces";
+        bar.denomination = denominations[i];
+        holder2.appendChild(bar);
+      }
+
+      for (let i = 0; i <= 24; i++) {
+        let bar = document.createElement("ht-bar");
+        bar.level = i;
+        bar.max = 20;
+        bar.label = "Set pieces";
+        holder3.appendChild(bar);
+      }
+
+      for (let i = 0; i <= 21; i++) {
+        let bar = document.createElement("ht-bar");
+        bar.level = i;
+        bar.max = 21;
         bar.label = "Set pieces";
         bar.cap = Math.floor((i - 1) / 7) * 7 + 7;
         bar.isCap = false;
-        bar.max = 21;
-        holder2.appendChild(bar);
+        holder4.appendChild(bar);
 
-        if (i % 7 === 0) {
+        if (i > 0 && i % 7 === 0) {
           let bar = document.createElement("ht-bar");
           bar.level = i;
+          bar.max = 21;
           bar.label = "Set pieces";
           bar.cap = Math.floor((i - 1) / 7) * 7 + 7;
           bar.isCap = true;
-          bar.max = 21;
-          holder2.appendChild(bar);
+          holder4.appendChild(bar);
         }
       }
     }

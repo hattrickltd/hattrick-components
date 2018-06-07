@@ -13,9 +13,12 @@ declare global {
   }
   namespace JSXElements {}
 
+  interface HTMLElement {
+    componentOnReady?: () => Promise<this | null>;
+  }
+
   interface HTMLStencilElement extends HTMLElement {
     componentOnReady(): Promise<this>;
-    componentOnReady(done: (ele?: this) => void): void;
 
     forceUpdate(): void;
   }
@@ -126,6 +129,7 @@ declare global {
        * The denomination of the skill level 
        */
       'denomination': string;
+      'hideContent': boolean;
       /**
        * If the sublevel is the same as the levelCap. 
        */
@@ -172,6 +176,7 @@ declare global {
        * The denomination of the skill level 
        */
       'denomination'?: string;
+      'hideContent'?: boolean;
       /**
        * If the sublevel is the same as the levelCap. 
        */
