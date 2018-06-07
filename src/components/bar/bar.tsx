@@ -55,15 +55,15 @@ export class Bar {
 
   componentWillLoad() {
     this._hostStyle = window.getComputedStyle(this.host, null);
-    // this.setCalculations();
+    this.setCalculations();
   }
 
   componentDidLoad() {
     this.setCalculations();
   }
-  // componentWillUpdate() {
-  //   this.setCalculations();
-  // }
+  componentWillUpdate() {
+    this.setCalculations();
+  }
 
   private setCalculations(): void {
     // WARNING! The order these calculations are called is very important.
