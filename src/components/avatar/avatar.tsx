@@ -1,4 +1,5 @@
 import { Component, Element, Prop, State, Watch } from "@stencil/core";
+import { LazyLoadedComponent } from "../../global/lazy-loaded-component";
 
 const originalSize = { width: 92, height: 123 };
 const facecardSize = { width: 110, height: 155 };
@@ -8,8 +9,9 @@ const facecardSize = { width: 110, height: 155 };
   styleUrl: "avatar.scss",
   shadow: true,
 })
-export class Avatar {
-  @Element() private host: HTMLElement;
+export class Avatar extends LazyLoadedComponent {
+
+  @Element() private host: HTMLStencilElement;
 
   private avatarSize: { width: number, height: number } = facecardSize;
 
@@ -61,11 +63,11 @@ export class Avatar {
 
     this.avatarSize = {...(options.facecard) ? facecardSize : originalSize}; // make a new copy so we can safely change it later without affecting other instances.
 
-    this.loadAvatar(this.parts, options);
-
     if (this.round || this.square) {
       this.avatarSize.height = this.avatarSize.width;
     }
+
+    this.lazyLoad(this.host).then(() => this.loadAvatar(this.parts, options));
 
     // this.host.style.width = `calc(${this.avatarSize.width}px * var(--avatar-size, 1))`;
     // this.host.style.height = `calc(${this.avatarSize.height}px * var(--avatar-size, 1))`;

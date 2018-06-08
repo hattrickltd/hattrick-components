@@ -1,16 +1,17 @@
 import { Component, Element, Prop, State } from "@stencil/core";
+import { LazyLoadedComponent } from "../../global/lazy-loaded-component";
 
 @Component({
   tag: "ht-bar",
   styleUrl: "bar.scss",
   shadow: true,
 })
-export class Bar {
+export class Bar extends LazyLoadedComponent {
   /** The styling of the host. Used to calculate text widths. */
   private _hostStyle: CSSStyleDeclaration;
 
   /** The host (outer) element. E.g. <ht-bar> */
-  @Element() private host: HTMLElement;
+  @Element() private host: HTMLStencilElement;
 
   /** The level of the bar. */
   @Prop() level: number;
@@ -49,19 +50,30 @@ export class Bar {
   /** If the level text doesn't fit anywhere, we need to force it in. */
   @State() private forceLevelTextPosition: boolean = false;
 
+  @State() private didLoad: boolean = false;
+
   private get totalWidth(): number {
     return this.host.clientWidth;
   }
 
   componentWillLoad() {
     this._hostStyle = window.getComputedStyle(this.host, null);
-    this.setCalculations(false);
+
+    super.lazyLoad(this.host).then(() => {
+      console.log("load!", this.label, this.level, this.cap, this.max);
+      this.didLoad = true;
+      this.setCalculations(false);
+    });
   }
 
   componentDidLoad() {
+    if (!this.didLoad) return;
+
     this.setCalculations();
   }
   componentWillUpdate() {
+    if (!this.didLoad) return;
+
     this.setCalculations();
   }
 
@@ -210,6 +222,8 @@ export class Bar {
   }
 
   render() {
+    if (!this.didLoad) return (<table></table>);
+
     return (
       <table class={{
         "level-text-dont-fit": this.forceLevelTextPosition,

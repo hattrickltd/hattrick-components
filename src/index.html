@@ -695,7 +695,7 @@
         let bar = document.createElement("ht-bar");
         bar.level = i;
         bar.max = 20;
-        bar.label = "Set pieces";
+        bar.label = "Defending";
         bar.denomination = denominations[i];
         holder2.appendChild(bar);
       }
@@ -704,7 +704,7 @@
         let bar = document.createElement("ht-bar");
         bar.level = i;
         bar.max = 20;
-        bar.label = "Set pieces";
+        bar.label = "Playmaking";
         holder3.appendChild(bar);
       }
 
@@ -712,7 +712,7 @@
         let bar = document.createElement("ht-bar");
         bar.level = i;
         bar.max = 21;
-        bar.label = "Set pieces";
+        bar.label = "Scoring";
         bar.cap = Math.floor((i - 1) / 7) * 7 + 7;
         bar.isCap = false;
         holder4.appendChild(bar);
@@ -721,7 +721,7 @@
           let bar = document.createElement("ht-bar");
           bar.level = i;
           bar.max = 21;
-          bar.label = "Set pieces";
+          bar.label = "Playmaking";
           bar.cap = Math.floor((i - 1) / 7) * 7 + 7;
           bar.isCap = true;
           holder4.appendChild(bar);
