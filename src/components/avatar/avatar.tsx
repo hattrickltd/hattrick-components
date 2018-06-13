@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State, Watch } from "@stencil/core";
+import { Component, Element, Prop, State, Watch, Event, EventEmitter, Method } from "@stencil/core";
 import { LazyLoadedComponent } from "../../global/lazy-loaded-component";
 
 const originalSize = { width: 92, height: 123 };
@@ -41,7 +41,13 @@ export class Avatar extends LazyLoadedComponent {
   /** Set to true to generate a square avatar by cutting off the bottom. */
   @Prop() square?: boolean = false;
 
+  /** Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport */
+  @Prop() lazy?: boolean = true;
+
   @State() private images: Array<IAvatarImage> = [];
+  private pendingImages: Array<HTMLImageElement> = [];
+
+  @Event() load: EventEmitter<Array<IAvatarImage>>;
 
   componentDidLoad() {
     if (typeof this.facecard === "undefined") this.facecard = true;
@@ -54,7 +60,11 @@ export class Avatar extends LazyLoadedComponent {
   }
 
   @Watch("parts")
-  private updateAvatar() {
+  private async updateAvatar() {
+    this.images = [];
+    this.pendingImages.forEach((img) => img.src = "");
+    this.pendingImages = [];
+
     let options: IAvatarOptions = {
       background: this.background,
       injury: this.injury,
@@ -67,7 +77,9 @@ export class Avatar extends LazyLoadedComponent {
       this.avatarSize.height = this.avatarSize.width;
     }
 
-    this.lazyLoad(this.host).then(() => this.loadAvatar(this.parts, options));
+    await (this.lazy) ? super.lazyLoad(this.host) : Promise.resolve();
+
+    this.loadAvatar(this.parts, options);
 
     // this.host.style.width = `calc(${this.avatarSize.width}px * var(--avatar-size, 1))`;
     // this.host.style.height = `calc(${this.avatarSize.height}px * var(--avatar-size, 1))`;
@@ -79,7 +91,7 @@ export class Avatar extends LazyLoadedComponent {
 
     let promises: Promise<any>[] = [];
 
-    if (typeof parts === "string") {
+    if (typeof parts === "string" && !parts.startsWith("data:")) {
       parts = JSON.parse(parts);
     }
 
@@ -108,6 +120,11 @@ export class Avatar extends LazyLoadedComponent {
           return img;
         }));
       });
+    } else if (typeof parts === "string" && parts.startsWith("data:")) {
+      promises.push(this.loadDataUrl(this.parts as string).then((img) => {
+        this.images = [img];
+        return img;
+      }));
     } else {
       promises.push(this.loadSilhouette(parts as number, options).then((img) => {
         this.addImage(img);
@@ -115,7 +132,9 @@ export class Avatar extends LazyLoadedComponent {
       }));
     }
 
-    return Promise.all(promises);
+    return Promise.all(promises).then(() => {
+      this.load.emit(this.images);
+    });
   }
 
   private addImage(img: IAvatarImage, atIdx: number = 0) {
@@ -133,8 +152,9 @@ export class Avatar extends LazyLoadedComponent {
   }
 
   private loadAvatarPart(part: IAvatarPart, options: IAvatarOptions): Promise<IAvatarImage> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       let img = this.createImage();
+      this.pendingImages.push(img);
 
       let src: string = part.url;
 
@@ -148,18 +168,58 @@ export class Avatar extends LazyLoadedComponent {
         : this.base + this.avatarPath + src;
 
       img.onload = () => {
+        this.pendingImages.splice(this.pendingImages.indexOf(img), 1);
         resolve({
           img: img,
           x: part.x - ((options.facecard) ? 0 : 9),
           y: part.y - ((options.facecard) ? 0 : 10),
         });
       };
+      img.onerror = () => reject();
 
       img.src = src;
     });
   }
 
   private loadFacecard(): Promise<IAvatarImage> {
+    return new Promise((resolve, reject) => {
+      let img = this.createImage();
+      this.pendingImages.push(img);
+
+      img.onload = () => {
+        this.pendingImages.splice(this.pendingImages.indexOf(img), 1);
+        resolve({
+          img: img,
+          x: 0,
+          y: 0,
+        });
+      };
+      img.onerror = () => reject();
+
+      img.src = this.base + this.avatarPath + this.facecardPath;
+    });
+  }
+
+  private loadSilhouette(silhouetteId: number, options: IAvatarOptions): Promise<IAvatarImage> {
+    return new Promise((resolve, reject) => {
+      let img = this.createImage();
+      this.pendingImages.push(img);
+
+      img.onload = () => {
+        this.pendingImages.splice(this.pendingImages.indexOf(img), 1);
+        resolve({
+          img: img,
+          x: ((options.facecard) ? 0 : -9),
+          y: ((options.facecard) ? 0 : -9),
+        });
+      };
+      img.onerror = () => reject();
+
+      img.src = this._getSilhouetteUrl(silhouetteId);
+    });
+  }
+
+  private loadDataUrl(dataUrl: string): Promise<IAvatarImage> {
     return new Promise((resolve) => {
       let img = this.createImage();
 
@@ -171,23 +231,7 @@ export class Avatar extends LazyLoadedComponent {
         });
       };
 
-      img.src = this.base + this.avatarPath + this.facecardPath;
-    });
-  }
-
-  private loadSilhouette(silhouetteId: number, options: IAvatarOptions): Promise<IAvatarImage> {
-    return new Promise((resolve) => {
-      let img = this.createImage();
-
-      img.onload = () => {
-        resolve({
-          img: img,
-          x: ((options.facecard) ? 0 : -9),
-          y: ((options.facecard) ? 0 : -9),
-        });
-      };
-
-      img.src = this._getSilhouetteUrl(silhouetteId);
+      img.src = dataUrl;
     });
   }
 
@@ -223,20 +267,21 @@ export class Avatar extends LazyLoadedComponent {
   //   return a;
   // }
 
-  // printToCanvas(images: IAvatarImage[]): HTMLCanvasElement {
+  @Method()
+  printToCanvas(images?: Array<IAvatarImage>): HTMLCanvasElement {
 
-  //   let canvas = document.createElement("canvas");
-  //   let context = canvas.getContext("2d");
+    let canvas = document.createElement("canvas");
+    let context = canvas.getContext("2d");
 
-  //   canvas.width = this.avatarSize.width;
-  //   canvas.height = this.avatarSize.height;
+    canvas.width = this.avatarSize.width;
+    canvas.height = this.avatarSize.height;
 
-  //   images.forEach((a) => {
-  //     context.drawImage(a.img, a.x, a.y);
-  //   });
+    (images || this.images).forEach((a) => {
+      context.drawImage(a.img, a.x, a.y);
+    });
 
-  //   return canvas;
-  // }
+    return canvas;
+  }
 
   // private replaceWithCanvas(canvas: HTMLCanvasElement): Promise<IAvatarImage> {
   //   return new Promise((resolve) => {
@@ -288,14 +333,14 @@ export interface IAvatarPart {
   y: number;
 }
 
+export interface IAvatarImage {
+  img: HTMLImageElement;
+  x: number;
+  y: number;
+}
+
 interface IAvatarOptions {
   background?: boolean;
   injury?: boolean;
   facecard?: boolean;
-}
-
-interface IAvatarImage {
-  img: HTMLImageElement;
-  x: number;
-  y: number;
 }

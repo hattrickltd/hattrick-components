@@ -27,8 +27,12 @@ declare global {
 }
 
 import {
+  IAvatarImage,
   IAvatarPart,
 } from './components/avatar/avatar';
+import {
+  EventEmitter,
+} from '@stencil/core';
 
 declare global {
 
@@ -51,9 +55,14 @@ declare global {
        */
       'injury': boolean;
       /**
+       * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport 
+       */
+      'lazy': boolean;
+      /**
        * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. 
        */
       'parts': IAvatarPart[] | number | string;
+      'printToCanvas': (images?: IAvatarImage[]) => HTMLCanvasElement;
       /**
        * Set to true to generate a circular avatar by cutting off the bottom. 
        */
@@ -100,6 +109,11 @@ declare global {
        * Set this to false to remove the bandages on injured and bruised players. 
        */
       'injury'?: boolean;
+      /**
+       * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport 
+       */
+      'lazy'?: boolean;
+      'onLoad'?: (event: CustomEvent<Array<IAvatarImage>>) => void;
       /**
        * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. 
        */
