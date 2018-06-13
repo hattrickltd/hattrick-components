@@ -153,6 +153,10 @@ declare global {
        */
       'label': string;
       /**
+       * Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport 
+       */
+      'lazy': boolean;
+      /**
        * The level of the bar. 
        */
       'level': number;
@@ -199,6 +203,10 @@ declare global {
        * The label shown inside the bar 
        */
       'label'?: string;
+      /**
+       * Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport 
+       */
+      'lazy'?: boolean;
       /**
        * The level of the bar. 
        */

@@ -29,6 +29,9 @@ export class Bar extends LazyLoadedComponent {
 
   @Prop() hideContent: boolean = false;
 
+  /** Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport */
+  @Prop() lazy?: boolean = true;
+
   /** The text for the level when denomination is not used */
   @State() private levelText: string = "";
 
@@ -56,14 +59,13 @@ export class Bar extends LazyLoadedComponent {
     return this.host.clientWidth;
   }
 
-  componentWillLoad() {
+  async componentWillLoad() {
     this._hostStyle = window.getComputedStyle(this.host, null);
 
-    super.lazyLoad(this.host).then(() => {
-      console.log("load!", this.label, this.level, this.cap, this.max);
-      this.didLoad = true;
-      this.setCalculations(false);
-    });
+    await (this.lazy) ? super.lazyLoad(this.host) : Promise.resolve();
+
+    this.didLoad = true;
+    this.setCalculations(false);
   }
 
   componentDidLoad() {
