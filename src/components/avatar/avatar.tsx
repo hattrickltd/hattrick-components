@@ -50,16 +50,11 @@ export class Avatar extends LazyLoadedComponent {
   @Event() load: EventEmitter<Array<IAvatarImage>>;
 
   componentDidLoad() {
-    if (typeof this.facecard === "undefined") this.facecard = true;
-
-    if (this.round) this.host.classList.add("ht-avatar-round");
-    if (this.square) this.host.classList.add("ht-avatar-square");
-    if (this.facecard) this.host.classList.add("ht-avatar-has-facecard");
-
     this.updateAvatar();
   }
 
   @Watch("parts")
+  @Watch("injury")
   private async updateAvatar() {
     this.images = [];
     this.pendingImages.forEach((img) => img.src = "");
@@ -80,9 +75,6 @@ export class Avatar extends LazyLoadedComponent {
     await (this.lazy) ? super.lazyLoad(this.host) : Promise.resolve();
 
     this.loadAvatar(this.parts, options);
-
-    // this.host.style.width = `calc(${this.avatarSize.width}px * var(--avatar-size, 1))`;
-    // this.host.style.height = `calc(${this.avatarSize.height}px * var(--avatar-size, 1))`;
   }
 
   loadAvatar(parts: IAvatarPart[] | number | string, options: IAvatarOptions): Promise<any> {
@@ -103,7 +95,6 @@ export class Avatar extends LazyLoadedComponent {
       if (options.facecard) {
         insertIdx++;
         promises.push(this.loadFacecard().then((img) => {
-          // this.images = [...this.images, img];
           this.addImage(img, 0);
           return img;
         }));
@@ -115,7 +106,6 @@ export class Avatar extends LazyLoadedComponent {
         let idx = insertIdx++;
 
         promises.push(this.loadAvatarPart(a, options).then((img) => {
-          // this.images = [...this.images, img];
           this.addImage(img, idx);
           return img;
         }));
@@ -249,24 +239,6 @@ export class Avatar extends LazyLoadedComponent {
     return img;
   }
 
-  // private getUrl(): string {
-  //   let anchor = this.getAnchor(location.href);
-  //   if (this.isLocalDomain(anchor.hostname)) {
-  //     return
-  //   }
-  // }
-
-  // private isLocalDomain(hostname: string): boolean {
-  //   return !!/localhost|.*\.hattrick\.local|192.168\..*|10\..*/.exec(hostname);
-  // }
-
-  // private getAnchor(url: string): HTMLAnchorElement  {
-  //   const a = document.createElement("a");
-  //   a.setAttribute("href", url);
-
-  //   return a;
-  // }
-
   @Method()
   printToCanvas(images?: Array<IAvatarImage>): HTMLCanvasElement {
 
@@ -304,6 +276,11 @@ export class Avatar extends LazyLoadedComponent {
   hostData() {
     return {
       "role": "img",
+      "class": {
+        "ht-avatar-round": this.round,
+        "ht-avatar-square": this.square,
+        "ht-avatar-has-facecard": this.facecard,
+      }
     };
   }
 
@@ -316,10 +293,6 @@ export class Avatar extends LazyLoadedComponent {
             "height": part.img.naturalHeight / this.avatarSize.height * 100 + "%",
             "left": part.x / this.avatarSize.width * 100 + "%",
             "top": part.y / this.avatarSize.height * 100 + "%",
-            // "width": `calc(${part.img.naturalWidth}px * var(--avatar-size, 1))`,
-            // "height": `calc(${part.img.naturalHeight}px * var(--avatar-size, 1))`,
-            // "top": `calc(${part.y}px * var(--avatar-size, 1))`,
-            // "left": `calc(${part.x}px * var(--avatar-size, 1))`,
           }} />
         )}
       </div>
