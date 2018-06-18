@@ -1,0 +1,405 @@
+{
+  "components": [
+    {
+      "tag": "ht-avatar",
+      "dependencies": [],
+      "componentClass": "Avatar",
+      "componentPath": "components/avatar/avatar.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/avatar/avatar.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "background",
+          "type": "Boolean",
+          "attr": "background"
+        },
+        {
+          "name": "base",
+          "type": "String",
+          "attr": "base"
+        },
+        {
+          "name": "facecard",
+          "type": "Boolean",
+          "attr": "facecard"
+        },
+        {
+          "name": "injury",
+          "type": "Boolean",
+          "attr": "injury",
+          "watch": [
+            "updateAvatar"
+          ]
+        },
+        {
+          "name": "lazy",
+          "type": "Boolean",
+          "attr": "lazy"
+        },
+        {
+          "name": "parts",
+          "type": "Any",
+          "attr": "parts",
+          "watch": [
+            "updateAvatar"
+          ]
+        },
+        {
+          "name": "round",
+          "type": "Boolean",
+          "attr": "round"
+        },
+        {
+          "name": "square",
+          "type": "Boolean",
+          "attr": "square"
+        }
+      ],
+      "states": [
+        {
+          "name": "images"
+        }
+      ],
+      "methods": [
+        {
+          "name": "printToCanvas"
+        }
+      ],
+      "hostElement": {
+        "name": "host"
+      },
+      "events": [
+        {
+          "event": "load"
+        }
+      ],
+      "shadow": true
+    },
+    {
+      "tag": "ht-bar",
+      "dependencies": [],
+      "componentClass": "Bar",
+      "componentPath": "components/bar/bar.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/bar/bar.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "cap",
+          "type": "Number",
+          "attr": "cap"
+        },
+        {
+          "name": "denomination",
+          "type": "String",
+          "attr": "denomination"
+        },
+        {
+          "name": "hideContent",
+          "type": "Boolean",
+          "attr": "hide-content"
+        },
+        {
+          "name": "isCap",
+          "type": "Boolean",
+          "attr": "is-cap"
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "attr": "label"
+        },
+        {
+          "name": "lazy",
+          "type": "Boolean",
+          "attr": "lazy"
+        },
+        {
+          "name": "level",
+          "type": "Number",
+          "attr": "level"
+        },
+        {
+          "name": "max",
+          "type": "Number",
+          "attr": "max"
+        }
+      ],
+      "states": [
+        {
+          "name": "capWidth"
+        },
+        {
+          "name": "didLoad"
+        },
+        {
+          "name": "forceLevelTextPosition"
+        },
+        {
+          "name": "labelTextWidth"
+        },
+        {
+          "name": "levelText"
+        },
+        {
+          "name": "levelTextWidth"
+        },
+        {
+          "name": "numberPadding"
+        },
+        {
+          "name": "showSkillInColumn"
+        },
+        {
+          "name": "skillWidth"
+        }
+      ],
+      "hostElement": {
+        "name": "host"
+      },
+      "shadow": true
+    },
+    {
+      "tag": "ht-flip",
+      "dependencies": [],
+      "componentClass": "Flip",
+      "componentPath": "components/flip/flip.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/flip/flip.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "direction",
+          "type": "String",
+          "attr": "direction"
+        },
+        {
+          "name": "flipped",
+          "type": "Boolean",
+          "mutable": true,
+          "attr": "flipped"
+        }
+      ],
+      "shadow": true
+    },
+    {
+      "tag": "ht-progress-arc",
+      "dependencies": [],
+      "componentClass": "ProgressArc",
+      "componentPath": "components/progress-arc/progress-arc.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/progress-arc/progress-arc.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "complete",
+          "type": "Number",
+          "attr": "complete",
+          "watch": [
+            "completeChanged"
+          ]
+        },
+        {
+          "name": "counterClockwise",
+          "type": "Boolean",
+          "attr": "counter-clockwise"
+        },
+        {
+          "name": "size",
+          "type": "Number",
+          "attr": "size"
+        },
+        {
+          "name": "strokeWidth",
+          "type": "Number",
+          "mutable": true,
+          "attr": "stroke-width"
+        }
+      ],
+      "shadow": true
+    },
+    {
+      "tag": "ht-rating",
+      "dependencies": [
+        "ht-progress-arc"
+      ],
+      "componentClass": "ProgressArc",
+      "componentPath": "components/rating/rating.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/rating/rating.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "rating",
+          "type": "Number",
+          "attr": "rating"
+        },
+        {
+          "name": "size",
+          "type": "Any",
+          "mutable": true,
+          "attr": "size"
+        },
+        {
+          "name": "stamina",
+          "type": "Number",
+          "attr": "stamina"
+        },
+        {
+          "name": "staminaLabel",
+          "type": "String",
+          "attr": "stamina-label"
+        }
+      ],
+      "shadow": true
+    },
+    {
+      "tag": "ht-timer",
+      "dependencies": [],
+      "componentClass": "Timer",
+      "componentPath": "components/timer/timer.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/timer/timer.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "daysText",
+          "type": "String",
+          "attr": "days-text"
+        },
+        {
+          "name": "deadline",
+          "type": "Any",
+          "attr": "deadline",
+          "watch": [
+            "deadlineUpdated"
+          ]
+        },
+        {
+          "name": "keepCounting",
+          "type": "Boolean",
+          "attr": "keep-counting"
+        },
+        {
+          "name": "maxHours",
+          "type": "Number",
+          "attr": "max-hours"
+        }
+      ],
+      "states": [
+        {
+          "name": "seconds"
+        }
+      ],
+      "shadow": true
+    },
+    {
+      "tag": "ht-tooltip",
+      "dependencies": [],
+      "componentClass": "Tooltip",
+      "componentPath": "components/tooltip/tooltop.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/tooltip/tooltip.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "arrow",
+          "type": "String",
+          "attr": "arrow"
+        },
+        {
+          "name": "content",
+          "type": "String",
+          "attr": "content"
+        },
+        {
+          "name": "dir",
+          "type": "String",
+          "mutable": true,
+          "attr": "dir"
+        },
+        {
+          "name": "position",
+          "type": "String",
+          "attr": "position"
+        }
+      ],
+      "states": [
+        {
+          "name": "cssPos"
+        },
+        {
+          "name": "showTooltip"
+        }
+      ],
+      "listeners": [
+        {
+          "event": "blur",
+          "method": "onMouseLeave",
+          "passive": false
+        },
+        {
+          "event": "focus",
+          "method": "onMouseOver",
+          "passive": false
+        },
+        {
+          "event": "mouseleave",
+          "method": "onMouseLeave",
+          "capture": false
+        },
+        {
+          "event": "mouseover",
+          "method": "onMouseOver",
+          "capture": false
+        }
+      ],
+      "context": [
+        {
+          "name": "win",
+          "id": "window"
+        }
+      ],
+      "hostElement": {
+        "name": "host"
+      },
+      "shadow": true
+    }
+  ],
+  "collections": [],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "0.9.7",
+    "typescriptVersion": "2.9.1"
+  },
+  "bundles": []
+}

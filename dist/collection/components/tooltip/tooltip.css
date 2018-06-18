@@ -1,0 +1,138 @@
+:host [slot="content"] {
+  position: fixed; }
+
+#tooltip {
+  position: fixed;
+  text-align: initial;
+  max-width: var(--tooltip-max-width, 99vw);
+  font-size: var(--tooltip-font-size, 12px);
+  background-color: var(--tooltip-background, white);
+  color: var(--tooltip-color, #575757);
+  border: var(--tooltip-border, 1px solid #767676);
+  border-radius: var(--tooltop-border-radius, 0px);
+  padding: var(--tooltip-padding, 0.2em 0.35em);
+  box-shadow: var(--tooltip-box-shadow, 4px 4px 2px -3px #767676);
+  z-index: 10000;
+  pointer-events: var(--tooltip-pointer-events, none);
+  opacity: 1;
+  visibility: visible;
+  transition: margin .3s, opacity .3s;
+  transition-delay: var(--tooltip-delay, 0s); }
+  #tooltip[hidden] {
+    opacity: 0;
+    display: block;
+    visibility: hidden; }
+
+:host(:not([arrow])), :host([arrow][arrow="none"]) {
+  --tooltop-arrow-size: 0px; }
+  :host(:not([arrow])) #tooltip, :host([arrow][arrow="none"]) #tooltip {
+    transition: opacity .3s; }
+  :host(:not([arrow])) #tooltip:before, :host([arrow][arrow="none"]) #tooltip:before {
+    content: unset; }
+
+:host([arrow]) #tooltip:before {
+  position: absolute;
+  content: '';
+  border: var(--tooltop-arrow-size, 0px) solid transparent; }
+
+:host([arrow="start"][position="start"]) #tooltip, :host([arrow="start"][position="end"]) #tooltip {
+  transform: translateY(-5px); }
+
+:host([arrow="start"][position="start"]) #tooltip:before, :host([arrow="start"][position="end"]) #tooltip:before {
+  top: 5px; }
+
+:host([arrow="start"][position="top"]):host([dir="ltr"]) #tooltip:before {
+  left: 5px; }
+
+:host([arrow="start"][position="top"]):host([dir="rtl"]) #tooltip:before {
+  right: 5px; }
+
+:host([arrow="start"][position="bottom"]):host([dir="ltr"]) #tooltip:before {
+  left: 5px; }
+
+:host([arrow="start"][position="bottom"]):host([dir="rtl"]) #tooltip:before {
+  right: 5px; }
+
+:host([arrow="middle"][position="start"]) #tooltip, :host([arrow="middle"][position="end"]) #tooltip {
+  transform: translateY(-50%); }
+
+:host([arrow="middle"][position="start"]) #tooltip:before, :host([arrow="middle"][position="end"]) #tooltip:before {
+  top: 50%;
+  transform: translateY(-50%); }
+
+:host([arrow="middle"][position="top"]) #tooltip, :host([arrow="middle"][position="bottom"]) #tooltip {
+  transform: translateX(-50%); }
+
+:host([arrow="middle"][position="top"]) #tooltip:before, :host([arrow="middle"][position="bottom"]) #tooltip:before {
+  left: 50%;
+  transform: translateX(-50%); }
+
+:host([arrow="end"][position="start"]) #tooltip, :host([arrow="end"][position="end"]) #tooltip {
+  transform: translateY(5px); }
+
+:host([arrow="end"][position="start"]) #tooltip:before, :host([arrow="end"][position="end"]) #tooltip:before {
+  bottom: 5px; }
+
+:host([arrow="end"][position="top"]):host([dir="ltr"]) #tooltip:before {
+  right: 5px; }
+
+:host([arrow="end"][position="top"]):host([dir="rtl"]) #tooltip:before {
+  left: 5px; }
+
+:host([arrow="end"][position="bottom"]):host([dir="ltr"]) #tooltip:before {
+  right: 5px; }
+
+:host([arrow="end"][position="bottom"]):host([dir="rtl"]) #tooltip:before {
+  left: 5px; }
+
+:host([no-animate]) #tooltip {
+  transition: none;
+  margin: 0; }
+
+:host([position="top"]) #tooltip {
+  margin-bottom: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  :host([position="top"]) #tooltip[hidden] {
+    margin-bottom: calc(var(--tooltop-arrow-size, 0px) + 10px); }
+  :host([position="top"]) #tooltip:before {
+    top: 100%;
+    border-top-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
+
+:host([position="bottom"]) #tooltip {
+  margin-top: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  :host([position="bottom"]) #tooltip[hidden] {
+    margin-top: calc(var(--tooltop-arrow-size, 0px) + 10px); }
+  :host([position="bottom"]) #tooltip:before {
+    bottom: 100%;
+    border-bottom-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
+
+:host([position="start"]):host([dir="ltr"]) #tooltip {
+  margin-right: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  :host([position="start"]):host([dir="ltr"]) #tooltip[hidden] {
+    margin-right: calc(var(--tooltop-arrow-size, 0px) + 3px + 10px); }
+  :host([position="start"]):host([dir="ltr"]) #tooltip:before {
+    left: 100%;
+    border-left-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
+
+:host([position="start"]):host([dir="rtl"]) #tooltip {
+  margin-left: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  :host([position="start"]):host([dir="rtl"]) #tooltip[hidden] {
+    margin-left: calc(var(--tooltop-arrow-size, 0px) + 3px + 10px); }
+  :host([position="start"]):host([dir="rtl"]) #tooltip:before {
+    right: 100%;
+    border-right-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
+
+:host([position="end"]):host([dir="ltr"]) #tooltip {
+  margin-left: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  :host([position="end"]):host([dir="ltr"]) #tooltip[hidden] {
+    margin-left: calc(var(--tooltop-arrow-size, 0px) + 3px + 10px); }
+  :host([position="end"]):host([dir="ltr"]) #tooltip:before {
+    right: 100%;
+    border-right-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
+
+:host([position="end"]):host([dir="rtl"]) #tooltip {
+  margin-right: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  :host([position="end"]):host([dir="rtl"]) #tooltip[hidden] {
+    margin-right: calc(var(--tooltop-arrow-size, 0px) + 3px + 10px); }
+  :host([position="end"]):host([dir="rtl"]) #tooltip:before {
+    left: 100%;
+    border-left-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }

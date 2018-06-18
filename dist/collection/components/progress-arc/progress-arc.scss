@@ -1,0 +1,14 @@
+
+:host {
+  display: inline-block;
+}
+
+circle {
+  stroke-width: var(--progress-arc-stroke-width, 8px);
+  stroke: var(--progress-arc-color, black);
+}
+
+circle#background {
+  stroke-width: var(--progress-arc-stroke-width, 8px);
+  stroke: var(--progress-arc-rest-color, transparent);
+}

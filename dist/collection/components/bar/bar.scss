@@ -1,0 +1,115 @@
+$denominationPosition: 85px;
+
+:host {
+  position: relative;
+  display: block;
+  font-size: 1em;
+  line-height: 1em;
+}
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+td {
+  height: calc(1em + 0.25em);
+  padding: 1px;
+  vertical-align: middle;
+}
+
+td.bar-level {
+  background-color: var(--bar-level-background, #A9A9A9);
+  color: var(--bar-max-background, #ECECEC);
+  position: relative;
+  text-align: start;
+}
+td.bar-level.maxed {
+  background-color: var(--bar-capped-background, #FFEB99);
+  color: var(--bar-level-background, #A9A9A9);
+}
+
+td.bar-cap {
+  background-color: var(--bar-cap-background, #CACACA);
+  color: var(--bar-max-background, #ECECEC);
+  text-align: start;
+}
+
+
+td.bar-max {
+  background-color: var(--bar-max-background, #ECECEC);
+  color: var(--bar-level-background, #A9A9A9);
+}
+
+.title {
+  color: var(--bar-title-color, #000000);
+  white-space: nowrap;
+  position: absolute;
+  top: 2px;
+
+  :host([denomination]) & {
+    width: $denominationPosition - 5px;
+    overflow: hidden;
+  }
+
+  :host-context([dir=ltr]) & { left: 2px; }
+  :host-context([dir=rtl]) & { right: 2px; }
+}
+
+.number {
+  display: inline-block;
+  margin-left: 5px;
+  margin-right: 5px;
+  white-space: nowrap;
+}
+
+td.bar-level .number {
+  position: absolute;
+  top: 2px;
+
+  :host-context([dir=ltr]) & { right: 0; }
+  :host-context([dir=rtl]) & { left: 0; }
+}
+
+.level-text-dont-fit {
+  .bar-cap { color: var(--bar-max-background, #ECECEC); }
+  .bar-max { color: var(--bar-cap-background, #CACACA); }
+  &.has-cap-bar.bar-max { color: var(--bar-level-background, #A9A9A9); }
+
+  .number {
+    position: absolute;
+    top: 2px;
+    
+    :host-context([dir=ltr]) & { right: 0; }
+    :host-context([dir=rtl]) & { left: 0; }
+  }
+}
+
+.denomination {
+  position: absolute;
+  color: var(--bar-denomination-color, #000000);
+  white-space: nowrap;
+  top: 2px;
+
+  :host-context([dir=ltr]) & { left: $denominationPosition; } // 75px
+  :host-context([dir=rtl]) & { right: $denominationPosition; } // 75px
+}
+
+// :host([denomination]) {
+//   td:first-child div {
+//     display: flex;
+
+//     span {
+//       display: inline-block;
+//     }
+
+//     // .title {
+//     //   flex-shrink: 0;
+//     // }
+//     .denomination {
+//       // flex-grow: 1;
+//       text-align: center;
+//     }
+//   }
+// }

@@ -1,0 +1,42 @@
+:root {
+  /* --app-primary-color: #59965d; */
+
+  --bar-level-background: #A9A9A9;
+  --bar-cap-background: #CACACA;
+  --bar-max-background: #ECECEC;
+  --bar-capped-background: #FFEB99;
+  --bar-title-color: #000000;
+  --bar-denomination-color: var(--var-title-color, #000000);
+
+  --avatar-size: 1;
+
+  /* --progress-arc-size: 40px; */
+  --progress-arc-stroke-width: 8px;
+  --progress-arc-color: #00aa00;
+  --progress-arc-rest-color: transparent;
+
+  --rating-background: #FFFFFF;
+  --rating-color: #666666;
+  --rating-font-weight: bold;
+  --rating-stamina-arc-very-low: #DD4140;
+  --rating-stamina-arc-low: #F5A104;
+  --rating-stamina-arc-high: #F1C40A;
+  --rating-stamina-arc-very-high: #31A94B;
+  --rating-stamina-arc-rest: #CCCCCC;
+
+  --tooltip-background: rgba(0, 0, 0, .75);
+  --tooltip-color: white;
+  --tooltip-font-size: 12px;
+  --tooltip-border: 0;
+  --tooltip-padding: 5px 10px;
+  --tooltip-box-shadow: none;
+  --tooltip-max-width: 400px;
+  --tooltop-arrow-size: 7px;
+  --tooltop-border-radius: 3px;
+  --tooltip-pointer-events: none;
+  --tooltip-delay: 0s;
+
+  --flip-height: auto;
+  --flip-width: auto;
+  --flip-duration: 1s;
+}
