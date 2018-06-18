@@ -1,4 +1,5 @@
-var LazyLoadedComponent = /** @class */ (function () {
+/*! Built with http://stenciljs.com */
+HtComponents.loadBundle("chunk-b846b972.js", ["exports"], function (e) { window.HtComponents.h, e.LazyLoadedComponent = /** @class */ (function () {
     function LazyLoadedComponent() {
     }
     LazyLoadedComponent.prototype.lazyLoad = function (e) {
@@ -7,5 +8,4 @@ var LazyLoadedComponent = /** @class */ (function () {
     };
     LazyLoadedComponent.prototype.removeLazyLoad = function () { this.io && (this.io.disconnect(), this.io = void 0); };
     return LazyLoadedComponent;
-}());
-export { LazyLoadedComponent as a };
+}()); });
