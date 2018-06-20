@@ -2,7 +2,7 @@ import '../../stencil.core';
 export declare class Timer {
     private _deadline;
     private _interval;
-    seconds: number;
+    private seconds;
     /** The string for `days` which is used if the deadline is more than 72 hours away. */
     daysText: string;
     /** At what time should the clock reach 00:00:00. */
@@ -13,14 +13,13 @@ export declare class Timer {
     maxHours: number;
     componentWillLoad(): void;
     componentDidUnload(): void;
-    deadlineUpdated(): void;
-    updateTime(): void;
-    getTime(): string;
-    shouldShowDaysText(): boolean;
-    padLeft(val: number): string;
-    format(hours: number, minutes: number, seconds: number): string;
+    private deadlineUpdated;
+    private updateTime;
+    private getTime;
+    private shouldShowDaysText;
+    private padLeft;
+    private format;
     hostData(): {
-        "seconds": number;
         "role": string;
         "class": {
             "ht-timer-passed-zero": boolean;

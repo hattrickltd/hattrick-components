@@ -10,21 +10,11 @@ export class Timer {
     // /** The number of seconds left (or negative if `keepCounting` is set to `true`. */
     // @Prop({ reflectToAttr: true, mutable: true }) seconds: number;
     componentWillLoad() {
-        // if (!this.deadline) {
-        //   if (this._seconds) this._deadline = Date.now() + this._seconds * 1000;
-        //   else console.error(new Error("ht-timer: Property deadline not set"));
-        // }
-        // else {
-        //   this._deadline = fixDate(this.deadline).getTime();
-        // }
-        // this.deadlineUpdated();
         this.deadlineUpdated();
         this._interval = setInterval(() => this.updateTime(), 1000);
     }
     componentDidUnload() {
         this._interval && clearInterval(this._interval);
-        // let x = this.deadlineUpdated.bind(this);
-        // console.log(x);
     }
     deadlineUpdated() {
         this._deadline = fixDate(this.deadline).getTime();
@@ -73,7 +63,6 @@ export class Timer {
     }
     hostData() {
         return {
-            "seconds": this.seconds,
             "role": "timer",
             "class": {
                 "ht-timer-passed-zero": this.keepCounting && this.seconds < 0,

@@ -10,6 +10,6 @@ export var ProgressArc = ["ht-progress-arc",function(){return(import("./atmx6q3d
 
 export var ProgressArc = ["ht-rating",function(){return(import("./atmx6q3d.js")).then(function(m){return m.HtRating})},1,[["rating",1,0,1,4],["size",2,0,1,1],["stamina",1,0,1,4],["staminaLabel",1,0,"stamina-label",2]],1];
 
-export var Timer = ["ht-timer",function(){return(import("./cn1emwa3.js")).then(function(m){return m.HtTimer})},1,[["daysText",1,0,"days-text",2],["deadline",1,0,1,1],["keepCounting",1,0,"keep-counting",3],["maxHours",1,0,"max-hours",4],["seconds",5]],1];
+export var Timer = ["ht-timer",function(){return(import("./xcyeve03.js")).then(function(m){return m.HtTimer})},1,[["daysText",1,0,"days-text",2],["deadline",1,0,1,1],["keepCounting",1,0,"keep-counting",3],["maxHours",1,0,"max-hours",4],["seconds",5]],1];
 
 export var Tooltip = ["ht-tooltip",function(){return(import("./uzn3bo4e.js")).then(function(m){return m.HtTooltip})},1,[["arrow",1,1,1,2],["content",1,0,1,2],["cssPos",5],["dir",2,1,1,2],["host",7],["position",1,1,1,2],["showTooltip",5],["win",3,0,0,0,"window"]],1,[["mouseover","onMouseOver",0,1],["focus","onMouseOver",0,0,1],["mouseleave","onMouseLeave",0,1],["blur","onMouseLeave",0,0,1]]];
