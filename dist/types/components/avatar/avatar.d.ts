@@ -28,7 +28,7 @@ export declare class Avatar extends LazyLoadedComponent {
     load: EventEmitter<Array<IAvatarImage>>;
     componentDidLoad(): void;
     private updateAvatar;
-    loadAvatar(parts: IAvatarPart[] | number | string, options: IAvatarOptions): Promise<any>;
+    private loadAvatar;
     private addImage;
     private shouldIncludePart;
     private loadAvatarPart;
@@ -58,9 +58,3 @@ export interface IAvatarImage {
     x: number;
     y: number;
 }
-interface IAvatarOptions {
-    background?: boolean;
-    injury?: boolean;
-    facecard?: boolean;
-}
-export {};

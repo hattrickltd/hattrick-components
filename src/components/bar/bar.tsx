@@ -209,7 +209,7 @@ export class Bar extends LazyLoadedComponent {
     return (levelTextWidth < levelColumnWidth);
   }
 
-  getPadding() {
+  private getPadding() {
     if ((this._hostStyle.direction || "ltr") === "ltr") {
       return { "padding-left": this.numberPadding + "px" };
     } else {

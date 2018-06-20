@@ -10,6 +10,7 @@ export class Tooltip {
   @Element() host: HTMLStencilElement;
 
   @Prop({ reflectToAttr: true, mutable: true }) dir: string;
+
   private get ltr(): boolean {
     return !this.rtl;
   }
@@ -71,7 +72,7 @@ export class Tooltip {
     this.showTooltip = false;
   }
 
-  calculatePosition(ev: MouseEvent | FocusEvent) {
+  private calculatePosition(ev: MouseEvent | FocusEvent) {
     const hostRect = this.host.getBoundingClientRect();
     // const tooltipRect = this.host.shadowRoot.querySelector(".tooltip").getBoundingClientRect();
 
@@ -158,13 +159,6 @@ export class Tooltip {
         <slot name="content"></slot>
       </div>
     ]
-      // <div id="wrapper" role="tooltip" aria-describedby="tooltip" aria-controls="tooltip" aria-expanded={ this.showTooltip }>
-      //   <slot />
-      //   <div id="tooltip" style={ this.cssPos } hidden={ !this.showTooltip }>
-      //     { this.content }
-      //     <slot name="content"></slot>
-      //   </div>
-      // </div>
     );
   }
 }

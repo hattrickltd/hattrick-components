@@ -201,20 +201,6 @@ export class Avatar extends LazyLoadedComponent {
         });
         return canvas;
     }
-    // private replaceWithCanvas(canvas: HTMLCanvasElement): Promise<IAvatarImage> {
-    //   return new Promise((resolve) => {
-    //     let obj = {
-    //       img: new Image(),
-    //       x: 0,
-    //       y: 0,
-    //     };
-    //     obj.img.onload = () => {
-    //       this.images = [obj];
-    //       resolve(obj);
-    //     };
-    //     obj.img.src = canvas.toDataURL();
-    //   });
-    // }
     hostData() {
         return {
             "role": "img",

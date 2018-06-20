@@ -113,15 +113,7 @@ export class Tooltip {
             h("div", { id: "tooltip", style: this.cssPos, hidden: !this.showTooltip },
                 this.content,
                 h("slot", { name: "content" }))
-        ]
-        // <div id="wrapper" role="tooltip" aria-describedby="tooltip" aria-controls="tooltip" aria-expanded={ this.showTooltip }>
-        //   <slot />
-        //   <div id="tooltip" style={ this.cssPos } hidden={ !this.showTooltip }>
-        //     { this.content }
-        //     <slot name="content"></slot>
-        //   </div>
-        // </div>
-        );
+        ]);
     }
     static get is() { return "ht-tooltip"; }
     static get encapsulation() { return "shadow"; }

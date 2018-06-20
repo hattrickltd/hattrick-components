@@ -29,12 +29,7 @@ export declare class Tooltip {
     componentWillLoad(): void;
     onMouseOver(ev: MouseEvent): void;
     onMouseLeave(): void;
-    calculatePosition(ev: MouseEvent | FocusEvent): {
-        top?: string;
-        bottom?: string;
-        left?: string;
-        right?: string;
-    };
+    private calculatePosition;
     private calculateVerticalPosition;
     private calculateHorizontalPosition;
     hostData(): {

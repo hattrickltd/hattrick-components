@@ -15,6 +15,6 @@ export declare class ProgressArc {
     private circumference;
     private transformValue;
     componentWillLoad(): void;
-    updateRadius(): void;
+    private updateRadius;
     render(): JSX.Element;
 }

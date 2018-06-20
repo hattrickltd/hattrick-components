@@ -40,7 +40,7 @@ export class ProgressArc {
     this.updateRadius();
   }
 
-  updateRadius() {
+  private updateRadius() {
     // Firefox has a bug where it doesn't handle rotations and stroke dashes correctly.
     // https://bugzilla.mozilla.org/show_bug.cgi?id=949661
     this.offset = /firefox/i.test(navigator.userAgent) ? -89.9 : -90;

@@ -57,13 +57,7 @@ export declare class Bar extends LazyLoadedComponent {
     private doesLevelTextFitInMaxColumn;
     private doesLevelTextFitInCapColumn;
     private doesLevelTextFitInLevelColumn;
-    getPadding(): {
-        "padding-left": string;
-        "padding-right"?: undefined;
-    } | {
-        "padding-right": string;
-        "padding-left"?: undefined;
-    };
+    private getPadding;
     hostData(): {
         "aria-label": string;
     };
