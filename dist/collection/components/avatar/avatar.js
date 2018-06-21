@@ -30,7 +30,12 @@ export class Avatar extends LazyLoadedComponent {
         this.square = false;
         /** Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport */
         this.lazy = true;
+        /** This array contains the loaded images that will be printed */
         this.images = [];
+        /**
+         * This contains the images that are being loaded right now.
+         * We keep this so that we can abort the download if the parts changes.
+         */
         this.pendingImages = [];
     }
     componentDidLoad() {
