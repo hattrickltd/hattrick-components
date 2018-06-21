@@ -44,7 +44,13 @@ export class Avatar extends LazyLoadedComponent {
   /** Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport */
   @Prop() lazy?: boolean = true;
 
+  /** This array contains the loaded images that will be printed */
   @State() private images: Array<IAvatarImage> = [];
+
+  /**
+   * This contains the images that are being loaded right now.
+   * We keep this so that we can abort the download if the parts changes.
+   */
   private pendingImages: Array<HTMLImageElement> = [];
 
   @Event() load: EventEmitter<Array<IAvatarImage>>;
