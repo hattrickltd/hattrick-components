@@ -1,4 +1,10 @@
 import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
 import { LazyLoadedComponent } from "../../global/lazy-loaded-component";
 export declare class Bar extends LazyLoadedComponent {
     /** The styling of the host. Used to calculate text widths. */

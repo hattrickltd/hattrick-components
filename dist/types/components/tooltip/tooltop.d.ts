@@ -1,4 +1,10 @@
 import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
+import '../../stencil.core';
 export declare class Tooltip {
     host: HTMLStencilElement;
     dir: string;
