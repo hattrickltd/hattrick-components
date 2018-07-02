@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+HtComponents.loadBundle("chunk-b846b972.js",["exports"],function(o){window.HtComponents.h,o.LazyLoadedComponent=function(){function o(){}return o.prototype.lazyLoad=function(o){var n=this;return new Promise(function(e){"IntersectionObserver"in window?(n.removeLazyLoad(),n.io=new IntersectionObserver(function(o){o[0].isIntersecting&&(n.removeLazyLoad(),e())}),n.io.observe(o)):setTimeout(function(){return e()},200)})},o.prototype.removeLazyLoad=function(){this.io&&(this.io.disconnect(),this.io=void 0)},o}()});

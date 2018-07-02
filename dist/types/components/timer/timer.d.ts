@@ -1,10 +1,4 @@
 import '../../stencil.core';
-import '../../stencil.core';
-import '../../stencil.core';
-import '../../stencil.core';
-import '../../stencil.core';
-import '../../stencil.core';
-import '../../stencil.core';
 export declare class Timer {
     private _deadline;
     private _interval;
