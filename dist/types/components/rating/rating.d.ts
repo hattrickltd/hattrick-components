@@ -1,3 +1,4 @@
+import '../../stencil.core';
 export declare class ProgressArc {
     /** Size of element in pixels. */
     size: number | "small" | "large";
