@@ -322,7 +322,7 @@
       "tag": "ht-tooltip",
       "dependencies": [],
       "componentClass": "Tooltip",
-      "componentPath": "components/tooltip/tooltop.js",
+      "componentPath": "components/tooltip/tooltip.js",
       "styles": {
         "$": {
           "stylePaths": [

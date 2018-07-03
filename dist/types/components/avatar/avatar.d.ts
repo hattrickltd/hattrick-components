@@ -1,5 +1,4 @@
-import '../../stencil.core';
-import { EventEmitter } from "../../stencil.core";
+import { EventEmitter } from "@stencil/core";
 import { LazyLoadedComponent } from "../../global/lazy-loaded-component";
 export declare class Avatar extends LazyLoadedComponent {
     private host;
