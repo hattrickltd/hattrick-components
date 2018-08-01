@@ -45,11 +45,11 @@ Set a box-shadow on the tooltip, e.g. `4px 4px 2px -3px #767676`
 
 Maximum width before wrapping.
 
-#### --tooltop-arrow-size: 7px;
+#### --tooltip-arrow-size: 7px;
 
 The size of the arrow.
 
-#### --tooltop-border-radius: 3px;
+#### --tooltip-border-radius: 3px;
 
 Border radius of the tooltip.
 

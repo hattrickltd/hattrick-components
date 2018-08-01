@@ -9,7 +9,7 @@
   background-color: var(--tooltip-background, white);
   color: var(--tooltip-color, #575757);
   border: var(--tooltip-border, 1px solid #767676);
-  border-radius: var(--tooltop-border-radius, 0px);
+  border-radius: var(--tooltip-border-radius, 0px);
   padding: var(--tooltip-padding, 0.2em 0.35em);
   box-shadow: var(--tooltip-box-shadow, 4px 4px 2px -3px #767676);
   z-index: 10000;
@@ -24,7 +24,7 @@
     visibility: hidden; }
 
 :host(:not([arrow])), :host([arrow][arrow="none"]) {
-  --tooltop-arrow-size: 0px; }
+  --tooltip-arrow-size: 0px; }
   :host(:not([arrow])) #tooltip, :host([arrow][arrow="none"]) #tooltip {
     transition: opacity .3s; }
   :host(:not([arrow])) #tooltip:before, :host([arrow][arrow="none"]) #tooltip:before {
@@ -33,7 +33,7 @@
 :host([arrow]) #tooltip:before {
   position: absolute;
   content: '';
-  border: var(--tooltop-arrow-size, 0px) solid transparent; }
+  border: var(--tooltip-arrow-size, 0px) solid transparent; }
 
 :host([arrow="start"][position="start"]) #tooltip, :host([arrow="start"][position="end"]) #tooltip {
   transform: translateY(-5px); }
@@ -90,49 +90,49 @@
   margin: 0; }
 
 :host([position="top"]) #tooltip {
-  margin-bottom: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  margin-bottom: calc(var(--tooltip-arrow-size, 0px) + 3px); }
   :host([position="top"]) #tooltip[hidden] {
-    margin-bottom: calc(var(--tooltop-arrow-size, 0px) + 10px); }
+    margin-bottom: calc(var(--tooltip-arrow-size, 0px) + 10px); }
   :host([position="top"]) #tooltip:before {
     top: 100%;
     border-top-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
 
 :host([position="bottom"]) #tooltip {
-  margin-top: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  margin-top: calc(var(--tooltip-arrow-size, 0px) + 3px); }
   :host([position="bottom"]) #tooltip[hidden] {
-    margin-top: calc(var(--tooltop-arrow-size, 0px) + 10px); }
+    margin-top: calc(var(--tooltip-arrow-size, 0px) + 10px); }
   :host([position="bottom"]) #tooltip:before {
     bottom: 100%;
     border-bottom-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
 
 :host([position="start"]):host([dir="ltr"]) #tooltip {
-  margin-right: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  margin-right: calc(var(--tooltip-arrow-size, 0px) + 3px); }
   :host([position="start"]):host([dir="ltr"]) #tooltip[hidden] {
-    margin-right: calc(var(--tooltop-arrow-size, 0px) + 3px + 10px); }
+    margin-right: calc(var(--tooltip-arrow-size, 0px) + 3px + 10px); }
   :host([position="start"]):host([dir="ltr"]) #tooltip:before {
     left: 100%;
     border-left-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
 
 :host([position="start"]):host([dir="rtl"]) #tooltip {
-  margin-left: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  margin-left: calc(var(--tooltip-arrow-size, 0px) + 3px); }
   :host([position="start"]):host([dir="rtl"]) #tooltip[hidden] {
-    margin-left: calc(var(--tooltop-arrow-size, 0px) + 3px + 10px); }
+    margin-left: calc(var(--tooltip-arrow-size, 0px) + 3px + 10px); }
   :host([position="start"]):host([dir="rtl"]) #tooltip:before {
     right: 100%;
     border-right-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
 
 :host([position="end"]):host([dir="ltr"]) #tooltip {
-  margin-left: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  margin-left: calc(var(--tooltip-arrow-size, 0px) + 3px); }
   :host([position="end"]):host([dir="ltr"]) #tooltip[hidden] {
-    margin-left: calc(var(--tooltop-arrow-size, 0px) + 3px + 10px); }
+    margin-left: calc(var(--tooltip-arrow-size, 0px) + 3px + 10px); }
   :host([position="end"]):host([dir="ltr"]) #tooltip:before {
     right: 100%;
     border-right-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
 
 :host([position="end"]):host([dir="rtl"]) #tooltip {
-  margin-right: calc(var(--tooltop-arrow-size, 0px) + 3px); }
+  margin-right: calc(var(--tooltip-arrow-size, 0px) + 3px); }
   :host([position="end"]):host([dir="rtl"]) #tooltip[hidden] {
-    margin-right: calc(var(--tooltop-arrow-size, 0px) + 3px + 10px); }
+    margin-right: calc(var(--tooltip-arrow-size, 0px) + 3px + 10px); }
   :host([position="end"]):host([dir="rtl"]) #tooltip:before {
     left: 100%;
     border-left-color: var(--tooltip-border-color, var(--tooltip-background, transparent)); }
