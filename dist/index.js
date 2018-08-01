@@ -1,1 +1,0 @@
-// HattrickComponents: CommonJS Main
