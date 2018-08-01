@@ -22,7 +22,7 @@ This project contains a bunch of web components that we use on [Hattrick.org](ht
 
 ## Available components
 
-These are the currently available Hattrick Components. For more details, see the readme.md in each respective component.
+These are the currently available Hattrick Components. For more details on how to use each component, see the respective readme.md linked in the table below.
 
 
 | **Component** | **Description** |
