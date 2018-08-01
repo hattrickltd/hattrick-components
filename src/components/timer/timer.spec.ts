@@ -169,5 +169,32 @@ describe("Timer", () => {
       // clock.runOnlyPendingTimers();
 
     });
+
+    describe("non-numeric deadlines", () => {
+      it("allows date deadlines", async () => {
+        element.deadline = new Date(Date.now() + 61 * 1000 + 500);
+
+        await window.flush();
+
+        expect(element.textContent).toBe("00:01:01");
+      });
+
+      it("allows string numbers", async () => {
+        element.deadline = (Date.now() + 61 * 1000 + 500).toString();
+
+        await window.flush();
+
+        expect(element.textContent).toBe("00:01:01");
+      });
+
+      it("allows string Date deadlines", async () => {
+        element.deadline = new Date((Date.now() + 61 * 1000 + 500)).toISOString();
+
+        await window.flush();
+
+        expect(element.textContent).toBe("00:01:01");
+      });
+    });
+
   });
 });
