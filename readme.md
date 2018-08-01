@@ -5,75 +5,43 @@
 This project contains a bunch of web components that we use on [Hattrick.org](https://www.hattrick.org) and [Hattrick Mobile](https://m.hattrick.org/). However, all of these components works independently of Hattrick, so if you want to use them on your site as well, go right ahead!
 
 
-# Hattrick Components <3 Stencil
+## Using Hattrick Components
 
-Hattrick Components is built using [stencil](https://github.com/ionic-team/stencil).
+### Script tag
 
-Stencil combines the best concepts of the most popular frontend frameworks into a compile-time rather than run-time tool.  Stencil takes TypeScript, JSX, a tiny virtual DOM layer, efficient one-way data binding, an asynchronous rendering pipeline (similar to React Fiber), and lazy-loading out of the box, and generates 100% standards-based Web Components that run in any browser supporting the Custom Elements v1 spec.
+- Put a script tag like this (with the correct version) `<script src="https://unpkg.com/hattrick-components@1.0.0/dist/hattrick-components.js"></script>` in the head of your index.html.
+- Then you can use the element anywhere in your template, JSX, html etc.
 
-Stencil components are just Web Components, so they work in any major framework or with no framework at all. 
+### Node Modules
+- Run `npm install hattrick-components --save`.
+- Put a script tag similar to this `<script src="node_modules/hattrick-components/dist/hattrick-components.js"></script>` in the head of your index.html.
+- Then you can use the element anywhere in your template, JSX, html etc.
+
+>If you're using these components in Angular, don't forget to add `schemas: [CUSTOM_ELEMENTS_SCHEMA]` to your `@NgModule`.
 
 
 ## Available components
 
-There are the currently available Hattrick Components. For more details, see the README.md in each respective component.
-
-### Avatar
-
-Used to display avatar in various styles by providing a JSON representation of the avatar parts.
-
-[more info](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/avatar/)
-
-### Bar
-
-Used to display various bars, e.g. skill bars or formation experiences (not to be mistaken with sliders!).
-
-[more info](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/bar/)
-
-### Flip
-
-Used to display an element with both a front and a back which you can toggle vertically or horizontally.
-
-[more info](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/flip/)
-
-### Progress-arc
-
-This is a Stencil fork of [angular-progress-arc](https://github.com/jesujcastillom/angular-progress-arc) (thanks to [jesujcastillom](https://github.com/jesujcastillom)), used to display circular progress meters, or in Hattrick used to display stamina.
-
-[more info](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/progress-arc/)
-
-### Rating
-
-Used to display a Hattrick rating. Uses [progress-arc](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/progress-arc/) to display stamina.
-
-[more info](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/rating/)
-
-### Timer
-
-A simple timer to display hh:mm:ss, optionally it can also start counting upwards if the deadline has passed, making it useful also as a match clock.
-
-[more info](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/timer/)
-
-### Tooltip
-
-Inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-charts) this provides a relatively customizable tooltip for custom mouseover titles that also supports HTML.
-
-[more info](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/tooltip/)
+These are the currently available Hattrick Components. For more details, see the readme.md in each respective component.
 
 
-## Using these components
+| **Component** | **Description** |
+| ------------- | ------------- |
+| [Avatar](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/avatar/) | Used to display avatar in various styles by providing a JSON representation of the avatar parts. |
+| [Bar](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/bar/) | Used to display various bars, e.g. skill bars or formation experiences (not to be mistaken with sliders!). |
+| [Flip](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/flip/) | Used to display an element with both a front and a back which you can toggle vertically or horizontally. |
+| [Progress-arc](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/progress-arc/) | Used to display circular progress meters, or in Hattrick used to display stamina. |
+| [Rating](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/rating/) | Used to display a Hattrick rating. Uses [progress-arc](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/progress-arc/) to display stamina. |
+| [Timer](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/timer/) | A simple timer to display hh:mm:ss, optionally it can also start counting upwards if the deadline has passed, making it useful also as a match clock. |
+| [Tooltip](https://gitlab.com/bodinaren/ht-components/tree/master/src/components/tooltip/) | Provides a relatively customizable tooltip for custom mouseover titles that also supports HTML. |
 
-### Script tag
 
-- Put a script tag like this (with the correct version) `<script src='https://unpkg.com/hattrick-components@1.0.0/dist/hattrick-components.js'></script>` in the head of your index.html
-- Then you can use the element anywhere in your template, JSX, html etc
+## Hattrick Components <3 Stencil
 
-### Node Modules
-- Run `npm install hattrick-components --save`
-- Put a script tag similar to this `<script src='node_modules/hattrick-components/dist/hattrick-components.js'></script>` in the head of your index.html
-- Then you can use the element anywhere in your template, JSX, html etc
+Hattrick Components is built using [Stencil](https://github.com/ionic-team/stencil).
 
-### In a stencil-starter app
-- Run `npm install hattrick-components --save`
-- Add an import to the npm packages `import hattrick-components;`
-- Then you can use the element anywhere in your template, JSX, html etc
+> Stencil is a compiler for building fast web apps using Web Components.
+>
+> Stencil combines the best concepts of the most popular frontend frameworks into a compile-time rather than run-time tool.  Stencil takes TypeScript, JSX, a tiny virtual DOM layer, efficient one-way data binding, an asynchronous rendering pipeline (similar to React Fiber), and lazy-loading out of the box, and generates 100% standards-based Web Components that run in any browser supporting the Custom Elements v1 spec.
+>
+> Stencil components are just Web Components, so they work in any major framework or with no framework at all. 
