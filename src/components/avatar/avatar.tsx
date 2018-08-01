@@ -78,7 +78,10 @@ export class Avatar extends LazyLoadedComponent {
       this.avatarSize.height = this.avatarSize.width;
     }
 
-    await (this.lazy) ? super.lazyLoad(this.host) : Promise.resolve();
+    await (this.lazy
+      ? super.lazyLoad(this.host)
+      : Promise.resolve()
+    );
 
     this.loadAvatar(this.parts, options);
   }

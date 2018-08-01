@@ -42,7 +42,9 @@ export class Bar extends LazyLoadedComponent {
         const _super = name => super[name];
         return __awaiter(this, void 0, void 0, function* () {
             this._hostStyle = window.getComputedStyle(this.host, null);
-            (yield (this.lazy)) ? _super("lazyLoad").call(this, this.host) : Promise.resolve();
+            yield (this.lazy
+                ? _super("lazyLoad").call(this, this.host)
+                : Promise.resolve());
             this.didLoad = true;
             this.setCalculations(false);
         });

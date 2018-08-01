@@ -62,7 +62,10 @@ export class Bar extends LazyLoadedComponent {
   async componentWillLoad() {
     this._hostStyle = window.getComputedStyle(this.host, null);
 
-    await (this.lazy) ? super.lazyLoad(this.host) : Promise.resolve();
+    await (this.lazy
+      ? super.lazyLoad(this.host)
+      : Promise.resolve()
+    );
 
     this.didLoad = true;
     this.setCalculations(false);
