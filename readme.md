@@ -65,15 +65,15 @@ Inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-charts) this p
 
 ### Script tag
 
-- Put a script tag like this (with the correct version) `<script src='https://unpkg.com/ht-components@1.0.0/dist/ht-components.js'></script>` in the head of your index.html
+- Put a script tag like this (with the correct version) `<script src='https://unpkg.com/hattrick-components@1.0.0/dist/hattrick-components.js'></script>` in the head of your index.html
 - Then you can use the element anywhere in your template, JSX, html etc
 
 ### Node Modules
-- Run `npm install ht-components --save`
-- Put a script tag similar to this `<script src='node_modules/ht-components/dist/ht-components.js'></script>` in the head of your index.html
+- Run `npm install hattrick-components --save`
+- Put a script tag similar to this `<script src='node_modules/hattrick-components/dist/hattrick-components.js'></script>` in the head of your index.html
 - Then you can use the element anywhere in your template, JSX, html etc
 
 ### In a stencil-starter app
-- Run `npm install ht-components --save`
-- Add an import to the npm packages `import ht-components;`
+- Run `npm install hattrick-components --save`
+- Add an import to the npm packages `import hattrick-components;`
 - Then you can use the element anywhere in your template, JSX, html etc

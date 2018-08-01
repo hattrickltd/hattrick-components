@@ -4,10 +4,19 @@ Used to display various bars, e.g. skill bars or formation experiences (not to b
 
 Terms for each part of a bar:
 ```
-Currently is at level 4, can reach (cap at) 6, but 8 is the potential max.
+Currently is at level 4, can reach (cap at) 6, but 8 is the max for this type of bar.
 |--------|----|----|
     ^      ^     ^
   level   cap   max
+```
+
+## Usage
+
+```html
+<ht-bar level="4"></ht-bar>
+<ht-bar level="4" max="10"></ht-bar>
+<ht-bar level="4" max="8" cap="6" is-cap="false" denomination="Weak" label="Defending"></ht-bar>
+<ht-bar level="6" max="8" cap="6" is-cap="true" denomination="Weak" label="Defending"></ht-bar>
 ```
 
 ## CSS variables

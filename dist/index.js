@@ -1,1 +1,1 @@
-// HtComponents: CommonJS Main
+// HattrickComponents: CommonJS Main

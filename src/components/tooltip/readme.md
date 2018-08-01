@@ -10,7 +10,12 @@ Inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-charts) this p
 </ht-tooltip>
 
 <ht-tooltip position="right" arrow="middle">
-  <any slot="content"><b>Use</b> <pre>slot="content"</pre> <i>for</i> <u>HTML</u></any>
+  <any slot="content">
+    <b>Use</b>
+    <pre>slot="content"</pre>
+    <i>for</i>
+    <u>HTML</u>
+  </any>
   <img src="random-image.png" alt="You still want an alt, but no title!" />
 </ht-tooltip>
 ```
@@ -55,7 +60,7 @@ Border radius of the tooltip.
 
 #### --tooltip-pointer-events: none;
 
-If you want to be able to select text in the tooltip, you can change the pointer-events which is disabled by default by setting for example: `--tooltip-pointer-events: all;`.
+If you want to be able to select text in the tooltip, you can change the pointer-events which is disabled by default by setting for example: `--tooltip-pointer-events: auto;`.
 
 #### --tooltip-delay: 0s;
 

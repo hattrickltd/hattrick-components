@@ -108,7 +108,9 @@ export class Timer {
 export function fixDate(date: Date | string | number): Date {
   if (!date) return new Date();
 
-  if (typeof date === "string") date = Date.parse(date.replace(/(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/, "$1T$2:$3"));
-  if (typeof date === "number") date = new Date(date);
-  return date;
+  if (Object.prototype.toString.call(date) === "[object Date]") return date as Date;
+  if (!isNaN(date as any)) return new Date(parseInt(date.toString()));
+  if (typeof date === "string") return new Date(date.replace(/(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/, "$1T$2:$3"));
+
+  return date as any;
 }

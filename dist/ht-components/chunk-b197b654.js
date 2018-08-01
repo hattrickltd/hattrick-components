@@ -1,2 +1,0 @@
-/*! Built with http://stenciljs.com */
-const{h:e}=window.HtComponents;class o{lazyLoad(e){return new Promise(o=>{"IntersectionObserver"in window?(this.removeLazyLoad(),this.io=new IntersectionObserver(e=>{e[0].isIntersecting&&(this.removeLazyLoad(),o())}),this.io.observe(e)):setTimeout(()=>o(),200)})}removeLazyLoad(){this.io&&(this.io.disconnect(),this.io=void 0)}}export{o as a};

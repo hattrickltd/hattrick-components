@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
   <title>(Debug) Hattrick Components</title>
-  <link href="/build/ht-components.css" rel="stylesheet" type="text/css" />
-  <script src="/build/ht-components.js"></script>
+  <link href="/build/hattrick-components.css" rel="stylesheet" type="text/css" />
+  <script src="/build/hattrick-components.js"></script>
 
   <style>
     body { font: 12px "Fira Sans", Verdana, Geneva, Tahoma, sans-serif; }
@@ -79,6 +79,18 @@
       border: 1px solid blue;
     }
     ht-flip div[slot] { background-color: #ff000066; }
+	
+    /* IE only (not Edge) */
+    /* @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      ht-flip {
+        width: 100px !important;
+        height: 100px !important;
+      }
+      ht-flip ht-avatar {
+        height: 93px !important;
+        width: 66px !important;
+      }
+    } */
   </style>
 
 </head>

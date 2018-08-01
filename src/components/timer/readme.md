@@ -3,6 +3,24 @@
 A simple timer to display hh:mm:ss, optionally it can also start counting upwards if the deadline has passed, making it useful also as a match clock.
 
 
+## Usage
+
+```html
+<ht-timer deadline="2018-08-01 12:00:00"></ht-timer>
+<ht-timer deadline="1533117600000"></ht-timer>
+<ht-timer deadline="2018-08-01 12:00:00" keep-counting="true"></ht-timer>
+<ht-timer deadline="2018-08-01 12:00:00" max-hours="72" days-text="days"></ht-timer>
+```
+```js
+const deadline = new Date("2018-08-01 12:00:00")
+const timer = document.createElement("ht-timer");
+timer.deadline = deadline; // as date
+timer.deadline = deadline.toISOString(); // as string
+timer.deadline = deadline.getTime(); // as number
+timer.deadline = deadline.getTime().toString(); // as numberic string
+```
+
+
 ## CSS variables
 
 This component doesn't have any CSS variables
@@ -22,7 +40,7 @@ The string for `days` which is used if the deadline is more than 72 hours away.
 
 #### deadline
 
-any
+Date|string|number
 
 At what time should the clock reach 00:00:00.
 
@@ -52,7 +70,7 @@ The string for `days` which is used if the deadline is more than 72 hours away.
 
 #### deadline
 
-any
+Date|string|number
 
 At what time should the clock reach 00:00:00.
 
