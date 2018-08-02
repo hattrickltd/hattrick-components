@@ -1,6 +1,6 @@
 # ht-rating
 
-Used to display a Hattrick rating. Uses [progress-arc]((../progress-arc/) to display stamina.
+Used to display a Hattrick rating. Uses [progress-arc](../progress-arc/) to display stamina.
 
 
 ## Usage
