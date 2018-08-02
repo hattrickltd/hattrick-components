@@ -26,14 +26,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/bodinaren/hattrick-components.git"
+    "url": "git+https://github.com/bodinaren/hattrick-components.git"
   },
   "author": "Marcus Bodin <bodinaren@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/bodinaren/hattrick-components/issues"
+    "url": "https://github.com/bodinaren/hattrick-components/issues"
   },
-  "homepage": "https://gitlab.com/bodinaren/hattrick-components",
+  "homepage": "https://github.com/bodinaren/hattrick-components",
   "jest": {
     "transform": {
       "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/@stencil/core/testing/jest.preprocessor.js"
