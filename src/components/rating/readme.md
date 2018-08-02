@@ -1,6 +1,6 @@
 # ht-rating
 
-Used to display a Hattrick rating. Uses [progress-arc]((https://github.com/bodinaren/ht-components/tree/master/src/components/progress-arc/) to display stamina.
+Used to display a Hattrick rating. Uses [progress-arc]((../progress-arc/) to display stamina.
 
 
 ## Usage

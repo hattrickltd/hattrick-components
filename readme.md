@@ -27,13 +27,13 @@ These are the currently available Hattrick Components. For more details on how t
 
 | **Component** | **Description** |
 | ------------- | ------------- |
-| [Avatar](https://github.com/bodinaren/ht-components/tree/master/src/components/avatar/) | Used to display avatar in various styles by providing a JSON representation of the avatar parts. |
-| [Bar](https://github.com/bodinaren/ht-components/tree/master/src/components/bar/) | Used to display various bars, e.g. skill bars or formation experiences (not to be mistaken with sliders!). |
-| [Flip](https://github.com/bodinaren/ht-components/tree/master/src/components/flip/) | Used to display an element with both a front and a back which you can toggle vertically or horizontally. |
-| [Progress-arc](https://github.com/bodinaren/ht-components/tree/master/src/components/progress-arc/) | Used to display circular progress meters, or in Hattrick used to display stamina. |
-| [Rating](https://github.com/bodinaren/ht-components/tree/master/src/components/rating/) | Used to display a Hattrick rating. Uses [progress-arc](https://github.com/bodinaren/ht-components/tree/master/src/components/progress-arc/) to display stamina. |
-| [Timer](https://github.com/bodinaren/ht-components/tree/master/src/components/timer/) | A simple timer to display hh:mm:ss, optionally it can also start counting upwards if the deadline has passed, making it useful also as a match clock. |
-| [Tooltip](https://github.com/bodinaren/ht-components/tree/master/src/components/tooltip/) | Provides a relatively customizable tooltip for custom mouseover titles that also supports HTML. |
+| [Avatar](src/components/avatar/) | Used to display avatar in various styles by providing a JSON representation of the avatar parts. |
+| [Bar](src/components/bar/) | Used to display various bars, e.g. skill bars or formation experiences (not to be mistaken with sliders!). |
+| [Flip](src/components/flip/) | Used to display an element with both a front and a back which you can toggle vertically or horizontally. |
+| [Progress-arc](src/components/progress-arc/) | Used to display circular progress meters, or in Hattrick used to display stamina. |
+| [Rating](src/components/rating/) | Used to display a Hattrick rating. Uses [progress-arc](src/components/progress-arc/) to display stamina. |
+| [Timer](src/components/timer/) | A simple timer to display hh:mm:ss, optionally it can also start counting upwards if the deadline has passed, making it useful also as a match clock. |
+| [Tooltip](src/components/tooltip/) | Provides a relatively customizable tooltip for custom mouseover titles that also supports HTML. |
 
 
 ## Hattrick Components <3 Stencil
