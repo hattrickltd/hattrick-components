@@ -1,5 +1,5 @@
 {
-  "name": "hattrick-components",
+  "name": "@hattrickltd/hattrick-components",
   "version": "0.0.1",
   "description": "Web components for Hattrick.org.",
   "module": "dist/esm/index.js",
@@ -46,5 +46,9 @@
       "json",
       "jsx"
     ]
-  }
+  },
+  "keywords": [
+    "hattrick",
+    "webcomponents"
+  ]
 }
