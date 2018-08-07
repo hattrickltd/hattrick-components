@@ -5,7 +5,7 @@ import { Component, Prop } from "@stencil/core";
   styleUrl: "rating.scss",
   shadow: true,
 })
-export class ProgressArc {
+export class Rating {
 
   // @Element() private host: HTMLElement;
 
