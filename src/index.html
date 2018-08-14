@@ -623,7 +623,7 @@
       </hattrick-flip>
       <hattrick-flip direction="x" onclick="toggleFlip(this)">
         <div slot="front">
-          <hattrick-avatar onload="avatarLoaded.call(this, event.detail)" base="http://localhost/htweb" parts='[{"url":"backgrounds/bg_blue_int.png","x":9,"y":10},{"url":"//res.hattrick.org/kits/17/167/1664/1663296/body12.png","x":9,"y":10},{"url":"faces/f4h.png","x":9,"y":10},{"url":"eyes/e34c.png","x":25,"y":16},{"url":"mouths/m5c.png","x":29,"y":66},{"url":"noses/n3.png","x":20,"y":27},{"url":"hair/f4h6f.png","x":9,"y":10}]'></hattrick-avatar>
+          <hattrick-avatar onload="avatarLoaded.call(this, event.detail)" base="https://www.hattrick.org" parts='[{"url":"backgrounds/bg_blue_int.png","x":9,"y":10},{"url":"//res.hattrick.org/kits/17/167/1664/1663296/body12.png","x":9,"y":10},{"url":"faces/f4h.png","x":9,"y":10},{"url":"eyes/e34c.png","x":25,"y":16},{"url":"mouths/m5c.png","x":29,"y":66},{"url":"noses/n3.png","x":20,"y":27},{"url":"hair/f4h6f.png","x":9,"y":10}]'></hattrick-avatar>
         </div>
         <div slot="back">
           <hattrick-rating size="large" rating="14.5" stamina="1"></hattrick-rating>
@@ -762,13 +762,13 @@
         // JSON.stringify a few to prove that works too.
 
         const avatar = document.createElement("hattrick-avatar");
-        avatar.base = "http://localhost/htweb"
+        avatar.base = "https://www.hattrick.org"
         avatar.parts = (idx % 5 === 0) ? JSON.stringify(avatarParts) : avatarParts;
         Object.assign(avatar, config);
         avatarHolder.appendChild(avatar);
         
         const smaller = document.createElement("hattrick-avatar");
-        smaller.base = "http://localhost/htweb"
+        smaller.base = "https://www.hattrick.org"
         smaller.parts = (idx % 3 === 0) ? JSON.stringify(avatarParts) : avatarParts;
         Object.assign(smaller, config);
         avatarHolderSmaller.appendChild(smaller);

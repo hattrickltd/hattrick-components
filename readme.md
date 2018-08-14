@@ -24,6 +24,8 @@ This project contains a bunch of web components that we use on [Hattrick.org](ht
 
 These are the currently available Hattrick Components. For more details on how to use each component, see the respective readme.md linked in the table below.
 
+>From NPM, first go to [Hattrick Components on GitHub](https://github.com/hattrickltd/hattrick-components#available-components) for correct links.
+
 
 | **Component** | **Description** |
 | ------------- | ------------- |
