@@ -1,4 +1,4 @@
-# ht-progress-arc
+# hattrick-progress-arc
 
 This is a Stencil fork of [angular-progress-arc](https://github.com/jesujcastillom/angular-progress-arc) (thanks to [jesujcastillom](https://github.com/jesujcastillom)), used to display circular progress meters, or in Hattrick used to display stamina.
 

@@ -1,4 +1,4 @@
-# ht-avatar
+# hattrick-avatar
 
 Displays an avatar from a JSON array of parts.
 
@@ -49,7 +49,7 @@ const avatarParts = [{
   { facecard: false, round: true },
   { facecard: false, round: true, background: false },
 ].forEach(function (config) {
-  const avatar = document.createElement("ht-avatar");
+  const avatar = document.createElement("hattrick-avatar");
   avatar.parts = avatarParts;
   Object.assign(avatar, config);
   avatarHolder.appendChild(avatar);

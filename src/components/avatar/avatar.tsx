@@ -5,7 +5,7 @@ const originalSize = { width: 92, height: 123 };
 const facecardSize = { width: 110, height: 155 };
 
 @Component({
-  tag: "ht-avatar",
+  tag: "hattrick-avatar",
   styleUrl: "avatar.scss",
   shadow: true,
 })
@@ -268,9 +268,9 @@ export class Avatar extends LazyLoadedComponent {
     return {
       "role": "img",
       "class": {
-        "ht-avatar-round": this.round,
-        "ht-avatar-square": this.square,
-        "ht-avatar-has-facecard": this.facecard,
+        "round": this.round,
+        "square": this.square,
+        "has-facecard": this.facecard,
       }
     };
   }

@@ -1,15 +1,15 @@
-# ht-tooltip
+# hattrick-tooltip
 
 With a design inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-charts) this provides a relatively customizable tooltip for custom mouseover titles that also supports HTML.
 
 ## Usage
 
 ```html
-<ht-tooltip position="right" arrow="middle" content="Here's pure text tooltip">
+<hattrick-tooltip position="right" arrow="middle" content="Here's pure text tooltip">
   Mouseover me for a tooltip!
-</ht-tooltip>
+</hattrick-tooltip>
 
-<ht-tooltip position="right" arrow="middle">
+<hattrick-tooltip position="right" arrow="middle">
   <any slot="content">
     <b>Use</b>
     <pre>slot="content"</pre>
@@ -17,7 +17,7 @@ With a design inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-
     <u>HTML</u>
   </any>
   <img src="random-image.png" alt="You still want an alt, but no title!" />
-</ht-tooltip>
+</hattrick-tooltip>
 ```
 
 ## CSS variables

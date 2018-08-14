@@ -1,7 +1,7 @@
 import { Component, Prop, Listen, State, Element } from "@stencil/core";
 
 @Component({
-  tag: "ht-tooltip",
+  tag: "hattrick-tooltip",
   styleUrl: "tooltip.scss",
   shadow: true,
 })

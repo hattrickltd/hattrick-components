@@ -1,4 +1,4 @@
-# ht-bar
+# hattrick-bar
 
 Used to display various bars, e.g. skill bars or formation experiences (not to be mistaken with sliders!).
 
@@ -13,10 +13,10 @@ Currently is at level 4, can reach (cap at) 6, but 8 is the max for this type of
 ## Usage
 
 ```html
-<ht-bar level="4"></ht-bar>
-<ht-bar level="4" max="10"></ht-bar>
-<ht-bar level="4" max="8" cap="6" is-cap="false" denomination="Weak" label="Defending"></ht-bar>
-<ht-bar level="6" max="8" cap="6" is-cap="true" denomination="Weak" label="Defending"></ht-bar>
+<hattrick-bar level="4"></hattrick-bar>
+<hattrick-bar level="4" max="10"></hattrick-bar>
+<hattrick-bar level="4" max="8" cap="6" is-cap="false" denomination="Weak" label="Defending"></hattrick-bar>
+<hattrick-bar level="6" max="8" cap="6" is-cap="true" denomination="Weak" label="Defending"></hattrick-bar>
 ```
 
 ## CSS variables

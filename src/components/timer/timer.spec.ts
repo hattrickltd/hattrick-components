@@ -16,7 +16,7 @@ describe("Timer", () => {
   //   beforeEach(async () => {
   //     element = await render({
   //       components: [Timer],
-  //       html: '<ht-timer></ht-timer>'
+  //       html: '<hattrick-timer></hattrick-timer>'
   //     });
   //     // element = await render();
   //   });
@@ -43,7 +43,7 @@ describe("Timer", () => {
       window = new TestWindow();
       element = await window.load({
         components: [Timer],
-        html: "<ht-timer></ht-timer>"
+        html: "<hattrick-timer></hattrick-timer>"
       });
     });
 
@@ -128,7 +128,7 @@ describe("Timer", () => {
 
       await window.flush();
 
-      expect(element.classList.contains("ht-timer-finished")).toBeTruthy();
+      expect(element.classList.contains("hattrick-timer-finished")).toBeTruthy();
     });
 
     it("should not have finished class when reaching zero if we'll keep counting", async() => {
@@ -137,7 +137,7 @@ describe("Timer", () => {
 
       await window.flush();
 
-      expect(element.classList.contains("ht-timer-finished")).toBeFalsy();
+      expect(element.classList.contains("hattrick-timer-finished")).toBeFalsy();
     });
 
     it("should not have finished class when reaching zero if we'll keep counting", async() => {
@@ -146,7 +146,7 @@ describe("Timer", () => {
 
       await window.flush();
 
-      expect(element.classList.contains("ht-timer-passed-zero")).toBeTruthy();
+      expect(element.classList.contains("hattrick-timer-passed-zero")).toBeTruthy();
     });
 
     it("should tick after one second", async (done) => {
@@ -160,7 +160,7 @@ describe("Timer", () => {
         await window.flush();
 
         expect(element.textContent).toBe("00:00:00");
-        expect(element.classList.contains("ht-timer-finished")).toBeTruthy();
+        expect(element.classList.contains("hattrick-timer-finished")).toBeTruthy();
 
         done();
       }, 1000);

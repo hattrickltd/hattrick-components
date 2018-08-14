@@ -1,4 +1,4 @@
-# ht-timer
+# hattrick-timer
 
 A simple timer to display hh:mm:ss, optionally it can also start counting upwards if the deadline has passed, making it useful also as a match clock.
 
@@ -6,14 +6,14 @@ A simple timer to display hh:mm:ss, optionally it can also start counting upward
 ## Usage
 
 ```html
-<ht-timer deadline="2018-08-01 12:00:00"></ht-timer>
-<ht-timer deadline="1533117600000"></ht-timer>
-<ht-timer deadline="2018-08-01 12:00:00" keep-counting="true"></ht-timer>
-<ht-timer deadline="2018-08-01 12:00:00" max-hours="72" days-text="days"></ht-timer>
+<hattrick-timer deadline="2018-08-01 12:00:00"></hattrick-timer>
+<hattrick-timer deadline="1533117600000"></hattrick-timer>
+<hattrick-timer deadline="2018-08-01 12:00:00" keep-counting="true"></hattrick-timer>
+<hattrick-timer deadline="2018-08-01 12:00:00" max-hours="72" days-text="days"></hattrick-timer>
 ```
 ```js
 const deadline = new Date("2018-08-01 12:00:00")
-const timer = document.createElement("ht-timer");
+const timer = document.createElement("hattrick-timer");
 timer.deadline = deadline; // as date
 timer.deadline = deadline.toISOString(); // as string
 timer.deadline = deadline.getTime(); // as number

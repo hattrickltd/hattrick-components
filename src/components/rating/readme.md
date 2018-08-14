@@ -1,15 +1,15 @@
-# ht-rating
+# hattrick-rating
 
 Used to display a Hattrick rating. Uses [progress-arc](../progress-arc/) to display stamina.
 
 
 ## Usage
 ```html
-<ht-rating size="large" rating="14.5" stamina="0.8"></ht-rating>
-<ht-rating size="small" rating="14.5" stamina="0.6"></ht-rating>
+<hattrick-rating size="large" rating="14.5" stamina="0.8"></hattrick-rating>
+<hattrick-rating size="small" rating="14.5" stamina="0.6"></hattrick-rating>
 
-<ht-rating size="44" rating="14.5" stamina="0.4"></ht-rating>
-<ht-rating size="29" rating="14.5" stamina="0.2"></ht-rating>
+<hattrick-rating size="44" rating="14.5" stamina="0.4"></hattrick-rating>
+<hattrick-rating size="29" rating="14.5" stamina="0.2"></hattrick-rating>
 ```
 
 ## CSS Variables

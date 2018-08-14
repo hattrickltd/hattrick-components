@@ -1,18 +1,18 @@
-# ht-flip
+# hattrick-flip
 
 Used to display an element with both a front and a back which you can toggle vertically or horizontally.
 
 ## Usage
 
 ```html
-<ht-flip direction="x" id="flip">
+<hattrick-flip direction="x" id="flip">
   <div slot="front">
     This is the front
   </div>
   <div slot="back">
     This is on the back and not visible unless flipped.
   </div>
-</ht-flip>
+</hattrick-flip>
 ```
 
 ```js

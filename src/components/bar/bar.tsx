@@ -2,7 +2,7 @@ import { Component, Element, Prop, State } from "@stencil/core";
 import { LazyLoadedComponent } from "../../global/lazy-loaded-component";
 
 @Component({
-  tag: "ht-bar",
+  tag: "hattrick-bar",
   styleUrl: "bar.scss",
   shadow: true,
 })
@@ -10,7 +10,7 @@ export class Bar extends LazyLoadedComponent {
   /** The styling of the host. Used to calculate text widths. */
   private _hostStyle: CSSStyleDeclaration;
 
-  /** The host (outer) element. E.g. <ht-bar> */
+  /** The host (outer) element. E.g. <hattrick-bar> */
   @Element() private host: HTMLStencilElement;
 
   /** The level of the bar. */

@@ -1,7 +1,7 @@
 import { Component, Prop } from "@stencil/core";
 
 @Component({
-  tag: "ht-rating",
+  tag: "hattrick-rating",
   styleUrl: "rating.scss",
   shadow: true,
 })
@@ -62,7 +62,7 @@ export class ProgressArc {
           <span class="rating-half">.5</span>
         }
       </span>,
-      <ht-progress-arc size={ (this.size as number) } complete={ this.stamina } class={ this.progressClass }></ht-progress-arc>
+      <hattrick-progress-arc size={ (this.size as number) } complete={ this.stamina } class={ this.progressClass }></hattrick-progress-arc>
     ]);
   }
 }

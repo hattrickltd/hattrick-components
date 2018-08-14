@@ -1,7 +1,7 @@
 import { Component, Prop } from "@stencil/core";
 
 @Component({
-  tag: "ht-flip",
+  tag: "hattrick-flip",
   styleUrl: "flip.scss",
   shadow: true,
 })

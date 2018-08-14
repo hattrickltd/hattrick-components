@@ -1,7 +1,7 @@
 import { Component, Prop, State, Watch } from "@stencil/core";
 
 @Component({
-  tag: "ht-timer",
+  tag: "hattrick-timer",
   styleUrl: "timer.scss",
   shadow: true,
 })
@@ -90,8 +90,8 @@ export class Timer {
     return {
       "role": "timer",
       "class": {
-        "ht-timer-passed-zero": this.keepCounting && this.seconds < 0,
-        "ht-timer-finished": !this.keepCounting && this.seconds <= 0,
+        "timer-passed-zero": this.keepCounting && this.seconds < 0,
+        "timer-finished": !this.keepCounting && this.seconds <= 0,
       }
     };
   }

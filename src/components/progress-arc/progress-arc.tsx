@@ -1,7 +1,7 @@
 import { Component, Prop, Watch } from "@stencil/core";
 
 @Component({
-  tag: "ht-progress-arc",
+  tag: "hattrick-progress-arc",
   styleUrl: "progress-arc.scss",
   shadow: true,
 })
