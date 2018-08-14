@@ -53,7 +53,21 @@ export class Avatar extends LazyLoadedComponent {
    */
   private pendingImages: Array<HTMLImageElement> = [];
 
-  @Event() load: EventEmitter<Array<IAvatarImage>>;
+  /**
+   * Let you know when the avatar has finished loading.
+   * An array of the images loaded will be provided in the `event.detail`.
+   * Real type is `EventEmitter<Array<IAvatarImage>>`, but for TypeScript < 2.7 it needs to be generic.
+   *
+   * @example
+   * ```
+   * <hattrick-avatar onload="avatarLoaded.call(this, event.detail)"></ht-avatar>
+   *
+   * avatarLoaded(images) {
+   *   console.log("dataUrl: ", this.printToCanvas(images).toDataURL());
+   * }
+   * ```
+   */
+  @Event() load: EventEmitter;
 
   componentDidLoad() {
     this.updateAvatar();
