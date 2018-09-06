@@ -21,7 +21,7 @@ Currently is at level 4, can reach (cap at) 6, but 8 is the max for this type of
 
 ## CSS variables
 
-#### --bar-level-background: #A9A9A9;
+#### --bar-level-background: #59965D;
 
 The background color of the bar representing the level
 

@@ -20,26 +20,26 @@ td {
 }
 
 td.bar-level {
-  background-color: var(--bar-level-background, #A9A9A9);
+  background-color: var(--bar-level-background, #59965D);
   color: var(--bar-max-background, #ECECEC);
   position: relative;
   text-align: start;
 }
 td.bar-level.maxed {
   background-color: var(--bar-capped-background, #FFEB99);
-  color: var(--bar-level-background, #A9A9A9);
+  color: var(--bar-level-background, #59965D);
 }
 
 td.bar-cap {
   background-color: var(--bar-cap-background, #CACACA);
-  color: var(--bar-max-background, #ECECEC);
+  color: var(--bar-level-background, #59965D);
   text-align: start;
 }
 
 
 td.bar-max {
   background-color: var(--bar-max-background, #ECECEC);
-  color: var(--bar-level-background, #A9A9A9);
+  color: var(--bar-level-background, #59965D);
 }
 
 .title {
@@ -73,9 +73,9 @@ td.bar-level .number {
 }
 
 .level-text-dont-fit {
-  .bar-cap { color: var(--bar-max-background, #ECECEC); }
+  .bar-cap { color: var(--bar-level-background, #59965D); }
   .bar-max { color: var(--bar-cap-background, #CACACA); }
-  &.has-cap-bar.bar-max { color: var(--bar-level-background, #A9A9A9); }
+  &.has-cap-bar.bar-max { color: var(--bar-level-background, #59965D); }
 
   .number {
     position: absolute;

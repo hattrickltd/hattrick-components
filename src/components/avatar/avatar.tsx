@@ -1,5 +1,6 @@
 import { Component, Element, Prop, State, Watch, Event, EventEmitter, Method } from "@stencil/core";
-import { LazyLoadedComponent } from "../../global/lazy-loaded-component";
+import { waitForIntersection } from "../../global/lazy-loading";
+import { IAvatarPart, IAvatarImage } from "./avatar.interfaces";
 
 const originalSize = { width: 92, height: 123 };
 const facecardSize = { width: 110, height: 155 };
@@ -9,7 +10,7 @@ const facecardSize = { width: 110, height: 155 };
   styleUrl: "avatar.scss",
   shadow: true,
 })
-export class Avatar extends LazyLoadedComponent {
+export class Avatar {
 
   @Element() private host: HTMLStencilElement;
 
@@ -93,7 +94,7 @@ export class Avatar extends LazyLoadedComponent {
     }
 
     await (this.lazy
-      ? super.lazyLoad(this.host)
+      ? waitForIntersection(this.host)
       : Promise.resolve()
     );
 
@@ -303,18 +304,6 @@ export class Avatar extends LazyLoadedComponent {
       </div>
     );
   }
-}
-
-export interface IAvatarPart {
-  url: string;
-  x: number;
-  y: number;
-}
-
-export interface IAvatarImage {
-  img: HTMLImageElement;
-  x: number;
-  y: number;
 }
 
 interface IAvatarOptions {

@@ -1,12 +1,12 @@
 import { Component, Element, Prop, State } from "@stencil/core";
-import { LazyLoadedComponent } from "../../global/lazy-loaded-component";
+import { waitForIntersection } from "../../global/lazy-loading";
 
 @Component({
   tag: "hattrick-bar",
   styleUrl: "bar.scss",
   shadow: true,
 })
-export class Bar extends LazyLoadedComponent {
+export class Bar {
   /** The styling of the host. Used to calculate text widths. */
   private _hostStyle: CSSStyleDeclaration;
 
@@ -26,8 +26,6 @@ export class Bar extends LazyLoadedComponent {
   @Prop() label: string = "";
   /** The denomination of the skill level */
   @Prop({ reflectToAttr: true }) denomination: string = "";
-
-  @Prop() hideContent: boolean = false;
 
   /** Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport */
   @Prop() lazy?: boolean = true;
@@ -63,7 +61,7 @@ export class Bar extends LazyLoadedComponent {
     this._hostStyle = window.getComputedStyle(this.host, null);
 
     await (this.lazy
-      ? super.lazyLoad(this.host)
+      ? waitForIntersection(this.host)
       : Promise.resolve()
     );
 
@@ -83,13 +81,10 @@ export class Bar extends LazyLoadedComponent {
   }
 
   private setCalculations(didLoad = true): void {
-    // WARNING! The order these calculations are called is very important.
-    // That's why we check `!this.hideContent` twice!
-
     this.skillWidth = this.getSkillWidth();
     this.capWidth = this.getCapWidth();
 
-    if (!this.hideContent) {
+    if (this.label) {
       this.levelText = this.getLevelText();
       this.labelTextWidth = getTextWidth(this.label, this._hostStyle.font);
       this.levelTextWidth = getTextWidth(this.levelText, this._hostStyle.font);

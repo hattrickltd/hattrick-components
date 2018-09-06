@@ -1,7 +1,7 @@
 :root {
   /* --app-primary-color: #59965d; */
 
-  --bar-level-background: #A9A9A9;
+  --bar-level-background: #59965D;
   --bar-cap-background: #CACACA;
   --bar-max-background: #ECECEC;
   --bar-capped-background: #FFEB99;
@@ -26,7 +26,7 @@
 
   --tooltip-background: rgba(0, 0, 0, .75);
   --tooltip-color: white;
-  --tooltip-font-size: 12px;
+  --tooltip-font-size: 1rem;
   --tooltip-border: 0;
   --tooltip-padding: 5px 10px;
   --tooltip-box-shadow: none;

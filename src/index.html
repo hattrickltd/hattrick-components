@@ -8,7 +8,7 @@
   <script src="/build/hattrick-components.js"></script>
 
   <style>
-    body { font: 12px "Fira Sans", Verdana, Geneva, Tahoma, sans-serif; }
+    html { font: 12px "Fira Sans", Verdana, Geneva, Tahoma, sans-serif; }
 
     h3 { cursor: pointer; }
     h3:after { content: ' [\00b1]' }
@@ -33,7 +33,7 @@
     hattrick-progress-arc.low { --progress-arc-color: #F5A104; }
     hattrick-progress-arc.high { --progress-arc-color: #F1C40A; }
     hattrick-progress-arc.veryhigh { --progress-arc-color: #31A94B; }
-    .add-fill-color hattrick-progress-arc { --progress-arc-rest-color: #000000; }
+    .add-fill-color hattrick-progress-arc { --progress-arc-rest-color: #CCCCCC; }
 
     div[ratings] div { line-height: 1.3em; }
     hattrick-rating { font-size: 11px; }
@@ -617,6 +617,7 @@
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
     <div examples>
+      <p>Click in the boxes below to flip their content.</p>
       <hattrick-flip direction="x" onclick="toggleFlip(this)">
         <div slot="front">Front</div>
         <div slot="back">Back</div>
@@ -699,7 +700,6 @@
         let bar = document.createElement("hattrick-bar");
         bar.level = i;
         bar.max = 20;
-        bar.hideContent = true;
         holder1.appendChild(bar);
       }
       

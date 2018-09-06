@@ -105,7 +105,7 @@ export class Timer {
   }
 }
 
-export function fixDate(date: Date | string | number): Date {
+function fixDate(date: Date | string | number): Date {
   if (!date) return new Date();
 
   if (Object.prototype.toString.call(date) === "[object Date]") return date as Date;
