@@ -1,6 +1,6 @@
 {
   "name": "@hattrickltd/hattrick-components",
-  "version": "0.0.6",
+  "version": "0.0.12",
   "description": "Web components for Hattrick.org.",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
@@ -26,14 +26,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bodinaren/hattrick-components.git"
+    "url": "git+https://github.com/hattrickltd/hattrick-components.git"
   },
-  "author": "Marcus Bodin <bodinaren@gmail.com>",
+  "author": "Marcus Bodin <marcus@hattrick.org>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bodinaren/hattrick-components/issues"
+    "url": "https://github.com/hattrickltd/hattrick-components/issues"
   },
-  "homepage": "https://github.com/bodinaren/hattrick-components",
+  "homepage": "https://github.com/hattrickltd/hattrick-components",
   "jest": {
     "transform": {
       "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/@stencil/core/testing/jest.preprocessor.js"
