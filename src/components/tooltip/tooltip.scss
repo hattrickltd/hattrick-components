@@ -116,8 +116,8 @@
 
 :host([position="top"]) {
   #tooltip {
-    margin-bottom: calc(var(--tooltip-arrow-size, 7px) + 3px);
-    &[hidden] { margin-bottom: calc(var(--tooltip-arrow-size, 7px) + 10px); }
+    margin-bottom: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px);
+    &[hidden] { margin-bottom: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 10px); }
     &:before {
       top: 100%;
       border-top-color: var(--tooltip-border-color, var(--tooltip-background, transparent));
@@ -126,8 +126,8 @@
 }
 :host([position="bottom"]) {
   #tooltip {
-    margin-top: calc(var(--tooltip-arrow-size, 7px) + 3px);
-    &[hidden] { margin-top: calc(var(--tooltip-arrow-size, 7px) + 10px); }
+    margin-top: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px);
+    &[hidden] { margin-top: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 10px); }
     &:before {
       bottom: 100%;
       border-bottom-color: var(--tooltip-border-color, var(--tooltip-background, rgba(0, 0, 0, .75)));
@@ -136,8 +136,8 @@
 }
 :host([position="start"][dir="ltr"]) {
   #tooltip {
-    margin-right: calc(var(--tooltip-arrow-size, 7px) + 3px);
-    &[hidden] { margin-right: calc(var(--tooltip-arrow-size, 7px) + 3px + 10px); }
+    margin-right: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px);
+    &[hidden] { margin-right: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px + 10px); }
     &:before {
       left: 100%;
       border-left-color: var(--tooltip-border-color, var(--tooltip-background, rgba(0, 0, 0, .75)));
@@ -146,8 +146,8 @@
 }
 :host([position="start"][dir="rtl"]) {
   #tooltip {
-    margin-left: calc(var(--tooltip-arrow-size, 7px) + 3px);
-    &[hidden] { margin-left: calc(var(--tooltip-arrow-size, 7px) + 3px + 10px); }
+    margin-left: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px);
+    &[hidden] { margin-left: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px + 10px); }
     &:before {
       right: 100%;
       border-right-color: var(--tooltip-border-color, var(--tooltip-background, rgba(0, 0, 0, .75)));
@@ -157,8 +157,8 @@
 
 :host([position="end"][dir="ltr"]) {
   #tooltip {
-    margin-left: calc(var(--tooltip-arrow-size, 7px) + 3px);
-    &[hidden] { margin-left: calc(var(--tooltip-arrow-size, 7px) + 3px + 10px); }
+    margin-left: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px);
+    &[hidden] { margin-left: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px + 10px); }
     &:before {
       right: 100%;
       border-right-color: var(--tooltip-border-color, var(--tooltip-background, rgba(0, 0, 0, .75)));
@@ -167,8 +167,8 @@
 }
 :host([position="end"][dir="rtl"]) {
   #tooltip {
-    margin-right: calc(var(--tooltip-arrow-size, 7px) + 3px);
-    &[hidden] { margin-right: calc(var(--tooltip-arrow-size, 7px) + 3px + 10px); }
+    margin-right: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px);
+    &[hidden] { margin-right: calc(var(--tooltip-arrow-size, 7px) + var(--tooltip-offset, 0px) + 3px + 10px); }
     &:before {
       left: 100%;
       border-left-color: var(--tooltip-border-color, var(--tooltip-background, rgba(0, 0, 0, .75)));
