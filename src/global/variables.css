@@ -35,7 +35,7 @@
   --tooltip-border-radius: 3px;
   --tooltip-pointer-events: none;
   --tooltip-delay: 0s;
-  --tooltip-offset: 0;
+  --tooltip-offset: 0px;
 
   --flip-height: auto;
   --flip-width: auto;
