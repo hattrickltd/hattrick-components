@@ -264,7 +264,7 @@ export class Avatar {
   }
 
   @Method()
-  printToCanvas(images?: Array<IAvatarImage>): HTMLCanvasElement {
+  async printToCanvas(images?: Array<IAvatarImage>): Promise<HTMLCanvasElement> {
 
     let canvas = document.createElement("canvas");
     let context = canvas.getContext("2d");

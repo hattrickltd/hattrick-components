@@ -18,11 +18,12 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "0.12.4",
+    "@stencil/core": "^0.13.0-4",
     "@stencil/sass": "0.1.0",
     "@types/jest": "^23.3.1",
     "jest": "^23.5.0",
-    "tslint": "^5.11.0"
+    "tslint": "^5.11.0",
+    "workbox-build": "3.4.1"
   },
   "repository": {
     "type": "git",

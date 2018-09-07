@@ -19,7 +19,7 @@ export namespace Components {
     /**
     * Set whether or not the background should be shown.
     */
-    'background': boolean;
+    'background'?: boolean;
     /**
     * the base route to the avatars, can be either a relative or absolute url
     */
@@ -27,28 +27,28 @@ export namespace Components {
     /**
     * Set whether or not the surrounding card should be shown.
     */
-    'facecard': boolean;
+    'facecard'?: boolean;
     /**
     * Set this to false to remove the bandages on injured and bruised players.
     */
-    'injury': boolean;
+    'injury'?: boolean;
     /**
     * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport
     */
-    'lazy': boolean;
+    'lazy'?: boolean;
     /**
     * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
     */
     'parts': IAvatarPart[] | number | string;
-    'printToCanvas': (images?: IAvatarImage[]) => HTMLCanvasElement;
+    'printToCanvas': (images?: IAvatarImage[]) => Promise<HTMLCanvasElement>;
     /**
     * Set to true to generate a circular avatar by cutting off the bottom.
     */
-    'round': boolean;
+    'round'?: boolean;
     /**
     * Set to true to generate a square avatar by cutting off the bottom.
     */
-    'square': boolean;
+    'square'?: boolean;
   }
   interface HattrickAvatarAttributes extends StencilHTMLAttributes {
     /**
@@ -109,7 +109,7 @@ export namespace Components {
     /**
     * Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport
     */
-    'lazy': boolean;
+    'lazy'?: boolean;
     /**
     * The level of the bar.
     */
