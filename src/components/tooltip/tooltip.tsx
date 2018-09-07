@@ -1,4 +1,4 @@
-import { Component, Prop, Listen, State, Element } from "@stencil/core";
+import { Component, Prop, Listen, State, Element, Method } from "@stencil/core";
 
 @Component({
   tag: "hattrick-tooltip",
@@ -60,15 +60,16 @@ export class Tooltip {
 
   @Listen("mouseover")
   @Listen("focus", { capture: true })
-  onMouseOver(ev: MouseEvent) {
-    //console.debug("onMouseOver", ev);
+  @Method()
+  async open(ev?: MouseEvent) {
     this.calculatePosition(ev);
     this.showTooltip = true;
   }
 
   @Listen("mouseleave")
   @Listen("blur", { capture: true })
-  onMouseLeave() {
+  @Method()
+  async close() {
     this.showTooltip = false;
   }
 

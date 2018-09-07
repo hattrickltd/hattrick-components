@@ -275,11 +275,13 @@ export namespace Components {
     * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
     */
     'arrow': "start" | "middle" | "end" | "none";
+    'close': () => Promise<void>;
     /**
     * The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.
     */
     'content': string;
     'dir': string;
+    'open': (ev?: MouseEvent) => Promise<void>;
     /**
     * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
     */
