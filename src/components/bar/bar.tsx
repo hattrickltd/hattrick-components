@@ -9,6 +9,7 @@ import { waitForIntersection } from "../../global/lazy-loading";
 export class Bar {
   /** The styling of the host. Used to calculate text widths. */
   private _hostStyle: CSSStyleDeclaration;
+  private _hostStyleFont: string;
 
   /** The host (outer) element. E.g. <hattrick-bar> */
   @Element() private host: HTMLStencilElement;
@@ -59,6 +60,7 @@ export class Bar {
 
   async componentWillLoad() {
     this._hostStyle = window.getComputedStyle(this.host, null);
+    this._hostStyleFont = getShorthandFont(this._hostStyle);
 
     await (this.lazy
       ? waitForIntersection(this.host)
@@ -86,8 +88,8 @@ export class Bar {
 
     if (this.label) {
       this.levelText = this.getLevelText();
-      this.labelTextWidth = getTextWidth(this.label, this._hostStyle.font);
-      this.levelTextWidth = getTextWidth(this.levelText, this._hostStyle.font);
+      this.labelTextWidth = getTextWidth(this.label, this._hostStyleFont);
+      this.levelTextWidth = getTextWidth(this.levelText, this._hostStyleFont);
 
       if (didLoad) {
         if (this.denomination) {
@@ -275,6 +277,11 @@ function getTextWidth(text: string, font: string): number {
   context.font = font;
   const metrics = context.measureText(text);
   return metrics.width;
+}
+
+function getShorthandFont(hostStyle: CSSStyleDeclaration): string {
+  let hs = hostStyle;
+  return `${hs.fontStyle} ${hs.fontVariant} ${hs.fontWeight} ${hs.fontStretch} ${hs.fontSize} ${hs.lineHeight} ${hs.fontFamily}`;
 }
 
 enum BarPart {
