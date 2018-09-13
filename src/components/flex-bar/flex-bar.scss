@@ -1,0 +1,28 @@
+$denominationPosition: 85px;
+
+:host {
+  display: flex;
+  font-size: 1em;
+  line-height: 1em;
+  height: calc(1em + 0.25em);
+}
+
+.bar-level {
+  background-color: var(--bar-level-background, #59965D);
+  color: var(--bar-max-background, #ECECEC);
+}
+.bar-level.maxed {
+  background-color: var(--bar-capped-background, #FFEB99);
+  color: var(--bar-level-background, #59965D);
+}
+
+.bar-cap {
+  background-color: var(--bar-cap-background, #CACACA);
+  color: var(--bar-level-background, #59965D);
+}
+
+.bar-max {
+  flex-grow: 1;
+  background-color: var(--bar-max-background, #ECECEC);
+  color: var(--bar-level-background, #59965D);
+}

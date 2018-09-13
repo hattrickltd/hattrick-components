@@ -150,6 +150,51 @@ export namespace Components {
     'max'?: number;
   }
 
+  interface FlexBar {
+    /**
+    * If there's a max before the end of the bar (e.g. maxed youth skill).
+    */
+    'cap': number;
+    /**
+    * If the sublevel is the same as the levelCap.
+    */
+    'isCap': boolean;
+    /**
+    * Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport
+    */
+    'lazy': boolean;
+    /**
+    * The level of the bar.
+    */
+    'level': number;
+    /**
+    * The maximum level the bar should show.
+    */
+    'max': number;
+  }
+  interface FlexBarAttributes extends StencilHTMLAttributes {
+    /**
+    * If there's a max before the end of the bar (e.g. maxed youth skill).
+    */
+    'cap'?: number;
+    /**
+    * If the sublevel is the same as the levelCap.
+    */
+    'isCap'?: boolean;
+    /**
+    * Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport
+    */
+    'lazy'?: boolean;
+    /**
+    * The level of the bar.
+    */
+    'level'?: number;
+    /**
+    * The maximum level the bar should show.
+    */
+    'max'?: number;
+  }
+
   interface HattrickFlip {
     'direction': "x" | "y";
     'flipped': boolean;
@@ -233,6 +278,51 @@ export namespace Components {
     'staminaLabel'?: string;
   }
 
+  interface SimpleBar {
+    /**
+    * If there's a max before the end of the bar (e.g. maxed youth skill).
+    */
+    'cap': number;
+    /**
+    * If the sublevel is the same as the levelCap.
+    */
+    'isCap': boolean;
+    /**
+    * Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport
+    */
+    'lazy': boolean;
+    /**
+    * The level of the bar.
+    */
+    'level': number;
+    /**
+    * The maximum level the bar should show.
+    */
+    'max': number;
+  }
+  interface SimpleBarAttributes extends StencilHTMLAttributes {
+    /**
+    * If there's a max before the end of the bar (e.g. maxed youth skill).
+    */
+    'cap'?: number;
+    /**
+    * If the sublevel is the same as the levelCap.
+    */
+    'isCap'?: boolean;
+    /**
+    * Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport
+    */
+    'lazy'?: boolean;
+    /**
+    * The level of the bar.
+    */
+    'level'?: number;
+    /**
+    * The maximum level the bar should show.
+    */
+    'max'?: number;
+  }
+
   interface HattrickTimer {
     /**
     * The string for `days` which is used if the deadline is more than 72 hours away.
@@ -306,9 +396,11 @@ declare global {
   interface StencilElementInterfaces {
     'HattrickAvatar': Components.HattrickAvatar;
     'HattrickBar': Components.HattrickBar;
+    'FlexBar': Components.FlexBar;
     'HattrickFlip': Components.HattrickFlip;
     'HattrickProgressArc': Components.HattrickProgressArc;
     'HattrickRating': Components.HattrickRating;
+    'SimpleBar': Components.SimpleBar;
     'HattrickTimer': Components.HattrickTimer;
     'HattrickTooltip': Components.HattrickTooltip;
   }
@@ -316,9 +408,11 @@ declare global {
   interface StencilIntrinsicElements {
     'hattrick-avatar': Components.HattrickAvatarAttributes;
     'hattrick-bar': Components.HattrickBarAttributes;
+    'flex-bar': Components.FlexBarAttributes;
     'hattrick-flip': Components.HattrickFlipAttributes;
     'hattrick-progress-arc': Components.HattrickProgressArcAttributes;
     'hattrick-rating': Components.HattrickRatingAttributes;
+    'simple-bar': Components.SimpleBarAttributes;
     'hattrick-timer': Components.HattrickTimerAttributes;
     'hattrick-tooltip': Components.HattrickTooltipAttributes;
   }
@@ -334,6 +428,12 @@ declare global {
   var HTMLHattrickBarElement: {
     prototype: HTMLHattrickBarElement;
     new (): HTMLHattrickBarElement;
+  };
+
+  interface HTMLFlexBarElement extends Components.FlexBar, HTMLStencilElement {}
+  var HTMLFlexBarElement: {
+    prototype: HTMLFlexBarElement;
+    new (): HTMLFlexBarElement;
   };
 
   interface HTMLHattrickFlipElement extends Components.HattrickFlip, HTMLStencilElement {}
@@ -354,6 +454,12 @@ declare global {
     new (): HTMLHattrickRatingElement;
   };
 
+  interface HTMLSimpleBarElement extends Components.SimpleBar, HTMLStencilElement {}
+  var HTMLSimpleBarElement: {
+    prototype: HTMLSimpleBarElement;
+    new (): HTMLSimpleBarElement;
+  };
+
   interface HTMLHattrickTimerElement extends Components.HattrickTimer, HTMLStencilElement {}
   var HTMLHattrickTimerElement: {
     prototype: HTMLHattrickTimerElement;
@@ -369,9 +475,11 @@ declare global {
   interface HTMLElementTagNameMap {
     'hattrick-avatar': HTMLHattrickAvatarElement
     'hattrick-bar': HTMLHattrickBarElement
+    'flex-bar': HTMLFlexBarElement
     'hattrick-flip': HTMLHattrickFlipElement
     'hattrick-progress-arc': HTMLHattrickProgressArcElement
     'hattrick-rating': HTMLHattrickRatingElement
+    'simple-bar': HTMLSimpleBarElement
     'hattrick-timer': HTMLHattrickTimerElement
     'hattrick-tooltip': HTMLHattrickTooltipElement
   }
@@ -379,9 +487,11 @@ declare global {
   interface ElementTagNameMap {
     'hattrick-avatar': HTMLHattrickAvatarElement;
     'hattrick-bar': HTMLHattrickBarElement;
+    'flex-bar': HTMLFlexBarElement;
     'hattrick-flip': HTMLHattrickFlipElement;
     'hattrick-progress-arc': HTMLHattrickProgressArcElement;
     'hattrick-rating': HTMLHattrickRatingElement;
+    'simple-bar': HTMLSimpleBarElement;
     'hattrick-timer': HTMLHattrickTimerElement;
     'hattrick-tooltip': HTMLHattrickTooltipElement;
   }

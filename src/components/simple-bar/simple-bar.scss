@@ -1,0 +1,33 @@
+$denominationPosition: 85px;
+
+:host {
+  display: block;
+}
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-spacing: 0;
+}
+
+td {
+  height: calc(1em + 0.25em);
+}
+
+td.bar-level {
+  background-color: var(--bar-level-background, #59965D);
+  color: var(--bar-max-background, #ECECEC);
+}
+td.bar-level.maxed {
+  background-color: var(--bar-capped-background, #FFEB99);
+  color: var(--bar-level-background, #59965D);
+}
+
+td.bar-cap {
+  background-color: var(--bar-cap-background, #CACACA);
+  color: var(--bar-level-background, #59965D);
+}
+
+td.bar-max {
+  background-color: var(--bar-max-background, #ECECEC);
+  color: var(--bar-level-background, #59965D);
+}
