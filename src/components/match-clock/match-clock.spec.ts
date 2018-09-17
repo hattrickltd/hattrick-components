@@ -1,33 +1,14 @@
 // import { TestWindow } from "@stencil/core/testing";
 // // import { render, flush } from '@stencil/core/testing';
-// import { Timer } from "./timer";
+// import { MatchClock } from "./match-clock";
 // import "jest";
 
-// // jest.useFakeTimers();
+// // jest.useFakeMatchClocks();
 
-// describe("Timer", () => {
+// describe("MatchClock", () => {
 //   it("should build", () => {
-//     expect(new Timer()).toBeTruthy();
+//     expect(new MatchClock()).toBeTruthy();
 //   });
-
-//   // describe('rendering', () => {
-//   //   let element;
-
-//   //   beforeEach(async () => {
-//   //     element = await render({
-//   //       components: [Timer],
-//   //       html: '<hattrick-timer></hattrick-timer>'
-//   //     });
-//   //     // element = await render();
-//   //   });
-
-//   //   it('fake', async () => {
-//   //     element.deadline = Date.now();
-//   //     await flush(element);
-//   //     console.log(element.textContent);
-//   //     expect(element.textContent).toBe("00:00:00");
-//   //   });
-//   // });
 
 //   describe("rendering", () => {
 //     let window: TestWindow;
@@ -37,13 +18,13 @@
 //     // let clock: typeof jest;
 
 //     beforeEach(async () => {
-//       // clock = jest.useFakeTimers();
-//       // spyOnUpdateTime = jest.spyOn(Timer.prototype, "updateTime");
+//       // clock = jest.useFakeMatchClocks();
+//       // spyOnUpdateTime = jest.spyOn(MatchClock.prototype, "updateTime");
 
 //       window = new TestWindow();
 //       element = await window.load({
-//         components: [Timer],
-//         html: "<hattrick-timer></hattrick-timer>"
+//         components: [MatchClock],
+//         html: "<hattrick-match-clock></hattrick-match-clock>"
 //       });
 //     });
 
@@ -128,7 +109,7 @@
 
 //       await window.flush();
 
-//       expect(element.classList.contains("hattrick-timer-finished")).toBeTruthy();
+//       expect(element.classList.contains("hattrick-MatchClock-finished")).toBeTruthy();
 //     });
 
 //     it("should not have finished class when reaching zero if we'll keep counting", async() => {
@@ -137,7 +118,7 @@
 
 //       await window.flush();
 
-//       expect(element.classList.contains("hattrick-timer-finished")).toBeFalsy();
+//       expect(element.classList.contains("hattrick-MatchClock-finished")).toBeFalsy();
 //     });
 
 //     it("should not have finished class when reaching zero if we'll keep counting", async() => {
@@ -146,7 +127,7 @@
 
 //       await window.flush();
 
-//       expect(element.classList.contains("hattrick-timer-passed-zero")).toBeTruthy();
+//       expect(element.classList.contains("hattrick-MatchClock-passed-zero")).toBeTruthy();
 //     });
 
 //     it("should tick after one second", async (done) => {
@@ -160,13 +141,13 @@
 //         await window.flush();
 
 //         expect(element.textContent).toBe("00:00:00");
-//         expect(element.classList.contains("hattrick-timer-finished")).toBeTruthy();
+//         expect(element.classList.contains("hattrick-MatchClock-finished")).toBeTruthy();
 
 //         done();
 //       }, 1000);
-//       // clock.advanceTimersByTime(1000);
-//       // clock.runAllTimers();
-//       // clock.runOnlyPendingTimers();
+//       // clock.advanceMatchClocksByTime(1000);
+//       // clock.runAllMatchClocks();
+//       // clock.runOnlyPendingMatchClocks();
 
 //     });
 

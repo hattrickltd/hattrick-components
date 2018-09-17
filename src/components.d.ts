@@ -159,6 +159,75 @@ export namespace Components {
     'flipped'?: boolean;
   }
 
+  interface HattrickMatchClock {
+    /**
+    * How many minutes of added time the match has.
+    */
+    'addedMinutes': number;
+    /**
+    * How many minutes break does the match have between first and second half.
+    */
+    'halftimeBreak': number;
+    /**
+    * If we should ignore halftime and overtime breaks when calculating the time shown. Defaults to false.
+    */
+    'ignoreBreaks': boolean;
+    /**
+    * At what time the match starts.
+    */
+    'matchtime': Date | string | number;
+    /**
+    * How many minutes break does the match have before overtime starts.
+    */
+    'overtimeBreak': number;
+    /**
+    * Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match..
+    */
+    'texts': {
+      days: string,
+      hours: string,
+      minutes: string,
+      seconds: string,
+      halftime: string,
+      overtimeBreak: string,
+      overtime: string,
+    };
+  }
+  interface HattrickMatchClockAttributes extends StencilHTMLAttributes {
+    /**
+    * How many minutes of added time the match has.
+    */
+    'addedMinutes'?: number;
+    /**
+    * How many minutes break does the match have between first and second half.
+    */
+    'halftimeBreak'?: number;
+    /**
+    * If we should ignore halftime and overtime breaks when calculating the time shown. Defaults to false.
+    */
+    'ignoreBreaks'?: boolean;
+    /**
+    * At what time the match starts.
+    */
+    'matchtime'?: Date | string | number;
+    /**
+    * How many minutes break does the match have before overtime starts.
+    */
+    'overtimeBreak'?: number;
+    /**
+    * Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match..
+    */
+    'texts'?: {
+      days: string,
+      hours: string,
+      minutes: string,
+      seconds: string,
+      halftime: string,
+      overtimeBreak: string,
+      overtime: string,
+    };
+  }
+
   interface HattrickProgressArc {
     /**
     * Expression evaluating to float [0.0, 1.0]
@@ -309,6 +378,7 @@ declare global {
     'HattrickAvatar': Components.HattrickAvatar;
     'HattrickBar': Components.HattrickBar;
     'HattrickFlip': Components.HattrickFlip;
+    'HattrickMatchClock': Components.HattrickMatchClock;
     'HattrickProgressArc': Components.HattrickProgressArc;
     'HattrickRating': Components.HattrickRating;
     'HattrickTimer': Components.HattrickTimer;
@@ -319,6 +389,7 @@ declare global {
     'hattrick-avatar': Components.HattrickAvatarAttributes;
     'hattrick-bar': Components.HattrickBarAttributes;
     'hattrick-flip': Components.HattrickFlipAttributes;
+    'hattrick-match-clock': Components.HattrickMatchClockAttributes;
     'hattrick-progress-arc': Components.HattrickProgressArcAttributes;
     'hattrick-rating': Components.HattrickRatingAttributes;
     'hattrick-timer': Components.HattrickTimerAttributes;
@@ -342,6 +413,12 @@ declare global {
   var HTMLHattrickFlipElement: {
     prototype: HTMLHattrickFlipElement;
     new (): HTMLHattrickFlipElement;
+  };
+
+  interface HTMLHattrickMatchClockElement extends Components.HattrickMatchClock, HTMLStencilElement {}
+  var HTMLHattrickMatchClockElement: {
+    prototype: HTMLHattrickMatchClockElement;
+    new (): HTMLHattrickMatchClockElement;
   };
 
   interface HTMLHattrickProgressArcElement extends Components.HattrickProgressArc, HTMLStencilElement {}
@@ -372,6 +449,7 @@ declare global {
     'hattrick-avatar': HTMLHattrickAvatarElement
     'hattrick-bar': HTMLHattrickBarElement
     'hattrick-flip': HTMLHattrickFlipElement
+    'hattrick-match-clock': HTMLHattrickMatchClockElement
     'hattrick-progress-arc': HTMLHattrickProgressArcElement
     'hattrick-rating': HTMLHattrickRatingElement
     'hattrick-timer': HTMLHattrickTimerElement
@@ -382,6 +460,7 @@ declare global {
     'hattrick-avatar': HTMLHattrickAvatarElement;
     'hattrick-bar': HTMLHattrickBarElement;
     'hattrick-flip': HTMLHattrickFlipElement;
+    'hattrick-match-clock': HTMLHattrickMatchClockElement;
     'hattrick-progress-arc': HTMLHattrickProgressArcElement;
     'hattrick-rating': HTMLHattrickRatingElement;
     'hattrick-timer': HTMLHattrickTimerElement;
