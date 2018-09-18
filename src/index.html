@@ -40,7 +40,7 @@
     hattrick-rating[size="small"] { font-size: 8px; }
     hattrick-rating.small-rating { font-size: 8px; --progress-arc-stroke-width: 3px; }
 
-    hattrick-timer {
+    hattrick-timer, hattrick-match-clock {
       display: block;
     }
 
@@ -474,6 +474,21 @@
     </div>
   </section>
   
+  <h2>Match clock</h2>
+  <section matchclocks>
+    <p>
+      Regular match clocks. They start counting backwards during halftime and overtime breaks.
+    </p>
+
+    <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Attributes</h3>
+    <div hidden attributes>
+      <code>matchtime: Date | string | number</code>
+    </div>
+
+    <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
+    <div id="matchclockWrapper" examples></div>
+  </section>
+  
   <h2>Timers</h2>
   <section timers>
     <p>
@@ -670,6 +685,7 @@
     // document.getElementById("addAvatars").click();
 
     addTimers();
+    addMatchclocks();
 
     function addTimers() {
       let wrapper = document.getElementById("timerWrapper");
@@ -677,7 +693,33 @@
       for (let i = 10; i <= 1000000; i *= 10) {
         let timer = document.createElement("hattrick-timer");
         timer.deadline = Date.now() + i * 1000;
-        // timer.seconds = i;
+        wrapper.appendChild(timer);
+      }
+    }
+
+    function addMatchclocks() {
+      let wrapper = document.getElementById("matchclockWrapper");
+      let texts = {
+        days: "d",
+        hours: "h",
+        minutes: "m",
+        seconds: "s",
+        halftime: "Half-time",
+        overtimeBreak: "Overtime break",
+        overtime: "Overtime",
+      }
+      
+      for (let i = -140 * 60; i <= 0; i += 300) {
+        let timer = document.createElement("hattrick-match-clock");
+        timer.matchtime = Date.now() + i * 1000;
+        timer.texts = texts;
+        wrapper.appendChild(timer);
+      }
+      
+      for (let i = 10; i <= 1000000; i *= 10) {
+        let timer = document.createElement("hattrick-match-clock");
+        timer.matchtime = Date.now() + i * 1000;
+        timer.texts = texts;
         wrapper.appendChild(timer);
       }
     }

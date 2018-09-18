@@ -1,6 +1,6 @@
 # hattrick-timer
 
-A simple timer to display hh:mm:ss, optionally it can also start counting upwards if the deadline has passed, making it useful also as a match clock.
+A simple timer to display hh:mm:ss, optionally it can also start counting upwards if the deadline has passed.
 
 
 ## Usage
