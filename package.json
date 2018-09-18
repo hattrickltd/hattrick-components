@@ -13,8 +13,9 @@
     "build": "stencil build",
     "dev": "stencil build --dev --watch --serve",
     "start": "npm run dev",
-    "test": "jest",
-    "test.watch": "jest --watch"
+    "test": "stencil test --spec",
+    "test.watch": "stencil test --spec --watch",
+    "test.e2e": "stencil test --e2e"
   },
   "dependencies": {},
   "devDependencies": {
@@ -22,6 +23,7 @@
     "@stencil/sass": "0.1.0",
     "@types/jest": "^23.3.1",
     "jest": "^23.5.0",
+    "puppeteer": "1.7.0",
     "tslint": "^5.11.0",
     "workbox-build": "3.4.1"
   },

@@ -22,3 +22,5 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 .env
+
+.stencil.jest.config.json

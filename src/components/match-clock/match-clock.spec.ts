@@ -1,181 +1,208 @@
-// import { TestWindow } from "@stencil/core/testing";
-// // import { render, flush } from '@stencil/core/testing';
-// import { MatchClock } from "./match-clock";
-// import "jest";
+import "jest";
+import { MatchClock } from "./match-clock";
+import { Timer } from "../timer/timer";
 
-// // jest.useFakeMatchClocks();
+const realDateNow = Date.now;
+const now = Date.now();
 
-// describe("MatchClock", () => {
-//   it("should build", () => {
-//     expect(new MatchClock()).toBeTruthy();
-//   });
+const hours = (h) => h * 1000 * 60 * 60;
+const minutes = (m) => m * 1000 * 60;
+const seconds = (s) => s * 1000;
 
-//   describe("rendering", () => {
-//     let window: TestWindow;
-//     let element;
+const texts = {
+  days: "d",
+  hours: "h",
+  minutes: "m",
+  seconds: "s",
+  overtime: "Overtime",
+  overtimeBreak: "Overtime break",
+  halftime: "Half time",
+};
 
-//     // let spyOnUpdateTime: jest.SpyInstance<() => void>; // doens't reset as intended in afterEach()
-//     // let clock: typeof jest;
+function setMatchtimer(t: MatchClock, matchtime?: number | Date | string) {
+  if (matchtime) t.matchtime = matchtime;
 
-//     beforeEach(async () => {
-//       // clock = jest.useFakeMatchClocks();
-//       // spyOnUpdateTime = jest.spyOn(MatchClock.prototype, "updateTime");
+  (t as any).matchtimeUpdated();
+  (t as any).updateTime();
+}
 
-//       window = new TestWindow();
-//       element = await window.load({
-//         components: [MatchClock],
-//         html: "<hattrick-match-clock></hattrick-match-clock>"
-//       });
-//     });
+describe("MatchClock unit", () => {
+  let matchclock: MatchClock;
 
-//     // afterEach(() => {
-//     //   spyOnUpdateTime.mockRestore();
-//     // });
+  beforeEach(() => {
+    matchclock = new MatchClock();
+  });
 
-//     it("should show 00:00:00 when deadline is now", async () => {
-//       element.deadline = Date.now();
+  beforeAll(() => {
+    Date.now = jest.fn().mockReturnValue(now);
+  });
+  afterAll(() => {
+    Date.now = realDateNow;
+  });
 
-//       await window.flush();
+  it("should build", () => {
+    expect(matchclock).toBeTruthy();
+  });
 
-//       expect(element.textContent).toBe("00:00:00");
-//     });
+  describe("seconds", () => {
+    it("should be 0 when matchtime is now", () => {
+      setMatchtimer(matchclock, Date.now());
 
-//     it("should show 00:00:11 when deadline is in 11 seconds", async () => {
-//       element.deadline = Date.now() + 11000 + 500;
+      expect((matchclock as any).seconds).toBe(0);
+    });
 
-//       await window.flush();
+    it("should be less than 0 when matchtime is in the past", () => {
+      setMatchtimer(matchclock, Date.now() - seconds(10));
 
-//       expect(element.textContent).toBe("00:00:11");
-//     });
+      expect((matchclock as any).seconds).toBeLessThan(0);
+    });
 
-//     it("should show 00:01:01 when deadline is in 61 seconds", async () => {
-//       element.deadline = Date.now() + 61 * 1000 + 500;
+    it("should be bigger than 0 when matchtime is in the future", () => {
+      setMatchtimer(matchclock, Date.now() + seconds(10));
 
-//       await window.flush();
+      expect((matchclock as any).seconds).toBeGreaterThan(0);
+    });
+  });
 
-//       expect(element.textContent).toBe("00:01:01");
-//     });
+  describe("during match", () => {
+    describe("getTime", () => {
+      it("should be 00:00 when matchtime is now", () => {
+        setMatchtimer(matchclock, Date.now());
 
-//     it("should show 01:01:01 when deadline is 1 hour and 61 seconds", async () => {
-//       element.deadline = Date.now() + 3661 * 1000 + 500;
+        expect((matchclock as any).getTime()).toBe("00:00");
+      });
 
-//       await window.flush();
+      it("should show '00:11' when matchtime was 11 seconds ago", () => {
+        setMatchtimer(matchclock, Date.now() - seconds(11));
 
-//       expect(element.textContent).toBe("01:01:01");
-//     });
+        expect((matchclock as any).getTime()).toBe("00:11");
+      });
 
-//     it("should show 24:00:00 when deadline is in 1 day", async () => {
-//       element.deadline = Date.now() + 1000 * 60 * 60 * 24 + 500;
-//       await window.flush();
-//       expect(element.textContent).toBe("24:00:00");
-//     });
+      it("should show '01:01' when matchtime was 61 seconds ago", () => {
+        setMatchtimer(matchclock, Date.now() - seconds(61));
 
-//     it("should show '4 days' when deadline is in 4 day", async () => {
-//       element.deadline = Date.now() + 1000 * 60 * 60 * 24 * 4 + 500; // plus 500 since we're time sensitive
+        expect((matchclock as any).getTime()).toBe("01:01");
+      });
 
-//       await window.flush();
+      it("should show countdown during halftime", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(45));
 
-//       expect(element.textContent).toBe("4 days");
-//     });
+        expect((matchclock as any).getTime()).toBe("15:00");
+      });
 
-//     it("should show '4 dagar' when deadline is in 4 day and `daysText` is set to 'days'", async () => {
-//       element.deadline = Date.now() + 1000 * 60 * 60 * 24 * 4 + 500; // plus 500 since we're time sensitive
-//       element.daysText = "dagar";
+      it("should show '45:00' when second half starts", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(60));
 
-//       await window.flush();
+        expect((matchclock as any).getTime()).toBe("45:00");
+      });
 
-//       expect(element.textContent).toBe("4 dagar");
-//     });
+      it("should show countdown during overtime break", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(105));
 
-//     it("should stop at zero if keepCounting is not set", async () => {
-//       element.deadline = Date.now() - 3000;
+        expect((matchclock as any).getTime()).toBe("05:00");
+      });
 
-//       await window.flush();
+      it("should show '90:00' when overtime starts", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(110));
 
-//       expect(element.textContent).toBe("00:00:00");
-//     });
+        expect((matchclock as any).getTime()).toBe("90:00");
+      });
+    });
 
-//     it("should keep counting when property is set", async () => {
-//       element.deadline = Date.now() - 3000;
-//       element.keepCounting = true;
+    describe("with 3 added minutes", () => {
+      beforeEach(() => {
+        matchclock.addedMinutes = 3;
+      });
 
-//       await window.flush();
+      it("should show '90:00' instead of countdown for overtime break", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(105));
 
-//       expect(element.textContent).toBe("00:00:03");
-//     });
+        expect((matchclock as any).getTime()).toBe("90:00");
+      });
 
-//     it("should get have finished class when reaching zero", async() => {
-//       element.deadline = Date.now();
+      it("should show countdown after 93 minutes of match time", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(105) - minutes(3));
 
-//       await window.flush();
+        expect((matchclock as any).getTime()).toBe("05:00");
+      });
 
-//       expect(element.classList.contains("hattrick-MatchClock-finished")).toBeTruthy();
-//     });
+      it("should show '90:00' again when overtime starts", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(110) - minutes(3));
 
-//     it("should not have finished class when reaching zero if we'll keep counting", async() => {
-//       element.deadline = Date.now();
-//       element.keepCounting = true;
+        expect((matchclock as any).getTime()).toBe("90:00");
+      });
+    });
 
-//       await window.flush();
+    describe("with texts", () => {
+      beforeEach(() => {
+        matchclock.texts = texts;
+      });
 
-//       expect(element.classList.contains("hattrick-MatchClock-finished")).toBeFalsy();
-//     });
+      it("should show '(Half time)' after match clock", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(45));
 
-//     it("should not have finished class when reaching zero if we'll keep counting", async() => {
-//       element.deadline = Date.now() - 1000;
-//       element.keepCounting = true;
+        expect((matchclock as any).getTime()).toBe("15:00 (Half time)");
+      });
 
-//       await window.flush();
+      it("should show '(Overtime break)' after match clock", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(105));
 
-//       expect(element.classList.contains("hattrick-MatchClock-passed-zero")).toBeTruthy();
-//     });
+        expect((matchclock as any).getTime()).toBe("05:00 (Overtime break)");
+      });
 
-//     it("should tick after one second", async (done) => {
-//       element.deadline = Date.now() + 1000 + 500;
+      it("should show '(Overtime)' after match clock", () => {
+        setMatchtimer(matchclock, Date.now() - minutes(110));
 
-//       await window.flush();
+        expect((matchclock as any).getTime()).toBe("90:00 (Overtime)");
+      });
+    });
+  });
 
-//       expect(element.textContent).toBe("00:00:01");
+  describe("before match", () => {
+    beforeEach(() => {
+      matchclock.texts = texts;
+    });
 
-//       setTimeout(async () => {
-//         await window.flush();
+    it("shows days, hours, minutes and seconds", () => {
+      setMatchtimer(matchclock, Date.now() + hours(24 + 1));
 
-//         expect(element.textContent).toBe("00:00:00");
-//         expect(element.classList.contains("hattrick-MatchClock-finished")).toBeTruthy();
+      expect((matchclock as any).getTime()).toBe("1d 1h 00m 00s");
+    });
 
-//         done();
-//       }, 1000);
-//       // clock.advanceMatchClocksByTime(1000);
-//       // clock.runAllMatchClocks();
-//       // clock.runOnlyPendingMatchClocks();
+    it("shows hours, minutes and seconds", () => {
+      setMatchtimer(matchclock, Date.now() + hours(1));
 
-//     });
+      expect((matchclock as any).getTime()).toBe("1h 00m 00s");
+    });
 
-//     describe("non-numeric deadlines", () => {
-//       it("allows date deadlines", async () => {
-//         element.deadline = new Date(Date.now() + 61 * 1000 + 500);
+    it("shows minutes and seconds", () => {
+      setMatchtimer(matchclock, Date.now() + minutes(1));
 
-//         await window.flush();
+      expect((matchclock as any).getTime()).toBe("01m 00s");
+    });
 
-//         expect(element.textContent).toBe("00:01:01");
-//       });
+    it("shows seconds", () => {
+      setMatchtimer(matchclock, Date.now() + seconds(1));
 
-//       it("allows string numbers", async () => {
-//         element.deadline = (Date.now() + 61 * 1000 + 500).toString();
+      expect((matchclock as any).getTime()).toBe("00m 01s");
+    });
+  });
 
-//         await window.flush();
+  describe("hostData", () => {
+    it("has 'timer' role", () => {
+      expect(matchclock.hostData().role).toBe("timer");
+    });
 
-//         expect(element.textContent).toBe("00:01:01");
-//       });
+    it("should have 'match-clock-passed-zero' class when match has started", () => {
+      setMatchtimer(matchclock, Date.now());
 
-//       it("allows string Date deadlines", async () => {
-//         element.deadline = new Date((Date.now() + 61 * 1000 + 500)).toISOString();
+      expect(matchclock.hostData().class["match-clock-passed-zero"]).toBeTruthy();
+    });
 
-//         await window.flush();
+    it("should have 'match-clock-passed-zero' class in an upcoming match", () => {
+      setMatchtimer(matchclock, Date.now() + seconds(1));
 
-//         expect(element.textContent).toBe("00:01:01");
-//       });
-//     });
-
-//   });
-// });
+      expect(matchclock.hostData().class["match-clock-passed-zero"]).toBeFalsy();
+    });
+  });
+});

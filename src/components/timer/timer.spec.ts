@@ -1,200 +1,182 @@
-// import { TestWindow } from "@stencil/core/testing";
-// // import { render, flush } from '@stencil/core/testing';
-// import { Timer } from "./timer";
-// import "jest";
+import "jest";
+import { Timer } from "./timer";
 
-// // jest.useFakeTimers();
+const realDateNow = Date.now;
+const now = Date.now();
 
-// describe("Timer", () => {
-//   it("should build", () => {
-//     expect(new Timer()).toBeTruthy();
-//   });
+const hours = (h) => h * 1000 * 60 * 60;
+const minutes = (m) => m * 1000 * 60;
+const seconds = (s) => s * 1000;
 
-//   // describe('rendering', () => {
-//   //   let element;
+function setDeadline(t: Timer, deadline?: number | Date | string) {
+  if (deadline) t.deadline = deadline;
 
-//   //   beforeEach(async () => {
-//   //     element = await render({
-//   //       components: [Timer],
-//   //       html: '<hattrick-timer></hattrick-timer>'
-//   //     });
-//   //     // element = await render();
-//   //   });
+  (t as any).deadlineUpdated();
+  (t as any).updateTime();
+}
 
-//   //   it('fake', async () => {
-//   //     element.deadline = Date.now();
-//   //     await flush(element);
-//   //     console.log(element.textContent);
-//   //     expect(element.textContent).toBe("00:00:00");
-//   //   });
-//   // });
+describe("Timer unit", () => {
+  let timer: Timer;
 
-//   describe("rendering", () => {
-//     let window: TestWindow;
-//     let element;
+  beforeEach(() => {
+    timer = new Timer();
+  });
 
-//     // let spyOnUpdateTime: jest.SpyInstance<() => void>; // doens't reset as intended in afterEach()
-//     // let clock: typeof jest;
+  beforeAll(() => {
+    Date.now = jest.fn().mockReturnValue(now);
+  });
+  afterAll(() => {
+    Date.now = realDateNow;
+  });
 
-//     beforeEach(async () => {
-//       // clock = jest.useFakeTimers();
-//       // spyOnUpdateTime = jest.spyOn(Timer.prototype, "updateTime");
+  it("should build", () => {
+    expect(timer).toBeTruthy();
+  });
 
-//       window = new TestWindow();
-//       element = await window.load({
-//         components: [Timer],
-//         html: "<hattrick-timer></hattrick-timer>"
-//       });
-//     });
+  describe("seconds", () => {
+    it("should be 0 when deadline is now", () => {
+      setDeadline(timer, Date.now());
 
-//     // afterEach(() => {
-//     //   spyOnUpdateTime.mockRestore();
-//     // });
+      expect((timer as any).seconds).toBe(0);
+    });
 
-//     it("should show 00:00:00 when deadline is now", async () => {
-//       element.deadline = Date.now();
+    it("should be less than 0 when deadline is in the past", () => {
+      setDeadline(timer, Date.now() - seconds(10));
 
-//       await window.flush();
+      expect((timer as any).seconds).toBeLessThan(0);
+    });
 
-//       expect(element.textContent).toBe("00:00:00");
-//     });
+    it("should be bigger than 0 when deadline is in the future", () => {
+      setDeadline(timer, Date.now() + seconds(10));
 
-//     it("should show 00:00:11 when deadline is in 11 seconds", async () => {
-//       element.deadline = Date.now() + 11000 + 500;
+      expect((timer as any).seconds).toBeGreaterThan(0);
+    });
+  });
 
-//       await window.flush();
+  describe("getTime", () => {
+    it("should be 00:00:00 when deadline is now", () => {
+      setDeadline(timer, Date.now());
 
-//       expect(element.textContent).toBe("00:00:11");
-//     });
+      expect((timer as any).getTime()).toBe("00:00:00");
+    });
 
-//     it("should show 00:01:01 when deadline is in 61 seconds", async () => {
-//       element.deadline = Date.now() + 61 * 1000 + 500;
+    it("should show 00:00:11 when deadline is in 11 seconds", () => {
+      setDeadline(timer, Date.now() + seconds(11));
 
-//       await window.flush();
+      expect((timer as any).getTime()).toBe("00:00:11");
+    });
 
-//       expect(element.textContent).toBe("00:01:01");
-//     });
+    it("should show 00:01:01 when deadline is in 61 seconds", () => {
+      setDeadline(timer, Date.now() + seconds(61));
 
-//     it("should show 01:01:01 when deadline is 1 hour and 61 seconds", async () => {
-//       element.deadline = Date.now() + 3661 * 1000 + 500;
+      expect((timer as any).getTime()).toBe("00:01:01");
+    });
 
-//       await window.flush();
+    it("should show 01:01:01 when deadline is 1 hour and 61 seconds", () => {
+      setDeadline(timer, Date.now() + hours(1) + minutes(1) + seconds(1));
 
-//       expect(element.textContent).toBe("01:01:01");
-//     });
+      expect((timer as any).getTime()).toBe("01:01:01");
+    });
 
-//     it("should show 24:00:00 when deadline is in 1 day", async () => {
-//       element.deadline = Date.now() + 1000 * 60 * 60 * 24 + 500;
-//       await window.flush();
-//       expect(element.textContent).toBe("24:00:00");
-//     });
+    it("should show 24:00:00 when deadline is in 1 day", () => {
+      setDeadline(timer, Date.now() + hours(24));
 
-//     it("should show '4 days' when deadline is in 4 day", async () => {
-//       element.deadline = Date.now() + 1000 * 60 * 60 * 24 * 4 + 500; // plus 500 since we're time sensitive
+      expect((timer as any).getTime()).toBe("24:00:00");
+    });
+  });
 
-//       await window.flush();
+  describe("daysText", () => {
 
-//       expect(element.textContent).toBe("4 days");
-//     });
+    it("should show '4 days' when deadline is in 4 day", () => {
+      setDeadline(timer, Date.now() + hours(24 * 4));
 
-//     it("should show '4 dagar' when deadline is in 4 day and `daysText` is set to 'days'", async () => {
-//       element.deadline = Date.now() + 1000 * 60 * 60 * 24 * 4 + 500; // plus 500 since we're time sensitive
-//       element.daysText = "dagar";
+      expect((timer as any).getTime()).toBe("4 days");
+    });
 
-//       await window.flush();
+    it("should show '4 dagar' when deadline is in 4 day", () => {
+      setDeadline(timer, Date.now() + hours(24 * 4));
+      timer.daysText = "dagar";
 
-//       expect(element.textContent).toBe("4 dagar");
-//     });
+      expect((timer as any).getTime()).toBe("4 dagar");
+    });
+  });
 
-//     it("should stop at zero if keepCounting is not set", async () => {
-//       element.deadline = Date.now() - 3000;
+  describe("keepCounting", () => {
 
-//       await window.flush();
+    it("should stop at zero if keepCounting is not set", () => {
+      setDeadline(timer, Date.now() + seconds(-3));
 
-//       expect(element.textContent).toBe("00:00:00");
-//     });
+      expect((timer as any).getTime()).toBe("00:00:00");
+    });
 
-//     it("should keep counting when property is set", async () => {
-//       element.deadline = Date.now() - 3000;
-//       element.keepCounting = true;
+    it("should keep counting when keepCounting is set", () => {
+      setDeadline(timer, Date.now() + seconds(-3));
+      timer.keepCounting = true;
 
-//       await window.flush();
+      expect((timer as any).getTime()).toBe("00:00:03");
+    });
+  });
 
-//       expect(element.textContent).toBe("00:00:03");
-//     });
+  describe("hostData", () => {
+    it("has 'timer' role", () => {
+      expect(timer.hostData().role).toBe("timer");
+    });
 
-//     it("should get have finished class when reaching zero", async() => {
-//       element.deadline = Date.now();
+    it("should get have finished class when reaching zero", () => {
+      setDeadline(timer, Date.now());
 
-//       await window.flush();
+      expect(timer.hostData().class["timer-finished"]).toBeTruthy();
+    });
 
-//       expect(element.classList.contains("hattrick-timer-finished")).toBeTruthy();
-//     });
+    it("should not have finished class when reaching zero if we'll keep counting", () => {
+      setDeadline(timer, Date.now());
+      timer.keepCounting = true;
 
-//     it("should not have finished class when reaching zero if we'll keep counting", async() => {
-//       element.deadline = Date.now();
-//       element.keepCounting = true;
+      expect(timer.hostData().class["timer-finished"]).toBeFalsy();
+    });
 
-//       await window.flush();
+    it("should have passed zero class after passing zero if we'll keep counting", () => {
+      setDeadline(timer, Date.now() - seconds(1));
+      timer.keepCounting = true;
 
-//       expect(element.classList.contains("hattrick-timer-finished")).toBeFalsy();
-//     });
+      expect(timer.hostData().class["timer-passed-zero"]).toBeTruthy();
+    });
+  });
 
-//     it("should not have finished class when reaching zero if we'll keep counting", async() => {
-//       element.deadline = Date.now() - 1000;
-//       element.keepCounting = true;
+  describe("non-numeric deadlines", () => {
+    it("allows date deadlines", () => {
+      setDeadline(timer, new Date(Date.now() + seconds(61)));
 
-//       await window.flush();
+      expect((timer as any).getTime()).toBe("00:01:01");
+    });
 
-//       expect(element.classList.contains("hattrick-timer-passed-zero")).toBeTruthy();
-//     });
+    it("allows string numbers", () => {
+      setDeadline(timer, (Date.now() + seconds(61)).toString());
 
-//     it("should tick after one second", async (done) => {
-//       element.deadline = Date.now() + 1000 + 500;
+      expect((timer as any).getTime()).toBe("00:01:01");
+    });
 
-//       await window.flush();
+    it("allows string Date deadlines", () => {
+      setDeadline(timer, new Date((Date.now() + seconds(61))).toISOString());
 
-//       expect(element.textContent).toBe("00:00:01");
+      expect((timer as any).getTime()).toBe("00:01:01");
+    });
+  });
 
-//       setTimeout(async () => {
-//         await window.flush();
+  describe("ticks", () => {
 
-//         expect(element.textContent).toBe("00:00:00");
-//         expect(element.classList.contains("hattrick-timer-finished")).toBeTruthy();
+    it("from 1 to 0 after a second", () => {
+      setDeadline(timer, Date.now() + seconds(1));
 
-//         done();
-//       }, 1000);
-//       // clock.advanceTimersByTime(1000);
-//       // clock.runAllTimers();
-//       // clock.runOnlyPendingTimers();
+      Date.now = jest.fn(() => now + 1);
+      setDeadline(timer);
 
-//     });
+      expect((timer as any).getTime()).toBe("00:00:00");
 
-//     describe("non-numeric deadlines", () => {
-//       it("allows date deadlines", async () => {
-//         element.deadline = new Date(Date.now() + 61 * 1000 + 500);
+      Date.now = jest.fn(() => now + 1000);
+      setDeadline(timer);
 
-//         await window.flush();
-
-//         expect(element.textContent).toBe("00:01:01");
-//       });
-
-//       it("allows string numbers", async () => {
-//         element.deadline = (Date.now() + 61 * 1000 + 500).toString();
-
-//         await window.flush();
-
-//         expect(element.textContent).toBe("00:01:01");
-//       });
-
-//       it("allows string Date deadlines", async () => {
-//         element.deadline = new Date((Date.now() + 61 * 1000 + 500)).toISOString();
-
-//         await window.flush();
-
-//         expect(element.textContent).toBe("00:01:01");
-//       });
-//     });
-
-//   });
-// });
+      expect((timer as any).getTime()).toBe("00:00:00");
+    });
+  });
+});

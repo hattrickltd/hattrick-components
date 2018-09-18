@@ -56,15 +56,10 @@ export class MatchClock {
 
   private updateTime() {
     this.seconds = Math.floor((this._matchstart - Date.now()) / 1000);
-
-    // if (this.seconds <= 0 && !this.keepCounting) {
-    //   clearInterval(this._interval);
-    //   this._interval = undefined;
-    // }
   }
 
   private isCountingDown(): boolean {
-    return this.seconds >= 0;
+    return this.seconds > 0;
   }
 
   private getTime(): string {
@@ -105,7 +100,7 @@ export class MatchClock {
       if (!this.ignoreBreaks) {
         if (minutes >= 45 && minutes < 45 + this.halftimeBreak) {
           // is in halftime
-          labelAfterClock = " (" + (this.texts.halftime || "") + ")";
+          if (this.texts.halftime) labelAfterClock = " (" + this.texts.halftime + ")";
           minutes = 45 + this.halftimeBreak - minutes - 1;
           seconds = 60 - seconds;
           if (seconds === 60) {
@@ -120,7 +115,7 @@ export class MatchClock {
         if (this.overtimeBreak > 0) {
           if (minutes >= 90 + this.addedMinutes && minutes < 90 + this.addedMinutes + this.overtimeBreak) {
             // is in overtime break
-            labelAfterClock = " (" + (this.texts.overtimeBreak || "") + ")";
+            if (this.texts.overtimeBreak) labelAfterClock = " (" + this.texts.overtimeBreak + ")";
             minutes = 90 + this.addedMinutes + this.overtimeBreak - minutes - 1;
             seconds = 60 - seconds;
             if (seconds === 60) {
@@ -129,7 +124,7 @@ export class MatchClock {
             }
           } else if (minutes >= 90 + this.addedMinutes + this.overtimeBreak) {
             // is in overtime
-            labelAfterClock = " (" + (this.texts.overtime || "") + ")";
+            if (this.texts.overtime) labelAfterClock = " (" + this.texts.overtime + ")";
             minutes -= (this.addedMinutes + this.overtimeBreak);
           }
         }
