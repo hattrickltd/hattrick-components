@@ -180,6 +180,8 @@ export namespace Components {
     * How many minutes break does the match have before overtime starts.
     */
     'overtimeBreak': number;
+    'pause': () => Promise<void>;
+    'resume': () => Promise<void>;
     /**
     * Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match..
     */
