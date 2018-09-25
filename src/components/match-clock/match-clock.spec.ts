@@ -18,10 +18,10 @@ const texts = {
   halftime: "Half time",
 };
 
-function setMatchtimer(t: MatchClock, matchtime?: number | Date | string) {
-  if (matchtime) t.matchtime = matchtime;
+function setMatchtimer(t: MatchClock, matchdate?: number | Date | string) {
+  if (matchdate) t.matchdate = matchdate;
 
-  (t as any).matchtimeUpdated();
+  (t as any).matchdateUpdated();
   (t as any).updateTime();
 }
 

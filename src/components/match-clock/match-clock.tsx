@@ -25,7 +25,7 @@ export class MatchClock {
   } = {} as any;
 
   /** At what time the match starts. */
-  @Prop({ mutable: true }) matchtime: Date | string | number;
+  @Prop({ mutable: true }) matchdate: Date | string | number;
 
   /** How many minutes of added time the match has. */
   @Prop() addedMinutes: number = 0;
@@ -40,7 +40,7 @@ export class MatchClock {
   @Prop() ignoreBreaks: boolean = false;
 
   componentWillLoad() {
-    this.matchtimeUpdated();
+    this.matchdateUpdated();
     this._interval = setInterval(() => this.updateTime(), 1000);
   }
 
@@ -48,9 +48,9 @@ export class MatchClock {
     this._interval && clearInterval(this._interval);
   }
 
-  @Watch("matchtime")
-  private matchtimeUpdated() {
-    this._matchstart = fixDate(this.matchtime).getTime();
+  @Watch("matchdate")
+  private matchdateUpdated() {
+    this._matchstart = fixDate(this.matchdate).getTime();
     if (this._pauseTime) this._pauseTime = Date.now();
     this.updateTime();
   }
@@ -65,7 +65,7 @@ export class MatchClock {
   @Method()
   async resume() {
     if (this._pauseTime) {
-      this.matchtime = fixDate(this.matchtime).getTime() + (Date.now() - this._pauseTime);
+      this.matchdate = fixDate(this.matchdate).getTime() + (Date.now() - this._pauseTime);
       this._pauseTime = undefined;
     }
     this._interval = setInterval(() => this.updateTime(), 1000);

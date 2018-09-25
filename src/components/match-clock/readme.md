@@ -6,16 +6,16 @@ A match clock which counts down during halftime and overtime breaks, also counts
 ## Usage
 
 ```html
-<hattrick-match-clock matchtime="2018-08-01 12:00:00"></hattrick-match-clock>
-<hattrick-match-clock matchtime="1533117600000"></hattrick-match-clock>
+<hattrick-match-clock matchdate="2018-08-01 12:00:00"></hattrick-match-clock>
+<hattrick-match-clock matchdate="1533117600000"></hattrick-match-clock>
 ```
 ```js
-const matchtime = new Date("2018-08-01 12:00:00")
+const matchdate = new Date("2018-08-01 12:00:00")
 const timer = document.createElement("hattrick-match-clock");
-timer.matchtime = matchtime; // as date
-timer.matchtime = matchtime.toISOString(); // as string
-timer.matchtime = matchtime.getTime(); // as number
-timer.matchtime = matchtime.getTime().toString(); // as numberic string
+timer.matchdate = matchdate; // as date
+timer.matchdate = matchdate.toISOString(); // as string
+timer.matchdate = matchdate.getTime(); // as number
+timer.matchdate = matchdate.getTime().toString(); // as numberic string
 ```
 
 
@@ -29,7 +29,7 @@ This component doesn't have any CSS variables
 
 ## Properties
 
-#### matchtime
+#### matchdate
 
 Date|string|number
 
@@ -83,7 +83,7 @@ If we should ignore halftime and overtime breaks when calculating the time shown
 
 ## Attributes
 
-#### matchtime
+#### matchdate
 
 Date|string|number
 
