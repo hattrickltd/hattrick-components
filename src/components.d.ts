@@ -175,7 +175,7 @@ export namespace Components {
     /**
     * At what time the match starts.
     */
-    'matchtime': Date | string | number;
+    'matchdate': Date | string | number;
     /**
     * How many minutes break does the match have before overtime starts.
     */
@@ -211,7 +211,7 @@ export namespace Components {
     /**
     * At what time the match starts.
     */
-    'matchtime'?: Date | string | number;
+    'matchdate'?: Date | string | number;
     /**
     * How many minutes break does the match have before overtime starts.
     */
