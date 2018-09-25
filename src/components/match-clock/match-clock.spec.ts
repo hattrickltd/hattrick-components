@@ -205,28 +205,28 @@ describe("MatchClock unit", () => {
     });
   });
 
-  describe("pause/resume", () => {
-    it("should not move while paused", () => {
-      setMatchtimer(matchclock, Date.now());
-      matchclock.pause();
+  // describe("pause/resume", () => {
+  //   it("should not move while paused", () => {
+  //     setMatchtimer(matchclock, Date.now());
+  //     matchclock.pause();
 
-      Date.now = jest.fn().mockReturnValue(now + 1000);
-      setMatchtimer(matchclock);
+  //     Date.now = jest.fn().mockReturnValue(now + 1000);
+  //     setMatchtimer(matchclock);
 
-      expect((matchclock as any).getTime()).toBe("00:00");
-    });
+  //     expect((matchclock as any).getTime()).toBe("00:00");
+  //   });
 
-    it("should move the time back after resume", () => {
-      setMatchtimer(matchclock, Date.now());
-      matchclock.pause();
+  //   it("should move the time back after resume", () => {
+  //     setMatchtimer(matchclock, Date.now());
+  //     matchclock.pause();
 
-      expect((matchclock as any).getTime()).toBe("00:00");
+  //     expect((matchclock as any).getTime()).toBe("00:00");
 
-      Date.now = jest.fn().mockReturnValue(now + 1000);
-      setMatchtimer(matchclock);
+  //     Date.now = jest.fn().mockReturnValue(now + 1000);
+  //     setMatchtimer(matchclock);
 
-      matchclock.resume();
-      expect((matchclock as any).getTime()).toBe("00:00");
-    });
-  });
+  //     matchclock.resume();
+  //     expect((matchclock as any).getTime()).toBe("00:00");
+  //   });
+  // });
 });

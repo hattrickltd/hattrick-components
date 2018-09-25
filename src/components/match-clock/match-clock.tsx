@@ -72,8 +72,6 @@ export class MatchClock {
   }
 
   private updateTime() {
-    if (this._pauseTime) return;
-
     this.seconds = Math.floor((this._matchstart - Date.now()) / 1000);
   }
 
