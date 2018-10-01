@@ -60,114 +60,40 @@ Additionally, you can create silhouettes by settings `avatar.parts` to a number.
 
 ## CSS variables
 
-#### --avatar-size: 1;
+| Variable       | Description       | Default value |
+| -------------- | ----------------- | ------------- |
+| <nobr>--avatar-size</nobr>  | A decimal value between 0 and 1 allows you to dynamically change the size of the avatar. Technically you could use a value larger than 1, but the avatars doesn't scale well above their original size. | 1 |
 
-A decimal value between 0 and 1 allows you to dynamically change the size of the avatar. Technically you could use a value larger than 1, but the avatars doesn't scale well above their original size.
 
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-#### background
-
-boolean
-
-Set whether or not the background should be shown.
-
-
-#### base
-
-string
-
-the base route to the avatars, can be either a relative or absolute url
+| Property     | Attribute    | Description                                                                                                          | Type                                |
+| ------------ | ------------ | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `background` | `background` | Set whether or not the background should be shown.                                                                   | `boolean`                           |
+| `base`       | `base`       | the base route to the avatars, can be either a relative or absolute url                                              | `string`                            |
+| `facecard`   | `facecard`   | Set whether or not the surrounding card should be shown.                                                             | `boolean`                           |
+| `injury`     | `injury`     | Set this to false to remove the bandages on injured and bruised players.                                             | `boolean`                           |
+| `lazy`       | `lazy`       | Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport             | `boolean`                           |
+| `parts`      | --           | An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. | `IAvatarPart[]`, `number`, `string` |
+| `round`      | `round`      | Set to true to generate a circular avatar by cutting off the bottom.                                                 | `boolean`                           |
+| `square`     | `square`     | Set to true to generate a square avatar by cutting off the bottom.                                                   | `boolean`                           |
 
 
-#### facecard
+## Events
 
-boolean
-
-Set whether or not the surrounding card should be shown.
-
-
-#### injury
-
-boolean
-
-Set this to false to remove the bandages on injured and bruised players.
+| Event  | Description |
+| ------ | ----------- |
+| `load` | Let you know when the avatar has finished loading. An array of the images loaded will be provided in the `event.detail`. Real type is `EventEmitter<Array<IAvatarImage>>`, but for TypeScript < 2.7 it needs to be generic. |
 
 
-#### parts
+## Methods
 
-`{ url: string; x: number; y: number; }[]` | number | string
-
-An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
-
-
-#### round
-
-boolean
-
-Set to true to generate a circular avatar by cutting off the bottom.
-
-
-#### square
-
-boolean
-
-Set to true to generate a square avatar by cutting off the bottom.
-
-
-## Attributes
-
-#### background
-
-boolean
-
-Set whether or not the background should be shown.
-
-
-#### base
-
-string
-
-the base route to the avatars, can be either a relative or absolute url
-
-
-#### facecard
-
-boolean
-
-Set whether or not the surrounding card should be shown.
-
-
-#### injury
-
-boolean
-
-Set this to false to remove the bandages on injured and bruised players.
-
-
-#### parts
-
-`{ url: string; x: number; y: number; }[]` | number | string
-
-An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
-
-
-#### round
-
-boolean
-
-Set to true to generate a circular avatar by cutting off the bottom.
-
-
-#### square
-
-boolean
-
-Set to true to generate a square avatar by cutting off the bottom.
-
+| Method          | Description |
+| --------------- | ----------- |
+| `printToCanvas` | Prints the images to a canvas. Useful together with `.toDataURL()`. This may be useful for faster loading at a later time. |
 
 
 ----------------------------------------------

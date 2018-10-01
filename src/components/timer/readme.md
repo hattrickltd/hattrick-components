@@ -23,7 +23,7 @@ timer.deadline = deadline.getTime().toString(); // as numberic string
 
 ## CSS variables
 
-This component doesn't have any CSS variables
+_This component doesn't have any CSS variables_
 
 
 <!-- Auto Generated Below -->
@@ -31,63 +31,12 @@ This component doesn't have any CSS variables
 
 ## Properties
 
-#### daysText
-
-string
-
-The string for `days` which is used if the deadline is more than 72 hours away.
-
-
-#### deadline
-
-Date|string|number
-
-At what time should the clock reach 00:00:00.
-
-
-#### keepCounting
-
-boolean
-
-If the timer should start counting upwards again after reaching 0.
-
-
-#### maxHours
-
-number
-
-After how many hours should it start showing _x days_. Change text via the `daysText` property.
-
-
-## Attributes
-
-#### days-text
-
-string
-
-The string for `days` which is used if the deadline is more than 72 hours away.
-
-
-#### deadline
-
-Date|string|number
-
-At what time should the clock reach 00:00:00.
-
-
-#### keep-counting
-
-boolean
-
-If the timer should start counting upwards again after reaching 0.
-
-
-#### max-hours
-
-number
-
-After how many hours should it start showing _x days_. Change text via the `daysText` property.
-
+| Property       | Attribute       | Description                                                                                     | Type                       |
+| -------------- | --------------- | ----------------------------------------------------------------------------------------------- | -------------------------- |
+| `daysText`     | `days-text`     | The string for `days` which is used if the deadline is more than 72 hours away.                 | `string`                   |
+| `deadline`     | --              | At what time should the clock reach 00:00:00.                                                   | `Date`, `string`, `number` |
+| `keepCounting` | `keep-counting` | If the timer should start counting upwards again after reaching 0.                              | `boolean`                  |
+| `maxHours`     | `max-hours`     | After how many hours should it start showing _x days_. Change text via the `daysText` property. | `number`                   |
 
 
 ----------------------------------------------

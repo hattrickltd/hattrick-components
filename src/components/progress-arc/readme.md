@@ -5,81 +5,23 @@ This is a Stencil fork of [angular-progress-arc](https://github.com/jesujcastill
 
 ## CSS variables
 
-#### --progress-arc-stroke-width: 8px;
-
-Thickness of the circle.
-
-#### --progress-arc-color: #00aa00;
-
-Color of the arc.
-
-#### --progress-arc-rest-color: transparent;
-
-Color of the remaining part to complete the circle.
-
+| Variable       | Description       | Default value |
+| -------------- | ----------------- | ------------- |
+| <nobr>--progress-arc-stroke-width</nobr>  | Thickness of the circle. | 8px |
+| <nobr>--progress-arc-color</nobr>  | Color of the arc. | #00aa00 |
+| <nobr>--progress-arc-rest-color</nobr>  | Color of the remaining part to complete the circle. | transparent |
 
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-#### complete
-
-number
-
-Expression evaluating to float [0.0, 1.0]
-
-
-#### counterClockwise
-
-boolean
-
-Indicating if the progress should instead be counter clockwise
-
-
-#### size
-
-number
-
-Size of element in pixels.
-
-
-#### strokeWidth
-
-number
-
-Width of progress arc stroke.
-
-
-## Attributes
-
-#### complete
-
-number
-
-Expression evaluating to float [0.0, 1.0]
-
-
-#### counter-clockwise
-
-boolean
-
-Indicating if the progress should instead be counter clockwise
-
-
-#### size
-
-number
-
-Size of element in pixels.
-
-
-#### stroke-width
-
-number
-
-Width of progress arc stroke.
-
+| Property           | Attribute           | Description                                                    | Type      |
+| ------------------ | ------------------- | -------------------------------------------------------------- | --------- |
+| `complete`         | `complete`          | Expression evaluating to float [0.0, 1.0]                      | `number`  |
+| `counterClockwise` | `counter-clockwise` | Indicating if the progress should instead be counter clockwise | `boolean` |
+| `size`             | `size`              | Size of element in pixels.                                     | `number`  |
+| `strokeWidth`      | `stroke-width`      | Width of progress arc stroke.                                  | `number`  |
 
 
 ----------------------------------------------
