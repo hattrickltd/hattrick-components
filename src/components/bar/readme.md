@@ -21,13 +21,13 @@ Currently is at level 4, can reach (cap at) 6, but 8 is the max for this type of
 
 ## CSS variables
 
-| Variable       | Description       | Default value |
-| -------------- | ----------------- | ------------- |
-| <nobr>--bar-level-background</nobr>  | The background color of the bar representing the level. | #59965D |
-| <nobr>--bar-cap-background</nobr>  | The background color of the bar representing the steps between the current level and the maximum achievable level. | #CACACA |
-| <nobr>--bar-max-background</nobr>  | The default background color of the remainder of the bar. | #ECECEC |
-| <nobr>--bar-capped-background</nobr>  | The background color of the bar representing the level when the maximum achievable level has been reached. | #FFEB99 |
-| <nobr>--bar-title-color</nobr>  | The text color of the title (e.g. skill name) in the bar. The text color of the actual levels are the opposites of the background (e.g. green bar with gray rest will give green text in the "max bar" or gray text in the "level bar"). | #000000 |
+| Variable | Description | Default value |
+| -------- | ----------- | ------------- |
+| `--bar-level-background` | The background color of the bar representing the level. | `#59965D` |
+| `--bar-cap-background` | The background color of the bar representing the steps between the current level and the maximum achievable level. | `#CACACA` |
+| `--bar-max-background` | The default background color of the remainder of the bar. | `#ECECEC` |
+| `--bar-capped-background` | The background color of the bar representing the level when the maximum achievable level has been reached. | `#FFEB99` |
+| `--bar-title-color` | The text color of the title (e.g. skill name) in the bar. The text color of the actual levels are the opposites of the background (e.g. green bar with gray rest will give green text in the "max bar" or gray text in the "level bar"). | `#000000` |
 
 <!-- Auto Generated Below -->
 

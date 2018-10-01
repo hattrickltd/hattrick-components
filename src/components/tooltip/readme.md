@@ -12,7 +12,7 @@ With a design inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-
 <hattrick-tooltip position="right" arrow="middle">
   <any slot="content">
     <b>Use</b>
-    <pre>slot="content"</pre>
+    `slot="content"`
     <i>for</i>
     <u>HTML</u>
   </any>
@@ -24,17 +24,17 @@ With a design inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-
 
 | Variable       | Description       | Default value |
 | -------------- | ----------------- | ------------- |
-| <nobr>--tooltip-background</nobr>  | Background of the tooltip. | rgba(0, 0, 0, .75) |
-| <nobr>--tooltip-color</nobr>  | Text color in the tooltip. | white |
-| <nobr>--tooltip-font-size</nobr>  | Font size in the tooltip. | 12px |
-| <nobr>--tooltip-border</nobr>  | Set a border on the tooltip, e.g. `--tooltip-border: 1px solid #767676;`. | 0 |
-| <nobr>--tooltip-padding</nobr>  | Padding in the tooltip. | 5px 10px |
-| <nobr>--tooltip-box-shadow</nobr>  | Set a box-shadow on the tooltip, e.g. `4px 4px 2px -3px #767676`. | none |
-| <nobr>--tooltip-max-width</nobr>  | Maximum width before wrapping. | 400px |
-| <nobr>--tooltip-arrow-size</nobr>  | The size of the arrow. | 7px |
-| <nobr>--tooltip-border-radius</nobr>  | Border radius of the tooltip. | 3px |
-| <nobr>--tooltip-pointer-events</nobr>  | If you want to be able to select text in the tooltip, you can change the pointer-events which is disabled by default by setting for example: `--tooltip-pointer-events: auto;`. | none |
-| <nobr>--tooltip-delay</nobr>  | If you want a short delay before the tooltip shows up, e.g. `--tooltip-delay: 300ms;`.. | 0s |
+| `--tooltip-background`  | Background of the tooltip. | `rgba(0, 0, 0, .75)` |
+| `--tooltip-color`  | Text color in the tooltip. | `white` |
+| `--tooltip-font-size`  | Font size in the tooltip. | `12px` |
+| `--tooltip-border`  | Set a border on the tooltip, e.g. `--tooltip-border: 1px solid #767676;`. | `0` |
+| `--tooltip-padding`  | Padding in the tooltip. | `5px 10px` |
+| `--tooltip-box-shadow`  | Set a box-shadow on the tooltip, e.g. `4px 4px 2px -3px #767676`. | `none` |
+| `--tooltip-max-width`  | Maximum width before wrapping. | `400px` |
+| `--tooltip-arrow-size`  | The size of the arrow. | `7px` |
+| `--tooltip-border-radius`  | Border radius of the tooltip. | `3px` |
+| `--tooltip-pointer-events`  | If you want to be able to select text in the tooltip, you can change the pointer-events which is disabled by default by setting for example: `--tooltip-pointer-events: auto;`. | `none` |
+| `--tooltip-delay`  | If you want a short delay before the tooltip shows up, e.g. `--tooltip-delay: 300ms;`.. | `0s` |
 
 <!-- Auto Generated Below -->
 

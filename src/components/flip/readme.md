@@ -21,20 +21,20 @@ document.getElementById("flip").flipped = true;
 
 ## CSS variables
 
-| Variable       | Description       | Default value |
-| -------------- | ----------------- | ------------- |
-| <nobr>--flip-height</nobr>  | The height of the flip container. **Highly recommended for `direction="x"`.** | auto |
-| <nobr>--flip-width</nobr>  | The width of the flip container. **Highly recommended for `direction="y"`.** | auto |
-| <nobr>--flip-duration</nobr>  | The animation duration to flip the card. | 1s |
+| Variable          | Description                                                                   | Default value |
+| ----------------- | ----------------------------------------------------------------------------- | ------------- |
+| `--flip-height`   | The height of the flip container. **Highly recommended for `direction="x"`.** | `auto`        |
+| `--flip-width`    | The width of the flip container. **Highly recommended for `direction="y"`.**  | `auto`        |
+| `--flip-duration` | The animation duration to flip the card.                                      | `1s`          |
 
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property    | Attribute   | Description | Type         |
-| ----------- | ----------- | ----------- | ------------ |
-| `direction` | `direction` | If the flip container should rotate horizontally (x) or vertically (y). | `"x"`, `"y"` |
+| Property    | Attribute   | Description                                                                 | Type         |
+| ----------- | ----------- | --------------------------------------------------------------------------- | ------------ |
+| `direction` | `direction` | If the flip container should rotate horizontally (x) or vertically (y).     | `"x"`, `"y"` |
 | `flipped`   | `flipped`   | If the flip container should rotate horizontally (`x`) or vertically (`y`). | `boolean`    |
 
 

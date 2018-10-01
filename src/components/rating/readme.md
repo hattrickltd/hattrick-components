@@ -16,14 +16,14 @@ Used to display a Hattrick rating. Uses [progress-arc](../progress-arc/) to disp
 
 | Variable       | Description       | Default value |
 | -------------- | ----------------- | ------------- |
-| <nobr>--rating-background</nobr>  | The background color. | #FFFFFF |
-| <nobr>--rating-color</nobr>  | The text color. | #666666 |
-| <nobr>--rating-font-weight</nobr>  | The font-weight. | bold |
-| <nobr>--rating-stamina-arc-very-low</nobr>  | Color of the stamina bar when below 25%. | #DD4140 |
-| <nobr>--rating-stamina-arc-low</nobr>  | Color of the stamina bar when between 25% and 49%. | #F5A104 |
-| <nobr>--rating-stamina-arc-high</nobr>  | Color of the stamina bar when below 50% and 74%. | #F1C40A |
-| <nobr>--rating-stamina-arc-very-high</nobr>  | Color of the stamina bar when above 75%. | #31A94B |
-| <nobr>--rating-stamina-arc-rest</nobr>  | The color of the remaining part to complete the circle. | #CCCCCC |
+| `--rating-background`  | The background color. | `#FFFFFF` |
+| `--rating-color`  | The text color. | `#666666` |
+| `--rating-font-weight`  | The font-weight. | `bold` |
+| `--rating-stamina-arc-very-low`  | Color of the stamina bar when below 25%. | `#DD4140` |
+| `--rating-stamina-arc-low`  | Color of the stamina bar when between 25% and 49%. | `#F5A104` |
+| `--rating-stamina-arc-high`  | Color of the stamina bar when below 50% and 74%. | `#F1C40A` |
+| `--rating-stamina-arc-very-high`  | Color of the stamina bar when above 75%. | `#31A94B` |
+| `--rating-stamina-arc-rest`  | The color of the remaining part to complete the circle. | `#CCCCCC` |
 
 <!-- Auto Generated Below -->
 

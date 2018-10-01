@@ -7,9 +7,9 @@ This is a Stencil fork of [angular-progress-arc](https://github.com/jesujcastill
 
 | Variable       | Description       | Default value |
 | -------------- | ----------------- | ------------- |
-| <nobr>--progress-arc-stroke-width</nobr>  | Thickness of the circle. | 8px |
-| <nobr>--progress-arc-color</nobr>  | Color of the arc. | #00aa00 |
-| <nobr>--progress-arc-rest-color</nobr>  | Color of the remaining part to complete the circle. | transparent |
+| `--progress-arc-stroke-width`  | Thickness of the circle. | `8px` |
+| `--progress-arc-color`  | Color of the arc. | `#00aa00` |
+| `--progress-arc-rest-color`  | Color of the remaining part to complete the circle. | `transparent` |
 
 <!-- Auto Generated Below -->
 

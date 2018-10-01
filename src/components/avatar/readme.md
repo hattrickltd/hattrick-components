@@ -2,7 +2,7 @@
 
 Displays an avatar from a JSON array of parts.
 
-Example avatar
+Example avatar:
 ```js
 const avatarParts = [{
 		"url": "backgrounds/bg_blue_int.png",
@@ -62,7 +62,7 @@ Additionally, you can create silhouettes by settings `avatar.parts` to a number.
 
 | Variable       | Description       | Default value |
 | -------------- | ----------------- | ------------- |
-| <nobr>--avatar-size</nobr>  | A decimal value between 0 and 1 allows you to dynamically change the size of the avatar. Technically you could use a value larger than 1, but the avatars doesn't scale well above their original size. | 1 |
+| `--avatar-size` | A decimal value between 0 and 1 allows you to dynamically change the size of the avatar. Technically you could use a value larger than 1, but the avatars doesn't scale well above their original size. | `1` |
 
 
 <!-- Auto Generated Below -->
