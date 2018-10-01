@@ -21,7 +21,7 @@ timer.matchdate = matchdate.getTime().toString(); // as numberic string
 
 ## CSS variables
 
-This component doesn't have any CSS variables
+_This component doesn't have any CSS variables_
 
 
 <!-- Auto Generated Below -->
@@ -29,111 +29,22 @@ This component doesn't have any CSS variables
 
 ## Properties
 
-#### matchdate
-
-Date|string|number
-
-At what time the match starts.
-
-
-#### texts
-
-```js
-{
-  days: string,
-  hours: string,
-  minutes: string,
-  seconds: string,
-  halftime: string,
-  overtimeBreak: string,
-  overtime: string,
-}
-```
-
-Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match.
+| Property        | Attribute        | Description                                                                                                                            | Type                                                                                                                                                          |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `addedMinutes`  | `added-minutes`  | How many minutes of added time the match has.                                                                                          | `number`                                                                                                                                                      |
+| `halftimeBreak` | `halftime-break` | How many minutes break does the match have between first and second half.                                                              | `number`                                                                                                                                                      |
+| `ignoreBreaks`  | `ignore-breaks`  | If we should ignore halftime and overtime breaks when calculating the time shown. Defaults to false.                                   | `boolean`                                                                                                                                                     |
+| `matchdate`     | --               | At what time the match starts.                                                                                                         | `Date`, `string`, `number`                                                                                                                                    |
+| `overtimeBreak` | `overtime-break` | How many minutes break does the match have before overtime starts.                                                                     | `number`                                                                                                                                                      |
+| `texts`         | --               | Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match.. | `{     days: string,     hours: string,     minutes: string,     seconds: string,     halftime: string,     overtimeBreak: string,     overtime: string,   }` |
 
 
-#### addedMinutes
+## Methods
 
-number
-
-How many minutes of added time the match has.
-
-
-#### halftimeBreak
-
-number
-
-How many minutes break does the match have between first and second half.
-
-
-#### overtimeBreak
-
-number
-
-How many minutes break does the match have before overtime starts.
-
-
-#### ignoreBreaks
-
-boolean
-
-If we should ignore halftime and overtime breaks when calculating the time shown. Defaults to false.
-
-
-## Attributes
-
-#### matchdate
-
-Date|string|number
-
-At what time the match starts.
-
-
-#### texts
-
-```js
-{
-  days: string,
-  hours: string,
-  minutes: string,
-  seconds: string,
-  halftime: string,
-  overtimeBreak: string,
-  overtime: string,
-}
-```
-
-Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match.
-
-
-#### added-minutes
-
-number
-
-How many minutes of added time the match has.
-
-
-#### halftime-break
-
-number
-
-How many minutes break does the match have between first and second half.
-
-
-#### overtime-break
-
-number
-
-How many minutes break does the match have before overtime starts.
-
-
-#### ignore-breaks
-
-boolean
-
-If we should ignore halftime and overtime breaks when calculating the time shown. Defaults to false.
-
+| Method   | Description |
+| -------- | ----------- |
+| `pause`  |             |
+| `resume` |             |
 
 
 ----------------------------------------------

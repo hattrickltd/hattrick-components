@@ -7,8 +7,14 @@ import { Component, Prop } from "@stencil/core";
 })
 export class Flip {
 
+  /**
+   * If the container should be flipped (showing back) or not.
+   */
   @Prop({ reflectToAttr: true, mutable: true }) flipped: boolean;
 
+  /**
+   * If the flip container should rotate horizontally (`x`) or vertically (`y`).
+   */
   @Prop() direction: "x" | "y";
 
   render() {
