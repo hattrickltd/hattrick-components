@@ -1,3 +1,9 @@
 :host {
   font-variant-numeric: tabular-nums lining-nums;
 }
+
+monospace {
+  display: inline-block;
+  width: var(--match-clock-monospace-width, auto);
+  text-align: center;
+}

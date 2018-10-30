@@ -7,8 +7,10 @@
   <link href="/build/hattrick-components.css" rel="stylesheet" type="text/css" />
   <script src="/build/hattrick-components.js"></script>
 
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+
   <style>
-    html { font: 12px "Fira Sans", Verdana, Geneva, Tahoma, sans-serif; }
+    html { font: 12px Verdana, Geneva, Tahoma, sans-serif; }
 
     h3 { cursor: pointer; }
     h3:after { content: ' [\00b1]' }
@@ -42,6 +44,8 @@
 
     hattrick-timer, hattrick-match-clock {
       display: block;
+      font: 14px "Fira Sans", Verdana, Geneva, Tahoma, sans-serif;
+      --match-clock-monospace-width: 8px;
     }
 
 
@@ -711,14 +715,14 @@
       
       for (let i = -140 * 60; i <= 0; i += 300) {
         let timer = document.createElement("hattrick-match-clock");
-        timer.matchtime = Date.now() + i * 1000;
+        timer.matchdate = Date.now() + i * 1000;
         timer.texts = texts;
         wrapper.appendChild(timer);
       }
       
       for (let i = 10; i <= 1000000; i *= 10) {
         let timer = document.createElement("hattrick-match-clock");
-        timer.matchtime = Date.now() + i * 1000;
+        timer.matchdate = Date.now() + i * 1000;
         timer.texts = texts;
         wrapper.appendChild(timer);
       }

@@ -263,8 +263,28 @@ export class Avatar {
     return img;
   }
 
+  /**
+   * Prints the images to a canvas. Useful together with `.toDataURL()`.
+   * This may be useful for faster loading at a later time.
+   * @param images The avatar parts to print. Defaults to the images already loaded by the component.
+   *
+   * @example
+     const avatar = document.createElement("hattrick-avatar");
+     avatar.parts = avatarParts;
+     avatar.onload = function (evt) {
+       const dataUrl = avatar.printToCanvas().toDataURL();
+       // store in cache for later use?
+     };
+     document.body.appendChild(avatar);
+   *
+   * @example
+     <hattrick-avatar parts="..." onload="avatarLoaded.call(this, event.detail)"></hattrick-avatar>
+     function avatarLoaded(images) {
+       const dataUrl = this.printToCanvas(images).toDataURL();
+     }
+   */
   @Method()
-  async printToCanvas(images?: Array<IAvatarImage>): Promise<HTMLCanvasElement> {
+  async printToCanvas(images: Array<IAvatarImage> = this.images): Promise<HTMLCanvasElement> {
 
     let canvas = document.createElement("canvas");
     let context = canvas.getContext("2d");
@@ -272,7 +292,7 @@ export class Avatar {
     canvas.width = this.avatarSize.width;
     canvas.height = this.avatarSize.height;
 
-    (images || this.images).forEach((a) => {
+    images.forEach((a) => {
       context.drawImage(a.img, a.x, a.y);
     });
 

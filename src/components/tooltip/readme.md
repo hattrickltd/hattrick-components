@@ -12,7 +12,7 @@ With a design inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-
 <hattrick-tooltip position="right" arrow="middle">
   <any slot="content">
     <b>Use</b>
-    <pre>slot="content"</pre>
+    `slot="content"`
     <i>for</i>
     <u>HTML</u>
   </any>
@@ -22,142 +22,39 @@ With a design inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-
 
 ## CSS variables
 
-#### --tooltip-background: rgba(0, 0, 0, .75);
-
-Background of the tooltip.
-
-#### --tooltip-color: white;
-
-Text color in the tooltip.
-
-#### --tooltip-font-size: 12px;
-
-Font size in the tooltip.
-
-#### --tooltip-border: 0;
-
-Set a border on the tooltip, e.g. `--tooltip-border: 1px solid #767676;`
-
-#### --tooltip-padding: 5px 10px;
-
-Padding in the tooltip.
-
-#### --tooltip-box-shadow: none;
-
-Set a box-shadow on the tooltip, e.g. `4px 4px 2px -3px #767676`
-
-#### --tooltip-max-width: 400px;
-
-Maximum width before wrapping.
-
-#### --tooltip-arrow-size: 7px;
-
-The size of the arrow.
-
-#### --tooltip-border-radius: 3px;
-
-Border radius of the tooltip.
-
-#### --tooltip-pointer-events: none;
-
-If you want to be able to select text in the tooltip, you can change the pointer-events which is disabled by default by setting for example: `--tooltip-pointer-events: auto;`.
-
-#### --tooltip-delay: 0s;
-
-If you want a short delay before the tooltip shows up, e.g. `--tooltip-delay: 300ms;`.
-
+| Variable       | Description       | Default value |
+| -------------- | ----------------- | ------------- |
+| `--tooltip-background`  | Background of the tooltip. | `rgba(0, 0, 0, .75)` |
+| `--tooltip-color`  | Text color in the tooltip. | `white` |
+| `--tooltip-font-size`  | Font size in the tooltip. | `12px` |
+| `--tooltip-border`  | Set a border on the tooltip, e.g. `--tooltip-border: 1px solid #767676;`. | `0` |
+| `--tooltip-padding`  | Padding in the tooltip. | `5px 10px` |
+| `--tooltip-box-shadow`  | Set a box-shadow on the tooltip, e.g. `4px 4px 2px -3px #767676`. | `none` |
+| `--tooltip-max-width`  | Maximum width before wrapping. | `400px` |
+| `--tooltip-arrow-size`  | The size of the arrow. | `7px` |
+| `--tooltip-border-radius`  | Border radius of the tooltip. | `3px` |
+| `--tooltip-pointer-events`  | If you want to be able to select text in the tooltip, you can change the pointer-events which is disabled by default by setting for example: `--tooltip-pointer-events: auto;`. | `none` |
+| `--tooltip-delay`  | If you want a short delay before the tooltip shows up, e.g. `--tooltip-delay: 300ms;`.. | `0s` |
 
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-#### arrow
-
-string
-
-The position of the arrow. Will be ignored if `position` is not set. Defaults to `none`.
-
-Possible values:
-* `start` will put the arrow to the left or top.
-* `middle` will put the arrow to the middle or center.
-* `end` will put the arrow to the right or bottom.
-* `none` will remove the arrow.
+| Property   | Attribute  | Description                                                                                                                                                                                                               | Type                                                |
+| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `arrow`    | `arrow`    | The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom. | `"start"`, `"middle"`, `"end"`, `"none"`            |
+| `content`  | `content`  | The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.                                                                                                                            | `string`                                            |
+| `dir`      | `dir`      |                                                                                                                                                                                                                           | `string`                                            |
+| `position` | `position` | Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.                                                                  | `"top"`, `"bottom"`, `"start"`, `"end"`, `"cursor"` |
 
 
-#### content
+## Methods
 
-string
-
-The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.
-
-
-#### dir
-
-string
-
-direction, if omitted the component will calculate itself
-
-
-#### position
-
-string
-
-Which side of the element the tooltip should be shown. Defaults to `cursor`. Using `cursor` will also disable animations.
-
-Possible values:
-* `top` above the container
-* `bottom` below the container
-* `start` to the left of the container in LTR, right in RTL.
-* `end` to the right of the container in LTR, left in RTL.
-* `cursor` will put it approximately below the cursor.
-
-## Attributes
-
-#### arrow
-
-string
-
-The position of the arrow. Will be ignored if `position` is not set. Defaults to `none`.
-Possible values:
-* `start` will put the arrow to the left or top.
-* `middle` will put the arrow to the middle or center.
-* `end` will put the arrow to the right or bottom.
-* `none` will remove the arrow.
-
-
-#### content
-
-string
-
-The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.
-
-
-#### dir
-
-string
-
-direction, if omitted the component will calculate itself
-
-
-#### position
-
-string
-
-Which side of the element the tooltip should be shown.
-Defaults to `cursor`. Using `cursor` will also disable animations.
-
-Possible values:
-* `top` above the container
-* `bottom` below the container
-* `start` to the left of the container in LTR, right in RTL.
-* `end` to the right of the container in LTR, left in RTL.
-* `cursor` will put it approximately below the cursor. 
-
-#### no-animate
-
-Add this attribute to disable animations.
-
+| Method  | Description |
+| ------- | ----------- |
+| `close` |             |
+| `open`  |             |
 
 
 ----------------------------------------------

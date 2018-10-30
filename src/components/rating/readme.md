@@ -14,101 +14,28 @@ Used to display a Hattrick rating. Uses [progress-arc](../progress-arc/) to disp
 
 ## CSS Variables
 
-#### --rating-background: #FFFFFF;
-
-The background color.
-
-#### --rating-color: #666666;
-
-The text color.
-
-#### --rating-font-weight: bold;
-
-The font-weight.
-
-#### --rating-stamina-arc-very-low: #DD4140;
-
-Color of the stamina bar when below 25%.
-
-#### --rating-stamina-arc-low: #F5A104;
-
-Color of the stamina bar when between 25% and 49%.
-
-#### --rating-stamina-arc-high: #F1C40A;
-
-Color of the stamina bar when below 50% and 74%.
-
-#### --rating-stamina-arc-very-high: #31A94B;
-
-Color of the stamina bar when above 75%.
-
-#### --rating-stamina-arc-rest: #CCCCCC;
-
-The color of the remaining part to complete the circle.
-
+| Variable       | Description       | Default value |
+| -------------- | ----------------- | ------------- |
+| `--rating-background`  | The background color. | `#FFFFFF` |
+| `--rating-color`  | The text color. | `#666666` |
+| `--rating-font-weight`  | The font-weight. | `bold` |
+| `--rating-stamina-arc-very-low`  | Color of the stamina bar when below 25%. | `#DD4140` |
+| `--rating-stamina-arc-low`  | Color of the stamina bar when between 25% and 49%. | `#F5A104` |
+| `--rating-stamina-arc-high`  | Color of the stamina bar when below 50% and 74%. | `#F1C40A` |
+| `--rating-stamina-arc-very-high`  | Color of the stamina bar when above 75%. | `#31A94B` |
+| `--rating-stamina-arc-rest`  | The color of the remaining part to complete the circle. | `#CCCCCC` |
 
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-#### rating
-
-number
-
-The rating to show inside the stamina.
-
-
-#### size
-
-"large" | "small" | number
-
-Size of element in pixels. `large` is equivalent to `44`, `small` is equivalent to `29`. Note however that a numberic value doesn't automatically adjust font sizes and progress-arc size. You have to manually set <code>font-size</code> and <code>--progress-arc-stroke-width</code>.
-
-
-#### stamina
-
-number
-
-Stamina in percentage between 0 and 1.
-
-
-#### staminaLabel
-
-string
-
-Label for the mouseover stamina
-
-
-## Attributes
-
-#### rating
-
-number
-
-The rating to show inside the stamina.
-
-
-#### size
-
-"large" | "small" | number
-
-Size of element in pixels. `large` is equivalent to `44`, `small` is equivalent to `29`. Note however that a numberic value doesn't automatically adjust font sizes and progress-arc size. You have to manually set <code>font-size</code> and <code>--progress-arc-stroke-width</code>.
-
-
-#### stamina
-
-number
-
-Stamina in percentage between 0 and 1.
-
-
-#### stamina-label
-
-string
-
-Label for the mouseover stamina
-
+| Property       | Attribute       | Description                            | Type                           |
+| -------------- | --------------- | -------------------------------------- | ------------------------------ |
+| `rating`       | `rating`        | The rating to show inside the stamina. | `number`                       |
+| `size`         | --              | Size of element in pixels.             | `number`, `"small"`, `"large"` |
+| `staminaLabel` | `stamina-label` | Label for the mouseover stamina        | `string`                       |
+| `stamina`      | `stamina`       | Stamina in percentage between 0 and 1. | `number`                       |
 
 
 ----------------------------------------------

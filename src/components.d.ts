@@ -40,6 +40,9 @@ export namespace Components {
     * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
     */
     'parts': IAvatarPart[] | number | string;
+    /**
+    * Prints the images to a canvas. Useful together with `.toDataURL()`. This may be useful for faster loading at a later time.
+    */
     'printToCanvas': (images?: IAvatarImage[]) => Promise<HTMLCanvasElement>;
     /**
     * Set to true to generate a circular avatar by cutting off the bottom.
@@ -151,11 +154,23 @@ export namespace Components {
   }
 
   interface HattrickFlip {
+    /**
+    * If the flip container should rotate horizontally (`x`) or vertically (`y`).
+    */
     'direction': "x" | "y";
+    /**
+    * If the container should be flipped (showing back) or not.
+    */
     'flipped': boolean;
   }
   interface HattrickFlipAttributes extends StencilHTMLAttributes {
+    /**
+    * If the flip container should rotate horizontally (`x`) or vertically (`y`).
+    */
     'direction'?: "x" | "y";
+    /**
+    * If the container should be flipped (showing back) or not.
+    */
     'flipped'?: boolean;
   }
 
