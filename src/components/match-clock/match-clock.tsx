@@ -166,11 +166,13 @@ export class MatchClock {
   }
 
   render() {
-    return (
-      <span>
-        { this.getTime() }
-      </span>
-    );
+    return this.getTime().split("").map((char) => {
+      if (isNaN(parseInt(char))) {
+        return <span>{ char }</span>;
+      } else {
+        return <monospace>{ char }</monospace>;
+      }
+    });
   }
 }
 

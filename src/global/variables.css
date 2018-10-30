@@ -40,4 +40,6 @@
   --flip-height: auto;
   --flip-width: auto;
   --flip-duration: 1s;
+
+  --match-clock-monospace-width: auto;
 }
