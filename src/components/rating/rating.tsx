@@ -50,7 +50,7 @@ export class Rating {
         width: this.size + "px",
         height: this.size + "px",
       },
-      title: `${this.staminaLabel}: ${this.stamina * 100}%`,
+      title: `${this.staminaLabel}: ${Math.round(this.stamina * 100)}%`,
     };
   }
 
