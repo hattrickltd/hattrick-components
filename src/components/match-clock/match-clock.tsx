@@ -44,7 +44,7 @@ export class MatchClock {
 
   componentWillLoad() {
     this.matchdateUpdated();
-    this._interval = setInterval(() => this.updateTime(), 1000);
+    this.resume();
   }
 
   componentDidUnload() {
