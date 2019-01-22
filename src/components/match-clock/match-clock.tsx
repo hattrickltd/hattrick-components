@@ -39,6 +39,9 @@ export class MatchClock {
   /** If we should ignore halftime and overtime breaks when calculating the time shown. Defaults to false. */
   @Prop() ignoreBreaks: boolean = false;
 
+  /** How fast the clock should tick. Defaults to 1. 2 means twice as fast. */
+  @Prop() speed: number = 1;
+
   componentWillLoad() {
     this.matchdateUpdated();
     this._interval = setInterval(() => this.updateTime(), 1000);
@@ -49,10 +52,17 @@ export class MatchClock {
   }
 
   @Watch("matchdate")
-  private matchdateUpdated() {
+  protected matchdateUpdated() {
     this._matchstart = fixDate(this.matchdate).getTime();
     if (this._pauseTime) this._pauseTime = Date.now();
     this.updateTime();
+  }
+
+  @Watch("speed")
+  protected speedUpdated() {
+    if (this.speed > 0) {
+      this.resume();
+    }
   }
 
   private _pauseTime;
@@ -68,7 +78,17 @@ export class MatchClock {
       this.matchdate = fixDate(this.matchdate).getTime() + (Date.now() - this._pauseTime);
       this._pauseTime = undefined;
     }
-    this._interval = setInterval(() => this.updateTime(), 1000);
+    this._interval && clearInterval(this._interval);
+
+    let interval = 1000;
+    if (this.speed > 1) interval = 100;
+
+    this._interval = setInterval(() => {
+      if (this.speed > 1) {
+        this._matchstart -= interval * (this.speed - 1);
+      }
+      this.updateTime();
+    }, interval);
   }
 
   private updateTime() {
