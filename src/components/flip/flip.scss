@@ -6,7 +6,8 @@
 }
 
 .wrapper {
-  position: relative;
+  position: absolute;
+  top: 0; left: 0;
   perspective: 800px;
 
   width: 100%;
