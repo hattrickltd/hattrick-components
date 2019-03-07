@@ -6,8 +6,7 @@
 }
 
 .wrapper {
-  position: absolute;
-  top: 0; left: 0;
+  position: relative;
   perspective: 800px;
 
   width: 100%;
@@ -22,6 +21,7 @@
   backface-visibility: hidden;
   transition: opacity .2s linear .3s;
   
+  position: absolute;
   width: 100%;
   height: 100%;
 
@@ -31,7 +31,7 @@
 }
 
 .front { opacity: 1; }
-.back { opacity: 0; margin-top: -100%; }
+.back { opacity: 0; }
 
 :host([flipped]) .front { opacity: 0; }
 :host([flipped]) .back { opacity: 1; }
