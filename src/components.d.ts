@@ -366,6 +366,7 @@ export namespace Components {
   }
 
   interface HattrickTooltip {
+    'alwaysShow': boolean;
     /**
     * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
     */
@@ -383,6 +384,7 @@ export namespace Components {
     'position': "top" | "bottom" | "start" | "end" | "cursor";
   }
   interface HattrickTooltipAttributes extends StencilHTMLAttributes {
+    'alwaysShow'?: boolean;
     /**
     * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
     */

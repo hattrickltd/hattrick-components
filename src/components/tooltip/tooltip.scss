@@ -20,7 +20,7 @@
   
   max-width: var(--tooltip-max-width, 400px);
 
-  font-size: var(--tooltip-font-size, 1rem);
+  font-size: var(--tooltip-font-size, inherit);
   background-color: var(--tooltip-background, rgba(0, 0, 0, .75));
   color: var(--tooltip-color, #FFFFFF);
   border: var(--tooltip-border, 0);

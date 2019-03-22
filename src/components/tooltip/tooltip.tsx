@@ -18,6 +18,8 @@ export class Tooltip {
     return this.dir === "rtl";
   }
 
+  @Prop() alwaysShow: boolean = false;
+
   /**
    * The position of the arrow. Will be ignored if `position` is not set.
    * `start` will put the arrow to the left or top.
@@ -55,6 +57,11 @@ export class Tooltip {
     // }, { capture: true })
     if (typeof this.dir === "undefined") {
       this.dir = getComputedStyle(this.host).direction || "ltr";
+    }
+
+    console.log("componentWillLoad", this.alwaysShow);
+    if (this.alwaysShow) {
+      this.open();
     }
   }
 
@@ -155,7 +162,7 @@ export class Tooltip {
   render() {
     return ([
       <slot />,
-      <div id="tooltip" style={ this.cssPos } hidden={ !this.showTooltip }>
+      <div id="tooltip" style={ this.cssPos } hidden={ !this.showTooltip && !this.alwaysShow }>
         { this.content }
         <slot name="content"></slot>
       </div>
