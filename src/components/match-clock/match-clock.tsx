@@ -42,6 +42,8 @@ export class MatchClock {
   /** How fast the clock should tick. Defaults to 1. 2 means twice as fast. */
   @Prop() speed: number = 1;
 
+  @Prop() countUpFormat: string = "MM:SS";
+
   componentWillLoad() {
     this.matchdateUpdated();
     this.resume();
@@ -111,17 +113,13 @@ export class MatchClock {
       else if (clock.hours !== 0) format = "H MM SS";
       else format = "MM SS";
 
-      return format
-        .replace("D", clock.days.toString() + (t.days || ""))
-        .replace("H", clock.hours.toString() + (t.hours || ""))
-        .replace("MM", this.padLeft(clock.minutes) + (t.minutes || ""))
-        .replace("SS", this.padLeft(clock.seconds) + (t.seconds || ""));
+      return this.format(clock, format);
     } else {
-      return this.padLeft(clock.minutes) + ":" + this.padLeft(clock.seconds) + clock.labelAfterClock;
+      return this.format(clock, this.countUpFormat) + clock.labelAfterClock;
     }
   }
 
-  private getMatchClock(): { minutes: number, seconds: number, days: number, hours: number, labelAfterClock: string } {
+  private getMatchClock(): IClock {
 
     let minutes = 0, seconds = 0, days = 0, hours = 0, labelAfterClock = "";
 
@@ -171,6 +169,18 @@ export class MatchClock {
     return { minutes, seconds, days, hours, labelAfterClock };
   }
 
+  private format(clock: IClock, format: string): string {
+    return format
+      .replace("DD", this.padLeft(clock.days) + (this.texts.days || ""))
+      .replace("D", clock.days.toString() + (this.texts.days || ""))
+      .replace("HH", this.padLeft(clock.hours) + (this.texts.hours || ""))
+      .replace("H", clock.hours.toString() + (this.texts.hours || ""))
+      .replace("MM", this.padLeft(clock.minutes) + (this.texts.minutes || ""))
+      .replace("M", clock.minutes.toString() + (this.texts.minutes || ""))
+      .replace("SS", this.padLeft(clock.seconds) + (this.texts.seconds || ""))
+      .replace("M", clock.seconds.toString() + (this.texts.seconds || ""));
+  }
+
   private padLeft(val: number): string {
     if (val < 10) return "0" + val;
     else return val.toString();
@@ -204,4 +214,12 @@ function fixDate(date: Date | string | number): Date {
   if (typeof date === "string") return new Date(date.replace(/(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/, "$1T$2:$3"));
 
   return date as any;
+}
+
+interface IClock {
+  minutes: number,
+  seconds: number,
+  days: number,
+  hours: number,
+  labelAfterClock: string,
 }
