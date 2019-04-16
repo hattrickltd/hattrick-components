@@ -1,4 +1,5 @@
 import { Component, Prop, State, Watch, Method } from "@stencil/core";
+import { IClockTexts } from "./match-clock.interfaces";
 
 @Component({
   tag: "hattrick-match-clock",
@@ -212,14 +213,4 @@ interface IClock {
   days: number,
   hours: number,
   labelAfterClock: string,
-}
-
-export interface IClockTexts {
-  days: string,
-  hours: string,
-  minutes: string,
-  seconds: string,
-  halftime: string,
-  overtimeBreak: string,
-  overtime: string,
 }

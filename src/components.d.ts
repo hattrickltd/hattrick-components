@@ -14,7 +14,7 @@ import {
 } from './components/avatar/avatar.interfaces';
 import {
   IClockTexts,
-} from './components/match-clock/match-clock';
+} from './components/match-clock/match-clock.interfaces';
 
 
 export namespace Components {
