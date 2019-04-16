@@ -14,15 +14,7 @@ export class MatchClock {
   @State() private seconds: number;
 
   /** Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match.. */
-  @Prop() texts: {
-    days: string,
-    hours: string,
-    minutes: string,
-    seconds: string,
-    halftime: string,
-    overtimeBreak: string,
-    overtime: string,
-  } = {} as any;
+  @Prop() texts: IClockTexts = {} as any;
 
   /** At what time the match starts. */
   @Prop({ mutable: true }) matchdate: Date | string | number;
@@ -107,13 +99,11 @@ export class MatchClock {
     let clock = this.getMatchClock();
 
     if (this.isCountingDown()) {
-      let t = this.texts;
-
       if (clock.days !== 0) format = "D H MM SS";
       else if (clock.hours !== 0) format = "H MM SS";
       else format = "MM SS";
 
-      return this.format(clock, format);
+      return this.format(clock, format, this.texts);
     } else {
       return this.format(clock, this.countUpFormat) + clock.labelAfterClock;
     }
@@ -169,16 +159,16 @@ export class MatchClock {
     return { minutes, seconds, days, hours, labelAfterClock };
   }
 
-  private format(clock: IClock, format: string): string {
+  private format(clock: IClock, format: string, texts: IClockTexts = {} as any): string {
     return format
-      .replace("DD", this.padLeft(clock.days) + (this.texts.days || ""))
-      .replace("D", clock.days.toString() + (this.texts.days || ""))
-      .replace("HH", this.padLeft(clock.hours) + (this.texts.hours || ""))
-      .replace("H", clock.hours.toString() + (this.texts.hours || ""))
-      .replace("MM", this.padLeft(clock.minutes) + (this.texts.minutes || ""))
-      .replace("M", clock.minutes.toString() + (this.texts.minutes || ""))
-      .replace("SS", this.padLeft(clock.seconds) + (this.texts.seconds || ""))
-      .replace("M", clock.seconds.toString() + (this.texts.seconds || ""));
+      .replace("DD", this.padLeft(clock.days) + (texts.days || ""))
+      .replace("D", clock.days.toString() + (texts.days || ""))
+      .replace("HH", this.padLeft(clock.hours) + (texts.hours || ""))
+      .replace("H", clock.hours.toString() + (texts.hours || ""))
+      .replace("MM", this.padLeft(clock.minutes) + (texts.minutes || ""))
+      .replace("M", clock.minutes.toString() + (texts.minutes || ""))
+      .replace("SS", this.padLeft(clock.seconds) + (texts.seconds || ""))
+      .replace("M", clock.seconds.toString() + (texts.seconds || ""));
   }
 
   private padLeft(val: number): string {
@@ -222,4 +212,14 @@ interface IClock {
   days: number,
   hours: number,
   labelAfterClock: string,
+}
+
+export interface IClockTexts {
+  days: string,
+  hours: string,
+  minutes: string,
+  seconds: string,
+  halftime: string,
+  overtimeBreak: string,
+  overtime: string,
 }

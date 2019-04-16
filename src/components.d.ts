@@ -12,6 +12,9 @@ import {
   IAvatarImage,
   IAvatarPart,
 } from './components/avatar/avatar.interfaces';
+import {
+  IClockTexts,
+} from './components/match-clock/match-clock';
 
 
 export namespace Components {
@@ -180,6 +183,7 @@ export namespace Components {
     * How many minutes of added time the match has.
     */
     'addedMinutes': number;
+    'countUpFormat': string;
     /**
     * How many minutes break does the match have between first and second half.
     */
@@ -205,21 +209,14 @@ export namespace Components {
     /**
     * Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match..
     */
-    'texts': {
-      days: string,
-      hours: string,
-      minutes: string,
-      seconds: string,
-      halftime: string,
-      overtimeBreak: string,
-      overtime: string,
-    };
+    'texts': IClockTexts;
   }
   interface HattrickMatchClockAttributes extends StencilHTMLAttributes {
     /**
     * How many minutes of added time the match has.
     */
     'addedMinutes'?: number;
+    'countUpFormat'?: string;
     /**
     * How many minutes break does the match have between first and second half.
     */
@@ -243,15 +240,7 @@ export namespace Components {
     /**
     * Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match..
     */
-    'texts'?: {
-      days: string,
-      hours: string,
-      minutes: string,
-      seconds: string,
-      halftime: string,
-      overtimeBreak: string,
-      overtime: string,
-    };
+    'texts'?: IClockTexts;
   }
 
   interface HattrickProgressArc {
