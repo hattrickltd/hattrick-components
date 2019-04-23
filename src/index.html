@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
   <title>(Debug) Hattrick Components</title>
-  <link href="/build/hattrick-components.css" rel="stylesheet" type="text/css" />
-  <script src="/build/hattrick-components.js"></script>
+  <script type="module" src="/build/hattrick_components.esm.js"></script>
+  <script nomodule src="/build/hattrick_components.js"></script>
 
   <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 
@@ -142,8 +142,6 @@
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
     <div examples>
       <h4>Basic</h4>
-
-      <hattrick-tooltip arrow="start" position="bottom" always-show content="This tooltip is always shown."></hattrick-tooltip>
 
       <div style="text-align: center">
         <hattrick-tooltip content="By default the title will align to the cursor">
@@ -669,6 +667,8 @@
   
   <h2>Bars</h2>
   <section>
+    <hattrick-bar level="8"></hattrick-bar>
+
     <p><a role="button" id="addBars" href="javascript:void(0)">Load bars</a></p>
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>

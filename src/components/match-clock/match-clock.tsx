@@ -1,9 +1,9 @@
-import { Component, Prop, State, Watch, Method } from "@stencil/core";
+import { h, Component, Prop, State, Watch, Method, Host } from "@stencil/core";
 import { IClockTexts } from "./match-clock.interfaces";
 
 @Component({
   tag: "hattrick-match-clock",
-  styleUrl: "match-clock.scss",
+  styleUrl: "match-clock.css",
   shadow: true,
 })
 export class MatchClock {
@@ -188,23 +188,22 @@ export class MatchClock {
     else return val.toString();
   }
 
-  hostData() {
-    return {
-      "role": "timer",
-      "class": {
-        "match-clock-passed-zero": !this.isCountingDown(),
-      }
-    };
-  }
-
   render() {
-    return this.getTime().split("").map((char) => {
-      if (isNaN(parseInt(char))) {
-        return <span>{ char }</span>;
-      } else {
-        return <monospace>{ char }</monospace>;
-      }
-    });
+    return (
+      <Host role="timer" class={{
+        "match-clock-passed-zero": !this.isCountingDown()
+      }}>
+        {
+          this.getTime().split("").map((char) => {
+            if (isNaN(parseInt(char))) {
+              return <span>{ char }</span>;
+            } else {
+              return <monospace>{ char }</monospace>;
+            }
+          })
+        }
+      </Host>
+    );
   }
 }
 

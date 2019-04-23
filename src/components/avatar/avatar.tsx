@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State, Watch, Event, EventEmitter, Method } from "@stencil/core";
+import { h, Component, Element, Prop, State, Watch, Event, EventEmitter, Method, Host } from "@stencil/core";
 import { waitForIntersection } from "../../global/lazy-loading";
 import { IAvatarPart, IAvatarImage } from "./avatar.interfaces";
 
@@ -7,12 +7,12 @@ const facecardSize = { width: 110, height: 155 };
 
 @Component({
   tag: "hattrick-avatar",
-  styleUrl: "avatar.scss",
+  styleUrl: "avatar.css",
   shadow: true,
 })
 export class Avatar {
 
-  @Element() private host: HTMLStencilElement;
+  @Element() private host: HTMLHattrickAvatarElement;
 
   private avatarSize: { width: number, height: number } = facecardSize;
 
@@ -44,6 +44,8 @@ export class Avatar {
 
   /** Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport */
   @Prop() lazy?: boolean = true;
+  /** How soon before the avatar comes into view should we start loading it? */
+  @Prop() lazyMargin?: string = `250px`;
 
   /** This array contains the loaded images that will be printed */
   @State() private images: Array<IAvatarImage> = [];
@@ -299,29 +301,24 @@ export class Avatar {
     return canvas;
   }
 
-  hostData() {
-    return {
-      "role": "img",
-      "class": {
+  render() {
+    return (
+      <Host role="img" class={{
         "round": this.round,
         "square": this.square,
         "has-facecard": this.facecard,
-      }
-    };
-  }
-
-  render() {
-    return (
-      <div>
-        {this.images.map((part) =>
-          <img src={part.img.src} style={{
-            "width": part.img.naturalWidth / this.avatarSize.width * 100 + "%",
-            "height": part.img.naturalHeight / this.avatarSize.height * 100 + "%",
-            "left": part.x / this.avatarSize.width * 100 + "%",
-            "top": part.y / this.avatarSize.height * 100 + "%",
-          }} />
-        )}
-      </div>
+      }}>
+        <div>
+          {this.images.map((part) =>
+            <img src={part.img.src} style={{
+              "width": part.img.naturalWidth / this.avatarSize.width * 100 + "%",
+              "height": part.img.naturalHeight / this.avatarSize.height * 100 + "%",
+              "left": part.x / this.avatarSize.width * 100 + "%",
+              "top": part.y / this.avatarSize.height * 100 + "%",
+            }} />
+          )}
+        </div>
+      </Host>
     );
   }
 }

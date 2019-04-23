@@ -5,9 +5,8 @@
  */
 
 
-import '@stencil/core';
-
-
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
+import { JSX } from '@stencil/core';
 import {
   IAvatarImage,
   IAvatarPart,
@@ -18,7 +17,6 @@ import {
 
 
 export namespace Components {
-
   interface HattrickAvatar {
     /**
     * Set whether or not the background should be shown.
@@ -41,6 +39,10 @@ export namespace Components {
     */
     'lazy'?: boolean;
     /**
+    * How soon before the avatar comes into view should we start loading it?
+    */
+    'lazyMargin'?: string;
+    /**
     * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
     */
     'parts': IAvatarPart[] | number | string;
@@ -57,45 +59,6 @@ export namespace Components {
     */
     'square'?: boolean;
   }
-  interface HattrickAvatarAttributes extends StencilHTMLAttributes {
-    /**
-    * Set whether or not the background should be shown.
-    */
-    'background'?: boolean;
-    /**
-    * the base route to the avatars, can be either a relative or absolute url
-    */
-    'base'?: string;
-    /**
-    * Set whether or not the surrounding card should be shown.
-    */
-    'facecard'?: boolean;
-    /**
-    * Set this to false to remove the bandages on injured and bruised players.
-    */
-    'injury'?: boolean;
-    /**
-    * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport
-    */
-    'lazy'?: boolean;
-    /**
-    * Let you know when the avatar has finished loading. An array of the images loaded will be provided in the `event.detail`. Real type is `EventEmitter<Array<IAvatarImage>>`, but for TypeScript < 2.7 it needs to be generic.
-    */
-    'onLoad'?: (event: CustomEvent) => void;
-    /**
-    * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
-    */
-    'parts'?: IAvatarPart[] | number | string;
-    /**
-    * Set to true to generate a circular avatar by cutting off the bottom.
-    */
-    'round'?: boolean;
-    /**
-    * Set to true to generate a square avatar by cutting off the bottom.
-    */
-    'square'?: boolean;
-  }
-
   interface HattrickBar {
     /**
     * If there's a max before the end of the bar (e.g. maxed youth skill).
@@ -110,14 +73,6 @@ export namespace Components {
     */
     'isCap': boolean;
     /**
-    * The label shown inside the bar
-    */
-    'label': string;
-    /**
-    * Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport
-    */
-    'lazy'?: boolean;
-    /**
     * The level of the bar.
     */
     'level': number;
@@ -126,37 +81,6 @@ export namespace Components {
     */
     'max': number;
   }
-  interface HattrickBarAttributes extends StencilHTMLAttributes {
-    /**
-    * If there's a max before the end of the bar (e.g. maxed youth skill).
-    */
-    'cap'?: number;
-    /**
-    * The denomination of the skill level
-    */
-    'denomination'?: string;
-    /**
-    * If the sublevel is the same as the levelCap.
-    */
-    'isCap'?: boolean;
-    /**
-    * The label shown inside the bar
-    */
-    'label'?: string;
-    /**
-    * Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport
-    */
-    'lazy'?: boolean;
-    /**
-    * The level of the bar.
-    */
-    'level'?: number;
-    /**
-    * The maximum level the bar should show.
-    */
-    'max'?: number;
-  }
-
   interface HattrickFlip {
     /**
     * If the flip container should rotate horizontally (`x`) or vertically (`y`).
@@ -167,17 +91,6 @@ export namespace Components {
     */
     'flipped': boolean;
   }
-  interface HattrickFlipAttributes extends StencilHTMLAttributes {
-    /**
-    * If the flip container should rotate horizontally (`x`) or vertically (`y`).
-    */
-    'direction'?: "x" | "y";
-    /**
-    * If the container should be flipped (showing back) or not.
-    */
-    'flipped'?: boolean;
-  }
-
   interface HattrickMatchClock {
     /**
     * How many minutes of added time the match has.
@@ -211,7 +124,156 @@ export namespace Components {
     */
     'texts': IClockTexts;
   }
-  interface HattrickMatchClockAttributes extends StencilHTMLAttributes {
+  interface HattrickProgressArc {
+    /**
+    * Expression evaluating to float [0.0, 1.0]
+    */
+    'complete': number;
+    /**
+    * Indicating if the progress should instead be counter clockwise
+    */
+    'counterClockwise': boolean;
+    /**
+    * Size of element in pixels.
+    */
+    'size': number;
+    /**
+    * Width of progress arc stroke.
+    */
+    'strokeWidth': number;
+  }
+  interface HattrickRating {
+    /**
+    * The rating to show inside the stamina.
+    */
+    'rating': number;
+    /**
+    * Size of element in pixels.
+    */
+    'size': number | "small" | "large";
+    /**
+    * Stamina in percentage between 0 and 1.
+    */
+    'stamina': number;
+    /**
+    * Label for the mouseover stamina
+    */
+    'staminaLabel': string;
+  }
+  interface HattrickTimer {
+    /**
+    * The string for `days` which is used if the deadline is more than 72 hours away.
+    */
+    'daysText': string;
+    /**
+    * At what time should the clock reach 00:00:00.
+    */
+    'deadline': Date | string | number;
+    /**
+    * If the timer should start counting upwards again after reaching 0.
+    */
+    'keepCounting': boolean;
+    /**
+    * After how many hours should it start showing _x days_. Change text via the `daysText` property.
+    */
+    'maxHours': number;
+  }
+  interface HattrickTooltip {
+    'alwaysShow': boolean;
+    /**
+    * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
+    */
+    'arrow': "start" | "middle" | "end" | "none";
+    'close': () => Promise<void>;
+    /**
+    * The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.
+    */
+    'content': string;
+    'dir': string;
+    'open': (ev?: MouseEvent) => Promise<void>;
+    /**
+    * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
+    */
+    'position': "top" | "bottom" | "start" | "end" | "cursor";
+  }
+}
+
+declare namespace LocalJSX {
+  interface HattrickAvatar extends JSXBase.HTMLAttributes {
+    /**
+    * Set whether or not the background should be shown.
+    */
+    'background'?: boolean;
+    /**
+    * the base route to the avatars, can be either a relative or absolute url
+    */
+    'base'?: string;
+    /**
+    * Set whether or not the surrounding card should be shown.
+    */
+    'facecard'?: boolean;
+    /**
+    * Set this to false to remove the bandages on injured and bruised players.
+    */
+    'injury'?: boolean;
+    /**
+    * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport
+    */
+    'lazy'?: boolean;
+    /**
+    * How soon before the avatar comes into view should we start loading it?
+    */
+    'lazyMargin'?: string;
+    /**
+    * Let you know when the avatar has finished loading. An array of the images loaded will be provided in the `event.detail`. Real type is `EventEmitter<Array<IAvatarImage>>`, but for TypeScript < 2.7 it needs to be generic.
+    */
+    'onLoad'?: (event: CustomEvent<any>) => void;
+    /**
+    * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
+    */
+    'parts'?: IAvatarPart[] | number | string;
+    /**
+    * Set to true to generate a circular avatar by cutting off the bottom.
+    */
+    'round'?: boolean;
+    /**
+    * Set to true to generate a square avatar by cutting off the bottom.
+    */
+    'square'?: boolean;
+  }
+  interface HattrickBar extends JSXBase.HTMLAttributes {
+    /**
+    * If there's a max before the end of the bar (e.g. maxed youth skill).
+    */
+    'cap'?: number;
+    /**
+    * The denomination of the skill level
+    */
+    'denomination'?: string;
+    /**
+    * If the sublevel is the same as the levelCap.
+    */
+    'isCap'?: boolean;
+    /**
+    * The level of the bar.
+    */
+    'level'?: number;
+    /**
+    * The maximum level the bar should show.
+    */
+    'max'?: number;
+  }
+  interface HattrickFlip extends JSXBase.HTMLAttributes {
+    /**
+    * If the flip container should rotate horizontally (`x`) or vertically (`y`).
+    */
+    'direction'?: "x" | "y";
+    /**
+    * If the container should be flipped (showing back) or not.
+    */
+    'flipped'?: boolean;
+  }
+  interface HattrickMatchClock extends JSXBase.HTMLAttributes {
     /**
     * How many minutes of added time the match has.
     */
@@ -242,26 +304,7 @@ export namespace Components {
     */
     'texts'?: IClockTexts;
   }
-
-  interface HattrickProgressArc {
-    /**
-    * Expression evaluating to float [0.0, 1.0]
-    */
-    'complete': number;
-    /**
-    * Indicating if the progress should instead be counter clockwise
-    */
-    'counterClockwise': boolean;
-    /**
-    * Size of element in pixels.
-    */
-    'size': number;
-    /**
-    * Width of progress arc stroke.
-    */
-    'strokeWidth': number;
-  }
-  interface HattrickProgressArcAttributes extends StencilHTMLAttributes {
+  interface HattrickProgressArc extends JSXBase.HTMLAttributes {
     /**
     * Expression evaluating to float [0.0, 1.0]
     */
@@ -279,26 +322,7 @@ export namespace Components {
     */
     'strokeWidth'?: number;
   }
-
-  interface HattrickRating {
-    /**
-    * The rating to show inside the stamina.
-    */
-    'rating': number;
-    /**
-    * Size of element in pixels.
-    */
-    'size': number | "small" | "large";
-    /**
-    * Stamina in percentage between 0 and 1.
-    */
-    'stamina': number;
-    /**
-    * Label for the mouseover stamina
-    */
-    'staminaLabel': string;
-  }
-  interface HattrickRatingAttributes extends StencilHTMLAttributes {
+  interface HattrickRating extends JSXBase.HTMLAttributes {
     /**
     * The rating to show inside the stamina.
     */
@@ -316,26 +340,7 @@ export namespace Components {
     */
     'staminaLabel'?: string;
   }
-
-  interface HattrickTimer {
-    /**
-    * The string for `days` which is used if the deadline is more than 72 hours away.
-    */
-    'daysText': string;
-    /**
-    * At what time should the clock reach 00:00:00.
-    */
-    'deadline': Date | string | number;
-    /**
-    * If the timer should start counting upwards again after reaching 0.
-    */
-    'keepCounting': boolean;
-    /**
-    * After how many hours should it start showing _x days_. Change text via the `daysText` property.
-    */
-    'maxHours': number;
-  }
-  interface HattrickTimerAttributes extends StencilHTMLAttributes {
+  interface HattrickTimer extends JSXBase.HTMLAttributes {
     /**
     * The string for `days` which is used if the deadline is more than 72 hours away.
     */
@@ -353,26 +358,7 @@ export namespace Components {
     */
     'maxHours'?: number;
   }
-
-  interface HattrickTooltip {
-    'alwaysShow': boolean;
-    /**
-    * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
-    */
-    'arrow': "start" | "middle" | "end" | "none";
-    'close': () => Promise<void>;
-    /**
-    * The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.
-    */
-    'content': string;
-    'dir': string;
-    'open': (ev?: MouseEvent) => Promise<void>;
-    /**
-    * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
-    */
-    'position': "top" | "bottom" | "start" | "end" | "cursor";
-  }
-  interface HattrickTooltipAttributes extends StencilHTMLAttributes {
+  interface HattrickTooltip extends JSXBase.HTMLAttributes {
     'alwaysShow'?: boolean;
     /**
     * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
@@ -388,10 +374,8 @@ export namespace Components {
     */
     'position'?: "top" | "bottom" | "start" | "end" | "cursor";
   }
-}
 
-declare global {
-  interface StencilElementInterfaces {
+  interface ElementInterfaces {
     'HattrickAvatar': Components.HattrickAvatar;
     'HattrickBar': Components.HattrickBar;
     'HattrickFlip': Components.HattrickFlip;
@@ -402,16 +386,27 @@ declare global {
     'HattrickTooltip': Components.HattrickTooltip;
   }
 
-  interface StencilIntrinsicElements {
-    'hattrick-avatar': Components.HattrickAvatarAttributes;
-    'hattrick-bar': Components.HattrickBarAttributes;
-    'hattrick-flip': Components.HattrickFlipAttributes;
-    'hattrick-match-clock': Components.HattrickMatchClockAttributes;
-    'hattrick-progress-arc': Components.HattrickProgressArcAttributes;
-    'hattrick-rating': Components.HattrickRatingAttributes;
-    'hattrick-timer': Components.HattrickTimerAttributes;
-    'hattrick-tooltip': Components.HattrickTooltipAttributes;
+  interface IntrinsicElements {
+    'HattrickAvatar': LocalJSX.HattrickAvatar;
+    'HattrickBar': LocalJSX.HattrickBar;
+    'HattrickFlip': LocalJSX.HattrickFlip;
+    'HattrickMatchClock': LocalJSX.HattrickMatchClock;
+    'HattrickProgressArc': LocalJSX.HattrickProgressArc;
+    'HattrickRating': LocalJSX.HattrickRating;
+    'HattrickTimer': LocalJSX.HattrickTimer;
+    'HattrickTooltip': LocalJSX.HattrickTooltip;
   }
+}
+export { LocalJSX as JSX };
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface ElementInterfaces extends LocalJSX.ElementInterfaces {}
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
+declare global {
 
 
   interface HTMLHattrickAvatarElement extends Components.HattrickAvatar, HTMLStencilElement {}
@@ -461,7 +456,6 @@ declare global {
     prototype: HTMLHattrickTooltipElement;
     new (): HTMLHattrickTooltipElement;
   };
-
   interface HTMLElementTagNameMap {
     'hattrick-avatar': HTMLHattrickAvatarElement
     'hattrick-bar': HTMLHattrickBarElement
@@ -483,14 +477,5 @@ declare global {
     'hattrick-timer': HTMLHattrickTimerElement;
     'hattrick-tooltip': HTMLHattrickTooltipElement;
   }
-
-
-  export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
-  }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+

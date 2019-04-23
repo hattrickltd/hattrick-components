@@ -47,9 +47,9 @@
   transform: rotateY(180deg);
 }
 
-// IE only (not Edge)
+/* IE only (not Edge) */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  // The transformations for IE doesn't work so well, so we make some hacking here.
+  /* The transformations for IE doesn't work so well, so we make some hacking here. */
 
   .front, .back {
     transform: none !important;
@@ -58,9 +58,7 @@
     margin-top: 0;
   }
 
-  :host([flipped]) {
-    .wrapper {
-      transform: none !important;
-    }
+  :host([flipped]) .wrapper {
+    transform: none !important;
   }
 }
