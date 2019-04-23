@@ -161,15 +161,26 @@ export class MatchClock {
   }
 
   private format(clock: IClock, format: string, texts: IClockTexts = {} as any): string {
+    // if texts contains these letters, it'll break unless we reformat it first
+    format = format
+      .replace("DD", "{0}")
+      .replace("D",  "{1}")
+      .replace("HH", "{2}")
+      .replace("H",  "{3}")
+      .replace("MM", "{4}")
+      .replace("M",  "{5}")
+      .replace("SS", "{6}")
+      .replace("S",  "{7}");
+
     return format
-      .replace("DD", this.padLeft(clock.days) + (texts.days || ""))
-      .replace("D", clock.days.toString() + (texts.days || ""))
-      .replace("HH", this.padLeft(clock.hours) + (texts.hours || ""))
-      .replace("H", clock.hours.toString() + (texts.hours || ""))
-      .replace("MM", this.padLeft(clock.minutes) + (texts.minutes || ""))
-      .replace("M", clock.minutes.toString() + (texts.minutes || ""))
-      .replace("SS", this.padLeft(clock.seconds) + (texts.seconds || ""))
-      .replace("M", clock.seconds.toString() + (texts.seconds || ""));
+      .replace("{0}", this.padLeft(clock.days) + (texts.days || ""))
+      .replace("{1}", clock.days.toString() + (texts.days || ""))
+      .replace("{2}", this.padLeft(clock.hours) + (texts.hours || ""))
+      .replace("{3}", clock.hours.toString() + (texts.hours || ""))
+      .replace("{4}", this.padLeft(clock.minutes) + (texts.minutes || ""))
+      .replace("{5}", clock.minutes.toString() + (texts.minutes || ""))
+      .replace("{6}", this.padLeft(clock.seconds) + (texts.seconds || ""))
+      .replace("{7}", clock.seconds.toString() + (texts.seconds || ""));
   }
 
   private padLeft(val: number): string {
