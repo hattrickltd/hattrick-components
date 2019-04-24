@@ -143,7 +143,7 @@ export class Avatar {
       }));
     } else {
       promises.push(this.loadSilhouette(parts as number, options).then((img) => {
-        this.addImage(img);
+        this.images = [img];
         return img;
       }));
     }
@@ -307,17 +307,16 @@ export class Avatar {
         "round": this.round,
         "square": this.square,
         "has-facecard": this.facecard,
+        "no-background": !this.background,
       }}>
-        <div>
-          {this.images.map((part) =>
-            <img src={part.img.src} style={{
-              "width": part.img.naturalWidth / this.avatarSize.width * 100 + "%",
-              "height": part.img.naturalHeight / this.avatarSize.height * 100 + "%",
-              "left": part.x / this.avatarSize.width * 100 + "%",
-              "top": part.y / this.avatarSize.height * 100 + "%",
-            }} />
-          )}
-        </div>
+        {this.images.map((part) =>
+          <img src={part.img.src} style={{
+            "width": part.img.naturalWidth / this.avatarSize.width * 100 + "%",
+            "height": part.img.naturalHeight / this.avatarSize.height * 100 + "%",
+            "left": part.x / this.avatarSize.width * 100 + "%",
+            "top": part.y / this.avatarSize.height * 100 + "%",
+          }} />
+        )}
       </Host>
     );
   }

@@ -2,10 +2,12 @@
 :host {
   position: relative;
   display: inline-block;
+  overflow: hidden;
 
   width: calc(92px * var(--avatar-size, 1));
   height: calc(123px * var(--avatar-size, 1));
 }
+
 :host(.has-facecard) {
   width: calc(110px * var(--avatar-size, 1));
   height: calc(155px * var(--avatar-size, 1));
@@ -19,16 +21,23 @@
 :host(.has-facecard.square) {
   height: calc(110px * var(--avatar-size, 1));
 }
+:host(.round) {
+  border-radius: 100%;
+}
 
-div {
+:host(:not(.has-facecard):not(.no-background)) {
+  box-shadow: var(--avatar-shadow, grey 0px 0px 6px);
+}
+
+/* div {
   position: relative;
   overflow: hidden;
   width: 100%;
   height: 100%;
-}
-:host(.round) div {
+} */
+/* :host(.round) div {
   border-radius: 100%;
-}
+} */
 img {
   position: absolute;
 }
