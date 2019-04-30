@@ -243,6 +243,17 @@ export namespace Components {
     'texts'?: IClockTexts;
   }
 
+  interface HattrickPicture {
+    'alt': string;
+    'src': string;
+    'srcset'?: string;
+  }
+  interface HattrickPictureAttributes extends StencilHTMLAttributes {
+    'alt'?: string;
+    'src'?: string;
+    'srcset'?: string;
+  }
+
   interface HattrickProgressArc {
     /**
     * Expression evaluating to float [0.0, 1.0]
@@ -396,6 +407,7 @@ declare global {
     'HattrickBar': Components.HattrickBar;
     'HattrickFlip': Components.HattrickFlip;
     'HattrickMatchClock': Components.HattrickMatchClock;
+    'HattrickPicture': Components.HattrickPicture;
     'HattrickProgressArc': Components.HattrickProgressArc;
     'HattrickRating': Components.HattrickRating;
     'HattrickTimer': Components.HattrickTimer;
@@ -407,6 +419,7 @@ declare global {
     'hattrick-bar': Components.HattrickBarAttributes;
     'hattrick-flip': Components.HattrickFlipAttributes;
     'hattrick-match-clock': Components.HattrickMatchClockAttributes;
+    'hattrick-picture': Components.HattrickPictureAttributes;
     'hattrick-progress-arc': Components.HattrickProgressArcAttributes;
     'hattrick-rating': Components.HattrickRatingAttributes;
     'hattrick-timer': Components.HattrickTimerAttributes;
@@ -438,6 +451,12 @@ declare global {
     new (): HTMLHattrickMatchClockElement;
   };
 
+  interface HTMLHattrickPictureElement extends Components.HattrickPicture, HTMLStencilElement {}
+  var HTMLHattrickPictureElement: {
+    prototype: HTMLHattrickPictureElement;
+    new (): HTMLHattrickPictureElement;
+  };
+
   interface HTMLHattrickProgressArcElement extends Components.HattrickProgressArc, HTMLStencilElement {}
   var HTMLHattrickProgressArcElement: {
     prototype: HTMLHattrickProgressArcElement;
@@ -467,6 +486,7 @@ declare global {
     'hattrick-bar': HTMLHattrickBarElement
     'hattrick-flip': HTMLHattrickFlipElement
     'hattrick-match-clock': HTMLHattrickMatchClockElement
+    'hattrick-picture': HTMLHattrickPictureElement
     'hattrick-progress-arc': HTMLHattrickProgressArcElement
     'hattrick-rating': HTMLHattrickRatingElement
     'hattrick-timer': HTMLHattrickTimerElement
@@ -478,6 +498,7 @@ declare global {
     'hattrick-bar': HTMLHattrickBarElement;
     'hattrick-flip': HTMLHattrickFlipElement;
     'hattrick-match-clock': HTMLHattrickMatchClockElement;
+    'hattrick-picture': HTMLHattrickPictureElement;
     'hattrick-progress-arc': HTMLHattrickProgressArcElement;
     'hattrick-rating': HTMLHattrickRatingElement;
     'hattrick-timer': HTMLHattrickTimerElement;
