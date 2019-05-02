@@ -59,7 +59,6 @@ export class Tooltip {
       this.dir = getComputedStyle(this.host).direction || "ltr";
     }
 
-    console.log("componentWillLoad", this.alwaysShow);
     if (this.alwaysShow) {
       this.open();
     }
