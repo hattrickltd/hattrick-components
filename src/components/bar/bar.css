@@ -2,6 +2,7 @@
 :host {
   display: block;
   height: 14px;
+  font-size: 11px;
   pointer-events: none;
   position: relative;
 }
