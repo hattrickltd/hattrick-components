@@ -304,7 +304,37 @@ declare namespace LocalJSX {
     */
     'texts'?: IClockTexts;
   }
-  interface HattrickProgressArc extends JSXBase.HTMLAttributes {
+
+  interface HattrickPicture {
+    'alt': string;
+    'src': string;
+    'srcset'?: string;
+  }
+  interface HattrickPictureAttributes extends StencilHTMLAttributes {
+    'alt'?: string;
+    'src'?: string;
+    'srcset'?: string;
+  }
+
+  interface HattrickProgressArc {
+    /**
+    * Expression evaluating to float [0.0, 1.0]
+    */
+    'complete': number;
+    /**
+    * Indicating if the progress should instead be counter clockwise
+    */
+    'counterClockwise': boolean;
+    /**
+    * Size of element in pixels.
+    */
+    'size': number;
+    /**
+    * Width of progress arc stroke.
+    */
+    'strokeWidth': number;
+  }
+  interface HattrickProgressArcAttributes extends StencilHTMLAttributes {
     /**
     * Expression evaluating to float [0.0, 1.0]
     */
@@ -380,21 +410,23 @@ declare namespace LocalJSX {
     'HattrickBar': Components.HattrickBar;
     'HattrickFlip': Components.HattrickFlip;
     'HattrickMatchClock': Components.HattrickMatchClock;
+    'HattrickPicture': Components.HattrickPicture;
     'HattrickProgressArc': Components.HattrickProgressArc;
     'HattrickRating': Components.HattrickRating;
     'HattrickTimer': Components.HattrickTimer;
     'HattrickTooltip': Components.HattrickTooltip;
   }
 
-  interface IntrinsicElements {
-    'HattrickAvatar': LocalJSX.HattrickAvatar;
-    'HattrickBar': LocalJSX.HattrickBar;
-    'HattrickFlip': LocalJSX.HattrickFlip;
-    'HattrickMatchClock': LocalJSX.HattrickMatchClock;
-    'HattrickProgressArc': LocalJSX.HattrickProgressArc;
-    'HattrickRating': LocalJSX.HattrickRating;
-    'HattrickTimer': LocalJSX.HattrickTimer;
-    'HattrickTooltip': LocalJSX.HattrickTooltip;
+  interface StencilIntrinsicElements {
+    'hattrick-avatar': Components.HattrickAvatarAttributes;
+    'hattrick-bar': Components.HattrickBarAttributes;
+    'hattrick-flip': Components.HattrickFlipAttributes;
+    'hattrick-match-clock': Components.HattrickMatchClockAttributes;
+    'hattrick-picture': Components.HattrickPictureAttributes;
+    'hattrick-progress-arc': Components.HattrickProgressArcAttributes;
+    'hattrick-rating': Components.HattrickRatingAttributes;
+    'hattrick-timer': Components.HattrickTimerAttributes;
+    'hattrick-tooltip': Components.HattrickTooltipAttributes;
   }
 }
 export { LocalJSX as JSX };
@@ -433,6 +465,12 @@ declare global {
     new (): HTMLHattrickMatchClockElement;
   };
 
+  interface HTMLHattrickPictureElement extends Components.HattrickPicture, HTMLStencilElement {}
+  var HTMLHattrickPictureElement: {
+    prototype: HTMLHattrickPictureElement;
+    new (): HTMLHattrickPictureElement;
+  };
+
   interface HTMLHattrickProgressArcElement extends Components.HattrickProgressArc, HTMLStencilElement {}
   var HTMLHattrickProgressArcElement: {
     prototype: HTMLHattrickProgressArcElement;
@@ -461,6 +499,7 @@ declare global {
     'hattrick-bar': HTMLHattrickBarElement
     'hattrick-flip': HTMLHattrickFlipElement
     'hattrick-match-clock': HTMLHattrickMatchClockElement
+    'hattrick-picture': HTMLHattrickPictureElement
     'hattrick-progress-arc': HTMLHattrickProgressArcElement
     'hattrick-rating': HTMLHattrickRatingElement
     'hattrick-timer': HTMLHattrickTimerElement
@@ -472,6 +511,7 @@ declare global {
     'hattrick-bar': HTMLHattrickBarElement;
     'hattrick-flip': HTMLHattrickFlipElement;
     'hattrick-match-clock': HTMLHattrickMatchClockElement;
+    'hattrick-picture': HTMLHattrickPictureElement;
     'hattrick-progress-arc': HTMLHattrickProgressArcElement;
     'hattrick-rating': HTMLHattrickRatingElement;
     'hattrick-timer': HTMLHattrickTimerElement;
