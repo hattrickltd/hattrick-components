@@ -37,7 +37,6 @@ export class Bar {
     );
   }
 
-  
   /** Get the percentage width of the skill column */
   private getSkillWidth(): number {
     if (this.level <= 0) return 0;

@@ -1,4 +1,4 @@
-import { Component, State, Prop, Element } from "@stencil/core";
+import { h, Component, State, Prop, Element } from "@stencil/core";
 import { waitForIntersection } from "../../global/lazy-loading";
 
 @Component({

@@ -5,7 +5,6 @@ export function waitForIntersection(host: Element, rootMargin?: string): Promise
         // because there will only ever be one instance
         // of the element we are observing
         // we can just use data[0]
-        console.log(data);
         if (data[0].isIntersecting) {
           io.disconnect();
           resolve();

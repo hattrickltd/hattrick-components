@@ -22,7 +22,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "1.0.0-alpha.12"
+    "@stencil/core": "1.0.0-beta.8",
+    "tslint": "^5.17.0"
   },
   "repository": {
     "type": "git",
