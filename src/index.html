@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
   <title>(Debug) Hattrick Components</title>
-  <script type="module" src="/build/hattrick_components.esm.js"></script>
-  <script nomodule src="/build/hattrick_components.js"></script>
+  <script type="module" src="/build/hattrick-components.esm.js"></script>
+  <script nomodule src="/build/hattrick-components.js"></script>
 
   <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 
@@ -21,7 +21,7 @@
     
     [attributes] code, [variables] code { display: block; margin: 1em 0; }
 
-    #barWrapper { display: flex; }
+    #barWrapper:not([hidden]) { display: flex; }
     #barWrapper > div { box-sizing: border-box; width: 25%; padding: 0 10px; }
 
     #avatarHolder { white-space: nowrap; }
@@ -630,8 +630,8 @@
 
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Css variables</h3>
     <div hidden variables>
-      <code>--flip-height: auto;</code>
-      <code>--flip-width: auto;</code>
+      <code>--flip-height: 100%;</code>
+      <code>--flip-width: 100%;</code>
       <code>--flip-duration: 1s;</code>
       <i>Note: At the very minimum you will want to set height for <code>direction="x"</code> or width for <code>direction="y"</code></i>
     </div>
@@ -645,7 +645,7 @@
       </hattrick-flip>
       <hattrick-flip direction="x" onclick="toggleFlip(this)">
         <div slot="front">
-          <hattrick-avatar onload="avatarLoaded.call(this, event.detail)" base="https://www.hattrick.org" parts='[{"url":"backgrounds/bg_blue_int.png","x":9,"y":10},{"url":"//res.hattrick.org/kits/17/167/1664/1663296/body12.png","x":9,"y":10},{"url":"faces/f4h.png","x":9,"y":10},{"url":"eyes/e34c.png","x":25,"y":16},{"url":"mouths/m5c.png","x":29,"y":66},{"url":"noses/n3.png","x":20,"y":27},{"url":"hair/f4h6f.png","x":9,"y":10}]'></hattrick-avatar>
+          <hattrick-avatar onload="avatarLoaded.call(this, event.detail)" parts='[{"url":"backgrounds/bg_blue_int.png","x":9,"y":10},{"url":"//res.hattrick.org/kits/17/167/1664/1663296/body12.png","x":9,"y":10},{"url":"faces/f4h.png","x":9,"y":10},{"url":"eyes/e34c.png","x":25,"y":16},{"url":"mouths/m5c.png","x":29,"y":66},{"url":"noses/n3.png","x":20,"y":27},{"url":"hair/f4h6f.png","x":9,"y":10}]'></hattrick-avatar>
         </div>
         <div slot="back">
           <hattrick-rating size="large" rating="14.5" stamina="1"></hattrick-rating>
@@ -658,7 +658,7 @@
       </hattrick-flip>
       <hattrick-flip direction="y" onclick="toggleFlip(this)">
         <div slot="front">
-          <hattrick-avatar onload="avatarLoaded.call(this, event.detail)" base="https://www.hattrick.org" parts='[{"url":"backgrounds/bg_blue_int.png","x":9,"y":10},{"url":"//res.hattrick.org/kits/17/167/1664/1663296/body12.png","x":9,"y":10},{"url":"faces/f4h.png","x":9,"y":10},{"url":"eyes/e34c.png","x":25,"y":16},{"url":"mouths/m5c.png","x":29,"y":66},{"url":"noses/n3.png","x":20,"y":27},{"url":"hair/f4h6f.png","x":9,"y":10}]'></hattrick-avatar>
+          <hattrick-avatar onload="avatarLoaded.call(this, event.detail)" parts='[{"url":"backgrounds/bg_blue_int.png","x":9,"y":10},{"url":"//res.hattrick.org/kits/17/167/1664/1663296/body12.png","x":9,"y":10},{"url":"faces/f4h.png","x":9,"y":10},{"url":"eyes/e34c.png","x":25,"y":16},{"url":"mouths/m5c.png","x":29,"y":66},{"url":"noses/n3.png","x":20,"y":27},{"url":"hair/f4h6f.png","x":9,"y":10}]'></hattrick-avatar>
         </div>
         <div slot="back">
           <hattrick-rating size="large" rating="14.5" stamina="1"></hattrick-rating>
@@ -834,13 +834,11 @@
         // JSON.stringify a few to prove that works too.
 
         const avatar = document.createElement("hattrick-avatar");
-        avatar.base = "https://www.hattrick.org"
         avatar.parts = (idx % 5 === 0) ? JSON.stringify(avatarParts) : avatarParts;
         Object.assign(avatar, config);
         avatarHolder.appendChild(avatar);
         
         const smaller = document.createElement("hattrick-avatar");
-        smaller.base = "https://www.hattrick.org"
         smaller.parts = (idx % 3 === 0) ? JSON.stringify(avatarParts) : avatarParts;
         Object.assign(smaller, config);
         avatarHolderSmaller.appendChild(smaller);

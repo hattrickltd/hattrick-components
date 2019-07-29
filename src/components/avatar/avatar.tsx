@@ -19,10 +19,8 @@ export class Avatar {
   private silhouettePath: string = "silhouettes/sil[nr].png";
   private facecardPath: string = "backgrounds/card1.png";
 
-  private avatarPath: string = "/Img/Avatar/";
-
-  /** the base route to the avatars, can be either a relative or absolute url */
-  @Prop() base: string = "";
+  /** the base route to the avatars, can be either a relative or absolute url. */
+  @Prop() base: string = "/Img/Avatar/";
 
   /** An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. */
   @Prop() parts: IAvatarPart[] | number | string;
@@ -42,9 +40,9 @@ export class Avatar {
   /** Set to true to generate a square avatar by cutting off the bottom. */
   @Prop() square?: boolean = false;
 
-  /** Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport */
+  /** Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport. */
   @Prop() lazy?: boolean = true;
-  /** How soon before the avatar comes into view should we start loading it? */
+  /** How soon before the avatar comes into view should we start loading it? Accepts CSS-like margin value. */
   @Prop() lazyMargin?: string = `250px`;
 
   /** This array contains the loaded images that will be printed */
@@ -181,7 +179,7 @@ export class Avatar {
 
       src = (src.indexOf("//") > -1)
         ? src.replace("//", "https://")
-        : this.base + this.avatarPath + src;
+        : this.base + src;
 
       img.onload = () => {
         this.pendingImages.splice(this.pendingImages.indexOf(img), 1);
@@ -212,7 +210,7 @@ export class Avatar {
       };
       img.onerror = () => reject();
 
-      img.src = this.base + this.avatarPath + this.facecardPath;
+      img.src = this.base + this.facecardPath;
     });
   }
 
@@ -254,7 +252,7 @@ export class Avatar {
   private _getSilhouetteUrl(seed: number): string {
     let rnd = (seed) ? seed % 12 + 1 : Math.floor(Math.random() * 11) + 1;
 
-    return this.base + this.avatarPath + this.silhouettePath.replace("[nr]", rnd.toString());
+    return this.base + this.silhouettePath.replace("[nr]", rnd.toString());
   }
 
   private createImage(): HTMLImageElement {

@@ -21,11 +21,11 @@ document.getElementById("flip").flipped = true;
 
 ## CSS variables
 
-| Variable          | Description                                                                   | Default value |
-| ----------------- | ----------------------------------------------------------------------------- | ------------- |
-| `--flip-height`   | The height of the flip container. **Highly recommended for `direction="x"`.** | `auto`        |
-| `--flip-width`    | The width of the flip container. **Highly recommended for `direction="y"`.**  | `auto`        |
-| `--flip-duration` | The animation duration to flip the card.                                      | `1s`          |
+| Variable          | Description                              | Default value |
+| ----------------- | -----------------------------------------| ------------- |
+| `--flip-height`   | The height of the flip container.        | `100%`        |
+| `--flip-width`    | The width of the flip container.         | `100%`        |
+| `--flip-duration` | The animation duration to flip the card. | `1s`          |
 
 <!-- Auto Generated Below -->
 

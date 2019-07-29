@@ -55,7 +55,7 @@ export class Rating {
           { this.rating % 1 !== 0 &&
             <span class="rating-half">.5</span>
           }
-        </span>,
+        </span>
         <hattrick-progress-arc size={ (this.size as number) } complete={ this.stamina } class={ this.progressClass }></hattrick-progress-arc>
       </Host>
     );

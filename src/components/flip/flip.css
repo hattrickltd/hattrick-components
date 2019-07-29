@@ -1,8 +1,8 @@
 :host {
   display: inline-block;
 
-  width: var(--flip-width, auto);
-  height: var(--flip-height, auto);
+  width: var(--flip-width, 100%);
+  height: var(--flip-height, 100%);
 }
 
 .wrapper {
