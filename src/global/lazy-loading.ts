@@ -1,4 +1,10 @@
-export function waitForIntersection(host: Element, rootMargin?: string): Promise<void> {
+/**
+ * Resolves a promise when the host is on the screen.
+ * @param host The element to lazy load, normally `@Element()`.
+ * @param rootMargin How close to being on the screen should the image load. Accepts CSS style margin-property.
+ */
+export function waitForIntersection(element: Element, rootMargin?: string): Promise<void> {
+
   return new Promise((resolve) => {
     if ("IntersectionObserver" in window) {
       let io = new IntersectionObserver((data) => {
@@ -11,7 +17,7 @@ export function waitForIntersection(host: Element, rootMargin?: string): Promise
         }
       }, { rootMargin });
 
-      io.observe(host);
+      io.observe(element);
     } else {
       resolve();
     }

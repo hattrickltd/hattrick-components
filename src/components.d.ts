@@ -14,7 +14,6 @@ import {
   IClockTexts,
 } from './components/match-clock/match-clock.interfaces';
 
-
 export namespace Components {
   interface HattrickAvatar {
     /**
@@ -22,7 +21,7 @@ export namespace Components {
     */
     'background'?: boolean;
     /**
-    * the base route to the avatars, can be either a relative or absolute url
+    * the base route to the avatars, can be either a relative or absolute url.
     */
     'base': string;
     /**
@@ -34,11 +33,11 @@ export namespace Components {
     */
     'injury'?: boolean;
     /**
-    * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport
+    * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport.
     */
     'lazy'?: boolean;
     /**
-    * How soon before the avatar comes into view should we start loading it?
+    * How soon before the avatar comes into view should we start loading it? Accepts CSS-like margin value.
     */
     'lazyMargin'?: string;
     /**
@@ -47,6 +46,9 @@ export namespace Components {
     'parts': IAvatarPart[] | number | string;
     /**
     * Prints the images to a canvas. Useful together with `.toDataURL()`. This may be useful for faster loading at a later time.
+    * @param images The avatar parts to print. Defaults to the images already loaded by the component.
+    * @example const avatar = document.createElement("hattrick-avatar"); avatar.parts = avatarParts; avatar.onload = function (evt) {   const dataUrl = avatar.printToCanvas().toDataURL();   // store in cache for later use? }; document.body.appendChild(avatar);
+    * @example <hattrick-avatar parts="..." onload="avatarLoaded.call(this, event.detail)"></hattrick-avatar> function avatarLoaded(images) {   const dataUrl = this.printToCanvas(images).toDataURL(); }
     */
     'printToCanvas': (images?: IAvatarImage[]) => Promise<HTMLCanvasElement>;
     /**
@@ -278,7 +280,7 @@ declare namespace LocalJSX {
     */
     'background'?: boolean;
     /**
-    * the base route to the avatars, can be either a relative or absolute url
+    * the base route to the avatars, can be either a relative or absolute url.
     */
     'base'?: string;
     /**
@@ -290,15 +292,16 @@ declare namespace LocalJSX {
     */
     'injury'?: boolean;
     /**
-    * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport
+    * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport.
     */
     'lazy'?: boolean;
     /**
-    * How soon before the avatar comes into view should we start loading it?
+    * How soon before the avatar comes into view should we start loading it? Accepts CSS-like margin value.
     */
     'lazyMargin'?: string;
     /**
     * Let you know when the avatar has finished loading. An array of the images loaded will be provided in the `event.detail`. Real type is `EventEmitter<Array<IAvatarImage>>`, but for TypeScript < 2.7 it needs to be generic.
+    * @example ``` <hattrick-avatar onload="avatarLoaded.call(this, event.detail)"></ht-avatar>  avatarLoaded(images) {   console.log("dataUrl: ", this.printToCanvas(images).toDataURL()); } ```
     */
     'onLoad'?: (event: CustomEvent<any>) => void;
     /**

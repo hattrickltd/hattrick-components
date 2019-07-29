@@ -1,8 +1,7 @@
 import { Config } from "@stencil/core";
-import { sass } from "@stencil/sass";
 
 export const config: Config = {
-  namespace: "hattrick_components",
+  namespace: "hattrick-components",
   outputTargets: [
     {
       type: "dist"

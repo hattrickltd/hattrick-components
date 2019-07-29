@@ -20,7 +20,7 @@ export class Picture {
       this.didIntersect = true;
     });
   }
-  
+
   render() {
     if (!this.didIntersect) return;
 
