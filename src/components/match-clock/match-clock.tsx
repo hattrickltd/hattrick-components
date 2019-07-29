@@ -37,12 +37,12 @@ export class MatchClock {
 
   @Prop() countUpFormat: string = "MM:SS";
 
-  componentWillLoad() {
+  connectedCallback() {
     this.matchdateUpdated();
     this.resume();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this._interval && clearInterval(this._interval);
   }
 
