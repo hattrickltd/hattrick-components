@@ -125,6 +125,11 @@ export namespace Components {
     */
     'texts': IClockTexts;
   }
+  interface HattrickMl {
+    'allowCustomContent': boolean;
+    'base': string;
+    'text': string;
+  }
   interface HattrickPicture {
     'alt': string;
     'src': string;
@@ -231,6 +236,12 @@ declare global {
     new (): HTMLHattrickMatchClockElement;
   };
 
+  interface HTMLHattrickMlElement extends Components.HattrickMl, HTMLStencilElement {}
+  var HTMLHattrickMlElement: {
+    prototype: HTMLHattrickMlElement;
+    new (): HTMLHattrickMlElement;
+  };
+
   interface HTMLHattrickPictureElement extends Components.HattrickPicture, HTMLStencilElement {}
   var HTMLHattrickPictureElement: {
     prototype: HTMLHattrickPictureElement;
@@ -265,6 +276,7 @@ declare global {
     'hattrick-bar': HTMLHattrickBarElement;
     'hattrick-flip': HTMLHattrickFlipElement;
     'hattrick-match-clock': HTMLHattrickMatchClockElement;
+    'hattrick-ml': HTMLHattrickMlElement;
     'hattrick-picture': HTMLHattrickPictureElement;
     'hattrick-progress-arc': HTMLHattrickProgressArcElement;
     'hattrick-rating': HTMLHattrickRatingElement;
@@ -380,6 +392,11 @@ declare namespace LocalJSX {
     */
     'texts'?: IClockTexts;
   }
+  interface HattrickMl extends JSXBase.HTMLAttributes<HTMLHattrickMlElement> {
+    'allowCustomContent'?: boolean;
+    'base'?: string;
+    'text'?: string;
+  }
   interface HattrickPicture extends JSXBase.HTMLAttributes<HTMLHattrickPictureElement> {
     'alt'?: string;
     'src'?: string;
@@ -461,6 +478,7 @@ declare namespace LocalJSX {
     'hattrick-bar': HattrickBar;
     'hattrick-flip': HattrickFlip;
     'hattrick-match-clock': HattrickMatchClock;
+    'hattrick-ml': HattrickMl;
     'hattrick-picture': HattrickPicture;
     'hattrick-progress-arc': HattrickProgressArc;
     'hattrick-rating': HattrickRating;
