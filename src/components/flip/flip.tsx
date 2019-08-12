@@ -1,8 +1,8 @@
-import { Component, Prop } from "@stencil/core";
+import { h, Component, Prop } from "@stencil/core";
 
 @Component({
   tag: "hattrick-flip",
-  styleUrl: "flip.scss",
+  styleUrl: "flip.css",
   shadow: true,
 })
 export class Flip {

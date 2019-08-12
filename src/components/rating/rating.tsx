@@ -1,8 +1,8 @@
-import { Component, Prop } from "@stencil/core";
+import { h, Component, Prop, Host } from "@stencil/core";
 
 @Component({
   tag: "hattrick-rating",
-  styleUrl: "rating.scss",
+  styleUrl: "rating.css",
   shadow: true,
 })
 export class Rating {
@@ -44,25 +44,20 @@ export class Rating {
     else this.progressClass = "stamina-veryhigh";
   }
 
-  hostData() {
-    return {
-      style: {
+  render() {
+    return (
+      <Host title={ `${this.staminaLabel}: ${Math.round(this.stamina * 100)}%` } style={{
         width: this.size + "px",
         height: this.size + "px",
-      },
-      title: `${this.staminaLabel}: ${Math.round(this.stamina * 100)}%`,
-    };
-  }
-
-  render() {
-    return ([
-      <span class="rating">
-        <span class="rating-full">{ Math.floor(this.rating) }</span>
-        { this.rating % 1 !== 0 &&
-          <span class="rating-half">.5</span>
-        }
-      </span>,
-      <hattrick-progress-arc size={ (this.size as number) } complete={ this.stamina } class={ this.progressClass }></hattrick-progress-arc>
-    ]);
+      }}>
+        <span class="rating">
+          <span class="rating-full">{ Math.floor(this.rating) }</span>
+          { this.rating % 1 !== 0 &&
+            <span class="rating-half">.5</span>
+          }
+        </span>
+        <hattrick-progress-arc size={ (this.size as number) } complete={ this.stamina } class={ this.progressClass }></hattrick-progress-arc>
+      </Host>
+    );
   }
 }

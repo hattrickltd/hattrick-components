@@ -24,10 +24,13 @@ Currently is at level 4, can reach (cap at) 6, but 8 is the max for this type of
 | Variable | Description | Default value |
 | -------- | ----------- | ------------- |
 | `--bar-level-background` | The background color of the bar representing the level. | `#59965D` |
+| `--bar-level-color` | The text color of the bar representing the level. | `#F7F7F7` |
 | `--bar-cap-background` | The background color of the bar representing the steps between the current level and the maximum achievable level. | `#CACACA` |
+| `--bar-cap-color` | The text color of the bar representing the steps between the current level and the maximum achievable level. | `black` |
 | `--bar-max-background` | The default background color of the remainder of the bar. | `#ECECEC` |
-| `--bar-capped-background` | The background color of the bar representing the level when the maximum achievable level has been reached. | `#FFEB99` |
-| `--bar-title-color` | The text color of the title (e.g. skill name) in the bar. The text color of the actual levels are the opposites of the background (e.g. green bar with gray rest will give green text in the "max bar" or gray text in the "level bar"). | `#000000` |
+| `--bar-max-color` | The default background color of the remainder of the bar. | `#3F7137` |
+| `--bar-capped-background` | The background color of the bar representing the level when the maximum achievable level has been reached. | `#FFC000` |
+| `--bar-capped-color` | The background color of the bar representing the level when the maximum achievable level has been reached. | `black` |
 
 <!-- Auto Generated Below -->
 

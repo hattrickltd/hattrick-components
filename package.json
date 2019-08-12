@@ -2,8 +2,11 @@
   "name": "@hattrickltd/hattrick-components",
   "version": "0.0.28",
   "description": "Web components for Hattrick.org.",
-  "module": "dist/esm/index.js",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "es2015": "dist/esm/index.esm.js",
+  "es2017": "dist/esm/index.esm.js",
+  "jsnext:main": "dist/esm/index.esm.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "files": [
@@ -19,9 +22,9 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "0.18.0",
-    "@stencil/sass": "^0.1.1",
-    "workbox-build": "3.4.1"
+    "@stencil/core": "^1.2.2",
+    "tslint": "^5.17.0",
+    "workbox-build": "4.3.1"
   },
   "repository": {
     "type": "git",
@@ -33,19 +36,6 @@
     "url": "https://github.com/hattrickltd/hattrick-components/issues"
   },
   "homepage": "https://github.com/hattrickltd/hattrick-components",
-  "jest": {
-    "transform": {
-      "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/@stencil/core/testing/jest.preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json",
-      "jsx"
-    ]
-  },
   "keywords": [
     "hattrick",
     "webcomponents"

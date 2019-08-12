@@ -1,8 +1,8 @@
-import { Component, Prop, State, Watch } from "@stencil/core";
+import { h, Component, Prop, State, Watch, Host } from "@stencil/core";
 
 @Component({
   tag: "hattrick-timer",
-  styleUrl: "timer.scss",
+  styleUrl: "timer.css",
   shadow: true,
 })
 export class Timer {
@@ -86,21 +86,14 @@ export class Timer {
     return `${this.padLeft(hours)}:${this.padLeft(minutes)}:${this.padLeft(seconds)}`;
   }
 
-  hostData() {
-    return {
-      "role": "timer",
-      "class": {
-        "timer-passed-zero": this.keepCounting && this.seconds < 0,
-        "timer-finished": !this.keepCounting && this.seconds <= 0,
-      }
-    };
-  }
-
   render() {
     return (
-      <span>
+      <Host role="timer" class={{
+        "timer-passed-zero": this.keepCounting && this.seconds < 0,
+        "timer-finished": !this.keepCounting && this.seconds <= 0,
+      }}>
         { this.getTime() }
-      </span>
+      </Host>
     );
   }
 }

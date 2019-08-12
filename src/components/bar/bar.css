@@ -1,0 +1,50 @@
+
+:host {
+  display: block;
+  height: 14px;
+  font-size: 11px;
+  pointer-events: none;
+  position: relative;
+}
+
+.level, .cap, .max {
+  position: absolute;
+  overflow: hidden;
+  height: 100%;
+}
+
+.level {
+  background-color: var(--bar-level-background, #59965D);
+  color: var(--bar-level-color, #F7F7F7);
+}
+
+.cap {
+  background-color: var(--bar-cap-background, #CACACA);
+  color: var(--bar-cap-color, black);
+}
+
+.max {
+  background-color: var(--bar-max-background, #ECECEC);
+  color: var(--bar-max-color, #3F7137);
+}
+
+.level.capped {
+  background-color: var(--bar-capped-background, #FFC000);
+  color: var(--bar-capped-color, black);
+}
+/* .level.verylow {
+  background-color: var(--bar-verylow-background, #DD4140);
+  color: var(--bar-verylow-color, #f7f8f7);
+}
+.level.low {
+  background-color: var(--bar-low-background, #F5A104);
+  color: var(--bar-low-color, black);
+}
+.level.high {
+  background-color: var(--bar-high-background, #F1C40A);
+  color: var(--bar-high-color, black);
+}
+.level.veryhigh {
+  background-color: var(--bar-veryhigh-background, #59965d);
+  color: var(--bar-veryhigh-color, #f7f8f7);
+} */
