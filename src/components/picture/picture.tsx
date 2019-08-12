@@ -1,4 +1,4 @@
-import { Component, State, Prop, Element } from "@stencil/core";
+import { h, Component, State, Prop, Element } from "@stencil/core";
 import { waitForIntersection } from "../../global/lazy-loading";
 
 @Component({
@@ -12,15 +12,16 @@ export class Picture {
   @Prop() src: string;
   @Prop() srcset?: string;
   @Prop() alt: string;
+  @Prop() lazyMargin: string;
 
   @State() private didIntersect: boolean = false;
 
   componentWillLoad() {
-    waitForIntersection(this.host).then(() => {
+    waitForIntersection(this.host, this.lazyMargin).then(() => {
       this.didIntersect = true;
     });
   }
-  
+
   render() {
     if (!this.didIntersect) return;
 

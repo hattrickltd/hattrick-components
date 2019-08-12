@@ -1,4 +1,4 @@
-export function waitForIntersection(host: HTMLStencilElement): Promise<void> {
+export function waitForIntersection(host: any, rootMargin: any): Promise<void> {
   return new Promise((resolve) => {
     if ("IntersectionObserver" in window) {
       let io = new IntersectionObserver((data) => {
@@ -9,7 +9,7 @@ export function waitForIntersection(host: HTMLStencilElement): Promise<void> {
           io.disconnect();
           resolve();
         }
-      });
+      }, { rootMargin });
 
       io.observe(host);
     } else {
