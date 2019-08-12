@@ -1,13 +1,13 @@
-import { Component, Prop, Listen, State, Element, Method } from "@stencil/core";
+import { h, Component, Prop, Listen, State, Element, Method, Host } from "@stencil/core";
 
 @Component({
   tag: "hattrick-tooltip",
-  styleUrl: "tooltip.scss",
+  styleUrl: "tooltip.css",
   shadow: true,
 })
 export class Tooltip {
 
-  @Element() host: HTMLStencilElement;
+  @Element() host: HTMLHattrickTooltipElement;
 
   @Prop({ reflectToAttr: true, mutable: true }) dir: string;
 
@@ -149,23 +149,15 @@ export class Tooltip {
       this.cssPos.left = `${hostRect.left}px`;
   }
 
-  hostData() {
-    return {
-      "role": "tooltip",
-      "aria-describedby": "tooltip",
-      "aria-controls": "tooltip",
-      "aria-expanded": this.showTooltip,
-    };
-  }
-
   render() {
-    return ([
-      <slot />,
-      <div id="tooltip" style={ this.cssPos } hidden={ !this.showTooltip && !this.alwaysShow }>
-        { this.content }
-        <slot name="content"></slot>
-      </div>
-    ]
+    return (
+      <Host role="tooltip" aria-describedby="tooltip" aria-controls="tooltip" aria-expanded={ this.showTooltip }>
+        <slot />,
+        <div id="tooltip" style={ this.cssPos } hidden={ !this.showTooltip && !this.alwaysShow }>
+          { this.content }
+          <slot name="content"></slot>
+        </div>
+      </Host>
     );
   }
 }

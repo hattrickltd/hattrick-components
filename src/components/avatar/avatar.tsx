@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State, Watch, Event, EventEmitter, Method } from "@stencil/core";
+import { h, Component, Element, Prop, State, Watch, Event, EventEmitter, Method, Host } from "@stencil/core";
 import { waitForIntersection } from "../../global/lazy-loading";
 import { IAvatarPart, IAvatarImage } from "./avatar.interfaces";
 
@@ -7,22 +7,20 @@ const facecardSize = { width: 110, height: 155 };
 
 @Component({
   tag: "hattrick-avatar",
-  styleUrl: "avatar.scss",
+  styleUrl: "avatar.css",
   shadow: true,
 })
 export class Avatar {
 
-  @Element() private host: HTMLStencilElement;
+  @Element() private host: HTMLHattrickAvatarElement;
 
   private avatarSize: { width: number, height: number } = facecardSize;
 
   private silhouettePath: string = "silhouettes/sil[nr].png";
   private facecardPath: string = "backgrounds/card1.png";
 
-  private avatarPath: string = "/Img/Avatar/";
-
-  /** the base route to the avatars, can be either a relative or absolute url */
-  @Prop() base: string = "";
+  /** the base route to the avatars, can be either a relative or absolute url. */
+  @Prop() base: string = "/Img/Avatar/";
 
   /** An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. */
   @Prop() parts: IAvatarPart[] | number | string;
@@ -42,8 +40,10 @@ export class Avatar {
   /** Set to true to generate a square avatar by cutting off the bottom. */
   @Prop() square?: boolean = false;
 
-  /** Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport */
+  /** Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport. */
   @Prop() lazy?: boolean = true;
+  /** How soon before the avatar comes into view should we start loading it? Accepts CSS-like margin value. */
+  @Prop() lazyMargin?: string = `250px`;
 
   /** This array contains the loaded images that will be printed */
   @State() private images: Array<IAvatarImage> = [];
@@ -141,7 +141,7 @@ export class Avatar {
       }));
     } else {
       promises.push(this.loadSilhouette(parts as number, options).then((img) => {
-        this.addImage(img);
+        this.images = [img];
         return img;
       }));
     }
@@ -179,7 +179,7 @@ export class Avatar {
 
       src = (src.indexOf("//") > -1)
         ? src.replace("//", "https://")
-        : this.base + this.avatarPath + src;
+        : this.base + src;
 
       img.onload = () => {
         this.pendingImages.splice(this.pendingImages.indexOf(img), 1);
@@ -210,7 +210,7 @@ export class Avatar {
       };
       img.onerror = () => reject();
 
-      img.src = this.base + this.avatarPath + this.facecardPath;
+      img.src = this.base + this.facecardPath;
     });
   }
 
@@ -252,7 +252,7 @@ export class Avatar {
   private _getSilhouetteUrl(seed: number): string {
     let rnd = (seed) ? seed % 12 + 1 : Math.floor(Math.random() * 11) + 1;
 
-    return this.base + this.avatarPath + this.silhouettePath.replace("[nr]", rnd.toString());
+    return this.base + this.silhouettePath.replace("[nr]", rnd.toString());
   }
 
   private createImage(): HTMLImageElement {
@@ -299,20 +299,14 @@ export class Avatar {
     return canvas;
   }
 
-  hostData() {
-    return {
-      "role": "img",
-      "class": {
+  render() {
+    return (
+      <Host role="img" class={{
         "round": this.round,
         "square": this.square,
         "has-facecard": this.facecard,
-      }
-    };
-  }
-
-  render() {
-    return (
-      <div>
+        "no-background": !this.background,
+      }}>
         {this.images.map((part) =>
           <img src={part.img.src} style={{
             "width": part.img.naturalWidth / this.avatarSize.width * 100 + "%",
@@ -321,7 +315,7 @@ export class Avatar {
             "top": part.y / this.avatarSize.height * 100 + "%",
           }} />
         )}
-      </div>
+      </Host>
     );
   }
 }

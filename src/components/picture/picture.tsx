@@ -1,4 +1,4 @@
-import { Component, State, Prop, Element } from "@stencil/core";
+import { h, Component, State, Prop, Element } from "@stencil/core";
 import { waitForIntersection } from "../../global/lazy-loading";
 
 @Component({
@@ -20,7 +20,7 @@ export class Picture {
       this.didIntersect = true;
     });
   }
-  
+
   render() {
     if (!this.didIntersect) return;
 

@@ -63,6 +63,7 @@ Additionally, you can create silhouettes by settings `avatar.parts` to a number.
 | Variable       | Description       | Default value |
 | -------------- | ----------------- | ------------- |
 | `--avatar-size` | A decimal value between 0 and 1 allows you to dynamically change the size of the avatar. Technically you could use a value larger than 1, but the avatars doesn't scale well above their original size. | `1` |
+| `--avatar-shadow` | Box-shadow around the avatar. Only active when the avatar has a background but no facecard. | `grey 0px 0px 6px` |
 
 
 <!-- Auto Generated Below -->
