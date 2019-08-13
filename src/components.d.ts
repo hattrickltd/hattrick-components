@@ -132,6 +132,7 @@ export namespace Components {
   }
   interface HattrickPicture {
     'alt': string;
+    'lazyMargin': string;
     'src': string;
     'srcset'?: string;
   }
@@ -399,6 +400,7 @@ declare namespace LocalJSX {
   }
   interface HattrickPicture extends JSXBase.HTMLAttributes<HTMLHattrickPictureElement> {
     'alt'?: string;
+    'lazyMargin'?: string;
     'src'?: string;
     'srcset'?: string;
   }
