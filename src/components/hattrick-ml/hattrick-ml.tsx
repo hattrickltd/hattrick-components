@@ -13,7 +13,7 @@ export class HattrickMl {
   @Prop() text: string;
   @Prop() allowCustomContent: boolean = false;
 
-  @Prop() base: string;
+  @Prop() base: string = "";
 
   private parser = new HattrickMlParser();
 
