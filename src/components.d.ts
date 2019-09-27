@@ -128,6 +128,7 @@ export namespace Components {
   interface HattrickMl {
     'allowCustomContent': boolean;
     'base': string;
+    'internalLinkTarget': string;
     'text': string;
   }
   interface HattrickPicture {
@@ -396,6 +397,7 @@ declare namespace LocalJSX {
   interface HattrickMl extends JSXBase.HTMLAttributes<HTMLHattrickMlElement> {
     'allowCustomContent'?: boolean;
     'base'?: string;
+    'internalLinkTarget'?: string;
     'text'?: string;
   }
   interface HattrickPicture extends JSXBase.HTMLAttributes<HTMLHattrickPictureElement> {

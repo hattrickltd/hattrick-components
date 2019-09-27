@@ -14,6 +14,7 @@ export class HattrickMl {
   @Prop() allowCustomContent: boolean = false;
 
   @Prop() base: string = "";
+  @Prop() internalLinkTarget: string = "_self";
 
   private parser = new HattrickMlParser();
 
@@ -23,6 +24,7 @@ export class HattrickMl {
 
   private parseHattrickMl(): string {
     HattrickMlParser.replacer.base = this.base;
+    HattrickMlParser.replacer.internalLinkTarget = this.internalLinkTarget;
 
     return this.parser.replace(this.text, this.allowCustomContent);
   }
