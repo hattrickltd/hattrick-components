@@ -34,7 +34,7 @@ export class HattrickMlReplacer {
     return `<a href="${this.base}/Club/Youth/?YouthTeamID=${youthTeamId}" target="${this.internalLinkTarget}">${text}</a>`;
   }
   getYouthPlayerId(youthPlayerId: number | string, text: string): string {
-    return `<a href="${this.base}/Club/Players/Player.aspx?playerId=${youthPlayerId}" target="${this.internalLinkTarget}">${text}</a>`;
+    return `<a href="${this.base}/Club/Players/YouthPlayer.aspx?YouthPlayerID=${youthPlayerId}" target="${this.internalLinkTarget}">${text}</a>`;
   }
   getYouthMatchId(matchId: number | string, text: string): string {
     return `<a href="${this.base}/Club/Matches/Match.aspx?matchID=${matchId}&SourceSystem=Youth" target="${this.internalLinkTarget}">${text}</a>`;
