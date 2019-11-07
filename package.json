@@ -1,6 +1,6 @@
 {
   "name": "@hattrickltd/hattrick-components",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Web components for Hattrick.org.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -22,7 +22,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "^1.2.2",
+    "@stencil/core": "^1.7.5",
     "tslint": "^5.17.0",
     "workbox-build": "4.3.1"
   },

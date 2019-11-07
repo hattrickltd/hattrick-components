@@ -218,9 +218,9 @@ function fixDate(date: Date | string | number): Date {
 }
 
 interface IClock {
-  minutes: number,
-  seconds: number,
-  days: number,
-  hours: number,
-  labelAfterClock: string,
+  minutes: number;
+  seconds: number;
+  days: number;
+  hours: number;
+  labelAfterClock: string;
 }
