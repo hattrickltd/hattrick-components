@@ -1,4 +1,4 @@
-import { h, Component, Prop, Host } from "@stencil/core";
+import { h, Component, Prop, Host, State, Watch } from "@stencil/core";
 
 @Component({
   tag: "hattrick-rating",
@@ -21,22 +21,20 @@ export class Rating {
   /** Label for the mouseover stamina */
   @Prop() staminaLabel: string = "Stamina";
 
-  private progressClass: string;
+  @State() private progressClass: string;
 
   componentWillLoad() {
     this.handleSize();
     this.updateStaminaClass();
   }
-  componentWillUpdate() {
-    this.handleSize();
-    this.updateStaminaClass();
-  }
 
+  @Watch("size")
   private handleSize() {
     if (this.size === "small") this.size = 29;
     if (this.size === "large") this.size = 44;
   }
 
+  @Watch("stamina")
   private updateStaminaClass(): void {
     if (this.stamina < 0.25) this.progressClass = "stamina-verylow";
     else if (this.stamina < 0.50) this.progressClass = "stamina-low";

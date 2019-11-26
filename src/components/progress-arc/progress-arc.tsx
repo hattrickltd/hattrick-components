@@ -1,4 +1,4 @@
-import { h, Component, Prop, Watch } from "@stencil/core";
+import { h, Component, Prop, Watch, State } from "@stencil/core";
 
 @Component({
   tag: "hattrick-progress-arc",
@@ -28,15 +28,17 @@ export class ProgressArc {
   /* Color of the background ring. */
   // @Prop() background: string;
 
-  private offset: number;
-  private strokeWidthCapped: number;
-  private radius: number;
-  private circumference: number;
-  private transformValue: string;
+  @State() private offset: number;
+  @State() private strokeWidthCapped: number;
+  @State() private radius: number;
+  @State() private circumference: number;
+  @State() private transformValue: string;
 
   componentWillLoad() {
-    if (!this.strokeWidth) this.strokeWidth = this.size / 5;
+    this.updateRadius();
+  }
 
+  componentWillUpdate() {
     this.updateRadius();
   }
 
@@ -45,7 +47,7 @@ export class ProgressArc {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=949661
     this.offset = /firefox/i.test(navigator.userAgent) ? -89.9 : -90;
 
-    this.strokeWidthCapped = Math.min(this.strokeWidth, this.size / 2 - 1);
+    this.strokeWidthCapped = Math.min(this.strokeWidth || (this.size / 5), this.size / 2 - 1);
     this.radius = Math.max((this.size - this.strokeWidthCapped) / 2 - 1, 0);
     this.circumference = 2 * Math.PI * this.radius;
 
