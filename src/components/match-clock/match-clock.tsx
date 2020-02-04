@@ -189,19 +189,17 @@ export class MatchClock {
   }
 
   render() {
+    let time = this.getTime()
+                   .replace(/(\D)/g, `<span>$1</span>`)
+                   .replace(/(\d+)/g, `<bdo dir="ltr">$1</bdo>`)
+                   .replace(/(\d)/g, `<monospace>$1</monospace>`);
+
     return (
-      <Host role="timer" class={{
-        "match-clock-passed-zero": !this.isCountingDown()
-      }}>
-        {
-          this.getTime().split("").map((char) => {
-            if (isNaN(parseInt(char))) {
-              return <span>{ char }</span>;
-            } else {
-              return <monospace>{ char }</monospace>;
-            }
-          })
-        }
+      <Host role="timer"
+            class={{
+              "match-clock-passed-zero": !this.isCountingDown()
+            }}>
+        <span innerHTML={ time }></span>
       </Host>
     );
   }
