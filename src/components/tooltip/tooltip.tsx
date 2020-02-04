@@ -152,7 +152,7 @@ export class Tooltip {
   render() {
     return (
       <Host role="tooltip" aria-describedby="tooltip" aria-controls="tooltip" aria-expanded={ this.showTooltip }>
-        <slot />,
+        <slot />
         <div id="tooltip" style={ this.cssPos } hidden={ !this.showTooltip && !this.alwaysShow }>
           { this.content }
           <slot name="content"></slot>
