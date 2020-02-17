@@ -40,6 +40,9 @@
 } */
 img {
   position: absolute;
+
+  max-width: 92px;
+  max-height: 123px;
 }
 
 /*

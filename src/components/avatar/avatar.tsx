@@ -71,6 +71,11 @@ export class Avatar {
   @Event() load: EventEmitter;
 
   componentDidLoad() {
+    if (this.base.includes("AvatarNew")) {
+      originalSize.width = 208;
+      originalSize.height = 278;
+    }
+
     this.updateAvatar();
   }
 
