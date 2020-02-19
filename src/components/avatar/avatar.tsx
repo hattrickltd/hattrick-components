@@ -4,6 +4,7 @@ import { IAvatarPart, IAvatarImage } from "./avatar.interfaces";
 
 const originalSize = { width: 92, height: 123 };
 const facecardSize = { width: 110, height: 155 };
+// const largeSize = { width: 208, height: 278 };
 
 @Component({
   tag: "hattrick-avatar",
@@ -71,11 +72,6 @@ export class Avatar {
   @Event() load: EventEmitter;
 
   componentDidLoad() {
-    if (this.base.includes("AvatarNew")) {
-      originalSize.width = 208;
-      originalSize.height = 278;
-    }
-
     this.updateAvatar();
   }
 
@@ -93,6 +89,11 @@ export class Avatar {
     };
 
     this.avatarSize = {...(options.facecard) ? facecardSize : originalSize}; // make a new copy so we can safely change it later without affecting other instances.
+
+    if (this.base.includes("AvatarNew")) {
+      this.avatarSize.width = 208;
+      this.avatarSize.height = 278;
+    }
 
     if (this.round || this.square) {
       this.avatarSize.height = this.avatarSize.width;
@@ -215,7 +216,7 @@ export class Avatar {
       };
       img.onerror = () => reject();
 
-      img.src = this.base + this.facecardPath;
+      img.src = this.base.split("/").slice(0, -2).join("/") + "/Avatar/" + this.facecardPath;
     });
   }
 
@@ -311,16 +312,58 @@ export class Avatar {
         "square": this.square,
         "has-facecard": this.facecard,
         "no-background": !this.background,
+        "avatarnew": this.base.includes("AvatarNew"),
       }}>
-        {this.images.map((part) =>
-          <img src={part.img.src} style={{
-            "width": part.img.naturalWidth / this.avatarSize.width * 100 + "%",
-            "height": part.img.naturalHeight / this.avatarSize.height * 100 + "%",
-            "left": part.x / this.avatarSize.width * 100 + "%",
-            "top": part.y / this.avatarSize.height * 100 + "%",
-          }} />
-        )}
+        {/* <div> */}
+          {this.images.map((part) =>
+            this.renderImagePart(part)
+          )}
+        {/* </div> */}
       </Host>
+    );
+  }
+
+  private renderImagePart(part: IAvatarImage) {
+    let { width, height } = this.avatarSize;
+    let multiplier = 1;
+    let leftOffset = 0;
+
+    if (this.base.includes("AvatarNew")) {
+      // if (part.img.src.includes("res.hattrick.org")) {
+      //   // console.log("body", part.x, part.y, part.img.naturalWidth, part.img.naturalHeight, width, height);
+      //   width = (this.facecard ? facecardSize : originalSize).width * 1.26;
+      //   height = (this.facecard ? facecardSize : originalSize).height * 1.26;
+      // }
+
+      if (part.img.src.includes("res.hattrick.org") || part.img.src.includes("card1")) {
+        // console.log("body", part.x, part.y, part.img.naturalWidth, part.img.naturalHeight, width, height);
+        width = (this.facecard ? facecardSize : originalSize).width;
+        height = (this.facecard ? facecardSize : originalSize).height;
+      } else if (!part.img.src.includes("background")) {
+        if (!this.square && !this.round) {
+          multiplier = 1.26;
+          leftOffset = 13;
+        }
+
+        // width = (this.facecard ? facecardSize : originalSize).width;
+        // height = (this.facecard ? facecardSize : originalSize).height;
+        // width /= 1.3;
+        // height /= 1.3;
+      }
+    }
+
+    // if (part.img.src.includes("noses")) {
+    //   // console.log("nose", part.x, part.y, part.img.naturalWidth, part.img.naturalHeight, width, height);
+    // }
+    // multiplier = 1;
+
+    return (
+      <img src={part.img.src} style={{
+        "width": part.img.naturalWidth / width * multiplier * 100 + "%",
+        "height": part.img.naturalHeight / height * multiplier * 100 + "%",
+        "left": part.x / this.avatarSize.width * 100 - leftOffset + "%",
+        "top": part.y / this.avatarSize.height * 100 + "%",
+      }} />
     );
   }
 }
