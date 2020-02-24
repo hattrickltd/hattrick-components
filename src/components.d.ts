@@ -26,6 +26,10 @@ export namespace Components {
     */
     'base': string;
     /**
+    * Set to true if you want all parts to finish loading before showing the avatar. This will make the first paint much slower, but the avatar will never be just partially visible. The time to when the full avatar is printed will not be affected by this setting however.
+    */
+    'composed'?: boolean;
+    /**
     * Set whether or not the surrounding card should be shown.
     */
     'facecard'?: boolean;
@@ -298,6 +302,10 @@ declare namespace LocalJSX {
     * the base route to the avatars, can be either a relative or absolute url.
     */
     'base'?: string;
+    /**
+    * Set to true if you want all parts to finish loading before showing the avatar. This will make the first paint much slower, but the avatar will never be just partially visible. The time to when the full avatar is printed will not be affected by this setting however.
+    */
+    'composed'?: boolean;
     /**
     * Set whether or not the surrounding card should be shown.
     */
