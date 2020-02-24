@@ -46,6 +46,13 @@ export class Avatar {
   /** How soon before the avatar comes into view should we start loading it? Accepts CSS-like margin value. */
   @Prop() lazyMargin?: string = `250px`;
 
+  /**
+   * Set to true if you want all parts to finish loading before showing the avatar.
+   * This will make the first paint much slower, but the avatar will never be just partially visible.
+   * The time to when the full avatar is printed will not be affected by this setting however.
+   */
+  @Prop() composed?: boolean = false;
+
   /** This array contains the loaded images that will be printed */
   @State() private images: Array<IAvatarImage> = [];
 
@@ -111,7 +118,7 @@ export class Avatar {
 
     options = { background: false, injury: false, facecard: false, ...options };
 
-    let promises: Promise<any>[] = [];
+    let promises: Promise<IAvatarImage>[] = [];
 
     if (typeof parts === "string" && !parts.startsWith("data:")) {
       parts = JSON.parse(parts);
@@ -125,7 +132,7 @@ export class Avatar {
       if (options.facecard) {
         insertIdx++;
         promises.push(this.loadFacecard().then((img) => {
-          this.addImage(img, 0);
+          if (!this.composed) this.addImage(img, 0);
           return img;
         }));
       }
@@ -136,24 +143,25 @@ export class Avatar {
         let idx = insertIdx++;
 
         promises.push(this.loadAvatarPart(a, options).then((img) => {
-          this.addImage(img, idx);
+          if (!this.composed) this.addImage(img, idx);
           return img;
         }));
       });
     } else if (typeof parts === "string" && parts.startsWith("data:")) {
       promises.push(this.loadDataUrl(this.parts as string).then((img) => {
-        this.images = [img];
+        if (!this.composed) this.images = [img];
         return img;
       }));
     } else {
       promises.push(this.loadSilhouette(parts as number, options).then((img) => {
-        this.images = [img];
+        if (!this.composed) this.images = [img];
         return img;
       }));
     }
 
-    return Promise.all(promises).then(() => {
-      this.load.emit(this.images);
+    return Promise.all(promises).then((images) => {
+      if (this.composed) this.images = images;
+      this.load.emit(images);
     });
   }
 
