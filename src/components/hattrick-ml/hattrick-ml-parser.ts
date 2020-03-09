@@ -4,8 +4,8 @@ export class HattrickMlParser {
 
   static replacer: HattrickMlReplacer;
 
-  private regex = /\[(link|b|i|u|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table)(?:=([^\]]*?))?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
-  private requireClosing = ["b", "i", "u", "quote", "q", "spoiler", "td", "th", "tr", "table"];
+  private regex = /\[(link|img|b|i|u|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
+  private requireClosing = ["img", "b", "i", "u", "quote", "q", "spoiler", "td", "th", "tr", "table"];
   private gotoLink = "https://www.hattrick.org/goto.ashx?path=";
 
   spoilerText: string;
@@ -120,8 +120,9 @@ export class HattrickMlParser {
       let match = res[0],
         tag = res[1],
         id = res[2],
-        text = res[3],
-        closing = res[3],
+        attributes = this.parseAttributes(res[3]),
+        text = res[4],
+        closing = res[5],
         restart = true;
 
       if (this.doesRequireClosing(tag) && closing === undefined) {
@@ -131,6 +132,32 @@ export class HattrickMlParser {
       } else {
         try {
           switch (tag.toLowerCase()) {
+            case "img":
+              if (allowCustomContent) {
+                let styles = { "display": "block", "max-width": "100%" };
+                let classes = [];
+
+                if (attributes["width"]) {
+                  let width = +attributes["width"];
+                  if (!Number.isNaN(width)) {
+                    if (width < 1 || width > 100) width = 100;
+                    styles["max-width"] = width.toString() + "%";
+                  }
+                }
+
+                let align = attributes["align"];
+                if (align === "left") classes.push("float_left");
+                if (align === "right") classes.push("float_right");
+                if (align === "center") styles["margin"] = "auto";
+
+                let styleAttr = Object.keys(styles).map(x => `${x}:${styles[x]}`).join(";");
+                let classAttr = classes.join(" ");
+
+                str = str.replace(match, `<img src="${text}" style="${ styleAttr }" class="${ classAttr }" />`);
+              } else {
+                str = str.replace(match, `[link=${text}]`);
+              }
+              break;
             case "link":
               if (id) {
                 let url = id;
@@ -300,6 +327,23 @@ export class HattrickMlParser {
       }
     }
     return url;
+  }
+
+  private parseAttributes(str: string): { [attribute: string]: string } {
+    if (!str) return {};
+
+    let attrs: { [attribute: string]: string } = {};
+
+    str.split(" ").forEach((s) => {
+      s = s.trim();
+      let kv = s.split("=");
+
+      if (kv.length !== 2) return;
+
+      attrs[kv[0].toLowerCase()] = kv[1].toLowerCase();
+    });
+
+    return attrs;
   }
 }
 
