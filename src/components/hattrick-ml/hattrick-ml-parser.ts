@@ -135,7 +135,7 @@ export class HattrickMlParser {
             case "img":
               if (allowCustomContent) {
                 let styles = { "display": "block", "max-width": "100%" };
-                let classes = [];
+                let classes = ["htMlImage"];
 
                 if (attributes["width"]) {
                   let width = +attributes["width"];
