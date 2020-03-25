@@ -237,13 +237,13 @@ export class Avatar {
         this.pendingImages.splice(this.pendingImages.indexOf(img), 1);
         resolve({
           img: img,
-          x: ((options.facecard) ? 0 : -9),
-          y: ((options.facecard) ? 0 : -9),
+          x: 0,
+          y: 0,
         });
       };
       img.onerror = () => reject();
 
-      img.src = this._getSilhouetteUrl(silhouetteId);
+      img.src = this._getSilhouetteUrl(silhouetteId, options.facecard);
     });
   }
 
@@ -263,8 +263,10 @@ export class Avatar {
     });
   }
 
-  private _getSilhouetteUrl(seed: number): string {
-    let rnd = (seed) ? seed % 12 + 1 : Math.floor(Math.random() * 11) + 1;
+  private _getSilhouetteUrl(seed: number, facecard: boolean): string {
+    let rnd = ((seed) ? seed % 12 + 1 : Math.floor(Math.random() * 11) + 1).toString();
+
+    if (!facecard) rnd += "_3";
 
     return this.base + this.silhouettePath.replace("[nr]", rnd.toString());
   }
