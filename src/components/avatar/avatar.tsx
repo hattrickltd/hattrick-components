@@ -162,7 +162,7 @@ export class Avatar {
     return Promise.all(promises).then((images) => {
       if (this.composed) this.images = images;
       this.load.emit(images);
-    });
+    }).catch(_ => {});
   }
 
   private addImage(img: IAvatarImage, atIdx: number = 0) {
