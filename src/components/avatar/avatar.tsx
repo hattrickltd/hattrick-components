@@ -324,11 +324,10 @@ export class Avatar {
         "no-background": !this.background,
         "avatarnew": this.base.includes("AvatarNew"),
       }}>
-        {/* <div> */}
-          {this.images.map((part) =>
-            this.renderImagePart(part)
-          )}
-        {/* </div> */}
+        { this.images.map((part) =>
+          this.renderImagePart(part)
+        )}
+        <slot />
       </Host>
     );
   }
