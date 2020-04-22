@@ -22,7 +22,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "^1.7.5",
+    "@stencil/core": "^1.11.3",
     "tslint": "^5.17.0",
     "workbox-build": "4.3.1"
   },
