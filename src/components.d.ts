@@ -134,6 +134,10 @@ export namespace Components {
         "src": string;
         "srcset"?: string;
     }
+    interface HattrickPlayoffTree {
+        "expand": "expand" | "auto" | "none";
+        "playoff": any;
+    }
     interface HattrickProgressArc {
         /**
           * Expression evaluating to float [0.0, 1.0]
@@ -244,6 +248,12 @@ declare global {
         prototype: HTMLHattrickPictureElement;
         new (): HTMLHattrickPictureElement;
     };
+    interface HTMLHattrickPlayoffTreeElement extends Components.HattrickPlayoffTree, HTMLStencilElement {
+    }
+    var HTMLHattrickPlayoffTreeElement: {
+        prototype: HTMLHattrickPlayoffTreeElement;
+        new (): HTMLHattrickPlayoffTreeElement;
+    };
     interface HTMLHattrickProgressArcElement extends Components.HattrickProgressArc, HTMLStencilElement {
     }
     var HTMLHattrickProgressArcElement: {
@@ -275,6 +285,7 @@ declare global {
         "hattrick-match-clock": HTMLHattrickMatchClockElement;
         "hattrick-ml": HTMLHattrickMlElement;
         "hattrick-picture": HTMLHattrickPictureElement;
+        "hattrick-playoff-tree": HTMLHattrickPlayoffTreeElement;
         "hattrick-progress-arc": HTMLHattrickProgressArcElement;
         "hattrick-rating": HTMLHattrickRatingElement;
         "hattrick-timer": HTMLHattrickTimerElement;
@@ -404,6 +415,10 @@ declare namespace LocalJSX {
         "src"?: string;
         "srcset"?: string;
     }
+    interface HattrickPlayoffTree {
+        "expand"?: "expand" | "auto" | "none";
+        "playoff"?: any;
+    }
     interface HattrickProgressArc {
         /**
           * Expression evaluating to float [0.0, 1.0]
@@ -481,6 +496,7 @@ declare namespace LocalJSX {
         "hattrick-match-clock": HattrickMatchClock;
         "hattrick-ml": HattrickMl;
         "hattrick-picture": HattrickPicture;
+        "hattrick-playoff-tree": HattrickPlayoffTree;
         "hattrick-progress-arc": HattrickProgressArc;
         "hattrick-rating": HattrickRating;
         "hattrick-timer": HattrickTimer;
@@ -497,6 +513,7 @@ declare module "@stencil/core" {
             "hattrick-match-clock": LocalJSX.HattrickMatchClock & JSXBase.HTMLAttributes<HTMLHattrickMatchClockElement>;
             "hattrick-ml": LocalJSX.HattrickMl & JSXBase.HTMLAttributes<HTMLHattrickMlElement>;
             "hattrick-picture": LocalJSX.HattrickPicture & JSXBase.HTMLAttributes<HTMLHattrickPictureElement>;
+            "hattrick-playoff-tree": LocalJSX.HattrickPlayoffTree & JSXBase.HTMLAttributes<HTMLHattrickPlayoffTreeElement>;
             "hattrick-progress-arc": LocalJSX.HattrickProgressArc & JSXBase.HTMLAttributes<HTMLHattrickProgressArcElement>;
             "hattrick-rating": LocalJSX.HattrickRating & JSXBase.HTMLAttributes<HTMLHattrickRatingElement>;
             "hattrick-timer": LocalJSX.HattrickTimer & JSXBase.HTMLAttributes<HTMLHattrickTimerElement>;
