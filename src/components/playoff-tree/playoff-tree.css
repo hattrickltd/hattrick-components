@@ -1,9 +1,76 @@
 :host {
   --highlight-color: #277f31;
+
+  --match-background: white;
+
+  --current-match-background: white;
+  /* --current-stage-background: inherit; */
+  /* --current-empty-stage-background: inherit; */
+
+  --expanded-match-background: white;
+  /* --expanded-stage-background: inherit; */
+  /* --expanded-empty-stage-background: inherit; */
+
+  --pyjamas-odd: #fafafa;
+  --pyjamas-even: #f0f0f0;
+
+  display: block;
+}
+
+.controls {
+  position: relative;
+  display: inline-block;
+  padding: 20px 25px 20px 20px;
+}
+.controls > :not(.stages) {
+  background-color: #EDF1ED;
+  border: 1px solid #DCE2DC;
+  position: absolute;
+}
+.controls > :not(.stages):hover {
+  background-color: #dce2dc;
+  cursor: pointer;
+}
+
+.control-left-up {
+  top: 40px;
+  left: 0;
+  height: calc(50% - 30px - 5px);
+  width: 10px;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png) center center no-repeat;
+}
+.control-left-down {
+  bottom: 20px;
+  left: 0;
+  height: calc(50% - 30px - 5px);
+  width: 10px;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png) center center no-repeat;
+}
+.control-up {
+  top: 0;
+  left: 20px;
+  right: 25px;
+  height: 10px;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/up_arrow.png) center center no-repeat;
+}
+.control-down {
+  bottom: 0;
+  left: 20px;
+  right: 25px;
+  height: 10px;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/down_arrow.png) center center no-repeat;
+}
+.control-right {
+  top: 40px;
+  bottom: 20px;
+  right: 0;
+  width: 10px;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/right_arrow.png) center center no-repeat;
 }
 
 .stages {
   display: inline-flex;
+  /* overflow: hidden; */
 }
 
 .stage {
@@ -11,11 +78,45 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin-right: 2em;
+  padding-inline-start: 1em;
+  padding-inline-end: 1em;
   transition: width 300ms;
 }
-.stage.hide-names:not(.expanded) {
+.stage:not(.expanded) {
   width: 5em;
+}
+:host([pyjamas]) .stage:nth-child(odd) {
+  background: var(--pyjamas-odd);
+}
+:host([pyjamas]) .stage:nth-child(even) {
+  background: var(--pyjamas-even);
+}
+
+.stage.current-stage {
+  background: var(--current-stage-background);
+}
+.stage.current-stage.empty-stage {
+  background: var(--current-empty-stage-background, var(--current-stage-background));
+}
+.stage.current-stage .match {
+  background: var(--current-match-background);
+}
+.stage.expanded-stage {
+  background: var(--expanded-stage-background);
+}
+.stage.expanded-stage.empty-stage {
+  background: var(--expanded-empty-stage-background, var(--expanded-stage-background));
+}
+.stage.expanded-stage .match {
+  background: var(--expanded-match-background);
+}
+
+.header {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .matches {
@@ -34,6 +135,7 @@
   display: flex;
   flex-direction: column;
 
+  background: var(--match-background);
   width: 100%;
   box-shadow: 0 0 4px #0006;
 }
@@ -106,6 +208,7 @@
 }
 .lower-entry:after {
   content: "⬇";
+  background: white;
   color: #aaa;
   font-size: 1em;
   position: absolute;
@@ -154,19 +257,20 @@
   top: 50%;
   width: 0.66em;
   border-bottom: 2px solid #ccc;
-  border-right: 2px solid #ccc;
 }
 .exit.down {
   height: 2em;
   top: calc(50% - 1px);
   border-top: 2px solid #ccc;
   border-bottom: initial;
+  border-right: 2px solid #ccc;
 }
 .exit.up {
   height: 2em;
   top: initial;
   bottom: calc(50% - 1px);
   border-bottom: 2px solid #ccc;
+  border-right: 2px solid #ccc;
 }
 
 .exit.highlight {
@@ -211,6 +315,7 @@
 
 .promoted:after {
   content: "⬆";
+  background: white;
   color: #277f31;
   font-size: 1.5em;
   position: absolute;

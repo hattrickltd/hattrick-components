@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAvatarImage, IAvatarPart, } from "./components/avatar/avatar.interfaces";
 import { IClockTexts, } from "./components/match-clock/match-clock.interfaces";
+import { IPlayoffTexts, } from "./components/playoff-tree/playoff-tree";
 export namespace Components {
     interface HattrickAvatar {
         /**
@@ -135,8 +136,14 @@ export namespace Components {
         "srcset"?: string;
     }
     interface HattrickPlayoffTree {
+        "bracket": number;
+        "estimateNextRound": boolean;
         "expand": "expand" | "auto" | "none";
+        "fromRound": number;
+        "navControls": boolean | undefined;
         "playoff": any;
+        "showRounds": number;
+        "texts": IPlayoffTexts;
     }
     interface HattrickProgressArc {
         /**
@@ -416,8 +423,14 @@ declare namespace LocalJSX {
         "srcset"?: string;
     }
     interface HattrickPlayoffTree {
+        "bracket"?: number;
+        "estimateNextRound"?: boolean;
         "expand"?: "expand" | "auto" | "none";
+        "fromRound"?: number;
+        "navControls"?: boolean | undefined;
         "playoff"?: any;
+        "showRounds"?: number;
+        "texts"?: IPlayoffTexts;
     }
     interface HattrickProgressArc {
         /**

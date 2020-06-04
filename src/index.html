@@ -7,6 +7,8 @@
   <script type="module" src="/build/hattrick-components.esm.js"></script>
   <script nomodule src="/build/hattrick-components.js"></script>
 
+  <script src="https://stage.hattrick.org/JavaScript/HT.TagReplacer.js" type="text/javascript"></script>
+
   <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 
   <style>
@@ -115,6 +117,7 @@
   <h2>Playoffs</h2>
   <section playoffs>
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
+    <h4 style="color: red">Bug `.long` when from-rounds: 2, show-rounds: 5, bracket: 1</h4>
     <div id="playoffsWrapper"></div>
   </section>
 
@@ -872,48 +875,176 @@
     function addPlayoffTree() {
       var noLogo = "https://m.hattrick.org/assets/imgs/no-logo.png";
 
-      // var playoff = [
-      //   { matchId: 01, matchRound: 1, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 2, homeTeamName: "Kondoři", awayTeamName: "Breg", homeGoals: 1, awayGoals: 0 },
-      //   { matchId: 02, matchRound: 1, bracket: 1, randomPosition: 3, homeTeamId: 3, awayTeamId: 4, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", homeGoals: 0, awayGoals: 1 },
-      //   { matchId: 03, matchRound: 1, bracket: 1, randomPosition: 5, homeTeamId: 5, awayTeamId: 6, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", homeGoals: 1, awayGoals: 0 },
-      //   { matchId: 04, matchRound: 1, bracket: 1, randomPosition: 7, homeTeamId: 7, awayTeamId: 8, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", homeGoals: 0, awayGoals: 1 },
-      //   { matchId: 05, matchRound: 2, bracket: 1, randomPosition: 2, homeTeamId: 1, awayTeamId: 4, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", homeGoals: 1, awayGoals: 0 },
-      //   { matchId: 06, matchRound: 2, bracket: 1, randomPosition: 6, homeTeamId: 5, awayTeamId: 8, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", homeGoals: 0, awayGoals: 1 },
-      //   { matchId: 07, matchRound: 4, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 8, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", homeGoals: 1, awayGoals: 0 },
-      //   { matchId: 14, matchRound: 6, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 4, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", homeGoals: 0, awayGoals: 1 },
-      //   { matchId: 15, matchRound: 7, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 4, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", homeGoals: 1, awayGoals: 0 },
-
-        
-      //   { matchId: 08, matchRound: 2, bracket: 2, randomPosition: 2, homeTeamId: 2, awayTeamId: 3, homeTeamName: "Breg", awayTeamName: "Cual F.C.", homeGoals: 1, awayGoals: 0 },
-      //   { matchId: 09, matchRound: 2, bracket: 2, randomPosition: 6, homeTeamId: 6, awayTeamId: 7, homeTeamName: "Bodins boys", awayTeamName: "Jimmyhats", homeGoals: 0, awayGoals: 1 },
-      //   { matchId: 10, matchRound: 3, bracket: 2, randomPosition: 4, homeTeamId: 4, awayTeamId: 2, homeTeamName: "Viking Særløse", awayTeamName: "Breg", homeGoals: 1, awayGoals: 0 },
-      //   { matchId: 11, matchRound: 3, bracket: 2, randomPosition: 5, homeTeamId: 5, awayTeamId: 7, homeTeamName: "WLMF (DP61M)", awayTeamName: "Jimmyhats", homeGoals: 0, awayGoals: 1 },
-      //   { matchId: 12, matchRound: 4, bracket: 2, randomPosition: 4, homeTeamId: 4, awayTeamId: 7, homeTeamName: "Viking Særløse", awayTeamName: "Jimmyhats", homeGoals: 1, awayGoals: 0 },
-      //   { matchId: 13, matchRound: 5, bracket: 2, randomPosition: 8, homeTeamId: 8, awayTeamId: 4, homeTeamName: "Miowara's Revenge", awayTeamName: "Viking Særløse", homeGoals: 0, awayGoals: 1 },
-      // ];
-
       var playoff = [
-        { matchId: 01, matchRound: 1, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 2, homeTeamName: "Kondoři", awayTeamName: "Breg", isPlayed: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
-        { matchId: 02, matchRound: 1, bracket: 1, randomPosition: 3, homeTeamId: 3, awayTeamId: 4, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isPlayed: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
-        { matchId: 03, matchRound: 1, bracket: 1, randomPosition: 5, homeTeamId: 5, awayTeamId: 6, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isPlayed: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
-        { matchId: 04, matchRound: 1, bracket: 1, randomPosition: 7, homeTeamId: 7, awayTeamId: 8, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isPlayed: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
-        { matchId: 05, matchRound: 2, bracket: 1, randomPosition: 2, homeTeamId: 1, awayTeamId: 4, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isPlayed: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
-        { matchId: 06, matchRound: 2, bracket: 1, randomPosition: 6, homeTeamId: 5, awayTeamId: 8, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isPlayed: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
-        { matchId: 07, matchRound: 4, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 8, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isPlayed: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
-        { matchId: 14, matchRound: 6, bracket: 1, randomPosition: 1, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isPlayed: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
-        { matchId: 15, matchRound: 7, bracket: 1, randomPosition: 1, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isPlayed: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
-
-        { matchId: 08, matchRound: 2, bracket: 2, randomPosition: 2, homeTeamId: 2, awayTeamId: 3, homeTeamName: "Breg", awayTeamName: "Cual F.C.", isPlayed: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png" },
-        { matchId: 09, matchRound: 2, bracket: 2, randomPosition: 6, homeTeamId: 6, awayTeamId: 7, homeTeamName: "Bodins boys", awayTeamName: "Jimmyhats", isPlayed: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
-        { matchId: 10, matchRound: 3, bracket: 2, randomPosition: 4, homeTeamId: 4, awayTeamId: 2, homeTeamName: "Viking Særløse", awayTeamName: "Breg", isPlayed: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: noLogo },
-        { matchId: 11, matchRound: 3, bracket: 2, randomPosition: 5, homeTeamId: 5, awayTeamId: 7, homeTeamName: "WLMF (DP61M)", awayTeamName: "Jimmyhats", isPlayed: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
-        { matchId: 12, matchRound: 4, bracket: 2, randomPosition: 4, homeTeamId: 4, awayTeamId: 7, homeTeamName: "Viking Særløse", awayTeamName: "Jimmyhats", isPlayed: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
-        { matchId: 13, matchRound: 5, bracket: 2, randomPosition: 8, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isPlayed: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+        { matchId: 01, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 02, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 02, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 03, homeTeamId: 03, awayTeamId: 04, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 03, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 05, homeTeamId: 05, awayTeamId: 06, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
+        { matchId: 04, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 07, homeTeamId: 07, awayTeamId: 08, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
+        { matchId: 05, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 10, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 06, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 11, homeTeamId: 11, awayTeamId: 12, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 07, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 13, homeTeamId: 13, awayTeamId: 14, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
+        { matchId: 08, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 15, homeTeamId: 15, awayTeamId: 16, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
+        { matchId: 09, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 02, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 10, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 03, homeTeamId: 03, awayTeamId: 04, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 11, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 05, homeTeamId: 05, awayTeamId: 06, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
+        { matchId: 12, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 07, homeTeamId: 07, awayTeamId: 08, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
+        { matchId: 13, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 10, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 14, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 11, homeTeamId: 11, awayTeamId: 12, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 15, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 13, homeTeamId: 13, awayTeamId: 14, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
+        { matchId: 16, matchRound: 01, matchRoundsLeft: 05, bracket: 1, randomPosition: 15, homeTeamId: 15, awayTeamId: 16, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
+        { matchId: 17, matchRound: 02, matchRoundsLeft: 04, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 04, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 18, matchRound: 02, matchRoundsLeft: 04, bracket: 1, randomPosition: 05, homeTeamId: 05, awayTeamId: 08, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
+        { matchId: 19, matchRound: 02, matchRoundsLeft: 04, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 12, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 20, matchRound: 02, matchRoundsLeft: 04, bracket: 1, randomPosition: 13, homeTeamId: 13, awayTeamId: 16, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
+        { matchId: 21, matchRound: 02, matchRoundsLeft: 04, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 04, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 22, matchRound: 02, matchRoundsLeft: 04, bracket: 1, randomPosition: 05, homeTeamId: 05, awayTeamId: 08, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
+        { matchId: 23, matchRound: 02, matchRoundsLeft: 04, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 12, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 24, matchRound: 02, matchRoundsLeft: 04, bracket: 1, randomPosition: 13, homeTeamId: 13, awayTeamId: 16, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
+        { matchId: 25, matchRound: 03, matchRoundsLeft: 03, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 08, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 26, matchRound: 03, matchRoundsLeft: 03, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 16, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 27, matchRound: 03, matchRoundsLeft: 03, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 08, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 28, matchRound: 03, matchRoundsLeft: 03, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 16, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 29, matchRound: 04, matchRoundsLeft: 02, bracket: 1, randomPosition: 00, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+        { matchId: 30, matchRound: 04, matchRoundsLeft: 02, bracket: 1, randomPosition: 00, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+        { matchId: 31, matchRound: 05, matchRoundsLeft: 01, bracket: 1, randomPosition: 00, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
       ];
 
+      var playoff = [
+        { matchId: 01, matchRound: 1, matchRoundsLeft: 7, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 2, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 02, matchRound: 1, matchRoundsLeft: 7, bracket: 1, randomPosition: 3, homeTeamId: 3, awayTeamId: 4, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 03, matchRound: 1, matchRoundsLeft: 7, bracket: 1, randomPosition: 5, homeTeamId: 5, awayTeamId: 6, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
+        { matchId: 04, matchRound: 1, matchRoundsLeft: 7, bracket: 1, randomPosition: 7, homeTeamId: 7, awayTeamId: 8, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
+        { matchId: 05, matchRound: 2, matchRoundsLeft: 6, bracket: 1, randomPosition: 2, homeTeamId: 1, awayTeamId: 4, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+        { matchId: 06, matchRound: 2, matchRoundsLeft: 6, bracket: 1, randomPosition: 6, homeTeamId: 5, awayTeamId: 8, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
+        { matchId: 07, matchRound: 4, matchRoundsLeft: 4, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 8, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+        { matchId: 14, matchRound: 6, matchRoundsLeft: 2, bracket: 1, randomPosition: 1, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+        { matchId: 15, matchRound: 7, matchRoundsLeft: 1, bracket: 1, randomPosition: 1, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+
+        { matchId: 08, matchRound: 2, matchRoundsLeft: 6, bracket: 2, randomPosition: 2, homeTeamId: 2, awayTeamId: 3, homeTeamName: "Breg", awayTeamName: "Cual F.C.", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png" },
+        { matchId: 09, matchRound: 2, matchRoundsLeft: 6, bracket: 2, randomPosition: 6, homeTeamId: 6, awayTeamId: 7, homeTeamName: "Bodins boys", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+        { matchId: 10, matchRound: 3, matchRoundsLeft: 5, bracket: 2, randomPosition: 4, homeTeamId: 4, awayTeamId: 2, homeTeamName: "Viking Særløse", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: noLogo },
+        { matchId: 11, matchRound: 3, matchRoundsLeft: 5, bracket: 2, randomPosition: 5, homeTeamId: 5, awayTeamId: 7, homeTeamName: "WLMF (DP61M)", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+        { matchId: 12, matchRound: 4, matchRoundsLeft: 4, bracket: 2, randomPosition: 4, homeTeamId: 4, awayTeamId: 7, homeTeamName: "Viking Særløse", awayTeamName: "Jimmyhats", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+        { matchId: 13, matchRound: 5, matchRoundsLeft: 3, bracket: 2, randomPosition: 8, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      ];
+
+      // var playoff = [
+      //   { matchId: 01, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 02, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+      //   { matchId: 02, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 03, homeTeamId: 03, awayTeamId: 04, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+      //   { matchId: 03, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 05, homeTeamId: 05, awayTeamId: 06, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
+      //   { matchId: 04, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 07, homeTeamId: 07, awayTeamId: 08, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
+      //   { matchId: 05, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 10, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+      //   { matchId: 06, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 11, homeTeamId: 11, awayTeamId: 12, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+      //   { matchId: 07, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 13, homeTeamId: 13, awayTeamId: 14, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
+      //   { matchId: 08, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 15, homeTeamId: 15, awayTeamId: 16, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
+      //   { matchId: 09, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 02, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+      //   { matchId: 10, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 03, homeTeamId: 03, awayTeamId: 04, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+      //   { matchId: 11, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 05, homeTeamId: 05, awayTeamId: 06, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
+      //   { matchId: 12, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 07, homeTeamId: 07, awayTeamId: 08, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
+      //   { matchId: 13, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 10, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+      //   { matchId: 14, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 11, homeTeamId: 11, awayTeamId: 12, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+      //   { matchId: 15, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 13, homeTeamId: 13, awayTeamId: 14, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
+      //   { matchId: 16, matchRound: 01, matchRoundsLeft: 11, bracket: 1, randomPosition: 15, homeTeamId: 15, awayTeamId: 16, homeTeamName: "Jimmyhats", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg", awayLogoUrl: noLogo },
+      //   { matchId: 17, matchRound: 02, matchRoundsLeft: 10, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 04, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+      //   { matchId: 18, matchRound: 02, matchRoundsLeft: 10, bracket: 1, randomPosition: 05, homeTeamId: 05, awayTeamId: 08, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
+      //   { matchId: 19, matchRound: 02, matchRoundsLeft: 10, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 12, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+      //   { matchId: 20, matchRound: 02, matchRoundsLeft: 10, bracket: 1, randomPosition: 13, homeTeamId: 13, awayTeamId: 16, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
+      //   { matchId: 21, matchRound: 02, matchRoundsLeft: 10, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 04, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+      //   { matchId: 22, matchRound: 02, matchRoundsLeft: 10, bracket: 1, randomPosition: 05, homeTeamId: 05, awayTeamId: 08, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
+      //   { matchId: 23, matchRound: 02, matchRoundsLeft: 10, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 12, homeTeamName: "Kondoři", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
+      //   { matchId: 24, matchRound: 02, matchRoundsLeft: 10, bracket: 1, randomPosition: 13, homeTeamId: 13, awayTeamId: 16, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
+      //   { matchId: 25, matchRound: 04, matchRoundsLeft: 08, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 08, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+      //   { matchId: 26, matchRound: 04, matchRoundsLeft: 08, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 16, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+      //   { matchId: 27, matchRound: 04, matchRoundsLeft: 08, bracket: 1, randomPosition: 01, homeTeamId: 01, awayTeamId: 08, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+      //   { matchId: 28, matchRound: 04, matchRoundsLeft: 08, bracket: 1, randomPosition: 09, homeTeamId: 09, awayTeamId: 16, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
+      //   { matchId: 29, matchRound: 06, matchRoundsLeft: 06, bracket: 1, randomPosition: 00, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 30, matchRound: 06, matchRoundsLeft: 06, bracket: 1, randomPosition: 00, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 31, matchRound: 08, matchRoundsLeft: 04, bracket: 1, randomPosition: 00, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 32, matchRound: 10, matchRoundsLeft: 02, bracket: 1, randomPosition: 00, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 33, matchRound: 11, matchRoundsLeft: 01, bracket: 1, randomPosition: 00, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+
+      //   { matchId: 34, matchRound: 02, matchRoundsLeft: 10, bracket: 2, randomPosition: 02, homeTeamId: 02, awayTeamId: 03, homeTeamName: "Breg", awayTeamName: "Cual F.C.", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png" },
+      //   { matchId: 35, matchRound: 02, matchRoundsLeft: 10, bracket: 2, randomPosition: 06, homeTeamId: 06, awayTeamId: 07, homeTeamName: "Bodins boys", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 36, matchRound: 02, matchRoundsLeft: 10, bracket: 2, randomPosition: 10, homeTeamId: 10, awayTeamId: 11, homeTeamName: "Breg", awayTeamName: "Cual F.C.", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png" },
+      //   { matchId: 37, matchRound: 02, matchRoundsLeft: 10, bracket: 2, randomPosition: 14, homeTeamId: 14, awayTeamId: 15, homeTeamName: "Bodins boys", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 38, matchRound: 02, matchRoundsLeft: 10, bracket: 2, randomPosition: 02, homeTeamId: 02, awayTeamId: 03, homeTeamName: "Breg", awayTeamName: "Cual F.C.", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png" },
+      //   { matchId: 39, matchRound: 02, matchRoundsLeft: 10, bracket: 2, randomPosition: 06, homeTeamId: 06, awayTeamId: 07, homeTeamName: "Bodins boys", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 40, matchRound: 02, matchRoundsLeft: 10, bracket: 2, randomPosition: 10, homeTeamId: 10, awayTeamId: 11, homeTeamName: "Breg", awayTeamName: "Cual F.C.", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png" },
+      //   { matchId: 41, matchRound: 02, matchRoundsLeft: 10, bracket: 2, randomPosition: 14, homeTeamId: 14, awayTeamId: 15, homeTeamName: "Bodins boys", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 42, matchRound: 03, matchRoundsLeft: 09, bracket: 2, randomPosition: 04, homeTeamId: 04, awayTeamId: 02, homeTeamName: "Viking Særløse", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: noLogo },
+      //   { matchId: 43, matchRound: 03, matchRoundsLeft: 09, bracket: 2, randomPosition: 05, homeTeamId: 05, awayTeamId: 07, homeTeamName: "WLMF (DP61M)", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 44, matchRound: 03, matchRoundsLeft: 09, bracket: 2, randomPosition: 12, homeTeamId: 12, awayTeamId: 10, homeTeamName: "Viking Særløse", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: noLogo },
+      //   { matchId: 45, matchRound: 03, matchRoundsLeft: 09, bracket: 2, randomPosition: 13, homeTeamId: 13, awayTeamId: 15, homeTeamName: "WLMF (DP61M)", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 46, matchRound: 03, matchRoundsLeft: 09, bracket: 2, randomPosition: 04, homeTeamId: 04, awayTeamId: 02, homeTeamName: "Viking Særløse", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: noLogo },
+      //   { matchId: 47, matchRound: 03, matchRoundsLeft: 09, bracket: 2, randomPosition: 05, homeTeamId: 05, awayTeamId: 07, homeTeamName: "WLMF (DP61M)", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 48, matchRound: 03, matchRoundsLeft: 09, bracket: 2, randomPosition: 12, homeTeamId: 12, awayTeamId: 10, homeTeamName: "Viking Særløse", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: noLogo },
+      //   { matchId: 49, matchRound: 03, matchRoundsLeft: 09, bracket: 2, randomPosition: 13, homeTeamId: 13, awayTeamId: 15, homeTeamName: "WLMF (DP61M)", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 40, matchRound: 04, matchRoundsLeft: 08, bracket: 2, randomPosition: 04, homeTeamId: 04, awayTeamId: 07, homeTeamName: "Viking Særløse", awayTeamName: "Jimmyhats", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 51, matchRound: 04, matchRoundsLeft: 08, bracket: 2, randomPosition: 12, homeTeamId: 12, awayTeamId: 15, homeTeamName: "Viking Særløse", awayTeamName: "Jimmyhats", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 52, matchRound: 04, matchRoundsLeft: 08, bracket: 2, randomPosition: 04, homeTeamId: 04, awayTeamId: 07, homeTeamName: "Viking Særløse", awayTeamName: "Jimmyhats", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 53, matchRound: 04, matchRoundsLeft: 08, bracket: 2, randomPosition: 12, homeTeamId: 12, awayTeamId: 15, homeTeamName: "Viking Særløse", awayTeamName: "Jimmyhats", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
+      //   { matchId: 54, matchRound: 05, matchRoundsLeft: 07, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 55, matchRound: 05, matchRoundsLeft: 07, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 56, matchRound: 05, matchRoundsLeft: 07, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 57, matchRound: 05, matchRoundsLeft: 07, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 58, matchRound: 06, matchRoundsLeft: 05, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 59, matchRound: 06, matchRoundsLeft: 05, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 50, matchRound: 07, matchRoundsLeft: 05, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 61, matchRound: 07, matchRoundsLeft: 05, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 62, matchRound: 08, matchRoundsLeft: 04, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      //   { matchId: 63, matchRound: 09, matchRoundsLeft: 03, bracket: 2, randomPosition: 08, homeTeamId: 00, awayTeamId: 00, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+      // ];
+
       var tree = document.createElement("hattrick-playoff-tree");
+      tree.setAttribute("expand", "auto");
+      tree.setAttribute("pyjamas", "");
+      tree.setAttribute("from-round", "1");
+      tree.setAttribute("show-rounds", "5");
+      tree.setAttribute("bracket", "1");
+      // tree.setAttribute("nav-controls", "true");
+
+      tree.style.fontSize = "11px";
+      // tree.style.setProperty("--current-stage-background", "#eee");
+      tree.style.setProperty("--expanded-stage-background", "#ddd");
+      // tree.style.setProperty("--current-match-background", "#eee");
+      // tree.style.setProperty("--current-empty-stage-background", "#eee");
+      // tree.style.setProperty("--expanded-match-background", "#ddd");
+      tree.style.setProperty("--expanded-empty-stage-background", "#ddd");
+
+      var upperBracketTitle = document.createElement("h2");
+      upperBracketTitle.slot = "winners-bracket-title";
+      upperBracketTitle.innerText = "Winners bracket";
+
+      var lowerBracketTitle = document.createElement("h2");
+      lowerBracketTitle.slot = "losers-bracket-title";
+      lowerBracketTitle.innerText = "Losers bracket";
+
+      tree.appendChild(upperBracketTitle);
+      tree.appendChild(lowerBracketTitle);
+
       tree.playoff = playoff;
       tree.expand = "auto";
+      // tree.estimateNextRound = true;
+      tree.texts = {
+        single: {
+          roundX: "Round [#matchRound]",
+          roundXShort: "Round [#matchRound]",
+          round: ["Final", "Semi-finals", "Quarter-finals"],
+          roundShort: ["Final", "Semis", "Quarters"],
+        },
+        upper: {
+          roundX: "Round [#matchRound]",
+          roundXShort: "Round [#matchRound]",
+          round: ["Grand Final", "Grand Final", "Winners Final", "Winners Semi-finals", "Winners Quarter-finals"],
+          roundShort: ["GF", "GF", "W. F", "W. SF", "W. QF"],
+        },
+        lower: {
+          roundX: "Losers Round [#matchRound]",
+          roundXShort: "L. Round [#matchRound]",
+          round: ["Losers Final", "Losers Semi-finals", "Losers Quarter-finals"],
+          roundShort: ["L. F", "L. SF", "L. QF"],
+        },
+      }
       document.querySelector("#playoffsWrapper").appendChild(tree);
     }
 

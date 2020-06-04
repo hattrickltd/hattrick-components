@@ -1,6 +1,7 @@
 import { Component, h, Host, Prop, State, Watch } from "@stencil/core";
 import { Fragment } from "../../global/fragment";
 
+declare const window: any;
 
 @Component({
   tag: "hattrick-playoff-tree",
@@ -11,6 +12,18 @@ export class PlayoffTree {
 
   @Prop() playoff: any; //Array<IPlayoffMatch>;
   @Prop() expand: "expand" | "auto" | "none" = "auto";
+  @Prop() estimateNextRound: boolean = false;
+
+  @Prop() texts: IPlayoffTexts;
+
+  @Prop() fromRound: number = 1;
+  @Prop() showRounds: number = 0;
+  @Prop() bracket: number = 1;
+
+  @Prop() navControls: boolean | undefined = undefined;
+
+  private allUpper: IPlayoffStages;
+  private allLower: IPlayoffStages;
 
   @State() upper: IPlayoffStages;
   @State() lower: IPlayoffStages;
@@ -25,15 +38,21 @@ export class PlayoffTree {
 
   private isDouble = false;
   private currentStage: number = 1;
-  private noLogo = "https://m.hattrick.org/assets/imgs/no-logo.png";
 
   componentWillLoad() {
     this.prepareData();
   }
 
   @Watch("playoff")
+  @Watch("fromRound")
+  @Watch("showRounds")
+  @Watch("bracket")
   private prepareData() {
     let matches: Array<IPlayoffMatch> = this.playoff;
+    let toRound = this.fromRound + (this.showRounds || 99);
+
+    if (this.fromRound < 1) this.fromRound = 1;
+    if (this.bracket < 1) this.bracket = 1;
 
     if (typeof matches === "string") matches = JSON.parse(matches);
 
@@ -41,17 +60,81 @@ export class PlayoffTree {
       this.upper = matches.filter(x => x.bracket === Bracket.Upper).reduce(this.groupByStage.bind(this), []);
       this.lower = matches.filter(x => x.bracket === Bracket.Lower).reduce(this.groupByStage.bind(this), []);
 
-      this.currentStage = matches.filter(x => x.homeTeamId + x.awayTeamId > 0).pop()?.matchRound || 1;
-      this.expandStage = this.currentStage;
-
-      this.isDouble = this.lower.length > 0;
+      this.allUpper = this.upper.filter(x => !!x);
+      this.allLower = this.lower.filter(x => !!x);
 
       for (let idx = 0; idx < this.upper.length; idx++) {
         if (!this.upper[idx]) this.upper[idx] = [];
       }
-      this.lower[0] = [];
+      if (this.lower.length > 0) {
+        this.isDouble = true;
+        this.lower[0] = [];
+      }
 
-      this.totalRounds = this.upper.length;
+      // for (let i = 0; i < this.lower.length; i++) {
+      //   let nrOfMatches = Math.pow(2, i + 1);
+      //   let startFrom = nrOfMatches * this.bracket;
+
+      //   this.lower[this.lower.length - i] = this.lower[this.lower.length - i].slice(startFrom, nrOfMatches);
+      // }
+
+      this.currentStage = matches.filter(x => x.homeTeamId + x.awayTeamId > 0).pop()?.matchRound || 1;
+      this.expandStage = this.currentStage;
+
+      if (this.showRounds > 0) {
+        if (!this.isDouble) {
+
+          this.totalRounds = this.upper.length;
+
+          this.upper = this.upper.slice(this.fromRound - 1, toRound - 1);
+
+          for (let i = 1; i <= this.upper.length; i++) {
+            let nrOfMatches = Math.pow(2, i) / 2;
+            let startFrom = nrOfMatches * (this.bracket - 1);
+
+            this.upper[this.upper.length - i] = this.upper[this.upper.length - i].slice(startFrom, startFrom + nrOfMatches);
+          }
+
+          console.log(this.upper);
+
+        } else {
+          this.totalRounds = this.upper.length;
+
+          this.upper = this.upper.slice(this.fromRound - 1, toRound - 1);
+          this.lower = this.lower.slice(this.fromRound - 1, toRound - 1);
+
+          let upperOffset = 0;
+
+          for (let i = 1; i <= this.upper.length; i++) {
+            let idx = this.upper.length - i;
+
+            let nrOfMatches = Math.pow(2, i - upperOffset) / 2;
+            let startFrom = nrOfMatches * (this.bracket - 1);
+
+            if (this.upper[idx].length === 0) {
+              upperOffset += 1;
+              continue;
+            }
+
+            this.upper[idx] = this.upper[idx].slice(startFrom, startFrom + nrOfMatches);
+          }
+
+          for (let i = 1; i <= this.lower.length; i++) {
+            let idx = this.upper.length - i;
+
+            let nrOfMatches = this.upper[idx].length; // lower bracket has same amount of matches as upper bracket
+
+            if (nrOfMatches === 0 && idx > 0) {
+              // no upper bracket had no matches, amount of matches is same as last round in upper bracket
+              nrOfMatches = this.upper[idx - 1].length;
+            }
+
+            let startFrom = nrOfMatches * (this.bracket - 1);
+
+            this.lower[this.lower.length - i] = this.lower[this.lower.length - i].slice(startFrom, startFrom + nrOfMatches);
+          }
+        }
+      }
     }
   }
 
@@ -63,45 +146,54 @@ export class PlayoffTree {
   }
 
   componentDidLoad() {
-    this.hasElements = !!this.playoff;
+    this.hasElements = this.playoff.some(x => x.element);
   }
   componentDidUpdate() {
-    this.hasElements = !!this.playoff;
+    this.hasElements = this.playoff.some(x => x.element);
   }
 
-  private getStageTitle(stage: IPlayoffMatch[], stageIdx: number): string {
+  private getStageTitle(stage: IPlayoffMatch[], stageIdx: number, long: boolean): string {
     if (stage.length === 0) return "";
 
     let isUpperBracket = stage[0]?.bracket === Bracket.Upper;
 
-    if (isUpperBracket) {
-      let stages = this.upper.filter(x => x.length > 0);
-      let upperRounds = stages.length;
-      let upperRound = stages.indexOf(stage) + 1;
-
-      // console.log(upperRound, upperRounds, upperRounds - upperRound);
-
-      let title = ["GF2", "GF", "UF", "USF", "UQF"][upperRounds - upperRound];
+    if (!this.isDouble) {
+      let title = this.texts.single[long ? "round" : "roundShort"][this.totalRounds - stage[0].matchRound];
       if (title) return title;
+
+    } else if (isUpperBracket) {
+      let upperRounds = this.allUpper.length;
+      let upperRound = this.allUpper.findIndex(x => x?.[0]?.matchRound === stage[0].matchRound) + 1;
+
+      let title = this.texts.upper[long ? "round" : "roundShort"][upperRounds - upperRound];
+      if (title) return title;
+
     } else {
-      let stages = this.lower.filter(x => x.length > 0);
-      let lowerRounds = stages.length;
-      let lowerRound = stages.indexOf(stage) + 1;
+      let lowerRounds = this.allLower.length;
+      let lowerRound = this.allLower.findIndex(x => x?.[0]?.matchRound === stage[0].matchRound) + 1;
 
-      // console.log(lowerRound, lowerRounds, lowerRounds - lowerRound);
-
-      let title = ["LF", "LSF", "LQF"][lowerRounds - lowerRound];
+      let title = this.texts.lower[long ? "round" : "roundShort"][lowerRounds - lowerRound];
       if (title) return title;
     }
 
-    return `Round ${ stageIdx + 1 }`;
+    let nrOfTeamsLeft = Math.pow(2, stageIdx + 1 + 1);
+    let tagReplacer = new window.HT.TagReplacer();
+    tagReplacer.addTag("nrOfTeams", nrOfTeamsLeft);
+
+    if (isUpperBracket) {
+      tagReplacer.addTag("matchRound", this.allUpper.findIndex(x => x?.[0]?.matchRound === stage[0].matchRound) + 1);
+      return tagReplacer.replace(this.texts.upper[long ? "roundX" : "roundXShort"]);
+    } else {
+      tagReplacer.addTag("matchRound", this.allLower.findIndex(x => x?.[0]?.matchRound === stage[0].matchRound) + 1);
+      return tagReplacer.replace(this.texts.lower[long ? "roundX" : "roundXShort"]);
+    }
   }
 
   private trySetExpandedStage(matchRound: number) {
 
-    if (matchRound <= this.currentStage) {
+    // if (matchRound <= this.currentStage) {
       this.expandStage = matchRound;
-    }
+    // }
   }
   private unsetExpandedStage() {
     this.expandStage = this.currentStage;
@@ -156,62 +248,132 @@ export class PlayoffTree {
     }
   }
 
+  private move(dir: "up" | "down" | "leftup" | "leftdown" | "right") {
+    switch (dir) {
+      case "up":
+        this.bracket -= 1;
+        break;
+      case "down":
+        this.bracket += 1;
+        break;
+      case "leftup":
+        this.fromRound -= 1;
+        // in double elimiation we might want to step two steps so first round is never empty.
+        this.fromRound -= this.playoff.some(m => m.bracket !== 2 && m.matchRound === this.fromRound) ? 0 : 1;
+        break;
+      case "leftdown":
+        this.fromRound -= 1;
+        // in double elimiation we might want to step two steps so first round is never empty.
+        this.fromRound -= this.playoff.some(m => m.bracket !== 2 && m.matchRound === this.fromRound) ? 0 : 1;
+        this.bracket *= 2;
+        break;
+      case "right":
+        this.fromRound += 1;
+        // in double elimiation we might want to step two steps so first round is never empty.
+        this.fromRound += this.playoff.some(m => m.bracket !== 2 && m.matchRound === this.fromRound) ? 0 : 1;
+        this.bracket = Math.ceil(this.bracket / 2);
+        break;
+    }
+
+    // in double elimination stepping twice above may cause us to step one step too far past the last grand final
+    // for this case we step back one step and show the first round empty anyway.
+    if (this.fromRound > this.totalRounds - this.showRounds) this.fromRound = this.totalRounds - this.showRounds + 1;
+
+    this.hasElements = false;
+    this.playoff.forEach(x => x.element = undefined);
+  }
+
   render() {
     return <Host>
       { this.isDouble &&
-        <h2>Winner bracket</h2>
+        <slot name="winners-bracket-title" />
       }
-      <div class="stages upper">
-        { this.upper.map((stage, stageIdx) =>
-          <div class={{
-            "stage": true,
-            "hide-names": stageIdx !== this.expandStage - 1, //(isUpperBracket && match.matchRound > 1) || (!isUpperBracket && match.matchRound > 2),
-            "hide-next-names": stageIdx !== this.expandStage - 2,
-            "expanded": this.expand === "expand" || (this.expand === "auto" && this.expandStage - 1 === stageIdx),
-            "expanded-next": this.expand === "expand" || (this.expand === "auto" && this.expandStage - 2 === stageIdx),
-          }}
-          onMouseOver={ _ => this.trySetExpandedStage(stageIdx + 1) }
-          onMouseLeave={ _ => this.unsetExpandedStage() }>
-            <div class="header">
-              { this.getStageTitle(stage, stageIdx) }
-            </div>
-            <div class="matches">
-              { stage.map((match, matchIdx) =>
-                this.renderMatch(match, this.upper, stageIdx, matchIdx)
-              )}
-            </div>
+
+      <br />
+      { this.showRounds }
+      { this.navControls }
+      <br />
+
+      { this.showRounds > 0 && this.navControls !== false &&
+        <div class="controls">
+          <div class="control-left-up" onClick={ _ => this.move("leftup") } hidden={ this.fromRound <= 1 }></div>
+          <div class="control-left-down" onClick={ _ => this.move("leftdown") } hidden={ this.fromRound <= 1 }></div>
+          <div class="control-up" onClick={ _ => this.move("up") } hidden={ this.bracket <= 1 }></div>
+          <div class="control-down" onClick={ _ => this.move("down") } hidden={ this.bracket >= this.allUpper[this.fromRound - 1].length / this.upper[0].length }></div>
+          <div class="control-right" onClick={ _ => this.move("right") } hidden={ this.fromRound > this.totalRounds - this.showRounds }></div>
+
+          {/* <div class="control-left-up" onClick={ _ => this.move(-1, 0) } hidden={ this.fromRound <= 1 }></div>
+          <div class="control-left-down" onClick={ _ => this.moveStep(-1, 1) } hidden={ this.fromRound <= 1 }></div>
+          <div class="control-up" onClick={ _ => this.moveStep(0, -1) } hidden={ this.bracket <= 1 }></div>
+          <div class="control-down" onClick={ _ => this.moveStep(0, 1) } hidden={ this.bracket >= this.allUpper[0].length / this.upper[0].length }></div>
+          <div class="control-right" onClick={ _ => this.moveStep(1, Math.floor(this.bracket / 2) - this.bracket) } hidden={ this.fromRound > this.totalRounds - this.showRounds }></div> */}
+
+          <div class="stages upper">
+            { this.upper.map((stage, stageIdx) =>
+              this.renderStage(stage, stageIdx, true)
+            ) }
           </div>
-        ) }
-      </div>
+        </div>
+      }
+      { (this.showRounds === 0 || this.navControls === false) &&
+        <div class="stages upper">
+          { this.upper.map((stage, stageIdx) =>
+            this.renderStage(stage, stageIdx, true)
+          ) }
+        </div>
+      }
 
       { this.isDouble &&
         <Fragment>
-          <h2>Loser bracket</h2>
+          <slot name="losers-bracket-title" />
           <div class="stages lower">
             { this.lower.map((stage, stageIdx) =>
-              <div class={{
-                "stage": true,
-                "hide-names": stageIdx !== this.expandStage - 1, //(isUpperBracket && match.matchRound > 1) || (!isUpperBracket && match.matchRound > 2),
-                "hide-next-names": stageIdx !== this.expandStage - 2,
-                "expanded": this.expand === "expand" || (this.expand === "auto" && this.expandStage - 1 === stageIdx),
-                "expanded-next": this.expand === "expand" || (this.expand === "auto" && this.expandStage - 2 === stageIdx),
-              }}
-              onMouseOver={ _ => this.trySetExpandedStage(stageIdx + 1) }
-              onMouseLeave={ _ => this.unsetExpandedStage() }>
-                <div class="header">
-                  { this.getStageTitle(stage, stageIdx) }
-                </div>
-                <div class="matches">
-                  { stage.map((match, matchIdx) =>
-                    this.renderMatch(match, this.lower, stageIdx, matchIdx)
-                  )}
-                </div>
-              </div>
+              this.renderStage(stage, stageIdx, false)
             ) }
           </div>
         </Fragment>
       }
     </Host>;
+  }
+
+  private renderStage(stage: IPlayoffMatch[], stageIdx: number, isUpper: boolean) {
+    let isCurrentStage = (stageIdx === this.currentStage - 1);
+    let isHighlightedStage = (stageIdx === this.expandStage - 1);
+    let hideNames = (stageIdx !== this.expandStage - 1); //(isUpperBracket && match.matchRound > 1) || (!isUpperBracket && match.matchRound > 2);
+    let hideNamesNext = (stageIdx !== this.expandStage - 2);
+
+    let expandIsFutureStage = this.expandStage > this.currentStage;
+
+    let expanded = this.expand === "expand"
+                || (this.expand === "auto" && !expandIsFutureStage && this.expandStage - 1 === stageIdx)
+                || (expandIsFutureStage && stageIdx === this.currentStage - 1);
+
+    let expandedNext = this.expand === "expand"
+                    || (this.expand === "auto" && !expandIsFutureStage && this.expandStage - 2 === stageIdx);
+
+    return (
+      <div class={{
+             "stage": true,
+             "current-stage": isCurrentStage,
+             "highlight-stage": isHighlightedStage,
+             "empty-stage": stage.length === 0,
+             "hide-names": hideNames,
+             "hide-next-names": hideNamesNext,
+             "expanded": expanded,
+             "expanded-next": expandedNext,
+           }}
+           onMouseOver={ _ => this.trySetExpandedStage(stageIdx + 1) }
+           onMouseLeave={ _ => this.unsetExpandedStage() }>
+        <div class="header" title={ this.getStageTitle(stage, stageIdx, true) }>
+          { this.getStageTitle(stage, stageIdx, expanded) }
+        </div>
+        <div class="matches">
+          { stage.map((match, matchIdx) =>
+            this.renderMatch(match, (isUpper ? this.upper : this.lower), stageIdx, matchIdx)
+          )}
+        </div>
+      </div>
+    );
   }
 
   private renderMatch(match: IPlayoffMatch, bracket: IPlayoffStages, stageIdx: number, matchIdx: number) {
@@ -226,8 +388,8 @@ export class PlayoffTree {
     let nextIsUp: boolean;
 
     let homeWon = match.homeGoals > match.awayGoals;
+    let awayWon = match.homeGoals < match.awayGoals;
     let isFinal = match.matchRound >= this.totalRounds - 1;
-
 
     if (thisStage.length === nextStage?.length) { // lower round with entries (except first round)
       isUpperHalf = true; // just go with it... :)
@@ -238,9 +400,9 @@ export class PlayoffTree {
       exit = nextStage?.[Math.floor(matchIdx / 2)];
     }
 
-    let entries: IPlayoffMatch[] = this.getEntries(match, bracket, stageIdx, matchIdx);
+    let entries: IPlayoffMatch[] = this.estimateNextRound && this.getEntries(match, bracket, stageIdx, matchIdx);
 
-    console.log(match.matchId, entries);
+    // console.log(match.matchId, entries);
 
     if (isUpperBracket) {
       if (thisStage.length === nextStage?.length || !isUpperHalf) {
@@ -252,6 +414,9 @@ export class PlayoffTree {
       nextIsUp = !isUpperHalf;
     }
 
+    let hasExit = (isUpperBracket && match.matchRoundsLeft > 1)
+               || (!isUpperBracket && match.matchRoundsLeft !== 3);
+
     return (
       <div class="match-wrapper" data-match-id={ match.matchId }>
         { !isUpperBracket && (thisStage.length !== nextStage?.length || match.matchRound === 2) &&
@@ -261,19 +426,17 @@ export class PlayoffTree {
           <div class={{ "lower-entry": true, "down": true, "start": match.matchRound === 2, "highlight": this.highlightTeamId === match.awayTeamId }}></div>
         }
         <div class="match" ref={ el => match.element = el }>
-          <div data-team-id={ match.homeTeamId } class={{
-            "team": true,
-            "winner": match.isPlayed && homeWon,
-            "loser": match.isPlayed && !homeWon,
-            "highlight": this.highlightTeamId === match.homeTeamId,
-          }}
-          title={ match.homeTeamName }
-          onMouseOver={ _ => this.setHighlightedTeam(match.homeTeamId) }
-          onMouseLeave={ _ => this.setHighlightedTeam(-1) }>
-            { isActualMatch &&
-              <img class="logo" src={ match.homeLogoUrl } />
-            }
-            { !isActualMatch && entries.length > 0 && entries[0].homeLogoUrl &&
+          <div data-team-id={ match.homeTeamId }
+               class={{
+                 "team": true,
+                 "winner": match.isFinished && homeWon,
+                 "loser": match.isFinished && awayWon,
+                 "highlight": this.highlightTeamId === match.homeTeamId,
+               }}
+               title={ match.homeTeamName }
+               onMouseOver={ _ => this.setHighlightedTeam(match.homeTeamId) }
+               onMouseLeave={ _ => this.setHighlightedTeam(-1) }>
+            { this.estimateNextRound && !isActualMatch && entries.length > 0 && entries[0].homeLogoUrl &&
               <Fragment>
                 <img class="logo" src={ entries[0].homeLogoUrl } />
                 /
@@ -283,61 +446,61 @@ export class PlayoffTree {
 
             { isActualMatch &&
               <Fragment>
+                <img class="logo" src={ match.homeLogoUrl } />
                 <div class="name">{ match.homeTeamName }</div>
-                { isActualMatch && match.isPlayed && this.isDouble && isUpperBracket && !isFinal && !homeWon && <div class="demoted">⬇</div> }
-                { isActualMatch && match.isPlayed && this.isDouble && (!isUpperBracket || isFinal) && !homeWon && <div>☠</div> }
-                <div class="goals">{ match.isPlayed ? match.homeGoals : "" }</div>
+                { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && !homeWon && <div class="demoted">⬇</div> }
+                {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && !homeWon && <div>☠</div> } */}
+                <div class="goals">{ match.isFinished ? match.homeGoals : "" }</div>
               </Fragment>
             }
           </div>
 
-          <div data-team-id={ match.awayTeamId } class={{
-            "team": true,
-            "winner": match.isPlayed && !homeWon,
-            "loser": match.isPlayed && homeWon,
-            "highlight": this.highlightTeamId === match.awayTeamId,
-          }}
-          title={ match.awayTeamName }
-          onMouseOver={ _ => this.setHighlightedTeam(match.awayTeamId) }
-          onMouseLeave={ _ => this.setHighlightedTeam(-1) }>
-          { isActualMatch &&
-            <img class="logo" src={ match.awayLogoUrl } />
-          }
-          { !isActualMatch && entries.length > 1 && entries[1].homeLogoUrl &&
-            <Fragment>
-              <img class="logo" src={ entries[1].homeLogoUrl } />
-              /
-              <img class="logo" src={ entries[1].awayLogoUrl } />
-            </Fragment>
-          }
+          <div data-team-id={ match.awayTeamId }
+               class={{
+                 "team": true,
+                 "winner": match.isFinished && awayWon,
+                 "loser": match.isFinished && homeWon,
+                 "highlight": this.highlightTeamId === match.awayTeamId,
+               }}
+               title={ match.awayTeamName }
+               onMouseOver={ _ => this.setHighlightedTeam(match.awayTeamId) }
+               onMouseLeave={ _ => this.setHighlightedTeam(-1) }>
+            { this.estimateNextRound && !isActualMatch && entries.length > 1 && entries[1].homeLogoUrl &&
+              <Fragment>
+                <img class="logo" src={ entries[1].homeLogoUrl } />
+                /
+                <img class="logo" src={ entries[1].awayLogoUrl } />
+              </Fragment>
+            }
 
             { isActualMatch &&
               <Fragment>
+                <img class="logo" src={ match.awayLogoUrl } />
                 <div class="name">{ match.awayTeamName }</div>
-                { isActualMatch && match.isPlayed && this.isDouble && isUpperBracket && !isFinal && homeWon && <div class="demoted">⬇</div> }
-                { isActualMatch && match.isPlayed && this.isDouble && (!isUpperBracket || isFinal) && homeWon && <div>☠</div> }
-                <div class="goals">{ match.isPlayed ? match.awayGoals : "" }</div>
+                { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && homeWon && <div class="demoted">⬇</div> }
+                {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && homeWon && <div>☠</div> } */}
+                <div class="goals">{ match.isFinished ? match.awayGoals : "" }</div>
               </Fragment>
             }
           </div>
         </div>
-        { exit?.element &&
+        { hasExit &&
           <div class={{
             "exit": true,
-            "up": nextIsUp && match.matchRound !== this.totalRounds - 1, // except for first grand final
-            "down": !nextIsUp,
-            "long": exit.matchRound > match.matchRound + 1,
-            "highlight": match.isPlayed && ((this.highlightTeamId === match.homeTeamId && homeWon) || (this.highlightTeamId === match.awayTeamId && !homeWon))
+            "up": exit?.element && nextIsUp && (!this.isDouble || match.matchRound !== this.totalRounds - 1), // except for first grand final
+            "down": exit?.element && !nextIsUp,
+            "long": (!exit || exit.matchRound > match.matchRound + 1) && stageIdx < bracket.length - 1,
+            "highlight": exit?.element && match.isFinished && ((this.highlightTeamId === match.homeTeamId && homeWon) || (this.highlightTeamId === match.awayTeamId && awayWon))
           }} style={{ "height": this.getExitHeight(match, exit) + "px" }}>
             <div class="entry"></div>
           </div>
         }
-        { match.bracket === Bracket.Lower && !exit && // lower final
+        { match.bracket === Bracket.Lower && match.matchRoundsLeft === 3 && // lower final
           <div class={{
             "exit": true,
             "up": true,
             "promoted": true,
-            "highlight": (this.highlightTeamId === match.homeTeamId && homeWon) || (this.highlightTeamId === match.awayTeamId && !homeWon)
+            "highlight": (this.highlightTeamId === match.homeTeamId && homeWon) || (this.highlightTeamId === match.awayTeamId && awayWon)
           }}></div>
         }
       </div>
@@ -345,12 +508,14 @@ export class PlayoffTree {
   }
 
   private getExitHeight(match: IPlayoffMatch, exit: IPlayoffMatch): number {
+    if (!match?.element || !exit?.element) return 0;
+
     let matchRect = match.element.getBoundingClientRect();
     let exitRect = exit.element.getBoundingClientRect();
 
     // if ([8].indexOf(match?.matchId) > -1) console.log(matchRect, exitRect);
 
-    if (exit.matchRound === this.totalRounds) return 0;
+    if (this.isDouble && exit.matchRound === this.totalRounds) return 0;
 
     let diff = Math.abs(matchRect.top - exitRect.top);
 
@@ -367,6 +532,7 @@ type IPlayoffStages = Array<Array<IPlayoffMatch>>;
 interface IPlayoffMatch {
   matchId: number;
   matchRound: number;
+  matchRoundsLeft: number;
   bracket: Bracket;
   randomPosition: number;
   homeTeamId: number;
@@ -375,7 +541,7 @@ interface IPlayoffMatch {
   awayTeamName: string;
   homeLogoUrl: string;
   awayLogoUrl: string;
-  isPlayed: boolean;
+  isFinished: boolean;
   homeGoals: number;
   awayGoals: number;
   element?: HTMLElement;
@@ -384,4 +550,16 @@ interface IPlayoffMatch {
 const enum Bracket {
   Upper = 1,
   Lower = 2,
+}
+
+export interface IPlayoffTexts {
+  single: IPlayoffBracketTexts;
+  upper: IPlayoffBracketTexts;
+  lower: IPlayoffBracketTexts;
+}
+
+export interface IPlayoffBracketTexts {
+  roundX: string;
+  round: Array<string>;
+  roundShort: Array<string>;
 }
