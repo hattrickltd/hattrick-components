@@ -1,0 +1,288 @@
+
+:host {
+  /**
+   * @prop --bar-background: Background of the range bar
+   * @prop --bar-background-active: Background of the active range bar
+   * @prop --bar-height: Height of the range bar
+   * @prop --bar-border-radius: Border radius of the range bar
+   * @prop --height: Height of the range
+   * @prop --knob-background: Background of the range knob
+   * @prop --knob-border-radius: Border radius of the range knob
+   * @prop --knob-box-shadow: Box shadow of the range knob
+   * @prop --knob-size: Size of the range knob
+   * @prop --pin-background: Background of the range pin
+   * @prop --pin-color: Color of the range pin
+   */
+
+  display: flex;
+  position: relative;
+
+  flex: 3;
+  align-items: center;
+
+  user-select: none;
+  /* z-index: $z-index-item-input; */
+}
+
+:host(.range-disabled) {
+  pointer-events: none;
+}
+
+::slotted(ion-label) {
+  flex: initial;
+}
+
+::slotted(ion-icon[slot]) {
+  font-size: 24px;
+}
+
+.range-slider {
+  position: relative;
+
+  flex: 1;
+
+  width: 100%;
+  height: var(--height);
+
+  contain: size layout style;
+
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+:host(.range-pressed) .range-slider {
+  cursor: grabbing;
+}
+
+.range-pin {
+  position: absolute;
+
+  background: var(--bar-background-active);
+  color: var(--bar-background);
+
+  text-align: center;
+  box-sizing: border-box;
+}
+
+
+
+:host {
+  --knob-border-radius: 50%;
+  --knob-background: var(--bar-background-active);
+  --knob-box-shadow: none;
+  --knob-size: 14px;
+  --bar-height: 2px;
+  --bar-background: #59965d1a;
+  --bar-background-active: #59965d;
+  --bar-border-radius: 0;
+  --tick-background: var(--bar-background);
+  --height: 42px;
+  --pin-background: #59965d;
+  --pin-color: #ffffff;
+
+  padding: 8px 14px;
+
+  font-size: 12px;
+}
+
+.range-bar {
+  background: var(--bar-background);
+}
+
+.range-bar-active,
+.range-knob,
+.range-pin,
+.range-pin::before,
+.range-tick {
+  background: var(--tick-background);
+  color: var(--bar-background);
+}
+
+::slotted([slot="start"]) {
+  margin-right: 14px;
+}
+
+::slotted([slot="end"]) {
+  margin-left: 14px;
+}
+
+:host(.range-has-pin) {
+  padding-top: 28px;
+}
+
+.range-bar.range-bar-active {
+  bottom: 0;
+
+  width: auto;
+
+  background: var(--bar-background-active);
+}
+
+.range-knob {
+  /* transform: scale(.67); */
+
+  transition-duration: 120ms;
+  transition-property: transform, background-color, border;
+  transition-timing-function: ease;
+
+  z-index: 2;
+}
+
+.range-tick {
+  position: absolute;
+  top: calc((var(--height) - var(--bar-height)) / 2);
+
+  width: var(--bar-height);
+  height: var(--bar-height);
+
+  background: var(--tick-background);
+
+  z-index: 1;
+  pointer-events: none;
+}
+
+.range-tick-active {
+  background: transparent;
+}
+
+.range-pin {
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  border-radius: 50%;
+
+  transform: translate3d(0, 0, 0) scale(.01);
+
+  display: inline-block;
+  position: relative;
+
+  min-width: 28px;
+  height: 28px;
+
+  transition: transform 120ms ease, background 120ms ease;
+
+  background: var(--pin-background);
+  color: var(--pin-color);
+
+  text-align: center;
+}
+.range-pin::before {
+  top: 3px;
+  left: 50%;
+
+  margin-left: -13px;
+
+  border-radius: 50% 50% 50% 0;
+
+  position: absolute;
+
+  width: 26px;
+  height: 26px;
+
+  transform: rotate(-45deg);
+
+  transition: background 120ms ease;
+
+  background: var(--pin-background);
+
+  content: "";
+  z-index: -1;
+}
+:host([dir="rtl"]) .range-pin::before {
+  left: unset;
+  right: 50%;
+  margin-left: unset;
+  margin-right: -13px;
+}
+
+/* .range-knob-pressed .range-pin {
+  transform: translate3d(0, -24px, 0)  scale(1);
+} */
+
+:host(:not(.range-has-pin)) .range-knob-pressed .range-knob {
+  transform: scale(1);
+}
+
+:host(.range-disabled) .range-bar-active,
+:host(.range-disabled) .range-bar,
+:host(.range-disabled) .range-tick {
+  background-color: var(--bar-background);
+}
+
+:host(.range-disabled) .range-knob {
+  transform: scale(.55);
+
+  outline: 5px solid #fff;
+
+  background-color: var(--bar-background);
+}
+
+.range-knob-handle {
+  top: calc((var(--height) - var(--knob-size) * 2) / 2);
+  left: 0;
+  
+  margin-left: calc(0px - var(--knob-size) * 2 / 2);
+
+  position: absolute;
+
+  width: calc(var(--knob-size) * 2);
+  height: calc(var(--knob-size) * 2);
+
+  text-align: center;
+}
+:host([dir="rtl"]) .range-knob-handle {
+  left: unset;
+  right: 0;
+  margin-left: unset;
+  margin-right: calc(0px - var(--knob-size) * 2 / 2);
+}
+.range-knob-handle:active,
+.range-knob-handle:focus {
+  outline: none;
+}
+
+.range-bar {
+  border-radius: var(--bar-border-radius);
+
+  position: absolute;
+
+  top: calc((var(--height) - var(--bar-height)) / 2);
+  left: 0;
+
+  width: 100%;
+  height: var(--bar-height);
+
+  background: var(--bar-background);
+
+  pointer-events: none;
+}
+:host([dir="rtl"]) .range-bar {
+  left: unset;
+  right: 0;
+}
+
+.range-knob {
+  border-radius: var(--knob-border-radius);
+
+  position: absolute;
+
+  top: calc(50% - var(--knob-size) / 2);
+  left: calc(50% - var(--knob-size) / 2);
+
+  width: var(--knob-size);
+  height: var(--knob-size);
+
+  background: var(--knob-background);
+
+  box-shadow: var(--knob-box-shadow);
+  z-index: 2;
+  pointer-events: none;
+}
+:host([dir="rtl"]) .range-knob {
+  left: unset;
+  right: calc(50% - var(--knob-size) / 2);
+}
+
+:host(.range-pressed) .range-bar-active {
+  will-change: left, right;
+}

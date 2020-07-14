@@ -7,6 +7,8 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAvatarImage, IAvatarPart, } from "./components/avatar/avatar.interfaces";
 import { IClockTexts, } from "./components/match-clock/match-clock.interfaces";
+import { RangeChangeEventDetail, RangeValue, } from "./components/range/range-interface";
+import { StyleEventDetail, } from "./interface";
 export namespace Components {
     interface HattrickAvatar {
         /**
@@ -152,6 +154,52 @@ export namespace Components {
          */
         "strokeWidth": number;
     }
+    interface HattrickRange {
+        /**
+          * How long, in milliseconds, to wait to trigger the `ionChange` event after each change in the range value.
+         */
+        "debounce": number;
+        /**
+          * If `true`, the user cannot interact with the range.
+         */
+        "disabled": boolean;
+        /**
+          * Show two knobs.
+         */
+        "dualKnobs": boolean;
+        /**
+          * Maximum integer value of the range.
+         */
+        "max": number;
+        /**
+          * Minimum integer value of the range.
+         */
+        "min": number;
+        /**
+          * The name of the control, which is submitted with the form data.
+         */
+        "name": string;
+        /**
+          * If `true`, a pin with integer value is shown when the knob is pressed.
+         */
+        "pin": boolean;
+        /**
+          * If `true`, the knob snaps to tick marks evenly spaced based on the step property value.
+         */
+        "snaps": boolean;
+        /**
+          * Specifies the value granularity.
+         */
+        "step": number;
+        /**
+          * If `true`, tick marks are displayed based on the step value. Only applies when `snaps` is `true`.
+         */
+        "ticks": boolean;
+        /**
+          * the value of the range.
+         */
+        "value": RangeValue;
+    }
     interface HattrickRating {
         /**
           * The rating to show inside the stamina.
@@ -250,6 +298,12 @@ declare global {
         prototype: HTMLHattrickProgressArcElement;
         new (): HTMLHattrickProgressArcElement;
     };
+    interface HTMLHattrickRangeElement extends Components.HattrickRange, HTMLStencilElement {
+    }
+    var HTMLHattrickRangeElement: {
+        prototype: HTMLHattrickRangeElement;
+        new (): HTMLHattrickRangeElement;
+    };
     interface HTMLHattrickRatingElement extends Components.HattrickRating, HTMLStencilElement {
     }
     var HTMLHattrickRatingElement: {
@@ -276,6 +330,7 @@ declare global {
         "hattrick-ml": HTMLHattrickMlElement;
         "hattrick-picture": HTMLHattrickPictureElement;
         "hattrick-progress-arc": HTMLHattrickProgressArcElement;
+        "hattrick-range": HTMLHattrickRangeElement;
         "hattrick-rating": HTMLHattrickRatingElement;
         "hattrick-timer": HTMLHattrickTimerElement;
         "hattrick-tooltip": HTMLHattrickTooltipElement;
@@ -422,6 +477,64 @@ declare namespace LocalJSX {
          */
         "strokeWidth"?: number;
     }
+    interface HattrickRange {
+        /**
+          * How long, in milliseconds, to wait to trigger the `ionChange` event after each change in the range value.
+         */
+        "debounce"?: number;
+        /**
+          * If `true`, the user cannot interact with the range.
+         */
+        "disabled"?: boolean;
+        /**
+          * Show two knobs.
+         */
+        "dualKnobs"?: boolean;
+        /**
+          * Maximum integer value of the range.
+         */
+        "max"?: number;
+        /**
+          * Minimum integer value of the range.
+         */
+        "min"?: number;
+        /**
+          * The name of the control, which is submitted with the form data.
+         */
+        "name"?: string;
+        /**
+          * Emitted when the range loses focus.
+         */
+        "onIonBlur"?: (event: CustomEvent<void>) => void;
+        /**
+          * Emitted when the value property has changed.
+         */
+        "onIonChange"?: (event: CustomEvent<RangeChangeEventDetail>) => void;
+        /**
+          * Emitted when the range has focus.
+         */
+        "onIonFocus"?: (event: CustomEvent<void>) => void;
+        /**
+          * If `true`, a pin with integer value is shown when the knob is pressed.
+         */
+        "pin"?: boolean;
+        /**
+          * If `true`, the knob snaps to tick marks evenly spaced based on the step property value.
+         */
+        "snaps"?: boolean;
+        /**
+          * Specifies the value granularity.
+         */
+        "step"?: number;
+        /**
+          * If `true`, tick marks are displayed based on the step value. Only applies when `snaps` is `true`.
+         */
+        "ticks"?: boolean;
+        /**
+          * the value of the range.
+         */
+        "value"?: RangeValue;
+    }
     interface HattrickRating {
         /**
           * The rating to show inside the stamina.
@@ -482,6 +595,7 @@ declare namespace LocalJSX {
         "hattrick-ml": HattrickMl;
         "hattrick-picture": HattrickPicture;
         "hattrick-progress-arc": HattrickProgressArc;
+        "hattrick-range": HattrickRange;
         "hattrick-rating": HattrickRating;
         "hattrick-timer": HattrickTimer;
         "hattrick-tooltip": HattrickTooltip;
@@ -498,6 +612,7 @@ declare module "@stencil/core" {
             "hattrick-ml": LocalJSX.HattrickMl & JSXBase.HTMLAttributes<HTMLHattrickMlElement>;
             "hattrick-picture": LocalJSX.HattrickPicture & JSXBase.HTMLAttributes<HTMLHattrickPictureElement>;
             "hattrick-progress-arc": LocalJSX.HattrickProgressArc & JSXBase.HTMLAttributes<HTMLHattrickProgressArcElement>;
+            "hattrick-range": LocalJSX.HattrickRange & JSXBase.HTMLAttributes<HTMLHattrickRangeElement>;
             "hattrick-rating": LocalJSX.HattrickRating & JSXBase.HTMLAttributes<HTMLHattrickRatingElement>;
             "hattrick-timer": LocalJSX.HattrickTimer & JSXBase.HTMLAttributes<HTMLHattrickTimerElement>;
             "hattrick-tooltip": LocalJSX.HattrickTooltip & JSXBase.HTMLAttributes<HTMLHattrickTooltipElement>;

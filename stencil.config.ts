@@ -12,6 +12,7 @@ export const config: Config = {
     { components: ["hattrick-progress-arc", "hattrick-rating"] },
     { components: ["hattrick-timer"] },
     { components: ["hattrick-tooltip"] },
+    { components: ["hattrick-range"] },
   ],
   outputTargets: [
     {
