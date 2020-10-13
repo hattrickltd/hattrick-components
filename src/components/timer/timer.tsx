@@ -29,7 +29,6 @@ export class Timer {
 
   componentWillLoad() {
     this.deadlineUpdated();
-    this._interval = setInterval(() => this.updateTime(), 1000);
   }
 
   componentDidUnload() {
@@ -46,6 +45,19 @@ export class Timer {
     this.seconds = Math.floor((this._deadline - Date.now()) / 1000);
 
     if (this.seconds <= 0 && !this.keepCounting) {
+      this.clearInterval();
+    } else if (!this._interval) {
+      this.setupInterval();
+    }
+  }
+
+  private setupInterval() {
+    if (!this._interval) {
+      this._interval = setInterval(() => this.updateTime(), 1000);
+    }
+  }
+  private clearInterval() {
+    if (this._interval) {
       clearInterval(this._interval);
       this._interval = undefined;
     }
