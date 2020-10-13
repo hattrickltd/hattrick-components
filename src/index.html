@@ -725,6 +725,7 @@
       for (let i = 10; i <= 1000000; i *= 10) {
         let timer = document.createElement("hattrick-timer");
         timer.deadline = Date.now() + i * 1000;
+        // timer.pattern = "hh:mm:ss";
         wrapper.appendChild(timer);
       }
     }

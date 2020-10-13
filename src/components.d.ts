@@ -235,6 +235,7 @@ export namespace Components {
           * After how many hours should it start showing _x days_. Change text via the `daysText` property.
          */
         "maxHours": number;
+        "pattern": string;
     }
     interface HattrickTooltip {
         "alwaysShow": boolean;
@@ -570,6 +571,7 @@ declare namespace LocalJSX {
           * After how many hours should it start showing _x days_. Change text via the `daysText` property.
          */
         "maxHours"?: number;
+        "pattern"?: string;
     }
     interface HattrickTooltip {
         "alwaysShow"?: boolean;

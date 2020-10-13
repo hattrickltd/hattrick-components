@@ -24,6 +24,8 @@ export class Timer {
   /** After how many hours should it start showing _x days_. Change text via the `daysText` property. */
   @Prop() maxHours: number = 72;
 
+  @Prop() pattern: string = "HH:MM:SS";
+
   // /** The number of seconds left (or negative if `keepCounting` is set to `true`. */
   // @Prop({ reflectToAttr: true, mutable: true }) seconds: number;
 
@@ -95,7 +97,32 @@ export class Timer {
   }
 
   private format(hours: number, minutes: number, seconds: number): string {
-    return `${this.padLeft(hours)}:${this.padLeft(minutes)}:${this.padLeft(seconds)}`;
+    let result = this.pattern
+      .replace("hh", hours > 0 ? this.padLeft(hours) : "")
+      .replace("h",  hours > 0 ? hours.toString() : "")
+      .replace("HH", this.padLeft(hours))
+      .replace("H",  hours.toString())
+
+      .replace("mm", minutes > 0 ? this.padLeft(minutes) : "")
+      .replace("m",  minutes > 0 ? minutes.toString() : "")
+      .replace("MM", this.padLeft(minutes))
+      .replace("M",  minutes.toString())
+
+      .replace("ss", seconds > 0 ? this.padLeft(seconds) : "")
+      .replace("s",  seconds > 0 ? seconds.toString() : "")
+      .replace("SS", this.padLeft(seconds))
+      .replace("S",  seconds.toString());
+
+    result = result.replace(/^\D*([\d:]*?)\D*$/, "$1");
+
+    if (!/\D/.test(result)) {
+      result = result.replace(/^0*/, ""); // if only numbers remains, remove all leading zeroes.
+    }
+    if (!/\d/.test(result)) {
+      result = "0"; // if no numbers are left, show a single 0
+    }
+
+    return result; // remove extra non-decimal characters at each end of the string
   }
 
   render() {
