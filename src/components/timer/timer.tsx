@@ -98,18 +98,26 @@ export class Timer {
 
   private format(hours: number, minutes: number, seconds: number): string {
     let result = this.pattern
-      .replace("hh", hours > 0 ? this.padLeft(hours) : "")
-      .replace("h",  hours > 0 ? hours.toString() : "")
+      .replace("hh", (hours > 0) ? this.padLeft(hours) : "")
+      .replace("h",  (hours > 0) ? hours.toString() : "")
       .replace("HH", this.padLeft(hours))
       .replace("H",  hours.toString())
 
-      .replace("mm", hours > 0 || minutes > 0 ? this.padLeft(minutes) : "")
-      .replace("m",  hours > 0 || minutes > 0 ? minutes.toString() : "")
+      .replace("mm", (hours > 0 || minutes > 0) ? this.padLeft(minutes) : "")
+      .replace("m",  (hours > 0)
+                      ? this.padLeft(seconds)
+                      : (minutes > 0)
+                        ? minutes.toString()
+                        : "")
       .replace("MM", this.padLeft(minutes))
       .replace("M",  minutes.toString())
 
-      .replace("ss", hours > 0 || minutes > 0 || seconds > 0 ? this.padLeft(seconds) : "")
-      .replace("s",  hours > 0 || minutes > 0 || seconds > 0 ? seconds.toString() : "")
+      .replace("ss", (hours > 0 || minutes > 0 || seconds > 0) ? this.padLeft(seconds) : "")
+      .replace("s",  (hours > 0 || minutes > 0)
+                      ? this.padLeft(seconds)
+                      : (seconds > 0)
+                        ? seconds.toString()
+                        : "")
       .replace("SS", this.padLeft(seconds))
       .replace("S",  seconds.toString());
 
