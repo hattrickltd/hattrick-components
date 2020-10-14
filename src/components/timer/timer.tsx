@@ -103,13 +103,13 @@ export class Timer {
       .replace("HH", this.padLeft(hours))
       .replace("H",  hours.toString())
 
-      .replace("mm", minutes > 0 ? this.padLeft(minutes) : "")
-      .replace("m",  minutes > 0 ? minutes.toString() : "")
+      .replace("mm", hours > 0 || minutes > 0 ? this.padLeft(minutes) : "")
+      .replace("m",  hours > 0 || minutes > 0 ? minutes.toString() : "")
       .replace("MM", this.padLeft(minutes))
       .replace("M",  minutes.toString())
 
-      .replace("ss", seconds > 0 ? this.padLeft(seconds) : "")
-      .replace("s",  seconds > 0 ? seconds.toString() : "")
+      .replace("ss", hours > 0 || minutes > 0 || seconds > 0 ? this.padLeft(seconds) : "")
+      .replace("s",  hours > 0 || minutes > 0 || seconds > 0 ? seconds.toString() : "")
       .replace("SS", this.padLeft(seconds))
       .replace("S",  seconds.toString());
 
