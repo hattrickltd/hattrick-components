@@ -20,26 +20,28 @@ export class HattrickMlParser {
     else return TAGS;
   }
 
-  // private removeNonVisibleBrs(input: string): string { // TODO: I was here, try removing the ? again and fixing the \s
-  //   let brInTrRegex = /\[\/tr\]\s*(\<br\/\>)*\s*\[tr/gi,
-  //       regRemoveBrBetweenTrAndTd = /(\[tr.*?\])\s*(\[br\])*\s*\[(td|th)/gi,
-  //       regRemoveBrBetweenTdAndTr = /\[\/(td|th)\]\s*(\[br\])*\s*\[\/tr/gi;
+  private removeNonVisibleBrs(input: string): string { // TODO: I was here, try removing the ? again and fixing the \s
+    let brBetweenTrRegex = /\[\/tr\]\s*?(?:\[br\])*?\s*?\[tr/gi,
+        brBetweenTdRegex = /\[\/(td|th)\]\s*?(?:\[br\])*?\s*?\[(td|th)/gi,
+        brBetweenTrAndTdRegex = /(\[tr.*?\])\s*?(?:\[br\])*?\s*?\[(td|th)/gi,
+        brBetweenTdAndTrRegex = /\[\/(td|th)\]\s*?(?:\[br\])*?\s*?\[\/tr/gi;
 
-  //   input = input.trim();
-  //   input = input.replace(brInTrRegex, "[/tr][tr");
-  //   input = input.replace(regRemoveBrBetweenTrAndTd, "$1[$3");
-  //   input = input.replace(regRemoveBrBetweenTdAndTr, "[/$1][/tr");
+    input = input.trim();
+    input = input.replace(brBetweenTrRegex, "[/tr][tr");
+    input = input.replace(brBetweenTdRegex, "[/$1][$2");
+    input = input.replace(brBetweenTrAndTdRegex, "$1[$2");
+    input = input.replace(brBetweenTdAndTrRegex, "[/$1][/tr");
 
-  //   // remove leading and trailing br
-  //   if (input.startsWith("<br/>")) input = input.slice(5);
-  //   if (input.endsWith("<br/>")) input = input.slice(0, input.length - 5);
+    // remove leading and trailing br
+    if (input.startsWith("<br/>")) input = input.slice(5);
+    if (input.endsWith("<br/>")) input = input.slice(0, input.length - 5);
 
-  //   return input;
-  // }
+    return input;
+  }
 
   private replaceTable(input: string): string {
 
-    // input = this.removeNonVisibleBrs(input);
+    input = this.removeNonVisibleBrs(input);
 
     let rowRegex = /\[(tr)\](.*?)\[\/\1\]/i,
       cellRegex = /\[(td|th)((?:\s\w+=\w+)*?)\](.*?)\[\/\1\]/i;
