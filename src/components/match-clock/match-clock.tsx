@@ -194,12 +194,14 @@ export class MatchClock {
                    .replace(/(\d+)/g, `<bdo dir="ltr">$1</bdo>`)
                    .replace(/(\d)/g, `<monospace>$1</monospace>`);
 
+    let isCountdown = this.isCountingDown();
+
     return (
       <Host role="timer"
             class={{
-              "match-clock-passed-zero": !this.isCountingDown()
+              "match-clock-passed-zero": !isCountdown
             }}>
-        <span innerHTML={ time }></span>
+        <span innerHTML={ time } dir={ !isCountdown ? "ltr" : null }></span>
       </Host>
     );
   }

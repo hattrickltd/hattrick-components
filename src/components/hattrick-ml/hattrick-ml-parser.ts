@@ -4,8 +4,8 @@ export class HattrickMlParser {
 
   static replacer: HattrickMlReplacer;
 
-  private regex = /\[(link|img|b|i|u|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
-  private requireClosing = ["img", "b", "i", "u", "quote", "q", "spoiler", "td", "th", "tr", "table"];
+  private regex = /\[(link|img|b|i|u|ul|ol|li|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
+  private requireClosing = ["img", "b", "i", "u", "ul", "ol", "li", "quote", "q", "spoiler", "td", "th", "tr", "table"];
   private gotoLink = "https://www.hattrick.org/goto.ashx?path=";
 
   spoilerText: string;
@@ -21,14 +21,16 @@ export class HattrickMlParser {
   }
 
   private removeNonVisibleBrs(input: string): string { // TODO: I was here, try removing the ? again and fixing the \s
-    let brInTrRegex = /\[\/tr\]\s*(\<br\/\>)*\s*\[tr/gi,
-        regRemoveBrBetweenTrAndTd = /(\[tr.*?\])\s*(\[br\])*\s*\[(td|th)/gi,
-        regRemoveBrBetweenTdAndTr = /\[\/(td|th)\]\s*(\[br\])*\s*\[\/tr/gi;
+    let brBetweenTrRegex = /\[\/tr\]\s*?(?:\[br\])*?\s*?\[tr/gi,
+        brBetweenTdRegex = /\[\/(td|th)\]\s*?(?:\[br\])*?\s*?\[(td|th)/gi,
+        brBetweenTrAndTdRegex = /(\[tr.*?\])\s*?(?:\[br\])*?\s*?\[(td|th)/gi,
+        brBetweenTdAndTrRegex = /\[\/(td|th)\]\s*?(?:\[br\])*?\s*?\[\/tr/gi;
 
     input = input.trim();
-    input = input.replace(brInTrRegex, "[/tr][tr");
-    input = input.replace(regRemoveBrBetweenTrAndTd, "$1[$3");
-    input = input.replace(regRemoveBrBetweenTdAndTr, "[/$1][/tr");
+    input = input.replace(brBetweenTrRegex, "[/tr][tr");
+    input = input.replace(brBetweenTdRegex, "[/$1][$2");
+    input = input.replace(brBetweenTrAndTdRegex, "$1[$2");
+    input = input.replace(brBetweenTdAndTrRegex, "[/$1][/tr");
 
     // remove leading and trailing br
     if (input.startsWith("<br/>")) input = input.slice(5);
@@ -73,12 +75,12 @@ export class HattrickMlParser {
               value = parts[1];
 
             if (attr === "align") {
-              if (value === "left") attributes += " class='left'";
-              if (value === "right") attributes += " class='right'";
-              if (value === "center") attributes += " class='center'";
+              if (value === "left") attributes += ` class="left"`;
+              if (value === "right") attributes += ` class="right"`;
+              if (value === "center") attributes += ` class="center"`;
             }
-            if (attr === "colspan") attributes += ` colspan='${value}'`;
-            if (attr === "rowspan") attributes += ` rowspan='${value}'`;
+            if (attr === "colspan") attributes += ` colspan="${value}"`;
+            if (attr === "rowspan") attributes += ` rowspan="${value}"`;
           }
         }
 
@@ -153,6 +155,8 @@ export class HattrickMlParser {
                 let styleAttr = Object.keys(styles).map(x => `${x}:${styles[x]}`).join(";");
                 let classAttr = classes.join(" ");
 
+                text = this.xss(text);
+
                 str = str.replace(match, `<img src="${text}" style="${ styleAttr }" class="${ classAttr }" />`);
               } else {
                 str = str.replace(match, `[link=${text}]`);
@@ -164,6 +168,7 @@ export class HattrickMlParser {
                 if (url[0] === "/") {
                   url = this.gotoLink + encodeURIComponent(id);
                 }
+                url = this.xss(url);
                 if (!allowCustomContent || !text) text = `(${this.truncateLinkText(id)})`;
 
                 str = str.replace(match, HattrickMlParser.replacer.getLink(url, text));
@@ -180,6 +185,15 @@ export class HattrickMlParser {
             case "u":
               str = str.replace(match, `<u>${text}</u>`);
               break;
+            case "ul":
+              str = str.replace(match, `<ul>${text}</ul>`);
+              break;
+            case "ol":
+              str = str.replace(match, `<ol>${text}</ol>`);
+              break;
+            case "li":
+              str = str.replace(match, `<li>${text}</li>`);
+              break;
             case "q":
             case "quote":
               if (id) {
@@ -195,51 +209,63 @@ export class HattrickMlParser {
               str = str.replace(match, "<hr/>");
               break;
             case "playerid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getPlayerId(id, text));
               break;
             case "teamid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getTeamId(id, text));
               break;
             case "ntteamid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getNtTeamId(id, text));
               break;
             case "userid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getUserId(id, text));
               break;
             case "matchid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getMatchId(id, text));
               break;
             case "tournamentmatchid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getTournamentMatchId(id, text));
               break;
             case "leagueid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getLeagueId(id, text));
               break;
             case "youthteamid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getYouthTeamId(id, text));
               break;
             case "youthplayerid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getYouthPlayerId(id, text));
               break;
             case "youthmatchid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getYouthMatchId(id, text));
               break;
             case "youthleagueid":
+              id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getYouthLeagueId(id, text));
               break;
             case "post":
             case "message":
+              id = this.xss(id);
               let post = id.split(".");
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getPost(post[0], post[1], text));
@@ -256,20 +282,24 @@ export class HattrickMlParser {
               // str = str.replace(match, `<ht-ml-spoiler spoiler-text="'${spoiler.text}'">${text}</ht-ml-spoiler>`);
               break;
             case "articleid":
-            if (!allowCustomContent || !text) text = `(${id})`;
+              id = this.xss(id);
+              if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getArticleId(id, text));
               break;
             case "allianceid":
             case "federationid":
-            if (!allowCustomContent || !text) text = `(${id})`;
+              id = this.xss(id);
+              if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getFederationId(id, text));
               break;
             case "tournamentid":
-            if (!allowCustomContent || !text) text = `(${id})`;
+              id = this.xss(id);
+              if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getTournamentId(id, text));
               break;
             case "kitid":
-            if (!allowCustomContent || !text) text = `(${id})`;
+              id = this.xss(id);
+              if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getKitId(id, text));
               break;
             case "table":
@@ -307,6 +337,13 @@ export class HattrickMlParser {
 
   nl2br = nl2br;
   br2nl = br2nl;
+
+  /**
+   * Prevents XSS by for example end a string and inject `onmouseover="some malicious code"`.
+   */
+  private xss(str: string): string {
+    return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  }
 
   private replaceFirst(text: string, oldValue: string, newValue: string) {
     let pos = text.indexOf(oldValue);
