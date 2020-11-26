@@ -12,10 +12,15 @@ export class PlayoffTree {
 
   @Prop() playoff: any; //Array<IPlayoffMatch>;
   @Prop() expand: "expand" | "auto" | "none" = "auto";
+  @Prop() hideCollapsedNames: boolean = true;
+  @Prop() hideCollapsedLive: boolean = true;
   @Prop() estimateNextRound: boolean = false;
 
   @Prop() texts: IPlayoffTexts;
+  @Prop() links: ILinks;
+  @Prop() baseUrl: string;
 
+  @Prop() matchRoundsBeforePlayoff: number = 0;
   @Prop() fromRound: number = 1;
   @Prop() showRounds: number = 0;
   @Prop() bracket: number = 1;
@@ -49,26 +54,35 @@ export class PlayoffTree {
   @Watch("bracket")
   private prepareData() {
     let matches: Array<IPlayoffMatch> = this.playoff;
-    let toRound = this.fromRound + (this.showRounds || 99);
 
     if (this.fromRound < 1) this.fromRound = 1;
     if (this.bracket < 1) this.bracket = 1;
 
+    let toRound = this.fromRound + (this.showRounds || 99);
     if (typeof matches === "string") matches = JSON.parse(matches);
 
     if (matches) {
-      this.upper = matches.filter(x => x.bracket === Bracket.Upper).reduce(this.groupByStage.bind(this), []);
-      this.lower = matches.filter(x => x.bracket === Bracket.Lower).reduce(this.groupByStage.bind(this), []);
+      this.upper = Array.from(matches.filter(x => x.bracket === Bracket.Upper).reduce(this.groupByStage.bind(this), []));
+      this.lower = Array.from(matches.filter(x => x.bracket === Bracket.Lower).reduce(this.groupByStage.bind(this), []));
 
       this.allUpper = this.upper.filter(x => !!x);
       this.allLower = this.lower.filter(x => !!x);
 
+      let skipEmptyStage = true;
       for (let idx = 0; idx < this.upper.length; idx++) {
-        if (!this.upper[idx]) this.upper[idx] = [];
+        if (!this.upper[idx]) {
+          if (!skipEmptyStage) {
+            this.upper[idx] = [];
+          }
+        } else skipEmptyStage = false;
       }
       if (this.lower.length > 0) {
         this.isDouble = true;
         this.lower[0] = [];
+      }
+
+      while (!this.upper[0]) {
+        this.upper.splice(0, 1);
       }
 
       // for (let i = 0; i < this.lower.length; i++) {
@@ -78,13 +92,14 @@ export class PlayoffTree {
       //   this.lower[this.lower.length - i] = this.lower[this.lower.length - i].slice(startFrom, nrOfMatches);
       // }
 
-      this.currentStage = matches.filter(x => x.homeTeamId + x.awayTeamId > 0).pop()?.matchRound || 1;
+      this.currentStage = matches.filter(x => x.homeTeamId + x.awayTeamId > 0)?.pop().matchRound || this.matchRoundsBeforePlayoff + 1;
+      this.currentStage -= this.matchRoundsBeforePlayoff;
       this.expandStage = this.currentStage;
+
+      this.totalRounds = this.upper.length;
 
       if (this.showRounds > 0) {
         if (!this.isDouble) {
-
-          this.totalRounds = this.upper.length;
 
           this.upper = this.upper.slice(this.fromRound - 1, toRound - 1);
 
@@ -95,11 +110,9 @@ export class PlayoffTree {
             this.upper[this.upper.length - i] = this.upper[this.upper.length - i].slice(startFrom, startFrom + nrOfMatches);
           }
 
-          console.log(this.upper);
+          console.debug(this.upper);
 
         } else {
-          this.totalRounds = this.upper.length;
-
           this.upper = this.upper.slice(this.fromRound - 1, toRound - 1);
           this.lower = this.lower.slice(this.fromRound - 1, toRound - 1);
 
@@ -152,48 +165,49 @@ export class PlayoffTree {
     this.hasElements = this.playoff.some(x => x.element);
   }
 
-  private getStageTitle(stage: IPlayoffMatch[], stageIdx: number, long: boolean): string {
+  private getStageTitle(stage: IPlayoffMatch[], _stageIdx: number, long: boolean): string {
     if (stage.length === 0) return "";
 
-    let isUpperBracket = stage[0]?.bracket === Bracket.Upper;
+    let isUpperBracket = stage[0].bracket === Bracket.Upper;
+    let matchRound = stage[0].matchRound;
 
     if (!this.isDouble) {
-      let title = this.texts.single[long ? "round" : "roundShort"][this.totalRounds - stage[0].matchRound];
+      let title = this.texts.single[long ? "round" : "roundShort"][this.totalRounds - matchRound + this.matchRoundsBeforePlayoff];
       if (title) return title;
 
     } else if (isUpperBracket) {
       let upperRounds = this.allUpper.length;
-      let upperRound = this.allUpper.findIndex(x => x?.[0]?.matchRound === stage[0].matchRound) + 1;
+      let upperRound = this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
 
       let title = this.texts.upper[long ? "round" : "roundShort"][upperRounds - upperRound];
       if (title) return title;
 
     } else {
       let lowerRounds = this.allLower.length;
-      let lowerRound = this.allLower.findIndex(x => x?.[0]?.matchRound === stage[0].matchRound) + 1;
+      let lowerRound = this.allLower.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
 
       let title = this.texts.lower[long ? "round" : "roundShort"][lowerRounds - lowerRound];
       if (title) return title;
     }
 
-    let nrOfTeamsLeft = Math.pow(2, stageIdx + 1 + 1);
+    let nrOfTeamsLeft = stage.length * 2; // Math.pow(2, stageIdx + 1 + 1);
     let tagReplacer = new window.HT.TagReplacer();
     tagReplacer.addTag("nrOfTeams", nrOfTeamsLeft);
 
     if (isUpperBracket) {
-      tagReplacer.addTag("matchRound", this.allUpper.findIndex(x => x?.[0]?.matchRound === stage[0].matchRound) + 1);
+      tagReplacer.addTag("matchRound", this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1);
       return tagReplacer.replace(this.texts.upper[long ? "roundX" : "roundXShort"]);
     } else {
-      tagReplacer.addTag("matchRound", this.allLower.findIndex(x => x?.[0]?.matchRound === stage[0].matchRound) + 1);
+      tagReplacer.addTag("matchRound", this.allLower.findIndex(x => x?.[0]?.matchRound === matchRound) + 1);
       return tagReplacer.replace(this.texts.lower[long ? "roundX" : "roundXShort"]);
     }
   }
 
   private trySetExpandedStage(matchRound: number) {
 
-    // if (matchRound <= this.currentStage) {
+    if (matchRound <= this.currentStage) {
       this.expandStage = matchRound;
-    // }
+    }
   }
   private unsetExpandedStage() {
     this.expandStage = this.currentStage;
@@ -259,18 +273,19 @@ export class PlayoffTree {
       case "leftup":
         this.fromRound -= 1;
         // in double elimiation we might want to step two steps so first round is never empty.
-        this.fromRound -= this.playoff.some(m => m.bracket !== 2 && m.matchRound === this.fromRound) ? 0 : 1;
+        if (this.playoff.some(m => m.bracket === 2 && m.matchRound === this.fromRound)) this.fromRound -= 1;
+        this.bracket = this.bracket * 2 - 1;
         break;
       case "leftdown":
         this.fromRound -= 1;
         // in double elimiation we might want to step two steps so first round is never empty.
-        this.fromRound -= this.playoff.some(m => m.bracket !== 2 && m.matchRound === this.fromRound) ? 0 : 1;
+        if (this.playoff.some(m => m.bracket === 2 && m.matchRound === this.fromRound)) this.fromRound -= 1;
         this.bracket *= 2;
         break;
       case "right":
         this.fromRound += 1;
         // in double elimiation we might want to step two steps so first round is never empty.
-        this.fromRound += this.playoff.some(m => m.bracket !== 2 && m.matchRound === this.fromRound) ? 0 : 1;
+        if (this.playoff.some(m => m.bracket === 2 && m.matchRound === this.fromRound)) this.fromRound -= 1;
         this.bracket = Math.ceil(this.bracket / 2);
         break;
     }
@@ -283,16 +298,22 @@ export class PlayoffTree {
     this.playoff.forEach(x => x.element = undefined);
   }
 
+  private getMatchLink(match: IPlayoffMatch): string | null {
+    if (!match.matchId) return null;
+    return this.links.match.htointegrated.replace("{0}", match.matchId.toString());
+  }
+  private getLiveLink(stage: IPlayoffMatch[]): string | null {
+    if (!stage?.filter(x => x.matchId).length) return null;
+    return this.links.live.htointegrated.replace("{0}", stage.map(x => x.matchId).join(","));
+  }
+
   render() {
+    if (!this.playoff) return;
+
     return <Host>
       { this.isDouble &&
         <slot name="winners-bracket-title" />
       }
-
-      <br />
-      { this.showRounds }
-      { this.navControls }
-      <br />
 
       { this.showRounds > 0 && this.navControls !== false &&
         <div class="controls">
@@ -337,19 +358,27 @@ export class PlayoffTree {
   }
 
   private renderStage(stage: IPlayoffMatch[], stageIdx: number, isUpper: boolean) {
-    let isCurrentStage = (stageIdx === this.currentStage - 1);
-    let isHighlightedStage = (stageIdx === this.expandStage - 1);
-    let hideNames = (stageIdx !== this.expandStage - 1); //(isUpperBracket && match.matchRound > 1) || (!isUpperBracket && match.matchRound > 2);
-    let hideNamesNext = (stageIdx !== this.expandStage - 2);
+    // let stageRound = stage[0]?.matchRound - this.matchRoundsBeforePlayoff;
+    let stageRound = stageIdx + this.fromRound;
+
+    // let currentStage = stageIdx + this.fromRound;
+    let isCurrentStage = (stageRound === this.currentStage);
+    let isHighlightedStage = (stageRound === this.expandStage);
+    let hideNames = this.hideCollapsedNames && (stageRound !== this.expandStage); //(isUpperBracket && match.matchRound > 1) || (!isUpperBracket && match.matchRound > 2);
+    let hideNamesNext = this.hideCollapsedNames && (stageRound !== this.expandStage - 1);
 
     let expandIsFutureStage = this.expandStage > this.currentStage;
 
     let expanded = this.expand === "expand"
-                || (this.expand === "auto" && !expandIsFutureStage && this.expandStage - 1 === stageIdx)
+                || (this.expand === "auto" && !expandIsFutureStage && this.expandStage === stageRound)
+                || (this.expand === "auto" && !expandIsFutureStage && this.expandStage > stageRound && stageIdx === this.showRounds - 1)
                 || (expandIsFutureStage && stageIdx === this.currentStage - 1);
 
     let expandedNext = this.expand === "expand"
-                    || (this.expand === "auto" && !expandIsFutureStage && this.expandStage - 2 === stageIdx);
+                    || (this.expand === "auto" && !expandIsFutureStage && this.expandStage - 1 === stageRound)
+                    || (this.expand === "auto" && !expandIsFutureStage && this.expandStage > stageRound && stageIdx === this.showRounds - 2);
+
+    let liveLink = this.getLiveLink(stage);
 
     return (
       <div class={{
@@ -362,10 +391,18 @@ export class PlayoffTree {
              "expanded": expanded,
              "expanded-next": expandedNext,
            }}
-           onMouseOver={ _ => this.trySetExpandedStage(stageIdx + 1) }
+           onMouseOver={ _ => this.trySetExpandedStage(stageRound) }
            onMouseLeave={ _ => this.unsetExpandedStage() }>
         <div class="header" title={ this.getStageTitle(stage, stageIdx, true) }>
-          { this.getStageTitle(stage, stageIdx, expanded) }
+          <div>
+            <b>{ this.getStageTitle(stage, stageIdx, expanded) }</b>
+            { liveLink &&
+              <a href={ liveLink } style={{ "visibility": (expanded || !this.hideCollapsedLive) ? null : "hidden" }}>
+                <img src={ this.baseUrl + "img/icons/addToLive.png" } title={ this.texts.addToLive } />
+              </a>
+            }
+          </div>
+          <span>{ stage[0]?.formattedMatchDate }</span>
         </div>
         <div class="matches">
           { stage.map((match, matchIdx) =>
@@ -378,7 +415,7 @@ export class PlayoffTree {
 
   private renderMatch(match: IPlayoffMatch, bracket: IPlayoffStages, stageIdx: number, matchIdx: number) {
 
-    let isUpperBracket: boolean = match.bracket === Bracket.Upper;
+    let isUpperBracket: boolean = (match.bracket || Bracket.Upper) === Bracket.Upper;
     let isUpperHalf: boolean = matchIdx % 2 === 0;
     let isActualMatch: boolean = match.homeTeamId > 0 && match.awayTeamId > 0;
     let exit: IPlayoffMatch;
@@ -414,8 +451,10 @@ export class PlayoffTree {
       nextIsUp = !isUpperHalf;
     }
 
-    let hasExit = (isUpperBracket && match.matchRoundsLeft > 1)
-               || (!isUpperBracket && match.matchRoundsLeft !== 3);
+    let hasExit = (isUpperBracket && match.matchRoundsLeft > 0)
+               || (!isUpperBracket && match.matchRoundsLeft !== 2);
+
+    let Tag = (match.matchId) ? "a" : "div";
 
     return (
       <div class="match-wrapper" data-match-id={ match.matchId }>
@@ -425,7 +464,7 @@ export class PlayoffTree {
         { !isUpperBracket && match.matchRound === 2 &&
           <div class={{ "lower-entry": true, "down": true, "start": match.matchRound === 2, "highlight": this.highlightTeamId === match.awayTeamId }}></div>
         }
-        <div class="match" ref={ el => match.element = el }>
+        <Tag class="match" ref={ el => match.element = el } href={ this.getMatchLink(match) }>
           <div data-team-id={ match.homeTeamId }
                class={{
                  "team": true,
@@ -435,7 +474,8 @@ export class PlayoffTree {
                }}
                title={ match.homeTeamName }
                onMouseOver={ _ => this.setHighlightedTeam(match.homeTeamId) }
-               onMouseLeave={ _ => this.setHighlightedTeam(-1) }>
+               onMouseLeave={ _ => this.setHighlightedTeam(-1) }
+          >
             { this.estimateNextRound && !isActualMatch && entries.length > 0 && entries[0].homeLogoUrl &&
               <Fragment>
                 <img class="logo" src={ entries[0].homeLogoUrl } />
@@ -483,7 +523,7 @@ export class PlayoffTree {
               </Fragment>
             }
           </div>
-        </div>
+        </Tag>
         { hasExit &&
           <div class={{
             "exit": true,
@@ -495,7 +535,7 @@ export class PlayoffTree {
             <div class="entry"></div>
           </div>
         }
-        { match.bracket === Bracket.Lower && match.matchRoundsLeft === 3 && // lower final
+        { match.bracket === Bracket.Lower && match.matchRoundsLeft === 2 && // lower final
           <div class={{
             "exit": true,
             "up": true,
@@ -531,6 +571,7 @@ type IPlayoffStages = Array<Array<IPlayoffMatch>>;
 
 interface IPlayoffMatch {
   matchId: number;
+  formattedMatchDate: string;
   matchRound: number;
   matchRoundsLeft: number;
   bracket: Bracket;
@@ -556,10 +597,21 @@ export interface IPlayoffTexts {
   single: IPlayoffBracketTexts;
   upper: IPlayoffBracketTexts;
   lower: IPlayoffBracketTexts;
+  addToLive: string;
 }
 
 export interface IPlayoffBracketTexts {
   roundX: string;
+  roundXShort: string;
   round: Array<string>;
   roundShort: Array<string>;
+}
+
+export interface ILinks {
+  match: {
+    htointegrated: string;
+  };
+  live: {
+    htointegrated: string;
+  };
 }

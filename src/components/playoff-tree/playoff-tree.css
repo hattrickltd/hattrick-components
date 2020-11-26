@@ -11,6 +11,8 @@
   /* --expanded-stage-background: inherit; */
   /* --expanded-empty-stage-background: inherit; */
 
+  --collapsed-width: 5em;
+
   --pyjamas-odd: #fafafa;
   --pyjamas-even: #f0f0f0;
 
@@ -20,7 +22,7 @@
 .controls {
   position: relative;
   display: inline-block;
-  padding: 20px 25px 20px 20px;
+  padding: 0 25px 20px 20px;
 }
 .controls > :not(.stages) {
   background-color: #EDF1ED;
@@ -83,7 +85,7 @@
   transition: width 300ms;
 }
 .stage:not(.expanded) {
-  width: 5em;
+  width: var(--collapsed-width);
 }
 :host([pyjamas]) .stage:nth-child(odd) {
   background: var(--pyjamas-odd);
@@ -119,6 +121,13 @@
   white-space: nowrap;
 }
 
+.stage .header a {
+  margin: 0 3px;
+}
+/* .stage.expanded .header {
+  text-align: center;
+} */
+
 .matches {
   flex-grow: 1;
   display: flex;
@@ -135,9 +144,11 @@
   display: flex;
   flex-direction: column;
 
+  color: inherit;
   background: var(--match-background);
   width: 100%;
   box-shadow: 0 0 4px #0006;
+  text-decoration: none;
 }
 
 .team {
@@ -161,7 +172,8 @@
 }
 
 .logo {
-  height: 1.33em;
+  width: 1.2em;
+  max-height: 1.5em;
 }
 
 .name {
@@ -297,9 +309,9 @@
   border-top: 2px solid #ccc;
   transition: width 300ms;
 }
-.long .entry { width: 15.8em; }
+.long .entry { width: calc(var(--collapsed-width) + 10.8em); }
 .hide-names:not(.expanded-next) .long .entry,
-.hide-next-names:not(.expanded-next) .long .entry { width: 8.3em; }
+.hide-next-names:not(.expanded-next) .long .entry { width: calc(var(--collapsed-width) + 3.3em); }
 
 .up .entry {
   bottom: 100%;
