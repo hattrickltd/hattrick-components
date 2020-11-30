@@ -22,7 +22,7 @@
 .controls {
   position: relative;
   display: inline-block;
-  padding: 0 25px 20px 20px;
+  padding: 20px 25px 20px 20px;
 }
 .controls > :not(.stages) {
   background-color: #EDF1ED;
@@ -35,16 +35,16 @@
 }
 
 .control-left-up {
-  top: 40px;
+  top: 50px;
   left: 0;
-  height: calc(50% - 30px - 5px);
+  height: calc(50% - 40px - 5px);
   width: 10px;
   background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png) center center no-repeat;
 }
 .control-left-down {
   bottom: 20px;
   left: 0;
-  height: calc(50% - 30px - 5px);
+  height: calc(50% - 40px - 5px);
   width: 10px;
   background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png) center center no-repeat;
 }

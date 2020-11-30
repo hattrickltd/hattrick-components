@@ -285,7 +285,7 @@ export class PlayoffTree {
       case "right":
         this.fromRound += 1;
         // in double elimiation we might want to step two steps so first round is never empty.
-        if (this.playoff.some(m => m.bracket === 2 && m.matchRound === this.fromRound)) this.fromRound -= 1;
+        if (this.fromRound > 2 && this.playoff.some(m => m.bracket === 2 && m.matchRound === this.fromRound)) this.fromRound += 1;
         this.bracket = Math.ceil(this.bracket / 2);
         break;
     }
