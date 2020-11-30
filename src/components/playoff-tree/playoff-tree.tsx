@@ -10,7 +10,7 @@ declare const window: any;
 })
 export class PlayoffTree {
 
-  @Prop() playoff: any; //Array<IPlayoffMatch>;
+  @Prop() playoff: Array<IPlayoffMatch>;
   @Prop() expand: "expand" | "auto" | "none" = "auto";
   @Prop() hideCollapsedNames: boolean = true;
   @Prop() hideCollapsedLive: boolean = true;
@@ -92,7 +92,7 @@ export class PlayoffTree {
       //   this.lower[this.lower.length - i] = this.lower[this.lower.length - i].slice(startFrom, nrOfMatches);
       // }
 
-      this.currentStage = matches.filter(x => x.homeTeamId + x.awayTeamId > 0)?.pop().matchRound || this.matchRoundsBeforePlayoff + 1;
+      this.currentStage = matches.filter(x => x.matchId > 0)?.pop().matchRound || this.matchRoundsBeforePlayoff + 1;
       this.currentStage -= this.matchRoundsBeforePlayoff;
       this.expandStage = this.currentStage;
 
@@ -110,7 +110,7 @@ export class PlayoffTree {
             this.upper[this.upper.length - i] = this.upper[this.upper.length - i].slice(startFrom, startFrom + nrOfMatches);
           }
 
-          console.debug(this.upper);
+          // console.debug(this.upper);
 
         } else {
           this.upper = this.upper.slice(this.fromRound - 1, toRound - 1);
@@ -171,30 +171,32 @@ export class PlayoffTree {
     let isUpperBracket = stage[0].bracket === Bracket.Upper;
     let matchRound = stage[0].matchRound;
 
+    let tagReplacer = new window.HT.TagReplacer();
+    tagReplacer.addTag("nrOfTeams", Math.pow(2, stage[0].matchRoundsLeft + 1));
+
     if (!this.isDouble) {
       let title = this.texts.single[long ? "round" : "roundShort"][this.totalRounds - matchRound + this.matchRoundsBeforePlayoff];
-      if (title) return title;
+      if (title) return tagReplacer.replace(title);
 
     } else if (isUpperBracket) {
       let upperRounds = this.allUpper.length;
       let upperRound = this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
 
       let title = this.texts.upper[long ? "round" : "roundShort"][upperRounds - upperRound];
-      if (title) return title;
+      if (title) return tagReplacer.replace(title);
 
     } else {
       let lowerRounds = this.allLower.length;
       let lowerRound = this.allLower.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
 
       let title = this.texts.lower[long ? "round" : "roundShort"][lowerRounds - lowerRound];
-      if (title) return title;
+      if (title) return tagReplacer.replace(title);
     }
 
-    let nrOfTeamsLeft = stage.length * 2; // Math.pow(2, stageIdx + 1 + 1);
-    let tagReplacer = new window.HT.TagReplacer();
-    tagReplacer.addTag("nrOfTeams", nrOfTeamsLeft);
-
-    if (isUpperBracket) {
+    if (!this.isDouble) {
+      tagReplacer.addTag("matchRound", this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1);
+      return tagReplacer.replace(this.texts.single[long ? "roundX" : "roundXShort"]);
+    } else if (isUpperBracket) {
       tagReplacer.addTag("matchRound", this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1);
       return tagReplacer.replace(this.texts.upper[long ? "roundX" : "roundXShort"]);
     } else {
@@ -380,6 +382,8 @@ export class PlayoffTree {
 
     let liveLink = this.getLiveLink(stage);
 
+    let formattedDate: string = stage[0]?.formattedMatchDate;
+
     return (
       <div class={{
              "stage": true,
@@ -393,7 +397,7 @@ export class PlayoffTree {
            }}
            onMouseOver={ _ => this.trySetExpandedStage(stageRound) }
            onMouseLeave={ _ => this.unsetExpandedStage() }>
-        <div class="header" title={ this.getStageTitle(stage, stageIdx, true) }>
+        <div class="header" title={ this.getStageTitle(stage, stageIdx, true) + (formattedDate ? ` (${ formattedDate })` : "") }>
           <div>
             <b>{ this.getStageTitle(stage, stageIdx, expanded) }</b>
             { liveLink &&
@@ -402,7 +406,7 @@ export class PlayoffTree {
               </a>
             }
           </div>
-          <span>{ stage[0]?.formattedMatchDate }</span>
+          <span>{ formattedDate }</span>
         </div>
         <div class="matches">
           { stage.map((match, matchIdx) =>
@@ -484,15 +488,11 @@ export class PlayoffTree {
               </Fragment>
             }
 
-            { isActualMatch &&
-              <Fragment>
-                <img class="logo" src={ match.homeLogoUrl } />
-                <div class="name">{ match.homeTeamName }</div>
-                { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && !homeWon && <div class="demoted">⬇</div> }
-                {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && !homeWon && <div>☠</div> } */}
-                <div class="goals">{ match.isFinished ? match.homeGoals : "" }</div>
-              </Fragment>
-            }
+            { match.homeLogoUrl && <img class="logo" src={ match.homeLogoUrl } /> }
+            { match.homeTeamName && <div class="name">{ match.homeTeamName }</div> }
+            { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && !homeWon && <div class="demoted">⬇</div> }
+            {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && !homeWon && <div>☠</div> } */}
+            <div class="goals">{ match.hasStarted ? match.homeGoals : "" }</div>
           </div>
 
           <div data-team-id={ match.awayTeamId }
@@ -513,15 +513,11 @@ export class PlayoffTree {
               </Fragment>
             }
 
-            { isActualMatch &&
-              <Fragment>
-                <img class="logo" src={ match.awayLogoUrl } />
-                <div class="name">{ match.awayTeamName }</div>
-                { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && homeWon && <div class="demoted">⬇</div> }
-                {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && homeWon && <div>☠</div> } */}
-                <div class="goals">{ match.isFinished ? match.awayGoals : "" }</div>
-              </Fragment>
-            }
+            { match.awayLogoUrl && <img class="logo" src={ match.awayLogoUrl } /> }
+            { match.awayTeamName && <div class="name">{ match.awayTeamName }</div> }
+            { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && homeWon && <div class="demoted">⬇</div> }
+            {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && homeWon && <div>☠</div> } */}
+            <div class="goals">{ match.hasStarted ? match.awayGoals : "" }</div>
           </div>
         </Tag>
         { hasExit &&
@@ -582,6 +578,7 @@ interface IPlayoffMatch {
   awayTeamName: string;
   homeLogoUrl: string;
   awayLogoUrl: string;
+  hasStarted: boolean;
   isFinished: boolean;
   homeGoals: number;
   awayGoals: number;

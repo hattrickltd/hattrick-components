@@ -902,9 +902,9 @@
 
       var tree = document.createElement("hattrick-playoff-tree");
 
-      var playoff = single32(tree);
+      // var playoff = single32(tree);
       // var playoff = single64(tree);
-      // var playoff = single256(tree);
+      var playoff = single256(tree);
       // var playoff = double8(tree);
       // var playoff = double32(tree);
 
@@ -942,8 +942,8 @@
       // tree.estimateNextRound = true;
       tree.texts = {
         single: {
-          roundX: "Round [#matchRound]",
-          roundXShort: "Round [#matchRound]",
+          roundX: "Round of [#nrOfTeams]",
+          roundXShort: "Round of [#nrOfTeams]",
           round: ["Final", "Semi-finals", "Quarter-finals"],
           roundShort: ["Final", "Semis", "Quarters"],
         },
