@@ -127,7 +127,7 @@
     <div style="display: flex; gap: 5px;">
       <div>
         Expand:<br />
-        <select onchange="setExpand('expand', this.value)">
+        <select onchange="set('expand', this.value)">
           <option value="auto">Auto</option>
           <option value="none">None</option>
           <option value="expand">Expanded</option>
@@ -902,17 +902,17 @@
 
       var tree = document.createElement("hattrick-playoff-tree");
 
-      // var playoff = single32(tree);
+      var playoff = single32(tree);
       // var playoff = single64(tree);
       // var playoff = single256(tree);
       // var playoff = double8(tree);
-      var playoff = double32(tree);
+      // var playoff = double32(tree);
 
       tree.setAttribute("base-url", "https://www.hattrick.org/");
       tree.setAttribute("pyjamas", "");
       // tree.setAttribute("expand", "auto");
-      // tree.setAttribute("from-round", "2");
-      // tree.setAttribute("show-rounds", "6");
+      tree.setAttribute("from-round", "2");
+      tree.setAttribute("show-rounds", "4");
       // tree.setAttribute("hide-collapsed-names", "false");
       // tree.setAttribute("bracket", "1");
       // tree.setAttribute("nav-controls", "true");

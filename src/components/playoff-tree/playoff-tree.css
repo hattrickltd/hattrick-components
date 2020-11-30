@@ -35,16 +35,16 @@
 }
 
 .control-left-up {
-  top: 50px;
+  top: 60px;
   left: 0;
-  height: calc(50% - 40px - 5px);
+  height: calc(50% - 45px - 5px);
   width: 10px;
   background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png) center center no-repeat;
 }
 .control-left-down {
   bottom: 20px;
   left: 0;
-  height: calc(50% - 40px - 5px);
+  height: calc(50% - 45px - 5px);
   width: 10px;
   background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png) center center no-repeat;
 }
@@ -76,40 +76,41 @@
 }
 
 .stage {
-  width: 12.5em;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding-inline-start: 1em;
-  padding-inline-end: 1em;
+}
+.stage > * {
+  padding: 0 1em;
+  width: 12.5em;
   transition: width 300ms;
 }
-.stage:not(.expanded) {
+.stage:not(.expanded) > * {
   width: var(--collapsed-width);
 }
-:host([pyjamas]) .stage:nth-child(odd) {
+:host([pyjamas]) .stage:nth-child(odd) .matches {
   background: var(--pyjamas-odd);
 }
-:host([pyjamas]) .stage:nth-child(even) {
+:host([pyjamas]) .stage:nth-child(even) .matches {
   background: var(--pyjamas-even);
 }
 
-.stage.current-stage {
+.stage.current-stage .matches {
   background: var(--current-stage-background);
 }
-.stage.current-stage.empty-stage {
+.stage.current-stage.empty-stage .matches {
   background: var(--current-empty-stage-background, var(--current-stage-background));
 }
-.stage.current-stage .match {
+.stage.current-stage .matches .match {
   background: var(--current-match-background);
 }
-.stage.expanded-stage {
+.stage.expanded-stage .matches {
   background: var(--expanded-stage-background);
 }
-.stage.expanded-stage.empty-stage {
+.stage.expanded-stage.empty-stage .matches {
   background: var(--expanded-empty-stage-background, var(--expanded-stage-background));
 }
-.stage.expanded-stage .match {
+.stage.expanded-stage .matches .match {
   background: var(--expanded-match-background);
 }
 
@@ -171,6 +172,10 @@
   padding: 0 3px;
 }
 
+.goals {
+  padding-inline-start: 5px;
+}
+
 .logo {
   width: 1.2em;
   max-height: 1.5em;
@@ -200,7 +205,7 @@
   font-weight: bold;
 }
 .loser > * {
-  color: #aaa;
+  color: grey;
 }
 .loser img {
   /* filter: grayscale(100%); */
