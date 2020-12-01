@@ -400,11 +400,9 @@ export class PlayoffTree {
         <div class="header" title={ this.getStageTitle(stage, stageIdx, true) + (formattedDate ? ` (${ formattedDate })` : "") }>
           <div>
             <b>{ this.getStageTitle(stage, stageIdx, expanded) }</b>
-            { liveLink &&
-              <a href={ liveLink } style={{ "visibility": (expanded || !this.hideCollapsedLive) ? null : "hidden" }}>
-                <img src={ this.baseUrl + "img/icons/addToLive.png" } title={ this.texts.addToLive } />
-              </a>
-            }
+            <a href={ liveLink } style={{ "visibility": (liveLink && (expanded || !this.hideCollapsedLive)) ? null : "hidden" }}>
+              <img src={ this.baseUrl + "img/icons/addToLive.png" } title={ this.texts.addToLive } />
+            </a>
           </div>
           <span>{ formattedDate }</span>
         </div>
@@ -489,7 +487,7 @@ export class PlayoffTree {
             }
 
             { match.homeLogoUrl && <img class="logo" src={ match.homeLogoUrl } /> }
-            { match.homeTeamName && <div class="name">{ match.homeTeamName }</div> }
+            { match.homeTeamName && <div class={{ "name": true, "shy": match.homeTeamId <= 0 }}>{ match.homeTeamName }</div> }
             { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && !homeWon && <div class="demoted">⬇</div> }
             {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && !homeWon && <div>☠</div> } */}
             <div class="goals">{ match.hasStarted ? match.homeGoals : "" }</div>
@@ -514,7 +512,7 @@ export class PlayoffTree {
             }
 
             { match.awayLogoUrl && <img class="logo" src={ match.awayLogoUrl } /> }
-            { match.awayTeamName && <div class="name">{ match.awayTeamName }</div> }
+            { match.awayTeamName && <div class={{ "name": true, "shy": match.awayTeamId <= 0 }}>{ match.awayTeamName }</div> }
             { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && homeWon && <div class="demoted">⬇</div> }
             {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && homeWon && <div>☠</div> } */}
             <div class="goals">{ match.hasStarted ? match.awayGoals : "" }</div>
@@ -565,7 +563,7 @@ export class PlayoffTree {
 
 type IPlayoffStages = Array<Array<IPlayoffMatch>>;
 
-interface IPlayoffMatch {
+export interface IPlayoffMatch {
   matchId: number;
   formattedMatchDate: string;
   matchRound: number;

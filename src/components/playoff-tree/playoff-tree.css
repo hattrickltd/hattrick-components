@@ -211,6 +211,10 @@
   /* filter: grayscale(100%); */
 }
 
+.shy {
+  color: grey;
+}
+
 .exit, .entry, .lower-entry {
   pointer-events: none;
 }

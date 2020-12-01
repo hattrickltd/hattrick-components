@@ -7,7 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IAvatarImage, IAvatarPart } from "./components/avatar/avatar.interfaces";
 import { IClockTexts } from "./components/match-clock/match-clock.interfaces";
-import { ILinks, IPlayoffTexts } from "./components/playoff-tree/playoff-tree";
+import { ILinks, IPlayoffMatch, IPlayoffTexts } from "./components/playoff-tree/playoff-tree";
 import { RangeChangeEventDetail, RangeValue } from "./components/range/range-interface";
 import { StyleEventDetail } from "./interface";
 export namespace Components {
@@ -148,7 +148,7 @@ export namespace Components {
         "links": ILinks;
         "matchRoundsBeforePlayoff": number;
         "navControls": boolean | undefined;
-        "playoff": any;
+        "playoff": Array<IPlayoffMatch>;
         "showRounds": number;
         "texts": IPlayoffTexts;
     }
@@ -494,7 +494,7 @@ declare namespace LocalJSX {
         "links"?: ILinks;
         "matchRoundsBeforePlayoff"?: number;
         "navControls"?: boolean | undefined;
-        "playoff"?: any;
+        "playoff"?: Array<IPlayoffMatch>;
         "showRounds"?: number;
         "texts"?: IPlayoffTexts;
     }
