@@ -454,7 +454,7 @@ export class PlayoffTree {
     }
 
     let hasExit = (isUpperBracket && match.matchRoundsLeft > 0)
-               || (!isUpperBracket && match.matchRoundsLeft !== 2);
+               || (!isUpperBracket && match.matchRoundsLeft !== 1);
 
     let Tag = (match.matchId) ? "a" : "div";
 
@@ -521,7 +521,7 @@ export class PlayoffTree {
         { hasExit &&
           <div class={{
             "exit": true,
-            "up": exit?.element && nextIsUp && (!this.isDouble || match.matchRound !== this.totalRounds - 1), // except for first grand final
+            "up": exit?.element && nextIsUp && (!this.isDouble || match.matchRound !== this.totalRounds - 2), // except for first grand final
             "down": exit?.element && !nextIsUp,
             "long": (!exit || exit.matchRound > match.matchRound + 1) && stageIdx < bracket.length - 1,
             "highlight": exit?.element && match.isFinished && ((this.highlightTeamId === match.homeTeamId && homeWon) || (this.highlightTeamId === match.awayTeamId && awayWon))
@@ -529,7 +529,7 @@ export class PlayoffTree {
             <div class="entry"></div>
           </div>
         }
-        { match.bracket === Bracket.Lower && match.matchRoundsLeft === 2 && // lower final
+        { match.bracket === Bracket.Lower && match.matchRoundsLeft === 1 && // lower final
           <div class={{
             "exit": true,
             "up": true,
@@ -552,6 +552,8 @@ export class PlayoffTree {
     if (this.isDouble && exit.matchRound === this.totalRounds) return 0;
 
     let diff = Math.abs(matchRect.top - exitRect.top);
+
+    console.log(match.matchRoundsLeft, diff, matchRect.height);
 
     if (diff === 0) {
       return diff + matchRect.height * 0.25;

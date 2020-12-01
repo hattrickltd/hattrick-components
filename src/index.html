@@ -904,15 +904,15 @@
 
       // var playoff = single32(tree);
       // var playoff = single64(tree);
-      var playoff = single32(tree);
-      // var playoff = double8(tree);
+      // var playoff = single32(tree);
+      var playoff = double8(tree);
       // var playoff = double32(tree);
 
       tree.setAttribute("base-url", "https://www.hattrick.org/");
       tree.setAttribute("pyjamas", "");
       // tree.setAttribute("expand", "auto");
-      tree.setAttribute("from-round", "2");
-      tree.setAttribute("show-rounds", "4");
+      // tree.setAttribute("from-round", "1");
+      // tree.setAttribute("show-rounds", "6");
       // tree.setAttribute("hide-collapsed-names", "false");
       // tree.setAttribute("bracket", "1");
       // tree.setAttribute("nav-controls", "true");
@@ -950,14 +950,14 @@
         upper: {
           roundX: "Round [#matchRound]",
           roundXShort: "Round [#matchRound]",
-          round: ["Grand Final", "Grand Final", "Winners Final", "Winners Semi-finals", "Winners Quarter-finals"],
-          roundShort: ["GF", "GF", "W. F", "W. SF", "W. QF"],
+          round: ["Grand Final", "Winners Final", "Winners Semi-finals", "Winners Quarter-finals"],
+          roundShort: ["GF", "W. F", "W. SF", "W. QF"],
         },
         lower: {
           roundX: "Losers Round [#matchRound]",
           roundXShort: "L. Round [#matchRound]",
-          round: ["Losers Final", "Losers Semi-finals", "Losers Quarter-finals"],
-          roundShort: ["L. F", "L. SF", "L. QF"],
+          round: ["Consolidation Final", "Losers Final", "Losers Semi-finals", "Losers Quarter-finals"],
+          roundShort: ["C. F", "L. F", "L. SF", "L. QF"],
         },
         addToLive: "Add these matches to HT-Live",
       };
@@ -1336,7 +1336,7 @@
       }
 
       function double8(tree) {
-        return [
+        let matches = [
           { matchId: 01, matchRound: 1, matchRoundsLeft: 6, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 2, homeTeamName: "Kondoři", awayTeamName: "Breg", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
           { matchId: 02, matchRound: 1, matchRoundsLeft: 6, bracket: 1, randomPosition: 3, homeTeamId: 3, awayTeamId: 4, homeTeamName: "Cual F.C.", awayTeamName: "Viking Særløse", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG" },
           { matchId: 03, matchRound: 1, matchRoundsLeft: 6, bracket: 1, randomPosition: 5, homeTeamId: 5, awayTeamId: 6, homeTeamName: "WLMF (DP61M)", awayTeamName: "Bodins boys", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png" },
@@ -1345,7 +1345,7 @@
           { matchId: 06, matchRound: 2, matchRoundsLeft: 5, bracket: 1, randomPosition: 6, homeTeamId: 5, awayTeamId: 8, homeTeamName: "WLMF (DP61M)", awayTeamName: "Miowara's Revenge", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: noLogo, awayLogoUrl: noLogo },
           { matchId: 07, matchRound: 4, matchRoundsLeft: 3, bracket: 1, randomPosition: 1, homeTeamId: 1, awayTeamId: 8, homeTeamName: "Kondoři", awayTeamName: "Miowara's Revenge", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "http://imagizer.imageshack.us/a/img923/1599/at9Wwh.gif", awayLogoUrl: noLogo },
           { matchId: 00, matchRound: 6, matchRoundsLeft: 1, bracket: 1, randomPosition: 1, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
-          { matchId: 00, matchRound: 7, matchRoundsLeft: 0, bracket: 1, randomPosition: 1, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
+          // { matchId: 00, matchRound: 7, matchRoundsLeft: 0, bracket: 1, randomPosition: 1, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
 
           { matchId: 08, matchRound: 2, matchRoundsLeft: 5, bracket: 2, randomPosition: 2, homeTeamId: 2, awayTeamId: 3, homeTeamName: "Breg", awayTeamName: "Cual F.C.", isFinished: true, homeGoals: 1, awayGoals: 0, homeLogoUrl: noLogo, awayLogoUrl: "https://res.hattrick.org/teamlogo/20/191/1905/1904084/1904084.png" },
           { matchId: 09, matchRound: 2, matchRoundsLeft: 5, bracket: 2, randomPosition: 6, homeTeamId: 6, awayTeamId: 7, homeTeamName: "Bodins boys", awayTeamName: "Jimmyhats", isFinished: true, homeGoals: 0, awayGoals: 1, homeLogoUrl: "https://res.hattrick.org/teamlogo/1/2/16/15086/15086.png", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
@@ -1354,6 +1354,9 @@
           { matchId: 12, matchRound: 4, matchRoundsLeft: 3, bracket: 2, randomPosition: 4, homeTeamId: 4, awayTeamId: 7, homeTeamName: "Viking Særløse", awayTeamName: "Jimmyhats", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "https://res.hattrick.org/teamlogo/5/41/408/407641/407641.JPG", awayLogoUrl: "https://res.hattrick.org/teamlogo/3/23/230/229562/229562.jpg" },
           { matchId: 00, matchRound: 5, matchRoundsLeft: 2, bracket: 2, randomPosition: 8, homeTeamId: 0, awayTeamId: 0, homeTeamName: "", awayTeamName: "", isFinished: false, homeGoals: 0, awayGoals: 0, homeLogoUrl: "", awayLogoUrl: "" },
         ];
+        matches.forEach(x => x.matchRoundsLeft--);
+
+        return matches;
       }
 
       function double32(tree) {
