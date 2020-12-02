@@ -149,6 +149,7 @@ export namespace Components {
         "matchRoundsBeforePlayoff": number;
         "navControls": boolean | undefined;
         "playoff": Array<IPlayoffMatch>;
+        "pyjamas": boolean;
         "showRounds": number;
         "texts": IPlayoffTexts;
     }
@@ -495,6 +496,7 @@ declare namespace LocalJSX {
         "matchRoundsBeforePlayoff"?: number;
         "navControls"?: boolean | undefined;
         "playoff"?: Array<IPlayoffMatch>;
+        "pyjamas"?: boolean;
         "showRounds"?: number;
         "texts"?: IPlayoffTexts;
     }

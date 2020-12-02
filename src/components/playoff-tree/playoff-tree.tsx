@@ -27,6 +27,8 @@ export class PlayoffTree {
 
   @Prop() navControls: boolean | undefined = undefined;
 
+  @Prop({ reflect: true }) pyjamas: boolean = false;
+
   private allUpper: IPlayoffStages;
   private allLower: IPlayoffStages;
 
@@ -92,7 +94,7 @@ export class PlayoffTree {
       //   this.lower[this.lower.length - i] = this.lower[this.lower.length - i].slice(startFrom, nrOfMatches);
       // }
 
-      this.currentStage = matches.filter(x => x.matchId > 0)?.pop().matchRound || this.matchRoundsBeforePlayoff + 1;
+      this.currentStage = matches.filter(x => x.matchId > 0)?.pop()?.matchRound || toRound;
       this.currentStage -= this.matchRoundsBeforePlayoff;
       this.expandStage = this.currentStage;
 
@@ -552,8 +554,6 @@ export class PlayoffTree {
     if (this.isDouble && exit.matchRound === this.totalRounds) return 0;
 
     let diff = Math.abs(matchRect.top - exitRect.top);
-
-    console.log(match.matchRoundsLeft, diff, matchRect.height);
 
     if (diff === 0) {
       return diff + matchRect.height * 0.25;
