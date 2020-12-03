@@ -304,11 +304,11 @@ export class PlayoffTree {
 
   private getMatchLink(match: IPlayoffMatch): string | null {
     if (!match.matchId) return null;
-    return this.links.match.htointegrated.replace("{0}", match.matchId.toString());
+    return this.links.match.replace("{0}", match.matchId.toString());
   }
   private getLiveLink(stage: IPlayoffMatch[]): string | null {
     if (!stage?.filter(x => x.matchId).length) return null;
-    return this.links.live.htointegrated.replace("{0}", stage.map(x => x.matchId).join(","));
+    return this.links.live.replace("{0}", stage.map(x => x.matchId).join(","));
   }
 
   render() {
@@ -605,10 +605,6 @@ export interface IPlayoffBracketTexts {
 }
 
 export interface ILinks {
-  match: {
-    htointegrated: string;
-  };
-  live: {
-    htointegrated: string;
-  };
+  match: string;
+  live: string;
 }
