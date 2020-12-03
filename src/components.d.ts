@@ -5,10 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IAvatarImage, IAvatarPart, } from "./components/avatar/avatar.interfaces";
-import { IClockTexts, } from "./components/match-clock/match-clock.interfaces";
-import { RangeChangeEventDetail, RangeValue, } from "./components/range/range-interface";
-import { StyleEventDetail, } from "./interface";
+import { IAvatarImage, IAvatarPart } from "./components/avatar/avatar.interfaces";
+import { IClockTexts } from "./components/match-clock/match-clock.interfaces";
+import { ILinks, IPlayoffMatch, IPlayoffTexts } from "./components/playoff-tree/playoff-tree";
+import { RangeChangeEventDetail, RangeValue } from "./components/range/range-interface";
+import { StyleEventDetail } from "./interface";
 export namespace Components {
     interface HattrickAvatar {
         /**
@@ -49,7 +50,7 @@ export namespace Components {
           * @example const avatar = document.createElement("hattrick-avatar"); avatar.parts = avatarParts; avatar.onload = function (evt) {   const dataUrl = avatar.printToCanvas().toDataURL();   // store in cache for later use? }; document.body.appendChild(avatar);
           * @example <hattrick-avatar parts="..." onload="avatarLoaded.call(this, event.detail)"></hattrick-avatar> function avatarLoaded(images) {   const dataUrl = this.printToCanvas(images).toDataURL(); }
          */
-        "printToCanvas": (images?: IAvatarImage[]) => Promise<HTMLCanvasElement>;
+        "printToCanvas": (images?: Array<IAvatarImage>) => Promise<HTMLCanvasElement>;
         /**
           * Set to true to generate a circular avatar by cutting off the bottom.
          */
@@ -135,6 +136,22 @@ export namespace Components {
         "lazyMargin": string;
         "src": string;
         "srcset"?: string;
+    }
+    interface HattrickPlayoffTree {
+        "baseUrl": string;
+        "bracket": number;
+        "estimateNextRound": boolean;
+        "expand": "expand" | "auto" | "none";
+        "fromRound": number;
+        "hideCollapsedLive": boolean;
+        "hideCollapsedNames": boolean;
+        "links": ILinks;
+        "matchRoundsBeforePlayoff": number;
+        "navControls": boolean | undefined;
+        "playoff": Array<IPlayoffMatch>;
+        "pyjamas": boolean;
+        "showRounds": number;
+        "texts": IPlayoffTexts;
     }
     interface HattrickProgressArc {
         /**
@@ -293,6 +310,12 @@ declare global {
         prototype: HTMLHattrickPictureElement;
         new (): HTMLHattrickPictureElement;
     };
+    interface HTMLHattrickPlayoffTreeElement extends Components.HattrickPlayoffTree, HTMLStencilElement {
+    }
+    var HTMLHattrickPlayoffTreeElement: {
+        prototype: HTMLHattrickPlayoffTreeElement;
+        new (): HTMLHattrickPlayoffTreeElement;
+    };
     interface HTMLHattrickProgressArcElement extends Components.HattrickProgressArc, HTMLStencilElement {
     }
     var HTMLHattrickProgressArcElement: {
@@ -330,6 +353,7 @@ declare global {
         "hattrick-match-clock": HTMLHattrickMatchClockElement;
         "hattrick-ml": HTMLHattrickMlElement;
         "hattrick-picture": HTMLHattrickPictureElement;
+        "hattrick-playoff-tree": HTMLHattrickPlayoffTreeElement;
         "hattrick-progress-arc": HTMLHattrickProgressArcElement;
         "hattrick-range": HTMLHattrickRangeElement;
         "hattrick-rating": HTMLHattrickRatingElement;
@@ -460,6 +484,22 @@ declare namespace LocalJSX {
         "src"?: string;
         "srcset"?: string;
     }
+    interface HattrickPlayoffTree {
+        "baseUrl"?: string;
+        "bracket"?: number;
+        "estimateNextRound"?: boolean;
+        "expand"?: "expand" | "auto" | "none";
+        "fromRound"?: number;
+        "hideCollapsedLive"?: boolean;
+        "hideCollapsedNames"?: boolean;
+        "links"?: ILinks;
+        "matchRoundsBeforePlayoff"?: number;
+        "navControls"?: boolean | undefined;
+        "playoff"?: Array<IPlayoffMatch>;
+        "pyjamas"?: boolean;
+        "showRounds"?: number;
+        "texts"?: IPlayoffTexts;
+    }
     interface HattrickProgressArc {
         /**
           * Expression evaluating to float [0.0, 1.0]
@@ -515,6 +555,10 @@ declare namespace LocalJSX {
           * Emitted when the range has focus.
          */
         "onIonFocus"?: (event: CustomEvent<void>) => void;
+        /**
+          * Emitted when the styles change.
+         */
+        "onIonStyle"?: (event: CustomEvent<StyleEventDetail>) => void;
         /**
           * If `true`, a pin with integer value is shown when the knob is pressed.
          */
@@ -596,6 +640,7 @@ declare namespace LocalJSX {
         "hattrick-match-clock": HattrickMatchClock;
         "hattrick-ml": HattrickMl;
         "hattrick-picture": HattrickPicture;
+        "hattrick-playoff-tree": HattrickPlayoffTree;
         "hattrick-progress-arc": HattrickProgressArc;
         "hattrick-range": HattrickRange;
         "hattrick-rating": HattrickRating;
@@ -613,6 +658,7 @@ declare module "@stencil/core" {
             "hattrick-match-clock": LocalJSX.HattrickMatchClock & JSXBase.HTMLAttributes<HTMLHattrickMatchClockElement>;
             "hattrick-ml": LocalJSX.HattrickMl & JSXBase.HTMLAttributes<HTMLHattrickMlElement>;
             "hattrick-picture": LocalJSX.HattrickPicture & JSXBase.HTMLAttributes<HTMLHattrickPictureElement>;
+            "hattrick-playoff-tree": LocalJSX.HattrickPlayoffTree & JSXBase.HTMLAttributes<HTMLHattrickPlayoffTreeElement>;
             "hattrick-progress-arc": LocalJSX.HattrickProgressArc & JSXBase.HTMLAttributes<HTMLHattrickProgressArcElement>;
             "hattrick-range": LocalJSX.HattrickRange & JSXBase.HTMLAttributes<HTMLHattrickRangeElement>;
             "hattrick-rating": LocalJSX.HattrickRating & JSXBase.HTMLAttributes<HTMLHattrickRatingElement>;
