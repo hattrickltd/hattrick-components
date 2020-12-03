@@ -480,15 +480,15 @@ export class PlayoffTree {
                onMouseOver={ _ => this.setHighlightedTeam(match.homeTeamId) }
                onMouseLeave={ _ => this.setHighlightedTeam(-1) }
           >
-            { this.estimateNextRound && !isActualMatch && entries.length > 0 && entries[0].homeLogoUrl &&
+            { this.estimateNextRound && !isActualMatch && entries.length > 0 && entries[0].homeLogo &&
               <Fragment>
-                <img class="logo" src={ entries[0].homeLogoUrl } />
+                { this.renderLogo(entries[0].homeLogo) }
                 /
-                <img class="logo" src={ entries[0].awayLogoUrl } />
+                { this.renderLogo(entries[0].awayLogo) }
               </Fragment>
             }
 
-            { match.homeLogoUrl && <img class="logo" src={ match.homeLogoUrl } /> }
+            { match.homeLogo && this.renderLogo(match.homeLogo) }
             { match.homeTeamName && <div class={{ "name": true, "shy": match.homeTeamId <= 0 }}>{ match.homeTeamName }</div> }
             { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && !homeWon && <div class="demoted">⬇</div> }
             {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && !homeWon && <div>☠</div> } */}
@@ -505,15 +505,15 @@ export class PlayoffTree {
                title={ match.awayTeamName }
                onMouseOver={ _ => this.setHighlightedTeam(match.awayTeamId) }
                onMouseLeave={ _ => this.setHighlightedTeam(-1) }>
-            { this.estimateNextRound && !isActualMatch && entries.length > 1 && entries[1].homeLogoUrl &&
+            { this.estimateNextRound && !isActualMatch && entries.length > 1 && entries[1].homeLogo &&
               <Fragment>
-                <img class="logo" src={ entries[1].homeLogoUrl } />
+                { this.renderLogo(entries[1].homeLogo) }
                 /
-                <img class="logo" src={ entries[1].awayLogoUrl } />
+                { this.renderLogo(entries[1].awayLogo) }
               </Fragment>
             }
 
-            { match.awayLogoUrl && <img class="logo" src={ match.awayLogoUrl } /> }
+            { match.awayLogo && this.renderLogo(match.awayLogo) }
             { match.awayTeamName && <div class={{ "name": true, "shy": match.awayTeamId <= 0 }}>{ match.awayTeamName }</div> }
             { isActualMatch && match.isFinished && this.isDouble && isUpperBracket && !isFinal && homeWon && <div class="demoted">⬇</div> }
             {/* { isActualMatch && match.isFinished && this.isDouble && (!isUpperBracket || isFinal) && homeWon && <div>☠</div> } */}
@@ -541,6 +541,17 @@ export class PlayoffTree {
         }
       </div>
     );
+  }
+
+  private renderLogo(logo: string | ILogo) {
+    if (typeof logo === "string") {
+      return <img class="logo" src={ logo } />;
+    } else {
+      return <img class="logo" src={ logo.imageUrl } style={{
+        "background": `url('${ logo.backgroundUrl }') no-repeat ${ logo.backgroundOffset }px 0`,
+        ...logo.style
+      }} />;
+    }
   }
 
   private getExitHeight(match: IPlayoffMatch, exit: IPlayoffMatch): number {
@@ -576,13 +587,20 @@ export interface IPlayoffMatch {
   awayTeamId: number;
   homeTeamName: string;
   awayTeamName: string;
-  homeLogoUrl: string;
-  awayLogoUrl: string;
+  homeLogo: string | ILogo;
+  awayLogo: string | ILogo;
   hasStarted: boolean;
   isFinished: boolean;
   homeGoals: number;
   awayGoals: number;
   element?: HTMLElement;
+}
+
+export interface ILogo {
+  imageUrl: string;
+  backgroundUrl?: string;
+  backgroundOffset?: number;
+  style: { [key: string]: any };
 }
 
 const enum Bracket {
