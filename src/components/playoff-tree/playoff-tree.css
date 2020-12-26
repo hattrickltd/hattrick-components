@@ -81,10 +81,12 @@
   flex-direction: column;
 }
 .stage > * {
-  padding: 0 1em;
   width: 12.5em;
   transition: width 300ms;
 }
+.stage > .header { margin: 0 1em; }
+.stage > .matches { padding: 0 1em; }
+
 .stage:not(.expanded) > * {
   width: var(--collapsed-width);
 }
@@ -115,11 +117,13 @@
 }
 
 .header {
-  font-size: 0.9em;
   margin-bottom: 5px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: clip;
   white-space: nowrap;
+}
+.header > * {
+  font-size: 0.9em;
 }
 
 .stage .header a {

@@ -94,7 +94,7 @@ export class PlayoffTree {
       //   this.lower[this.lower.length - i] = this.lower[this.lower.length - i].slice(startFrom, nrOfMatches);
       // }
 
-      this.currentStage = matches.filter(x => x.matchId > 0)?.pop()?.matchRound || toRound;
+      this.currentStage = matches.filter(x => x.matchId > 0)?.pop()?.matchRound || (toRound + this.matchRoundsBeforePlayoff);
       this.currentStage -= this.matchRoundsBeforePlayoff;
       this.expandStage = this.currentStage;
 
@@ -401,12 +401,12 @@ export class PlayoffTree {
            onMouseLeave={ _ => this.unsetExpandedStage() }>
         <div class="header" title={ this.getStageTitle(stage, stageIdx, true) + (formattedDate ? ` (${ formattedDate })` : "") }>
           <div>
-            <b>{ this.getStageTitle(stage, stageIdx, expanded) }</b>
+            <b>{ this.getStageTitle(stage, stageIdx, expanded) || <Fragment>&nbsp;</Fragment> }</b>
             <a href={ liveLink } style={{ "visibility": (liveLink && (expanded || !this.hideCollapsedLive)) ? null : "hidden" }}>
               <img src={ this.baseUrl + "img/icons/addToLive.png" } title={ this.texts.addToLive } />
             </a>
           </div>
-          <span>{ formattedDate }</span>
+          <span>{ formattedDate || <Fragment>&nbsp;</Fragment> }</span>
         </div>
         <div class="matches">
           { stage.map((match, matchIdx) =>
