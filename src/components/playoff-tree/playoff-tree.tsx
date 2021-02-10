@@ -196,13 +196,18 @@ export class PlayoffTree {
     }
 
     if (!this.isDouble) {
-      tagReplacer.addTag("matchRound", this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1);
+      matchRound = this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
+      tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(this.texts.single[long ? "roundX" : "roundXShort"]);
+
     } else if (isUpperBracket) {
-      tagReplacer.addTag("matchRound", this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1);
+      matchRound = this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
+      tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(this.texts.upper[long ? "roundX" : "roundXShort"]);
+
     } else {
-      tagReplacer.addTag("matchRound", this.allLower.findIndex(x => x?.[0]?.matchRound === matchRound) + 1);
+      matchRound = this.allLower.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
+      tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(this.texts.lower[long ? "roundX" : "roundXShort"]);
     }
   }
@@ -430,6 +435,7 @@ export class PlayoffTree {
 
     let homeWon = match.homeGoals > match.awayGoals;
     let awayWon = match.homeGoals < match.awayGoals;
+
     let isFinal = match.matchRound >= this.totalRounds - 1;
 
     if (thisStage.length === nextStage?.length) { // lower round with entries (except first round)
