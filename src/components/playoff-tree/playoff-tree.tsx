@@ -32,6 +32,7 @@ export class PlayoffTree {
   private allUpper: IPlayoffStages;
   private allLower: IPlayoffStages;
 
+  @State() stages: IPlayoffStages;
   @State() upper: IPlayoffStages;
   @State() lower: IPlayoffStages;
 
@@ -64,6 +65,7 @@ export class PlayoffTree {
     if (typeof matches === "string") matches = JSON.parse(matches);
 
     if (matches) {
+      this.stages = Array.from(matches.reduce(this.groupByStage.bind(this), []));
       this.upper = Array.from(matches.filter(x => x.bracket === Bracket.Upper).reduce(this.groupByStage.bind(this), []));
       this.lower = Array.from(matches.filter(x => x.bracket === Bracket.Lower).reduce(this.groupByStage.bind(this), []));
 
@@ -179,19 +181,26 @@ export class PlayoffTree {
     if (!this.isDouble) {
       let title = this.texts.single[long ? "round" : "roundShort"][this.totalRounds - matchRound + this.matchRoundsBeforePlayoff];
       if (title) return tagReplacer.replace(title);
-
-    } else if (isUpperBracket) {
+    
+    } else if (isUpperBracket && this.texts.upper) {
       let upperRounds = this.allUpper.length;
       let upperRound = this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
 
       let title = this.texts.upper[long ? "round" : "roundShort"][upperRounds - upperRound];
       if (title) return tagReplacer.replace(title);
 
-    } else {
+    } else if (!isUpperBracket && this.texts.lower) {
       let lowerRounds = this.allLower.length;
       let lowerRound = this.allLower.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
 
       let title = this.texts.lower[long ? "round" : "roundShort"][lowerRounds - lowerRound];
+      if (title) return tagReplacer.replace(title);
+
+    } else if (this.texts.double) {
+      let rounds = this.stages.length;
+      let round = this.stages.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
+      
+      let title = this.texts.double[long ? "round" : "roundShort"][rounds - round];
       if (title) return tagReplacer.replace(title);
     }
 
@@ -200,15 +209,20 @@ export class PlayoffTree {
       tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(this.texts.single[long ? "roundX" : "roundXShort"]);
 
-    } else if (isUpperBracket) {
+    } else if (isUpperBracket && this.texts.lower) {
       matchRound = this.allUpper.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
       tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(this.texts.upper[long ? "roundX" : "roundXShort"]);
 
-    } else {
+    } else if (!isUpperBracket && this.texts.lower) {
       matchRound = this.allLower.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
       tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(this.texts.lower[long ? "roundX" : "roundXShort"]);
+
+    } else if (this.texts.double) {
+      matchRound = this.stages.findIndex(x => x?.[0]?.matchRound === matchRound) + 1;
+      tagReplacer.addTag("matchRound", matchRound);
+      return tagReplacer.replace(this.texts.double[long ? "roundX" : "roundXShort"]);
     }
   }
 
@@ -616,8 +630,9 @@ const enum Bracket {
 
 export interface IPlayoffTexts {
   single: IPlayoffBracketTexts;
-  upper: IPlayoffBracketTexts;
-  lower: IPlayoffBracketTexts;
+  double?: IPlayoffBracketTexts;
+  upper?: IPlayoffBracketTexts;
+  lower?: IPlayoffBracketTexts;
   addToLive: string;
 }
 

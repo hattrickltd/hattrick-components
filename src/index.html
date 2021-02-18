@@ -905,8 +905,8 @@
       // var playoff = single32(tree);
       // var playoff = single64(tree);
       // var playoff = single32(tree);
-      var playoff = double4(tree);
-      // var playoff = double8(tree);
+      // var playoff = double4(tree);
+      var playoff = double8(tree);
       // var playoff = double32(tree);
 
       tree.setAttribute("base-url", "https://www.hattrick.org/");
@@ -949,6 +949,12 @@
           round: ["Final", "Semi-finals", "Quarter-finals"],
           roundShort: ["Final", "Semis", "Quarters"],
         },
+        // double: {
+        //   roundX: "Round [#matchRound]",
+        //   roundXShort: "Rd. [#matchRound]",
+        //   round: ["Final", "Losers final", "Semi-finals"],
+        //   roundShort: ["F", "L. F", "SF"],
+        // },
         upper: {
           roundX: "Upper round [#matchRound]",
           roundXShort: "U. round [#matchRound]",
