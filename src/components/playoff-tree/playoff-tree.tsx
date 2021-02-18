@@ -404,6 +404,11 @@ export class PlayoffTree {
     let liveLink = this.getLiveLink(stage);
 
     let formattedDate: string = stage[0]?.formattedMatchDate;
+    let shortDate: string = formattedDate || "";
+
+    if (!expanded) {
+      shortDate = shortDate.split(" ")[0];
+    }
 
     return (
       <div class={{
@@ -425,7 +430,7 @@ export class PlayoffTree {
               <img src={ this.baseUrl + "img/icons/addToLive.png" } title={ this.texts.addToLive } />
             </a>
           </div>
-          <span>{ formattedDate || <Fragment>&nbsp;</Fragment> }</span>
+          <span>{ shortDate || <Fragment>&nbsp;</Fragment> }</span>
         </div>
         <div class="matches">
           { stage.map((match, matchIdx) =>
