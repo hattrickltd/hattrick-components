@@ -279,25 +279,27 @@
 
 .exit {
   position: absolute;
-  left: 100%;
   top: 50%;
   width: 0.66em;
   border-bottom: 2px solid #ccc;
 }
+:host-context([dir="ltr"]) .exit { left: 100%; }
+:host-context([dir="rtl"]) .exit { right: 100%; }
+
 .exit.down {
   height: 2em;
   top: calc(50% - 1px);
   border-top: 2px solid #ccc;
   border-bottom: initial;
-  border-right: 2px solid #ccc;
 }
 .exit.up {
   height: 2em;
   top: initial;
   bottom: calc(50% - 1px);
   border-bottom: 2px solid #ccc;
-  border-right: 2px solid #ccc;
 }
+:host-context([dir="ltr"]) .exit.up, :host-context([dir="ltr"]) .exit.down { border-right: 2px solid #ccc; }
+:host-context([dir="rtl"]) .exit.up, :host-context([dir="rtl"]) .exit.down { border-left: 2px solid #ccc; }
 
 .exit.highlight {
   /* border-right: 3px solid var(--highlight-color); */
@@ -319,10 +321,12 @@
   box-sizing: border-box;
   position: absolute;
   width: 1.3em;
-  left: 100%;
   border-top: 2px solid #ccc;
   transition: width 300ms;
 }
+:host-context([dir="ltr"]) .entry { left: 100%; }
+:host-context([dir="rtl"]) .entry { right: 100%; }
+
 .long .entry { width: calc(var(--collapsed-width) + 10.8em); }
 .hide-names:not(.expanded-next) .long .entry,
 .hide-next-names:not(.expanded-next) .long .entry { width: calc(var(--collapsed-width) + 3.3em); }
