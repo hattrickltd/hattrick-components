@@ -33,7 +33,7 @@ export namespace Components {
          */
         "injury"?: boolean;
         /**
-          * Allows overriding the default kit.
+          * Allows overriding the default kit by ID.
          */
         "kitId"?: number;
         /**
@@ -388,7 +388,7 @@ declare namespace LocalJSX {
          */
         "injury"?: boolean;
         /**
-          * Allows overriding the default kit.
+          * Allows overriding the default kit by ID.
          */
         "kitId"?: number;
         /**
