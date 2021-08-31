@@ -25,6 +25,9 @@ export class Avatar {
 
   /** An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. */
   @Prop() parts: IAvatarPart[] | number | string;
+  
+  /** Allows overriding the default kit by ID. */
+  @Prop() kitId?: number = 0;
 
   /** Set whether or not the background should be shown. */
   @Prop() background?: boolean = true;
@@ -139,6 +142,10 @@ export class Avatar {
 
       parts.forEach((a) => {
         if (!this.shouldIncludePart(a, options)) return;
+
+        if (this.kitId && a.url.indexOf("res.hattrick.org") > -1) {
+          a.url = a.url.replace(/\d+?\/\d+?\/\d+?\/\d+?\//, this.getKitPath(this.kitId) + "/");
+        }
 
         let idx = insertIdx++;
 
@@ -277,6 +284,18 @@ export class Avatar {
     img.setAttribute("crossOrigin", "anonymous");
 
     return img;
+  }
+
+  private getKitPath(kitId) {
+    return [
+        this.generateId(kitId, 100000),
+        this.generateId(kitId, 10000),
+        this.generateId(kitId, 1000),
+        kitId,
+    ].join("/");
+  }
+  private generateId(id, range) {
+    return Math.floor(id / range) + 1;
   }
 
   /**
