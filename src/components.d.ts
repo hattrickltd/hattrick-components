@@ -33,6 +33,10 @@ export namespace Components {
          */
         "injury"?: boolean;
         /**
+          * Allows overriding the default kit by ID.
+         */
+        "kitId"?: number;
+        /**
           * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport.
          */
         "lazy"?: boolean;
@@ -383,6 +387,10 @@ declare namespace LocalJSX {
           * Set this to false to remove the bandages on injured and bruised players.
          */
         "injury"?: boolean;
+        /**
+          * Allows overriding the default kit by ID.
+         */
+        "kitId"?: number;
         /**
           * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport.
          */
