@@ -160,6 +160,11 @@ export namespace Components {
         "src": string;
         "srcset"?: string;
     }
+    interface HattrickPlayer {
+        "hide": () => Promise<void>;
+        "playerId": number;
+        "show": () => Promise<void>;
+    }
     interface HattrickPlayoffTree {
         "baseUrl": string;
         "bracket": number;
@@ -345,6 +350,12 @@ declare global {
         prototype: HTMLHattrickPictureElement;
         new (): HTMLHattrickPictureElement;
     };
+    interface HTMLHattrickPlayerElement extends Components.HattrickPlayer, HTMLStencilElement {
+    }
+    var HTMLHattrickPlayerElement: {
+        prototype: HTMLHattrickPlayerElement;
+        new (): HTMLHattrickPlayerElement;
+    };
     interface HTMLHattrickPlayoffTreeElement extends Components.HattrickPlayoffTree, HTMLStencilElement {
     }
     var HTMLHattrickPlayoffTreeElement: {
@@ -390,6 +401,7 @@ declare global {
         "hattrick-match-clock": HTMLHattrickMatchClockElement;
         "hattrick-ml": HTMLHattrickMlElement;
         "hattrick-picture": HTMLHattrickPictureElement;
+        "hattrick-player": HTMLHattrickPlayerElement;
         "hattrick-playoff-tree": HTMLHattrickPlayoffTreeElement;
         "hattrick-progress-arc": HTMLHattrickProgressArcElement;
         "hattrick-range": HTMLHattrickRangeElement;
@@ -542,6 +554,9 @@ declare namespace LocalJSX {
         "lazyMargin"?: string;
         "src"?: string;
         "srcset"?: string;
+    }
+    interface HattrickPlayer {
+        "playerId"?: number;
     }
     interface HattrickPlayoffTree {
         "baseUrl"?: string;
@@ -701,6 +716,7 @@ declare namespace LocalJSX {
         "hattrick-match-clock": HattrickMatchClock;
         "hattrick-ml": HattrickMl;
         "hattrick-picture": HattrickPicture;
+        "hattrick-player": HattrickPlayer;
         "hattrick-playoff-tree": HattrickPlayoffTree;
         "hattrick-progress-arc": HattrickProgressArc;
         "hattrick-range": HattrickRange;
@@ -721,6 +737,7 @@ declare module "@stencil/core" {
             "hattrick-match-clock": LocalJSX.HattrickMatchClock & JSXBase.HTMLAttributes<HTMLHattrickMatchClockElement>;
             "hattrick-ml": LocalJSX.HattrickMl & JSXBase.HTMLAttributes<HTMLHattrickMlElement>;
             "hattrick-picture": LocalJSX.HattrickPicture & JSXBase.HTMLAttributes<HTMLHattrickPictureElement>;
+            "hattrick-player": LocalJSX.HattrickPlayer & JSXBase.HTMLAttributes<HTMLHattrickPlayerElement>;
             "hattrick-playoff-tree": LocalJSX.HattrickPlayoffTree & JSXBase.HTMLAttributes<HTMLHattrickPlayoffTreeElement>;
             "hattrick-progress-arc": LocalJSX.HattrickProgressArc & JSXBase.HTMLAttributes<HTMLHattrickProgressArcElement>;
             "hattrick-range": LocalJSX.HattrickRange & JSXBase.HTMLAttributes<HTMLHattrickRangeElement>;

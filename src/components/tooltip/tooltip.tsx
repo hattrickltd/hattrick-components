@@ -3,7 +3,7 @@ import { h, Component, Prop, Listen, State, Element, Method, Host } from "@stenc
 @Component({
   tag: "hattrick-tooltip",
   styleUrl: "tooltip.css",
-  shadow: true,
+  scoped: true,
 })
 export class Tooltip {
 

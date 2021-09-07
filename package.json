@@ -20,7 +20,9 @@
     "test.watch": "stencil test --spec --watch",
     "test.e2e": "stencil test --e2e"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@popperjs/core": "^2.9.2"
+  },
   "devDependencies": {
     "@stencil/core": "^1.17.4",
     "tslint": "^5.17.0",
