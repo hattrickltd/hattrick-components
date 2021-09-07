@@ -8,7 +8,7 @@ export class HattrickMlParser {
   private requireClosing = ["img", "b", "i", "u", "ul", "ol", "li", "quote", "q", "spoiler", "td", "th", "tr", "table"];
   private gotoLink = "https://www.hattrick.org/goto.ashx?path=";
 
-  spoilerText: string = "Possible spoiler. Click here to show";
+  spoilerText: string;
 
   private doesRequireClosing(tag: string): boolean {
     return (this.requireClosing.indexOf(tag) > -1);
