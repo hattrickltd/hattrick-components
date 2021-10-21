@@ -1,4 +1,5 @@
-import { Component, h, Host, Prop } from "@stencil/core";
+import { Component, Element, h, Host, Prop } from "@stencil/core";
+import { HTMLStencilElement } from "@stencil/core/internal";
 import "./overlay";
 
 declare const window: any;
@@ -9,6 +10,8 @@ declare const window: any;
   scoped: true,
 })
 export class Arena {
+
+  @Element() host: HTMLStencilElement;
 
   @Prop({ mutable: true }) arenaId!: number;
   @Prop() arenaImageType: ArenaImageType = "User220";
@@ -24,8 +27,8 @@ export class Arena {
     return <Host>
       <div key={ `${ arenaId }_${ weather }` }>
         <img src={ src }
-             onError={ _ => this.arenaId = 0 }
-             onLoad={({ target }) => this.onLoad(target as HTMLImageElement) }
+             onError={ _ => this.onError() }
+             onLoad={ ({ target }) => this.onLoad(target as HTMLImageElement) }
         />
       </div>
     </Host>; 
@@ -35,6 +38,15 @@ export class Arena {
     if (this.weather > -1) {
       window.Weather.add(img, this.weather);
     }
+  }
+
+  private onError() {
+    let parentLink = this.host.closest("a");
+    if (parentLink) {
+      parentLink.href = parentLink.href.replace(generateIdPath(this.arenaId), "default");
+    }
+    
+    this.arenaId = 0;
   }
 
   private getArenaImage(size: ArenaImageType): string {
