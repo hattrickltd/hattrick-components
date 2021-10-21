@@ -141,6 +141,7 @@ export namespace Components {
         "allowCustomContent": boolean;
         "base": string;
         "internalLinkTarget": string;
+        "spoilerText": string;
         "text": string;
     }
     interface HattrickPicture {
@@ -506,6 +507,7 @@ declare namespace LocalJSX {
         "allowCustomContent"?: boolean;
         "base"?: string;
         "internalLinkTarget"?: string;
+        "spoilerText"?: string;
         "text"?: string;
     }
     interface HattrickPicture {

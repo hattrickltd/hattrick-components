@@ -15,6 +15,7 @@ export class HattrickMl {
 
   @Prop() base: string = "";
   @Prop() internalLinkTarget: string = "_self";
+  @Prop() spoilerText: string = "Possible spoiler. Click here to show";
 
   private parser = new HattrickMlParser();
 
@@ -25,6 +26,8 @@ export class HattrickMl {
   private parseHattrickMl(): string {
     HattrickMlParser.replacer.base = this.base;
     HattrickMlParser.replacer.internalLinkTarget = this.internalLinkTarget;
+    
+    this.parser.spoilerText = this.spoilerText;
 
     return this.parser.replace(this.text, this.allowCustomContent);
   }

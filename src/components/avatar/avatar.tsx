@@ -87,6 +87,7 @@ export class Avatar {
 
   @Watch("parts")
   @Watch("injury")
+  @Watch("kitId")
   private async updateAvatar() {
     this.images = [];
     this.pendingImages.forEach((img) => img.src = "");

@@ -271,14 +271,15 @@ export class HattrickMlParser {
               str = str.replace(match, HattrickMlParser.replacer.getPost(post[0], post[1], text));
               break;
             case "spoiler":
-              let spoilerText = this.spoilerText.replace("[link]", "").replace("[/link]", "");
+              let spoilerText = (this.spoilerText || "").replace("[link]", "").replace("[/link]", "");
 
               str = str.replace(match, `
                 <blockquote onclick="this.children[0].hidden = !this.children[0].hidden; this.children[1].hidden = !this.children[1].hidden;" class="spoiler">
-                  <div>${spoilerText}</div>
+                  <div><i>${spoilerText}</i></div>
                   <div hidden="true">${text}</div>
                 </blockquote>
               `);
+              
               // str = str.replace(match, `<ht-ml-spoiler spoiler-text="'${spoiler.text}'">${text}</ht-ml-spoiler>`);
               break;
             case "articleid":
