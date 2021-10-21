@@ -5,12 +5,20 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ArenaImageType } from "./components/arena/arena";
 import { IAvatarImage, IAvatarPart } from "./components/avatar/avatar.interfaces";
 import { IClockTexts } from "./components/match-clock/match-clock.interfaces";
 import { ILinks, IPlayoffMatch, IPlayoffTexts } from "./components/playoff-tree/playoff-tree";
 import { RangeChangeEventDetail, RangeValue } from "./components/range/range-interface";
 import { StyleEventDetail } from "./interface";
 export namespace Components {
+    interface HattrickArena {
+        "arenaId": number;
+        "arenaImageType": ArenaImageType;
+        "forceUploadReload": string;
+        "resourceUrl": string;
+        "weather": number;
+    }
     interface HattrickAvatar {
         /**
           * Set whether or not the background should be shown.
@@ -278,6 +286,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLHattrickArenaElement extends Components.HattrickArena, HTMLStencilElement {
+    }
+    var HTMLHattrickArenaElement: {
+        prototype: HTMLHattrickArenaElement;
+        new (): HTMLHattrickArenaElement;
+    };
     interface HTMLHattrickAvatarElement extends Components.HattrickAvatar, HTMLStencilElement {
     }
     var HTMLHattrickAvatarElement: {
@@ -351,6 +365,7 @@ declare global {
         new (): HTMLHattrickTooltipElement;
     };
     interface HTMLElementTagNameMap {
+        "hattrick-arena": HTMLHattrickArenaElement;
         "hattrick-avatar": HTMLHattrickAvatarElement;
         "hattrick-bar": HTMLHattrickBarElement;
         "hattrick-flip": HTMLHattrickFlipElement;
@@ -366,6 +381,13 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface HattrickArena {
+        "arenaId": number;
+        "arenaImageType"?: ArenaImageType;
+        "forceUploadReload"?: string;
+        "resourceUrl"?: string;
+        "weather"?: number;
+    }
     interface HattrickAvatar {
         /**
           * Set whether or not the background should be shown.
@@ -642,6 +664,7 @@ declare namespace LocalJSX {
         "position"?: "top" | "bottom" | "start" | "end" | "cursor";
     }
     interface IntrinsicElements {
+        "hattrick-arena": HattrickArena;
         "hattrick-avatar": HattrickAvatar;
         "hattrick-bar": HattrickBar;
         "hattrick-flip": HattrickFlip;
@@ -660,6 +683,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "hattrick-arena": LocalJSX.HattrickArena & JSXBase.HTMLAttributes<HTMLHattrickArenaElement>;
             "hattrick-avatar": LocalJSX.HattrickAvatar & JSXBase.HTMLAttributes<HTMLHattrickAvatarElement>;
             "hattrick-bar": LocalJSX.HattrickBar & JSXBase.HTMLAttributes<HTMLHattrickBarElement>;
             "hattrick-flip": LocalJSX.HattrickFlip & JSXBase.HTMLAttributes<HTMLHattrickFlipElement>;

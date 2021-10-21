@@ -1,0 +1,7 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+:host > * {
+  display: inline-block;
+}
