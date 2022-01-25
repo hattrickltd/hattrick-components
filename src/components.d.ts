@@ -488,7 +488,7 @@ declare namespace LocalJSX {
         "flipped"?: boolean;
     }
     interface HattrickMatchArena {
-        "amount": number;
+        "amount"?: number;
         "arenaId": number;
         "awayColor"?: string;
         "forceUploadReload"?: string;
