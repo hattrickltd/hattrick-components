@@ -122,28 +122,31 @@
   <h2>Playoffs</h2>
   <section playoffs>
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
-    <h4 style="color: red">Bug `.long` when from-rounds: 2, show-rounds: 5, bracket: 1</h4>
 
-    <div style="display: flex; gap: 5px;">
-      <div>
-        Expand:<br />
-        <select onchange="set('expand', this.value)">
-          <option value="auto">Auto</option>
-          <option value="none">None</option>
-          <option value="expand">Expanded</option>
-        </select>
+    <div examples>
+      <h4 style="color: red">Bug `.long` when from-rounds: 2, show-rounds: 5, bracket: 1</h4>
+
+      <div style="display: flex; gap: 5px;">
+        <div>
+          Expand:<br />
+          <select onchange="set('expand', this.value)">
+            <option value="auto">Auto</option>
+            <option value="none">None</option>
+            <option value="expand">Expanded</option>
+          </select>
+        </div>
+        <div>
+          From round:<br />
+          <input type="number" oninput="set('fromRound', this.value)" />
+        </div>
+        <div>
+          Nr of rounds:<br />
+          <input type="number" oninput="set('showRounds', this.value)" />
+        </div>
       </div>
-      <div>
-        From round:<br />
-        <input type="number" oninput="set('fromRound', this.value)" />
-      </div>
-      <div>
-        Nr of rounds:<br />
-        <input type="number" oninput="set('showRounds', this.value)" />
-      </div>
+
+      <div id="playoffsWrapper" style="padding: 0 10px"></div>
     </div>
-
-    <div id="playoffsWrapper" style="padding: 0 10px"></div>
   </section>
 
   <h2>Arenas</h2>
@@ -152,6 +155,8 @@
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
     <div examples>
       <hattrick-arena arena-id="15086" weather="1" arena-image-type="User220"></hattrick-arena>
+      
+      <hattrick-match-arena arena-id="15086" amount="0.5"></hattrick-match-arena>
     </div>
   </section>
 

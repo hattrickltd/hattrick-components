@@ -104,6 +104,14 @@ export namespace Components {
          */
         "flipped": boolean;
     }
+    interface HattrickMatchArena {
+        "amount": number;
+        "arenaId": number;
+        "awayColor": string;
+        "forceUploadReload": string;
+        "homeColor": string;
+        "resourceUrl": string;
+    }
     interface HattrickMatchClock {
         /**
           * How many minutes of added time the match has.
@@ -311,6 +319,12 @@ declare global {
         prototype: HTMLHattrickFlipElement;
         new (): HTMLHattrickFlipElement;
     };
+    interface HTMLHattrickMatchArenaElement extends Components.HattrickMatchArena, HTMLStencilElement {
+    }
+    var HTMLHattrickMatchArenaElement: {
+        prototype: HTMLHattrickMatchArenaElement;
+        new (): HTMLHattrickMatchArenaElement;
+    };
     interface HTMLHattrickMatchClockElement extends Components.HattrickMatchClock, HTMLStencilElement {
     }
     var HTMLHattrickMatchClockElement: {
@@ -370,6 +384,7 @@ declare global {
         "hattrick-avatar": HTMLHattrickAvatarElement;
         "hattrick-bar": HTMLHattrickBarElement;
         "hattrick-flip": HTMLHattrickFlipElement;
+        "hattrick-match-arena": HTMLHattrickMatchArenaElement;
         "hattrick-match-clock": HTMLHattrickMatchClockElement;
         "hattrick-ml": HTMLHattrickMlElement;
         "hattrick-picture": HTMLHattrickPictureElement;
@@ -471,6 +486,14 @@ declare namespace LocalJSX {
           * If the container should be flipped (showing back) or not.
          */
         "flipped"?: boolean;
+    }
+    interface HattrickMatchArena {
+        "amount": number;
+        "arenaId": number;
+        "awayColor"?: string;
+        "forceUploadReload"?: string;
+        "homeColor"?: string;
+        "resourceUrl"?: string;
     }
     interface HattrickMatchClock {
         /**
@@ -670,6 +693,7 @@ declare namespace LocalJSX {
         "hattrick-avatar": HattrickAvatar;
         "hattrick-bar": HattrickBar;
         "hattrick-flip": HattrickFlip;
+        "hattrick-match-arena": HattrickMatchArena;
         "hattrick-match-clock": HattrickMatchClock;
         "hattrick-ml": HattrickMl;
         "hattrick-picture": HattrickPicture;
@@ -689,6 +713,7 @@ declare module "@stencil/core" {
             "hattrick-avatar": LocalJSX.HattrickAvatar & JSXBase.HTMLAttributes<HTMLHattrickAvatarElement>;
             "hattrick-bar": LocalJSX.HattrickBar & JSXBase.HTMLAttributes<HTMLHattrickBarElement>;
             "hattrick-flip": LocalJSX.HattrickFlip & JSXBase.HTMLAttributes<HTMLHattrickFlipElement>;
+            "hattrick-match-arena": LocalJSX.HattrickMatchArena & JSXBase.HTMLAttributes<HTMLHattrickMatchArenaElement>;
             "hattrick-match-clock": LocalJSX.HattrickMatchClock & JSXBase.HTMLAttributes<HTMLHattrickMatchClockElement>;
             "hattrick-ml": LocalJSX.HattrickMl & JSXBase.HTMLAttributes<HTMLHattrickMlElement>;
             "hattrick-picture": LocalJSX.HattrickPicture & JSXBase.HTMLAttributes<HTMLHattrickPictureElement>;
