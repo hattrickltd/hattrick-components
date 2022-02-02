@@ -16,6 +16,7 @@ export class MatchArena {
 
   @Prop({ mutable: true }) arenaId!: number;
   @Prop() amount: number = 0;
+  @Prop() capacity: number = 0;
   @Prop() homeColor: string = "#6ecdea";
   @Prop() awayColor: string = "#d15e5e";
 
@@ -84,9 +85,17 @@ export class MatchArena {
     return src;
   }
   private getDefaultImage(type: MatchArenaImageType): string {
-    const { resourceUrl } = this;
+    const { capacity, resourceUrl } = this;
 
-    return `${ resourceUrl }/arenas/default/${ this.getFileName(type) }`;
+    if (capacity >= 50_000) {
+      return `${ resourceUrl }/arenas/default/50000/${ this.getFileName(type) }`;
+    } else if (capacity >= 28_000) {
+      return `${ resourceUrl }/arenas/default/28000/${ this.getFileName(type) }`;
+    } else if (capacity >= 20_000) {
+      return `${ resourceUrl }/arenas/default/20000/${ this.getFileName(type) }`;
+    } else {
+      return `${ resourceUrl }/arenas/default/12000/${ this.getFileName(type) }`;
+    }
   }
 
   private getFileName(type: MatchArenaImageType): string {

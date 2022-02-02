@@ -16,6 +16,7 @@ export class Arena {
   @Prop({ mutable: true }) arenaId!: number;
   @Prop() arenaImageType: ArenaImageType = "User220";
   @Prop() weather: number = -1;
+  @Prop() capacity: number = 0;
   @Prop() resourceUrl: string = "https://res.hattrick.org"
   @Prop() forceUploadReload: string = "";
 
@@ -58,9 +59,17 @@ export class Arena {
     return src;
   }
   private getDefaultImage(size: ArenaImageType): string {
-    const { resourceUrl } = this;
+    const { capacity, resourceUrl } = this;
 
-    return `${ resourceUrl }/arenas/default/${ this.getFileName(size) }`;
+    if (capacity >= 50_000) {
+      return `${ resourceUrl }/arenas/default/50000/${ this.getFileName(size) }`;
+    } else if (capacity >= 28_000) {
+      return `${ resourceUrl }/arenas/default/28000/${ this.getFileName(size) }`;
+    } else if (capacity >= 20_000) {
+      return `${ resourceUrl }/arenas/default/20000/${ this.getFileName(size) }`;
+    } else {
+      return `${ resourceUrl }/arenas/default/12000/${ this.getFileName(size) }`;
+    }
   }
 
   private getFileName(size: ArenaImageType): string {

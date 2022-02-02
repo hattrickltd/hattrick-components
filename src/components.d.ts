@@ -15,6 +15,7 @@ export namespace Components {
     interface HattrickArena {
         "arenaId": number;
         "arenaImageType": ArenaImageType;
+        "capacity": number;
         "forceUploadReload": string;
         "resourceUrl": string;
         "weather": number;
@@ -108,6 +109,7 @@ export namespace Components {
         "amount": number;
         "arenaId": number;
         "awayColor": string;
+        "capacity": number;
         "forceUploadReload": string;
         "homeColor": string;
         "resourceUrl": string;
@@ -400,6 +402,7 @@ declare namespace LocalJSX {
     interface HattrickArena {
         "arenaId": number;
         "arenaImageType"?: ArenaImageType;
+        "capacity"?: number;
         "forceUploadReload"?: string;
         "resourceUrl"?: string;
         "weather"?: number;
@@ -491,6 +494,7 @@ declare namespace LocalJSX {
         "amount"?: number;
         "arenaId": number;
         "awayColor"?: string;
+        "capacity"?: number;
         "forceUploadReload"?: string;
         "homeColor"?: string;
         "resourceUrl"?: string;
