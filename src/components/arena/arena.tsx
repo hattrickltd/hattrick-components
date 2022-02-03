@@ -44,7 +44,7 @@ export class Arena {
   private onError() {
     let parentLink = this.host.closest("a");
     if (parentLink) {
-      parentLink.href = parentLink.href.replace(generateIdPath(this.arenaId), "default");
+      parentLink.href = parentLink.href.replace(generateIdPath(this.arenaId), "default/" + this.getCapacityInterval());
     }
     
     this.arenaId = 0;
@@ -59,16 +59,18 @@ export class Arena {
     return src;
   }
   private getDefaultImage(size: ArenaImageType): string {
-    const { capacity, resourceUrl } = this;
+    return `${ this.resourceUrl }/arenas/default/${ this.getCapacityInterval() }/${ this.getFileName(size) }`;
+  }
 
-    if (capacity >= 50_000) {
-      return `${ resourceUrl }/arenas/default/50000/${ this.getFileName(size) }`;
-    } else if (capacity >= 28_000) {
-      return `${ resourceUrl }/arenas/default/28000/${ this.getFileName(size) }`;
-    } else if (capacity >= 20_000) {
-      return `${ resourceUrl }/arenas/default/20000/${ this.getFileName(size) }`;
+  private getCapacityInterval(): number {
+    if (this.capacity >= 50_000) {
+      return 50_000;
+    } else if (this.capacity >= 28_000) {
+      return 28_000;
+    } else if (this.capacity >= 20_000) {
+      return 20_000;
     } else {
-      return `${ resourceUrl }/arenas/default/12000/${ this.getFileName(size) }`;
+      return 12_000;
     }
   }
 
