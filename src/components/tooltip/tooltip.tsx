@@ -9,7 +9,7 @@ export class Tooltip {
 
   @Element() host: HTMLHattrickTooltipElement;
 
-  @Prop({ reflectToAttr: true, mutable: true }) dir: string;
+  @Prop({ reflect: true, mutable: true }) dir: string;
 
   private get ltr(): boolean {
     return !this.rtl;
@@ -26,7 +26,7 @@ export class Tooltip {
    * `middle` will put the arrow to the middle or center.
    * `end` will put the arrow to the right or bottom.
    */
-  @Prop({ reflectToAttr: true }) arrow: "start" | "middle" | "end" | "none" = "none";
+  @Prop({ reflect: true }) arrow: "start" | "middle" | "end" | "none" = "none";
 
   /** The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip. */
   @Prop() content: string = "";
@@ -35,7 +35,7 @@ export class Tooltip {
    * Which side of the element the tooltip should be shown.
    * `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
    */
-  @Prop({ reflectToAttr: true }) position: "top" | "bottom" | "start" | "end" | "cursor" = "cursor";
+  @Prop({ reflect: true }) position: "top" | "bottom" | "start" | "end" | "cursor" = "cursor";
 
   @State() showTooltip: boolean = false;
   @State() cssPos: {
@@ -44,8 +44,6 @@ export class Tooltip {
     left?: string;
     right?: string;
   } = {};
-
-  @Prop({ context: "window" }) win!: Window;
 
   // private _hostStyle: CSSStyleDeclaration;
 

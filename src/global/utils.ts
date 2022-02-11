@@ -11,3 +11,7 @@ export function generateIdPath(id: number) {
     return Math.floor(id / range) + 1;
   }
 }
+
+export function grouped(val: number): string {
+  return val.toLocaleString("sv");
+}

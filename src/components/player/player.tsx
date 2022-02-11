@@ -1,6 +1,30 @@
-import { Component, h, Host, Listen, Method, Prop, State } from "@stencil/core";
+import { Component, h, Host, Listen, Method, Prop, State, Fragment, FunctionalComponent } from "@stencil/core";
 import { createPopper, Instance } from "@popperjs/core";
-import { Fragment } from "../../global/fragment";
+import { grouped } from "../../global/utils";
+
+const tempDenominations = {
+  0: "obefintlig",
+  1: "katastrofal",
+  2: "usel",
+  3: "dålig",
+  4: "hyfsad",
+  5: "bra",
+  6: "ypperlig",
+  7: "enastående",
+  8: "fenomenal",
+  9: "unik",
+  10: "legendarisk",
+  11: "gudabenådad",
+  12: "övernaturlig",
+  13: "oförglömlig",
+  14: "himmelsk",
+  15: "titanisk",
+  16: "utomjordisk",
+  17: "mytomspunnen",
+  18: "magisk",
+  19: "utopisk",
+  20: "gudomlig"
+};
 
 @Component({
   tag: "hattrick-player",
@@ -62,19 +86,39 @@ export class Player {
   renderLoading() {
     return <img class="loading" src={ `${ this._root }/Img/Shop/loading.gif` } />;
   }
+  
+  getBarColorClass(level: number, max: number) {
+    let percent = level / max;
+    return ["verylow", "low", "high", "veryhigh"][Math.min(Math.floor(percent * 4), 3)];
+  }
 
   renderPlayer() {
     const { player } = this;
 
-    return <Fragment>
+    return <>
       <h3 class="float_left">
-        1. <a href={ `${ this._root }/Club/Players/Player.aspx?playerId=381029290&amp;BrowseIds=381029290,338118913,366780987,357797739,354035584,373440282,376212134,373226030,411260844,420734612,416806193,396875493,400746060,376143522,284908781,431238309,416158688,425360362,420123206,431776579,419927801,431849019,457669484` } title="Alfa Diallo">Alfa Diallo</a>&nbsp;<i class="icon-injury injury-with-badge" data-injury-length="∞" title="Förväntas inte återhämta sig" aria-label="Förväntas inte återhämta sig" role="img"></i>
+        { 0 < player.playerNumber && player.playerNumber < 100 && `${ player.playerNumber }.` }
+        { getFullPlayerName(player) }
+        { player.health >= 1 &&
+          <i class="icon-injury injury-with-badge" data-injury-length={ player.health === 999 ? "∞" : player.health } title="Förväntas inte återhämta sig" aria-label="Förväntas inte återhämta sig" role="img"></i>
+        }
+        
       </h3>
-      <span class="float_right"><a href={ `${ this._root }/World/Leagues/League.aspx?LeagueID=121` } class="flag inner"><img src={ `${ this._root }/Img/Icons/transparent.gif` } style={{ "background": `transparent url(${ this._root }/Img/Flags/flags.gif) no-repeat -2420px 0` }} alt="Senegal" title="Senegal" /></a></span>
+      <span class="float_right">
+        <a href={ `${ this._root }/World/Leagues/League.aspx?LeagueID=${ player.leagueId }` } class="flag inner">
+          <hattrick-flag leagueId={ player.leagueId }></hattrick-flag>
+        </a>
+      </span>
       <br class="clear" />
-      <div title="Målvakt" class="player-category float_right">MV</div>
+      
+      { player.playerCategoryId > 0 &&
+        <div title="Målvakt" class="player-category float_right">MV</div>
+      }
 
-      <p style={{ "padding-top": "5px", "padding-bottom": "9px", "max-height": "999999px" }}>Har <a href={ `${ this._root }/Help/Rules/AppDenominations.aspx?lt=skill&amp;ll=20#skill` } title="20/20" class="skill">gudomlig</a><span class="shy denominationNumber">(20)</span> rutin och <a href={ `${ this._root }/Help/Rules/AppDenominations.aspx?lt=leadership&amp;ll=2#leadership` } title="2/7" class="skill">usel</a><span class="shy denominationNumber">(2)</span> ledarförmåga. Har <a href={ `${ this._root }/Help/Rules/AppDenominations.aspx?lt=skill&amp;ll=20#skill` } title="20/20" class="skill">gudomlig</a><span class="shy denominationNumber">(20)</span> klubbkänsla.</p>
+      <p>
+        Har <SkillLink level={ 20 } /> rutin och <SkillLink level={ 2 } max={ 7 } type="leadership" /> ledarförmåga.
+        Har <SkillLink level={ 20 } /> klubbkänsla.
+      </p>
 
       <div class="flex">
         <div class="flex-fixed">
@@ -86,18 +130,18 @@ export class Player {
               <tbody>
                 <tr>
                   <td class="right">Ålder</td>
-                  <td colSpan={2} class="nowrap">43 år och 44 dagar</td>
+                  <td colSpan={2} class="nowrap">{ player.years } år och { player.days } dagar</td>
                 </tr>
 
                 <tr>
                   <td class="right"> TSI</td>
-                  <td colSpan={2}>50</td>
+                  <td colSpan={2}>{ player.tsi }</td>
                 </tr>
 
 
                 <tr>
                   <td class="right">Lön</td>
-                  <td colSpan={2} class="nowrap">3&nbsp;840&nbsp;<span title="3&nbsp;200&nbsp;kr/vecka, undantaget 20% bonus">kr/vecka</span></td>
+                  <td colSpan={2} class="nowrap">{ grouped(player.salary) } kr/vecka</td>
                 </tr>
 
 
@@ -110,7 +154,12 @@ export class Player {
                     Form
                   </td>
                   <td class="nowrap">
-                    <div class="ht-bar" {...{ level: 3, max: 8, cap: -1, isCap: 0 }}><div class="bar-max"><span class="bar-denomination">dålig</span></div><div title="dålig" class="bar-level low" style={{ "width": "38%" }}><span class="bar-denomination">dålig</span></div></div><span style={{ "position": "absolute" }}><span class="denominationNumber" title="3/8">&nbsp;3</span></span>
+                    <hattrick-bar
+                      level={ player.formNumber }
+                      max={ 8 }
+                      denomination={ tempDenominations[player.formNumber] }
+                      class={ this.getBarColorClass(player.formNumber, 8) }
+                    ></hattrick-bar>
                   </td>
                   <td></td>
                 </tr>
@@ -120,7 +169,12 @@ export class Player {
                     Kondition
                   </td>
                   <td class="nowrap">
-                    <div class="ht-bar" {...{ level: 2, max: 9, cap: -1, isCap: 0 }}><div class="bar-max"><span class="bar-denomination">usel</span></div><div title="usel" class="bar-level verylow" style={{ "width": "22%" }}><span class="bar-denomination">usel</span></div></div><span style={{ "position": "absolute" }}><span class="denominationNumber" title="2/9">&nbsp;2</span></span>
+                    <hattrick-bar
+                      level={ player.staminaSkill }
+                      max={ 9 }
+                      denomination={ tempDenominations[player.staminaSkill] }
+                      class={ this.getBarColorClass(player.staminaSkill, 9) }
+                    ></hattrick-bar>
                   </td>
                   <td style={{ "width": "50px" }}></td>
                 </tr>
@@ -136,7 +190,7 @@ export class Player {
                     Målvakt
                   </td>
                   <td colSpan={2}>
-                    <div class="ht-bar" {...{ level: 5, max: 20, cap: -1, isCap: 0 }}><div class="bar-max"><span class="bar-denomination">bra</span></div><div title="bra" class="bar-level" style={{ width: "25%" }}><span class="bar-denomination">bra</span></div></div></td><td class="right"><span class="denominationNumber" title="5/20">&nbsp;5</span>
+                    <hattrick-bar level={ player.keeper } denomination={ tempDenominations[player.keeper] }></hattrick-bar>
                   </td>
                 </tr>
                 <tr>
@@ -144,7 +198,7 @@ export class Player {
                     Försvar
                   </td>
                   <td colSpan={2}>
-                    <div class="ht-bar" {...{ level: 0, max: 20, cap: -1, isCap: 0 }}><div class="bar-max"><span class="bar-denomination">obefintlig</span></div></div></td><td class="right"><span class="denominationNumber" title="0/20">&nbsp;0</span>
+                    <hattrick-bar level={ player.defending } denomination={ tempDenominations[player.defending] }></hattrick-bar>
                   </td>
                 </tr>
                 <tr>
@@ -152,7 +206,7 @@ export class Player {
                     Spelupplägg
                   </td>
                   <td colSpan={2}>
-                    <div class="ht-bar" {...{ level: 0, max: 20, cap: -1, isCap: 0 }}><div class="bar-max"><span class="bar-denomination">obefintlig</span></div></div></td><td class="right"><span class="denominationNumber" title="0/20">&nbsp;0</span>
+                    <hattrick-bar level={ player.playmaking } denomination={ tempDenominations[player.playmaking] }></hattrick-bar>
                   </td>
                 </tr>
                 <tr>
@@ -160,7 +214,7 @@ export class Player {
                     Ytter
                   </td>
                   <td colSpan={2}>
-                    <div class="ht-bar" {...{ level: 0, max: 20, cap: -1, isCap: 0 }}><div class="bar-max"><span class="bar-denomination">obefintlig</span></div></div></td><td class="right"><span class="denominationNumber" title="0/20">&nbsp;0</span>
+                    <hattrick-bar level={ player.winger } denomination={ tempDenominations[player.winger] }></hattrick-bar>
                   </td>
                 </tr>
                 <tr>
@@ -168,7 +222,7 @@ export class Player {
                     Framspel
                   </td>
                   <td colSpan={2}>
-                    <div class="ht-bar" {...{ level: 0, max: 20, cap: -1, isCap: 0 }}><div class="bar-max"><span class="bar-denomination">obefintlig</span></div></div></td><td class="right"><span class="denominationNumber" title="0/20">&nbsp;0</span>
+                    <hattrick-bar level={ player.passing } denomination={ tempDenominations[player.passing] }></hattrick-bar>
                   </td>
                 </tr>
                 <tr>
@@ -176,7 +230,7 @@ export class Player {
                     Målgörare
                   </td>
                   <td colSpan={2}>
-                    <div class="ht-bar" {...{ level: 0, max: 20, cap: -1, isCap: 0 }}><div class="bar-max"><span class="bar-denomination">obefintlig</span></div></div></td><td class="right"><span class="denominationNumber" title="0/20">&nbsp;0</span>
+                    <hattrick-bar level={ player.scorer } denomination={ tempDenominations[player.scorer] }></hattrick-bar>
                   </td>
                 </tr>
                 <tr>
@@ -184,7 +238,7 @@ export class Player {
                     Fasta sit.
                   </td>
                   <td colSpan={2}>
-                    <div class="ht-bar" {...{ level: 13, max: 20, cap: -1, isCap: 0 }}><div class="bar-max"><span class="bar-denomination">oförglömlig</span></div><div title="oförglömlig" class="bar-level" style={{ width: "65%" }}><span class="bar-denomination">oförglömlig</span></div></div></td><td class="right"><span class="denominationNumber" title="13/20">13</span>
+                    <hattrick-bar level={ player.kicker } denomination={ tempDenominations[player.kicker] }></hattrick-bar>
                   </td>
                 </tr>
 
@@ -194,6 +248,57 @@ export class Player {
 
         </div>
       </div>
-    </Fragment>;
+    </>;
   }
 }
+
+function getFullPlayerName(player: any): string {
+  if (!player) return "";
+
+  let names = fixPlayerNames(player);
+
+  if (!names.nickName && !names.firstName) {
+    return names.lastName;
+  } else if (!names.nickName) {
+    return names.firstName + " " + names.lastName;
+  } else {
+
+    let nicknameDisplay;
+
+    if (names.nickName.length === 2 && names.nickName.substring(1, 2) === ".") {
+      nicknameDisplay = names.nickName;
+    } else {
+      nicknameDisplay = `'${names.nickName}'`;
+    }
+
+    return names.firstName + " " + nicknameDisplay + " " + names.lastName;
+
+  }
+}
+
+function fixPlayerNames(player) {
+  return {
+    firstName: player.firstName || player.firstname,
+    lastName: player.lastName || player.lastname,
+    nickName: player.nickName || player.nickname,
+  };
+}
+
+interface ISkillLinkProps {
+  level: number;
+  max?: number;
+  type?: string;
+  showNumber?: boolean;
+}
+const SkillLink: FunctionalComponent<ISkillLinkProps> = (props, _children) => <>
+  <a
+    href={ `/Help/Rules/AppDenominations.aspx?lt=skill&amp;ll=${ props.level }#${ props.type || "skill" }` }
+    title={ `${ props.level }/${ props.max || 20 }` }
+    class="skill"
+  >
+    { tempDenominations[props.level] }
+  </a>
+  { props.showNumber !== false &&
+    <span class="shy denominationNumber">({ props.level })</span>
+  }
+</>;

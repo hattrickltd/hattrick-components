@@ -95,6 +95,9 @@ export namespace Components {
          */
         "max": number;
     }
+    interface HattrickFlag {
+        "leagueId": number;
+    }
     interface HattrickFlip {
         /**
           * If the flip container should rotate horizontally (`x`) or vertically (`y`).
@@ -320,6 +323,12 @@ declare global {
         prototype: HTMLHattrickBarElement;
         new (): HTMLHattrickBarElement;
     };
+    interface HTMLHattrickFlagElement extends Components.HattrickFlag, HTMLStencilElement {
+    }
+    var HTMLHattrickFlagElement: {
+        prototype: HTMLHattrickFlagElement;
+        new (): HTMLHattrickFlagElement;
+    };
     interface HTMLHattrickFlipElement extends Components.HattrickFlip, HTMLStencilElement {
     }
     var HTMLHattrickFlipElement: {
@@ -396,6 +405,7 @@ declare global {
         "hattrick-arena": HTMLHattrickArenaElement;
         "hattrick-avatar": HTMLHattrickAvatarElement;
         "hattrick-bar": HTMLHattrickBarElement;
+        "hattrick-flag": HTMLHattrickFlagElement;
         "hattrick-flip": HTMLHattrickFlipElement;
         "hattrick-match-arena": HTMLHattrickMatchArenaElement;
         "hattrick-match-clock": HTMLHattrickMatchClockElement;
@@ -491,6 +501,9 @@ declare namespace LocalJSX {
           * The maximum level the bar should show.
          */
         "max"?: number;
+    }
+    interface HattrickFlag {
+        "leagueId"?: number;
     }
     interface HattrickFlip {
         /**
@@ -711,6 +724,7 @@ declare namespace LocalJSX {
         "hattrick-arena": HattrickArena;
         "hattrick-avatar": HattrickAvatar;
         "hattrick-bar": HattrickBar;
+        "hattrick-flag": HattrickFlag;
         "hattrick-flip": HattrickFlip;
         "hattrick-match-arena": HattrickMatchArena;
         "hattrick-match-clock": HattrickMatchClock;
@@ -732,6 +746,7 @@ declare module "@stencil/core" {
             "hattrick-arena": LocalJSX.HattrickArena & JSXBase.HTMLAttributes<HTMLHattrickArenaElement>;
             "hattrick-avatar": LocalJSX.HattrickAvatar & JSXBase.HTMLAttributes<HTMLHattrickAvatarElement>;
             "hattrick-bar": LocalJSX.HattrickBar & JSXBase.HTMLAttributes<HTMLHattrickBarElement>;
+            "hattrick-flag": LocalJSX.HattrickFlag & JSXBase.HTMLAttributes<HTMLHattrickFlagElement>;
             "hattrick-flip": LocalJSX.HattrickFlip & JSXBase.HTMLAttributes<HTMLHattrickFlipElement>;
             "hattrick-match-arena": LocalJSX.HattrickMatchArena & JSXBase.HTMLAttributes<HTMLHattrickMatchArenaElement>;
             "hattrick-match-clock": LocalJSX.HattrickMatchClock & JSXBase.HTMLAttributes<HTMLHattrickMatchClockElement>;

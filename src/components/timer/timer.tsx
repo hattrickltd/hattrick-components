@@ -27,13 +27,13 @@ export class Timer {
   @Prop() pattern: string = "HH:MM:SS";
 
   // /** The number of seconds left (or negative if `keepCounting` is set to `true`. */
-  // @Prop({ reflectToAttr: true, mutable: true }) seconds: number;
+  // @Prop({ reflect: true, mutable: true }) seconds: number;
 
   componentWillLoad() {
     this.deadlineUpdated();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this._interval && clearInterval(this._interval);
   }
 
