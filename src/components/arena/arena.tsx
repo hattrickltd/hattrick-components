@@ -36,7 +36,7 @@ export class Arena {
   }
 
   private onLoad(img: HTMLImageElement) {
-    if (this.weather > -1 && this.arenaImageType !== "HalfView") {
+    if (this.weather > -1 && ["HalfView", "HalfViewFlipped"].indexOf(this.arenaImageType) > -1) {
       window.Weather.add(img, this.weather);
     }
   }
@@ -80,11 +80,12 @@ export class Arena {
       case "User620" : return "custom-620-0.jpg";
       case "HalfView" : return "half_view.jpg";
       case "HalfViewFlipped" : return "half_view_flipped.jpg";
+      case "PenaltyArea" : return "penalty_area.jpg";
     }
   }
 }
 
-export type ArenaImageType = "User220" | "User620" | "HalfView" | "HalfViewFlipped";
+export type ArenaImageType = "User220" | "User620" | "HalfView" | "HalfViewFlipped" | "PenaltyArea";
 
 function generateIdPath(id: number) {
   return [
