@@ -28,6 +28,5 @@ hattrick-progress-arc {
 .stamina-high { --progress-arc-color: var(--rating-stamina-arc-high, #F1C40A); }
 .stamina-veryhigh { --progress-arc-color: var(--rating-stamina-arc-very-high, #31A94B); }
 
-
-.rating-full { font-size: 1em; }
-.rating-half { font-size: 0.6em; }
+.rating-full { font-size: 1em; line-height: 1; }
+.rating-half { font-size: 0.6em; line-height: 1; }
