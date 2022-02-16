@@ -79,8 +79,8 @@ export class Arena {
       case "User220" : return "custom-220-100.jpg";
       case "User620" : return "custom-620-0.jpg";
       case "HalfView" : return "half_view.jpg";
-      case "HalfViewFlipped" : return "half_view_flipped.jpg";
-      case "PenaltyArea" : return "penalty_area.jpg";
+      case "HalfViewFlipped" : return "half_view_reverse.jpg";
+      case "PenaltyArea" : return "half_view_zoom.jpg";
     }
   }
 }
