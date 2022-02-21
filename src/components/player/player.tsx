@@ -1,30 +1,8 @@
 import { Component, h, Host, Listen, Method, Prop, State, Fragment, FunctionalComponent } from "@stencil/core";
 import { createPopper, Instance } from "@popperjs/core";
-import { grouped } from "../../global/utils";
+import { currency } from "../../global/utils";
 
-const tempDenominations = {
-  0: "obefintlig",
-  1: "katastrofal",
-  2: "usel",
-  3: "dålig",
-  4: "hyfsad",
-  5: "bra",
-  6: "ypperlig",
-  7: "enastående",
-  8: "fenomenal",
-  9: "unik",
-  10: "legendarisk",
-  11: "gudabenådad",
-  12: "övernaturlig",
-  13: "oförglömlig",
-  14: "himmelsk",
-  15: "titanisk",
-  16: "utomjordisk",
-  17: "mytomspunnen",
-  18: "magisk",
-  19: "utopisk",
-  20: "gudomlig"
-};
+declare const window: any;
 
 @Component({
   tag: "hattrick-player",
@@ -40,8 +18,12 @@ export class Player {
   private _loading: Promise<any>;
 
   @Prop() playerId: number;
+  @Prop() countryId: number;
+  @Prop() languageId: number = 2;
 
   @State() private player: any;
+  @State() private language: any;
+  @State() private country: any;
 
   private _root = (location.href.includes(".hattrick.local")) ? "/htweb"
                 : (location.href.includes("localhost")) ? "https://www.hattrick.org"
@@ -52,8 +34,14 @@ export class Player {
   @Listen("focus")
   async show() {
     if (!this._loading) {
-      this._loading = fetch(`https://m.hattrick.org/api/player/player/${this.playerId}`).then(async res => {
-        return this.player = await res.json();
+      this._loading = Promise.all([
+        fetch(`https://m.hattrick.org/api/player/player/${this.playerId}`).then(res => res.json()),
+        fetch(`https://laptop-marcus.hattrick.local/api/language/getPlayerTexts/${ this.languageId }?cultureCode=en-US`).then(res => res.json()),
+        fetch(`https://laptop-marcus.hattrick.local/api/world/getCountry/${ this.countryId }`).then(res => res.json()),
+      ]).then(([player, language, country]) => {
+        this.player = player;
+        this.language = language;
+        this.country = country;
       });
     }
 
@@ -93,31 +81,54 @@ export class Player {
   }
 
   renderPlayer() {
-    const { player } = this;
+    const { player, language, country } = this;
+    const texts = language.texts;
+
+    const replacer = new window.HT.TagReplacer();
 
     return <>
       <h3 class="float_left">
         { 0 < player.playerNumber && player.playerNumber < 100 && `${ player.playerNumber }.` }
         { getFullPlayerName(player) }
         { player.health >= 1 &&
-          <i class="icon-injury injury-with-badge" data-injury-length={ player.health === 999 ? "∞" : player.health } title="Förväntas inte återhämta sig" aria-label="Förväntas inte återhämta sig" role="img"></i>
+          <i class="icon-injury injury-with-badge" data-injury-length={ player.health === 999 ? "∞" : player.health } role="img"></i>
         }
         
       </h3>
       <span class="float_right">
         <a href={ `${ this._root }/World/Leagues/League.aspx?LeagueID=${ player.leagueId }` } class="flag inner">
-          <hattrick-flag leagueId={ player.leagueId }></hattrick-flag>
+          <hattrick-flag leagueId={ player.leagueId } title={ player.leagueName }></hattrick-flag>
         </a>
       </span>
       <br class="clear" />
       
       { player.playerCategoryId > 0 &&
-        <div title="Målvakt" class="player-category float_right">MV</div>
+        <div class="player-category float_right">{ texts.playerCategories[player.playerCategoryId * 2] }</div>
       }
 
       <p>
-        Har <SkillLink level={ 20 } /> rutin och <SkillLink level={ 2 } max={ 7 } type="leadership" /> ledarförmåga.
-        Har <SkillLink level={ 20 } /> klubbkänsla.
+        {/* TODO: { isTrainer  && <>
+          { translate(texts.playerDetails.cochSkillAndTrainerType, {
+            "Skill1": () => <DenominationLink level={ this.player.trainerSkill } type="skillshort" text={ texts.labels_skills[this.player.gentleness] } />,
+            "TrainerType": texts.public_TrainerTypes[["Defensive", "Offensive", "Balanced"][this.player.trainerType]],
+          }) }
+        </> } */}
+
+        { jsxReplacer(texts.playerDetails.personality, {
+          "Gentleness": () => <Denomination level={ this.player.gentleness } type="gentleness" text={ texts.labels_gentleness[this.player.gentleness] } />,
+          "Agressiveness": () => <Denomination level={ this.player.aggressiveness } type="aggressiveness" text={ texts.labels_aggressiveness[this.player.aggressiveness] } />,
+          "Honesty": () => <Denomination level={ this.player.honesty } type="honesty" text={ texts.labels_honesty[this.player.honesty] } />,
+        }) }
+
+        <br />
+
+        { jsxReplacer(texts.playerDetails.experienceAndLeadership, {
+          "Experience": () => <Denomination level={ this.player.experience } type="skill" text={ texts.labels_skills[this.player.experience] } />,
+          "Leadership": <Denomination level={ this.player.leadership } type="leadership" text={ texts.labels_skills[this.player.leadership] } />,
+        })
+        } { jsxReplacer(texts.playerDetails_3.hasLoyalty, {
+          "Loyalty": () => <Denomination level={ this.player.loyalty } type="skill" text={ texts.labels_skills[this.player.loyalty] } />,
+        }) }
       </p>
 
       <div class="flex">
@@ -129,35 +140,53 @@ export class Player {
             <table>
               <tbody>
                 <tr>
-                  <td class="right">Ålder</td>
-                  <td colSpan={2} class="nowrap">{ player.years } år och { player.days } dagar</td>
+                  <td class="right">{ texts.labels_pagetexts.owner }</td>
+                  <td colSpan={2} class="nowrap">
+                    <a href="#">{ player.teamname }</a>
+                  </td>
                 </tr>
 
                 <tr>
-                  <td class="right"> TSI</td>
+                  <td class="right">{ texts.players.age }</td>
+                  <td colSpan={2} class="nowrap">
+                    { replacer.replace(texts.mobilePlayers.ageYearsAndDays, language.languagePluralRule, {
+                      "years": player.years,
+                      "days": player.days,
+                    }) }
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="right">{ texts.players.tsi }</td>
                   <td colSpan={2}>{ player.tsi }</td>
                 </tr>
 
-
                 <tr>
-                  <td class="right">Lön</td>
-                  <td colSpan={2} class="nowrap">{ grouped(player.salary) } kr/vecka</td>
-                </tr>
-
-
-                <tr>
-                  <td class="right">Specialitet</td>
-                  <td colSpan={2}>-</td>
-                </tr>
-                <tr class="playerSkillsTableFormAndStamina">
-                  <td class="right">
-                    Form
+                  <td class="right">{ texts.labels_pagetexts.wage }</td>
+                  <td colSpan={2} class="nowrap">
+                    { replacer.replace(texts.labels_pagetexts.salaryperweek, language.languagePluralRule, {
+                      "salary": currency(player.salary, country.currencyRate, country.currencyName),
+                    }) }
                   </td>
+                </tr>
+
+                <tr>
+                  <td class="right">{ texts.transferList.specialty.replace(":", "") }</td>
+                  <td colSpan={2}>
+                    { player.specialty > 0
+                      ? <><i class={ `icon-speciality-${ player.specialty }` } /> { texts.labels_specialty[player.specialty - 1] }</>
+                      : "-"
+                    }
+                  </td>
+                </tr>
+
+                <tr class="playerSkillsTableFormAndStamina">
+                  <td class="right">{ texts.playerDetails.form }</td>
                   <td class="nowrap">
                     <hattrick-bar
                       level={ player.formNumber }
                       max={ 8 }
-                      denomination={ tempDenominations[player.formNumber] }
+                      denomination={ texts.labels_skills[player.formNumber] }
                       class={ this.getBarColorClass(player.formNumber, 8) }
                     ></hattrick-bar>
                   </td>
@@ -165,14 +194,12 @@ export class Player {
                 </tr>
 
                 <tr class="playerSkillsTableFormAndStamina">
-                  <td class="right">
-                    Kondition
-                  </td>
+                  <td class="right">{ texts.players.stamina }</td>
                   <td class="nowrap">
                     <hattrick-bar
                       level={ player.staminaSkill }
                       max={ 9 }
-                      denomination={ tempDenominations[player.staminaSkill] }
+                      denomination={ texts.labels_skills[player.staminaSkill] }
                       class={ this.getBarColorClass(player.staminaSkill, 9) }
                     ></hattrick-bar>
                   </td>
@@ -182,69 +209,71 @@ export class Player {
             </table>
           </div>
 
-          <div class="transferPlayerSkills" style={{ "display": "none" }}>
-            <table>
-              <tbody>
-                <tr>
-                  <td class="right">
-                    Målvakt
-                  </td>
-                  <td colSpan={2}>
-                    <hattrick-bar level={ player.keeper } denomination={ tempDenominations[player.keeper] }></hattrick-bar>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="right">
-                    Försvar
-                  </td>
-                  <td colSpan={2}>
-                    <hattrick-bar level={ player.defending } denomination={ tempDenominations[player.defending] }></hattrick-bar>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="right">
-                    Spelupplägg
-                  </td>
-                  <td colSpan={2}>
-                    <hattrick-bar level={ player.playmaking } denomination={ tempDenominations[player.playmaking] }></hattrick-bar>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="right">
-                    Ytter
-                  </td>
-                  <td colSpan={2}>
-                    <hattrick-bar level={ player.winger } denomination={ tempDenominations[player.winger] }></hattrick-bar>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="right">
-                    Framspel
-                  </td>
-                  <td colSpan={2}>
-                    <hattrick-bar level={ player.passing } denomination={ tempDenominations[player.passing] }></hattrick-bar>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="right">
-                    Målgörare
-                  </td>
-                  <td colSpan={2}>
-                    <hattrick-bar level={ player.scorer } denomination={ tempDenominations[player.scorer] }></hattrick-bar>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="right">
-                    Fasta sit.
-                  </td>
-                  <td colSpan={2}>
-                    <hattrick-bar level={ player.kicker } denomination={ tempDenominations[player.kicker] }></hattrick-bar>
-                  </td>
-                </tr>
+          { player.isTransferListed &&
+            <div class="transferPlayerSkills">
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="right">
+                      { texts.players.SkillKeeper }
+                    </td>
+                    <td colSpan={2}>
+                      <hattrick-bar level={ player.keeperSkill } denomination={ texts.labels_skills[player.keeperSkill] }></hattrick-bar>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="right">
+                      { texts.players.SkillDefending }
+                    </td>
+                    <td colSpan={2}>
+                      <hattrick-bar level={ player.defenderSkill } denomination={ texts.labels_skills[player.defenderSkill] }></hattrick-bar>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="right">
+                      { texts.players.SkillPlaymaking }
+                    </td>
+                    <td colSpan={2}>
+                      <hattrick-bar level={ player.playmakerSkill } denomination={ texts.labels_skills[player.playmakerSkill] }></hattrick-bar>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="right">
+                      { texts.players.SkillWinger }
+                    </td>
+                    <td colSpan={2}>
+                      <hattrick-bar level={ player.wingerSkill } denomination={ texts.labels_skills[player.wingerSkill] }></hattrick-bar>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="right">
+                      { texts.players.SkillPassing }
+                    </td>
+                    <td colSpan={2}>
+                      <hattrick-bar level={ player.passerSkill } denomination={ texts.labels_skills[player.passerSkill] }></hattrick-bar>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="right">
+                      { texts.players.SkillScoring }
+                    </td>
+                    <td colSpan={2}>
+                      <hattrick-bar level={ player.scorerSkill } denomination={ texts.labels_skills[player.scorerSkill] }></hattrick-bar>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="right">
+                      { texts.players.SkillSetPieces }
+                    </td>
+                    <td colSpan={2}>
+                      <hattrick-bar level={ player.kickerSkill } denomination={ texts.labels_skills[player.kickerSkill] }></hattrick-bar>
+                    </td>
+                  </tr>
 
-              </tbody>
-            </table>
-          </div>
+                </tbody>
+              </table>
+            </div>
+          }
 
         </div>
       </div>
@@ -284,21 +313,46 @@ function fixPlayerNames(player) {
   };
 }
 
-interface ISkillLinkProps {
+interface IDenominationProps {
   level: number;
+  text: string;
   max?: number;
   type?: string;
   showNumber?: boolean;
 }
-const SkillLink: FunctionalComponent<ISkillLinkProps> = (props, _children) => <>
+const Denomination: FunctionalComponent<IDenominationProps> = (props, _children) => <>
   <a
-    href={ `/Help/Rules/AppDenominations.aspx?lt=skill&amp;ll=${ props.level }#${ props.type || "skill" }` }
+    href={ `/Help/Rules/AppDenominations.aspx?lt=${ props.type || "skill" }&amp;ll=${ props.level }#${ props.type || "skill" }` }
     title={ `${ props.level }/${ props.max || 20 }` }
     class="skill"
   >
-    { tempDenominations[props.level] }
+    { props.text }
   </a>
   { props.showNumber !== false &&
     <span class="shy denominationNumber">({ props.level })</span>
   }
 </>;
+
+function jsxReplacer(text: string, context: { [tag: string]: string | (() => string) }) {
+
+  let tagRegex = /\[#?(.*?)\]/gi;
+  let tagResult;
+
+  let parts = text.replace(/\[#?.*?\]/gi, "¤").split("¤");
+  
+  let tags = [];
+  while (tagResult = tagRegex.exec(text)) tags.push(tagResult[1]);
+
+  let allParts = [];
+
+  for (let i = 0; i < parts.length; i++) {
+    allParts.push(parts[i]);
+    
+    let value = context[tags[i]];
+    if (value) {
+      allParts.push(typeof value === "function" ? value() : value);
+    }
+  }
+
+  return allParts.map(x => x);
+}

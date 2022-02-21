@@ -15,3 +15,13 @@ export function generateIdPath(id: number) {
 export function grouped(val: number): string {
   return val.toLocaleString("sv");
 }
+
+export function currency(money: number, rate: number, name: string): string {
+  money = money / rate;
+
+  if (name) {
+    return grouped(money) + " " + name;
+  } else {
+    return grouped(money);
+  }
+}
