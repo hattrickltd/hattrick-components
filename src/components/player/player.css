@@ -1,5 +1,6 @@
 :host {
   display: inline-block;
+  text-align: initial;
 }
 
 .playertooltip {
@@ -19,4 +20,14 @@
 .loading { padding: 75px 200px; }
 .bar-max { width: 100%; }
 
+.player-information {
+  margin-bottom: 10px;
+}
+
 hattrick-bar { width: 140px; }
+hattrick-avatar { margin-inline-end: 15px; }
+
+table td {
+  border-width: 0 !important;
+  padding: 2px 4px 2px 2px !important;
+}

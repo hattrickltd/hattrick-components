@@ -26,8 +26,11 @@ export class Player {
   @State() private country: any;
 
   private _root = (location.href.includes(".hattrick.local")) ? "/htweb"
-                : (location.href.includes("localhost")) ? "https://www.hattrick.org"
+                : (location.href.includes("localhost")) ? "https://m.hattrick.org"
                 : "";
+
+  private _apiRoot = (location.href.includes("localhost")) ? "https://m.hattrick.org/api"
+                   : "/api";
 
   @Method()
   @Listen("mouseenter")
@@ -35,9 +38,9 @@ export class Player {
   async show() {
     if (!this._loading) {
       this._loading = Promise.all([
-        fetch(`https://m.hattrick.org/api/player/player/${this.playerId}`).then(res => res.json()),
-        fetch(`https://laptop-marcus.hattrick.local/api/language/getPlayerTexts/${ this.languageId }?cultureCode=en-US`).then(res => res.json()),
-        fetch(`https://laptop-marcus.hattrick.local/api/world/getCountry/${ this.countryId }`).then(res => res.json()),
+        fetch(`${ this._apiRoot }/player/player/${this.playerId}`).then(res => res.json()),
+        fetch(`${ this._apiRoot }/language/getPlayerTexts/${ this.languageId }?cultureCode=en-US`).then(res => res.json()),
+        fetch(`${ this._apiRoot }/world/getCountry/${ this.countryId }`).then(res => res.json()),
       ]).then(([player, language, country]) => {
         this.player = player;
         this.language = language;
@@ -88,9 +91,9 @@ export class Player {
 
     return <>
       <h3 class="float_left">
-        { 0 < player.playerNumber && player.playerNumber < 100 && `${ player.playerNumber }.` }
-        { getFullPlayerName(player) }
-        { player.health >= 1 &&
+        { 0 < player.playerNumber && player.playerNumber < 100 && `${ player.playerNumber }.`
+        } { getFullPlayerName(player)
+        } { player.health >= 1 &&
           <i class="icon-injury injury-with-badge" data-injury-length={ player.health === 999 ? "∞" : player.health } role="img"></i>
         }
         
@@ -106,7 +109,7 @@ export class Player {
         <div class="player-category float_right">{ texts.playerCategories[player.playerCategoryId * 2] }</div>
       }
 
-      <p>
+      <p class="player-information">
         {/* TODO: { isTrainer  && <>
           { translate(texts.playerDetails.cochSkillAndTrainerType, {
             "Skill1": () => <DenominationLink level={ this.player.trainerSkill } type="skillshort" text={ texts.labels_skills[this.player.gentleness] } />,
@@ -133,7 +136,7 @@ export class Player {
 
       <div class="flex">
         <div class="flex-fixed">
-          <hattrick-avatar parts={player.avatar} base={ `${ this._root }/Img/Avatar/` }></hattrick-avatar>
+          <hattrick-avatar parts={player.avatar} base={ `${ this._root }/Img/Avatar/` } facecard={ false }></hattrick-avatar>
         </div>
         <div class="flex flex-space-between">
           <div class="transferPlayerInformation">
