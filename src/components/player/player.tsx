@@ -20,16 +20,21 @@ export class Player {
   @Prop() playerId: number;
   @Prop() countryId: number;
   @Prop() languageId: number = 2;
+  @Prop() skillPresentation: number = 2;
+  @Prop() hideNumbersAfterDenominations: boolean = false;
+  @Prop() avatarSet: string = "Avatar";
 
   @State() private player: any;
   @State() private language: any;
   @State() private country: any;
+  @State() private retiredMessage: string;
 
   private _root = (location.href.includes(".hattrick.local")) ? "/htweb"
                 : (location.href.includes("localhost")) ? "https://m.hattrick.org"
                 : "";
 
-  private _apiRoot = (location.href.includes("localhost")) ? "https://m.hattrick.org/api"
+  private _apiRoot = (location.href.includes("localhost"))
+                   ? "https://m.hattrick.org/api"
                    : "/api";
 
   @Method()
@@ -37,18 +42,15 @@ export class Player {
   @Listen("focus")
   async show() {
     if (!this._loading) {
-      this._loading = Promise.all([
-        fetch(`${ this._apiRoot }/player/player/${this.playerId}`).then(res => res.json()),
-        fetch(`${ this._apiRoot }/language/getPlayerTexts/${ this.languageId }?cultureCode=en-US`).then(res => res.json()),
-        fetch(`${ this._apiRoot }/world/getCountry/${ this.countryId }`).then(res => res.json()),
-      ]).then(([player, language, country]) => {
+      fetch(`${ this._apiRoot }/popup/player/${this.playerId}?languageId=${this.languageId}&countryId=${this.countryId}`).then(res => res.json()).then(({ player, language, country, retired }) => {
         this.player = player;
         this.language = language;
         this.country = country;
+        this.retiredMessage = retired;
       });
     }
 
-    this._tooltip.setAttribute("show", "");
+    this._tooltip.removeAttribute("hidden");
     this._popper.update();
   }
 
@@ -56,7 +58,7 @@ export class Player {
   @Listen("mouseleave")
   @Listen("blur")
   async hide() {
-    this._tooltip.removeAttribute("show");
+    this._tooltip.setAttribute("hidden", "");
   }
 
   componentDidLoad() {
@@ -68,8 +70,11 @@ export class Player {
   render() {
     return <Host>
       <span ref={el => this._content = el}><slot /></span>
-      <div class="playertooltip playerList" aria-hidden="true" ref={el => this._tooltip = el}>
-        {this.player ? this.renderPlayer() : this.renderLoading()}
+      <div class="playertooltip playerList" hidden aria-hidden="true" ref={el => this._tooltip = el}>
+        { this.retiredMessage || <>
+          { this.player ? this.renderPlayer() : this.renderLoading() }
+        </> }
+        {}
       </div>
     </Host>;
   }
@@ -79,12 +84,13 @@ export class Player {
   }
   
   getBarColorClass(level: number, max: number) {
+    const a = ["verylow", "low", "high", "veryhigh"];
     let percent = level / max;
-    return ["verylow", "low", "high", "veryhigh"][Math.min(Math.floor(percent * 4), 3)];
+    return a[Math.min(Math.floor(percent * a.length), a.length - 1)];
   }
 
   renderPlayer() {
-    const { player, language, country } = this;
+    const { player, language, country, skillPresentation, hideNumbersAfterDenominations } = this;
     const texts = language.texts;
 
     const replacer = new window.HT.TagReplacer();
@@ -99,7 +105,7 @@ export class Player {
         
       </h3>
       <span class="float_right">
-        <a href={ `${ this._root }/World/Leagues/League.aspx?LeagueID=${ player.leagueId }` } class="flag inner">
+        <a href={ `${ this._root }/World/Leagues/League.aspx?LeagueID=${ player.leagueId }` } class="flag inner" tabIndex={ -1 }>
           <hattrick-flag leagueId={ player.leagueId } title={ player.leagueName }></hattrick-flag>
         </a>
       </span>
@@ -110,33 +116,36 @@ export class Player {
       }
 
       <p class="player-information">
-        {/* TODO: { isTrainer  && <>
-          { translate(texts.playerDetails.cochSkillAndTrainerType, {
-            "Skill1": () => <DenominationLink level={ this.player.trainerSkill } type="skillshort" text={ texts.labels_skills[this.player.gentleness] } />,
-            "TrainerType": texts.public_TrainerTypes[["Defensive", "Offensive", "Balanced"][this.player.trainerType]],
+        { player.trainerLevel > 0  && <>
+          { jsxReplacer(texts.playerDetails.cochSkillAndTrainerType, {
+            "Skill1": () => <Denomination level={ player.trainerSkill } type="skillshort" text={ texts.labels_skills[player.trainerSkill] } showNumber={ !hideNumbersAfterDenominations } />,
+            "TrainerType": texts.public_TrainerTypes[["Defensive", "Offensive", "Balanced"][player.trainerType]],
           }) }
-        </> } */}
+          <br />
+        </> }
 
         { jsxReplacer(texts.playerDetails.personality, {
-          "Gentleness": () => <Denomination level={ this.player.gentleness } type="gentleness" text={ texts.labels_gentleness[this.player.gentleness] } />,
-          "Agressiveness": () => <Denomination level={ this.player.aggressiveness } type="aggressiveness" text={ texts.labels_aggressiveness[this.player.aggressiveness] } />,
-          "Honesty": () => <Denomination level={ this.player.honesty } type="honesty" text={ texts.labels_honesty[this.player.honesty] } />,
+          "Gentleness": () => <Denomination level={ player.gentleness } type="gentleness" text={ texts.labels_gentleness[player.gentleness] } showNumber={ false } />,
+          "Agressiveness": () => <Denomination level={ player.aggressiveness } type="aggressiveness" text={ texts.labels_aggressiveness[player.aggressiveness] } showNumber={ false } />,
+          "Honesty": () => <Denomination level={ player.honesty } type="honesty" text={ texts.labels_honesty[player.honesty] } showNumber={ false } />,
         }) }
 
         <br />
 
         { jsxReplacer(texts.playerDetails.experienceAndLeadership, {
-          "Experience": () => <Denomination level={ this.player.experience } type="skill" text={ texts.labels_skills[this.player.experience] } />,
-          "Leadership": <Denomination level={ this.player.leadership } type="leadership" text={ texts.labels_skills[this.player.leadership] } />,
+          "Experience": () => <Denomination level={ player.experience } type="skill" text={ texts.labels_skills[player.experience] } showNumber={ !hideNumbersAfterDenominations } />,
+          "Leadership": <Denomination level={ player.leadership } type="leadership" text={ texts.labels_skills[player.leadership] } showNumber={ !hideNumbersAfterDenominations } />,
         })
         } { jsxReplacer(texts.playerDetails_3.hasLoyalty, {
-          "Loyalty": () => <Denomination level={ this.player.loyalty } type="skill" text={ texts.labels_skills[this.player.loyalty] } />,
+          "Loyalty": () => <Denomination level={ player.loyalty } type="skill" text={ texts.labels_skills[player.loyalty] } showNumber={ !hideNumbersAfterDenominations } />,
         }) }
       </p>
 
       <div class="flex">
         <div class="flex-fixed">
-          <hattrick-avatar parts={player.avatar} base={ `${ this._root }/Img/Avatar/` } facecard={ false }></hattrick-avatar>
+          { this.avatarSet &&
+            <hattrick-avatar parts={player.avatar} base={ `${ this._root }/Img/${ this.avatarSet }/` } facecard={ false }></hattrick-avatar>
+          }
         </div>
         <div class="flex flex-space-between">
           <div class="transferPlayerInformation">
@@ -145,7 +154,7 @@ export class Player {
                 <tr>
                   <td class="right">{ texts.labels_pagetexts.owner }</td>
                   <td colSpan={2} class="nowrap">
-                    <a href="#">{ player.teamname }</a>
+                    <a href="#" tabIndex={ -1 }>{ player.teamname }</a>
                   </td>
                 </tr>
 
@@ -186,33 +195,48 @@ export class Player {
                 <tr class="playerSkillsTableFormAndStamina">
                   <td class="right">{ texts.playerDetails.form }</td>
                   <td class="nowrap">
-                    <hattrick-bar
-                      level={ player.formNumber }
-                      max={ 8 }
-                      denomination={ texts.labels_skills[player.formNumber] }
-                      class={ this.getBarColorClass(player.formNumber, 8) }
-                    ></hattrick-bar>
+                    { skillPresentation < 3 && <>
+                      <hattrick-bar
+                        level={ player.formNumber }
+                        max={ 8 }
+                        denomination={ skillPresentation === 2 && texts.labels_skills[player.formNumber] || null }
+                        class={ this.getBarColorClass(player.formNumber, 8) }
+                      ></hattrick-bar>
+                      { (!hideNumbersAfterDenominations || skillPresentation === 1) &&
+                        <span class="denominationNumber">{ player.formNumber }</span>
+                      }
+                    </> }
+                    { skillPresentation === 3 &&
+                      <Denomination level={ player.formNumber } type="skill" text={ texts.labels_skills[player.formNumber] } max={ 8 } showNumber={ !hideNumbersAfterDenominations }></Denomination>
+                    }
                   </td>
-                  <td></td>
                 </tr>
 
                 <tr class="playerSkillsTableFormAndStamina">
                   <td class="right">{ texts.players.stamina }</td>
                   <td class="nowrap">
-                    <hattrick-bar
-                      level={ player.staminaSkill }
-                      max={ 9 }
-                      denomination={ texts.labels_skills[player.staminaSkill] }
-                      class={ this.getBarColorClass(player.staminaSkill, 9) }
-                    ></hattrick-bar>
+                    { skillPresentation < 3 && <>
+                      <hattrick-bar
+                        level={ player.staminaSkill }
+                        max={ 9 }
+                        denomination={ skillPresentation === 2 && texts.labels_skills[player.staminaSkill] || null }
+                        class={ this.getBarColorClass(player.staminaSkill, 9) }
+                      ></hattrick-bar>
+                      { (!hideNumbersAfterDenominations || skillPresentation === 1) &&
+                        <span class="denominationNumber">{ player.staminaSkill }</span>
+                      }
+                    </> }
+                    { skillPresentation === 3 &&
+                      <Denomination level={ player.staminaSkill } type="skill" text={ texts.labels_skills[player.staminaSkill] } max={ 9 } showNumber={ !hideNumbersAfterDenominations }></Denomination>
+                    }
                   </td>
-                  <td style={{ "width": "50px" }}></td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          { player.isTransferListed &&
+          { false && player.isTransferListed &&
             <div class="transferPlayerSkills">
               <table>
                 <tbody>
@@ -328,6 +352,7 @@ const Denomination: FunctionalComponent<IDenominationProps> = (props, _children)
     href={ `/Help/Rules/AppDenominations.aspx?lt=${ props.type || "skill" }&amp;ll=${ props.level }#${ props.type || "skill" }` }
     title={ `${ props.level }/${ props.max || 20 }` }
     class="skill"
+    tabIndex={ -1 }
   >
     { props.text }
   </a>

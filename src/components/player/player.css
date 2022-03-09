@@ -1,21 +1,21 @@
 :host {
   display: inline-block;
   text-align: initial;
+  max-width: 625px;
 }
 
 .playertooltip {
-  display: none;
-
   background: white;
   border: 2px solid #277F31;
   border-radius: 4px;
   padding: 5px 10px;
   pointer-events: none;
+  z-index: var(--player-z-index, 10);
 }
 
-.playertooltip[show] {
+/* .playertooltip[show] {
   display: block;
-}
+} */
 
 .loading { padding: 75px 200px; }
 .bar-max { width: 100%; }
@@ -24,7 +24,12 @@
   margin-bottom: 10px;
 }
 
-hattrick-bar { width: 140px; }
+hattrick-bar {
+  width: 140px;
+  display: inline-block;
+  margin-bottom: -2px;
+  margin-top: 1px;
+}
 hattrick-avatar { margin-inline-end: 15px; }
 
 table td {

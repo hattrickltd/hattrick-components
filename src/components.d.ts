@@ -164,11 +164,14 @@ export namespace Components {
         "srcset"?: string;
     }
     interface HattrickPlayer {
+        "avatarSet": string;
         "countryId": number;
         "hide": () => Promise<void>;
+        "hideNumbersAfterDenominations": boolean;
         "languageId": number;
         "playerId": number;
         "show": () => Promise<void>;
+        "skillPresentation": number;
     }
     interface HattrickPlayoffTree {
         "baseUrl": string;
@@ -571,9 +574,12 @@ declare namespace LocalJSX {
         "srcset"?: string;
     }
     interface HattrickPlayer {
+        "avatarSet"?: string;
         "countryId"?: number;
+        "hideNumbersAfterDenominations"?: boolean;
         "languageId"?: number;
         "playerId"?: number;
+        "skillPresentation"?: number;
     }
     interface HattrickPlayoffTree {
         "baseUrl"?: string;
