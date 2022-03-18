@@ -62,9 +62,9 @@ SpecGen.prototype = {
 			this.ctx.arc(spec.x * width,spec.y * height + height / 70,width / 100,0,Math.PI * 2,false);
 			this.ctx.fill();
 			this.ctx.globalAlpha = 0.9;
-			var shirtcolor = visitor_color;
+			var shirtcolor = home_color;
 			if(spec.x > 0.5) {
-				shirtcolor = home_color;
+				shirtcolor = visitor_color;
 			}
 			this.ctx.fillStyle = shirtcolor;
 			this.ctx.fillRect(spec.x * width - width / 200,spec.y * height,width / 100,height / 40);
