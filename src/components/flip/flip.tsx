@@ -10,7 +10,7 @@ export class Flip {
   /**
    * If the container should be flipped (showing back) or not.
    */
-  @Prop({ reflectToAttr: true, mutable: true }) flipped: boolean;
+  @Prop({ reflect: true, mutable: true }) flipped: boolean;
 
   /**
    * If the flip container should rotate horizontally (`x`) or vertically (`y`).

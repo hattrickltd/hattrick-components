@@ -1,5 +1,4 @@
-import { Component, h, Host, Prop, State, Watch } from "@stencil/core";
-import { Fragment } from "../../global/fragment";
+import { Component, h, Host, Prop, State, Watch, Fragment } from "@stencil/core";
 
 declare const window: any;
 
@@ -368,14 +367,14 @@ export class PlayoffTree {
       }
 
       { this.isDouble &&
-        <Fragment>
+        <>
           <slot name="losers-bracket-title" />
           <div class="stages lower">
             { this.lower.map((stage, stageIdx) =>
               this.renderStage(stage, stageIdx, false)
             ) }
           </div>
-        </Fragment>
+        </>
       }
     </Host>;
   }
@@ -425,12 +424,12 @@ export class PlayoffTree {
            onMouseLeave={ _ => this.unsetExpandedStage() }>
         <div class="header" title={ this.getStageTitle(stage, stageIdx, true) + (formattedDate ? ` (${ formattedDate })` : "") }>
           <div>
-            <b>{ this.getStageTitle(stage, stageIdx, expanded) || <Fragment>&nbsp;</Fragment> }</b>
+            <b>{ this.getStageTitle(stage, stageIdx, expanded) || <>&nbsp;</> }</b>
             <a href={ liveLink } style={{ "visibility": (liveLink && (expanded || !this.hideCollapsedLive)) ? null : "hidden" }}>
               <img src={ this.baseUrl + "img/icons/addToLive.png" } title={ this.texts.addToLive } />
             </a>
           </div>
-          <span>{ shortDate || <Fragment>&nbsp;</Fragment> }</span>
+          <span>{ shortDate || <>&nbsp;</> }</span>
         </div>
         <div class="matches">
           { stage.map((match, matchIdx) =>
@@ -506,11 +505,11 @@ export class PlayoffTree {
                onMouseLeave={ _ => this.setHighlightedTeam(-1) }
           >
             { this.estimateNextRound && !isActualMatch && entries.length > 0 && entries[0].homeLogo &&
-              <Fragment>
+              <>
                 { this.renderLogo(entries[0].homeLogo) }
                 /
                 { this.renderLogo(entries[0].awayLogo) }
-              </Fragment>
+              </>
             }
 
             { match.homeLogo && this.renderLogo(match.homeLogo) }
@@ -531,11 +530,11 @@ export class PlayoffTree {
                onMouseOver={ _ => this.setHighlightedTeam(match.awayTeamId) }
                onMouseLeave={ _ => this.setHighlightedTeam(-1) }>
             { this.estimateNextRound && !isActualMatch && entries.length > 1 && entries[1].homeLogo &&
-              <Fragment>
+              <>
                 { this.renderLogo(entries[1].homeLogo) }
                 /
                 { this.renderLogo(entries[1].awayLogo) }
-              </Fragment>
+              </>
             }
 
             { match.awayLogo && this.renderLogo(match.awayLogo) }

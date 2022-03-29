@@ -1,0 +1,38 @@
+:host {
+  display: inline-block;
+  text-align: initial;
+  max-width: 625px;
+}
+
+.playertooltip {
+  background: white;
+  border: 2px solid #277F31;
+  border-radius: 4px;
+  padding: 5px 10px;
+  pointer-events: none;
+  z-index: var(--player-z-index, 10);
+}
+
+/* .playertooltip[show] {
+  display: block;
+} */
+
+.loading { padding: 75px 200px; }
+.bar-max { width: 100%; }
+
+.player-information {
+  margin-bottom: 10px;
+}
+
+hattrick-bar {
+  width: 140px;
+  display: inline-block;
+  margin-bottom: -2px;
+  margin-top: 1px;
+}
+hattrick-avatar { margin-inline-end: 15px; }
+
+table td {
+  border-width: 0 !important;
+  padding: 2px 4px 2px 2px !important;
+}

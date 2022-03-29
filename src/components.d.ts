@@ -95,6 +95,9 @@ export namespace Components {
          */
         "max": number;
     }
+    interface HattrickFlag {
+        "leagueId": number;
+    }
     interface HattrickFlip {
         /**
           * If the flip container should rotate horizontally (`x`) or vertically (`y`).
@@ -159,6 +162,16 @@ export namespace Components {
         "lazyMargin": string;
         "src": string;
         "srcset"?: string;
+    }
+    interface HattrickPlayer {
+        "avatarSet": string;
+        "countryId": number;
+        "hide": () => Promise<void>;
+        "hideNumbersAfterDenominations": boolean;
+        "languageId": number;
+        "playerId": number;
+        "show": () => Promise<void>;
+        "skillPresentation": number;
     }
     interface HattrickPlayoffTree {
         "baseUrl": string;
@@ -315,6 +328,12 @@ declare global {
         prototype: HTMLHattrickBarElement;
         new (): HTMLHattrickBarElement;
     };
+    interface HTMLHattrickFlagElement extends Components.HattrickFlag, HTMLStencilElement {
+    }
+    var HTMLHattrickFlagElement: {
+        prototype: HTMLHattrickFlagElement;
+        new (): HTMLHattrickFlagElement;
+    };
     interface HTMLHattrickFlipElement extends Components.HattrickFlip, HTMLStencilElement {
     }
     var HTMLHattrickFlipElement: {
@@ -344,6 +363,12 @@ declare global {
     var HTMLHattrickPictureElement: {
         prototype: HTMLHattrickPictureElement;
         new (): HTMLHattrickPictureElement;
+    };
+    interface HTMLHattrickPlayerElement extends Components.HattrickPlayer, HTMLStencilElement {
+    }
+    var HTMLHattrickPlayerElement: {
+        prototype: HTMLHattrickPlayerElement;
+        new (): HTMLHattrickPlayerElement;
     };
     interface HTMLHattrickPlayoffTreeElement extends Components.HattrickPlayoffTree, HTMLStencilElement {
     }
@@ -385,11 +410,13 @@ declare global {
         "hattrick-arena": HTMLHattrickArenaElement;
         "hattrick-avatar": HTMLHattrickAvatarElement;
         "hattrick-bar": HTMLHattrickBarElement;
+        "hattrick-flag": HTMLHattrickFlagElement;
         "hattrick-flip": HTMLHattrickFlipElement;
         "hattrick-match-arena": HTMLHattrickMatchArenaElement;
         "hattrick-match-clock": HTMLHattrickMatchClockElement;
         "hattrick-ml": HTMLHattrickMlElement;
         "hattrick-picture": HTMLHattrickPictureElement;
+        "hattrick-player": HTMLHattrickPlayerElement;
         "hattrick-playoff-tree": HTMLHattrickPlayoffTreeElement;
         "hattrick-progress-arc": HTMLHattrickProgressArcElement;
         "hattrick-range": HTMLHattrickRangeElement;
@@ -480,6 +507,9 @@ declare namespace LocalJSX {
          */
         "max"?: number;
     }
+    interface HattrickFlag {
+        "leagueId"?: number;
+    }
     interface HattrickFlip {
         /**
           * If the flip container should rotate horizontally (`x`) or vertically (`y`).
@@ -542,6 +572,14 @@ declare namespace LocalJSX {
         "lazyMargin"?: string;
         "src"?: string;
         "srcset"?: string;
+    }
+    interface HattrickPlayer {
+        "avatarSet"?: string;
+        "countryId"?: number;
+        "hideNumbersAfterDenominations"?: boolean;
+        "languageId"?: number;
+        "playerId"?: number;
+        "skillPresentation"?: number;
     }
     interface HattrickPlayoffTree {
         "baseUrl"?: string;
@@ -696,11 +734,13 @@ declare namespace LocalJSX {
         "hattrick-arena": HattrickArena;
         "hattrick-avatar": HattrickAvatar;
         "hattrick-bar": HattrickBar;
+        "hattrick-flag": HattrickFlag;
         "hattrick-flip": HattrickFlip;
         "hattrick-match-arena": HattrickMatchArena;
         "hattrick-match-clock": HattrickMatchClock;
         "hattrick-ml": HattrickMl;
         "hattrick-picture": HattrickPicture;
+        "hattrick-player": HattrickPlayer;
         "hattrick-playoff-tree": HattrickPlayoffTree;
         "hattrick-progress-arc": HattrickProgressArc;
         "hattrick-range": HattrickRange;
@@ -716,11 +756,13 @@ declare module "@stencil/core" {
             "hattrick-arena": LocalJSX.HattrickArena & JSXBase.HTMLAttributes<HTMLHattrickArenaElement>;
             "hattrick-avatar": LocalJSX.HattrickAvatar & JSXBase.HTMLAttributes<HTMLHattrickAvatarElement>;
             "hattrick-bar": LocalJSX.HattrickBar & JSXBase.HTMLAttributes<HTMLHattrickBarElement>;
+            "hattrick-flag": LocalJSX.HattrickFlag & JSXBase.HTMLAttributes<HTMLHattrickFlagElement>;
             "hattrick-flip": LocalJSX.HattrickFlip & JSXBase.HTMLAttributes<HTMLHattrickFlipElement>;
             "hattrick-match-arena": LocalJSX.HattrickMatchArena & JSXBase.HTMLAttributes<HTMLHattrickMatchArenaElement>;
             "hattrick-match-clock": LocalJSX.HattrickMatchClock & JSXBase.HTMLAttributes<HTMLHattrickMatchClockElement>;
             "hattrick-ml": LocalJSX.HattrickMl & JSXBase.HTMLAttributes<HTMLHattrickMlElement>;
             "hattrick-picture": LocalJSX.HattrickPicture & JSXBase.HTMLAttributes<HTMLHattrickPictureElement>;
+            "hattrick-player": LocalJSX.HattrickPlayer & JSXBase.HTMLAttributes<HTMLHattrickPlayerElement>;
             "hattrick-playoff-tree": LocalJSX.HattrickPlayoffTree & JSXBase.HTMLAttributes<HTMLHattrickPlayoffTreeElement>;
             "hattrick-progress-arc": LocalJSX.HattrickProgressArc & JSXBase.HTMLAttributes<HTMLHattrickProgressArcElement>;
             "hattrick-range": LocalJSX.HattrickRange & JSXBase.HTMLAttributes<HTMLHattrickRangeElement>;

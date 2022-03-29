@@ -7,16 +7,16 @@ import { h, Host, Component, Prop } from "@stencil/core";
 })
 export class Bar {
   /** The level of the bar. */
-  @Prop() level: number;
+  @Prop({ reflect: true }) level: number;
   /** The maximum level the bar should show. */
-  @Prop() max: number = 20;
+  @Prop({ reflect: true }) max: number = 20;
   /** If there's a max before the end of the bar (e.g. maxed youth skill). */
-  @Prop() cap: number = 0;
+  @Prop({ reflect: true }) cap: number = 0;
   /** If the sublevel is the same as the levelCap. */
-  @Prop() isCap: boolean = false;
+  @Prop({ reflect: true }) isCap: boolean = false;
 
   /** The denomination of the skill level */
-  @Prop({ reflectToAttr: true }) denomination: string = "";
+  @Prop({ reflect: true }) denomination: string = "";
 
   render() {
     const skillWidth = this.getSkillWidth();

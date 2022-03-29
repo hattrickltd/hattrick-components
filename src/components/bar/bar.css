@@ -2,7 +2,8 @@
 :host {
   display: block;
   height: 14px;
-  font-size: 11px;
+  font-size: 12px;
+  line-height: 1;
   pointer-events: none;
   position: relative;
 }
@@ -11,6 +12,8 @@
   position: absolute;
   overflow: hidden;
   height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .level {
@@ -32,19 +35,20 @@
   background-color: var(--bar-capped-background, #FFC000);
   color: var(--bar-capped-color, black);
 }
-/* .level.verylow {
+
+:host(.verylow) .level {
   background-color: var(--bar-verylow-background, #DD4140);
   color: var(--bar-verylow-color, #f7f8f7);
 }
-.level.low {
+:host(.low) .level {
   background-color: var(--bar-low-background, #F5A104);
   color: var(--bar-low-color, black);
 }
-.level.high {
+:host(.high) .level {
   background-color: var(--bar-high-background, #F1C40A);
   color: var(--bar-high-color, black);
 }
-.level.veryhigh {
+:host(.veryhigh) .level {
   background-color: var(--bar-veryhigh-background, #59965d);
   color: var(--bar-veryhigh-color, #f7f8f7);
-} */
+}
