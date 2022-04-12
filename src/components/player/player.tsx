@@ -30,12 +30,14 @@ export class Player {
   @State() private retiredMessage: string;
 
   private _root = (location.href.includes(".hattrick.local")) ? "/htweb"
-                : (location.href.includes("localhost")) ? "https://m.hattrick.org"
+                : (location.href.includes("localhost")) ? "https://www.hattrick.org"
                 : "";
 
   private _apiRoot = (location.href.includes("localhost"))
                    ? "https://m.hattrick.org/api"
-                   : "/api";
+                   : `${location.protocol}//${location.hostname.replace("www", "m")}/api/v99999`
+                      .replace("stage", "mstage")
+                      .replace("production", "mproduction");
 
   @Method()
   @Listen("mouseenter")
