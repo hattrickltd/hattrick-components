@@ -23,6 +23,7 @@ export class Player {
   @Prop() skillPresentation: number = 2;
   @Prop() hideNumbersAfterDenominations: boolean = false;
   @Prop() avatarSet: string = "Avatar";
+  @Prop() token?: string;
 
   @State() private player: any;
   @State() private language: any;
@@ -34,7 +35,8 @@ export class Player {
                 : "";
 
   private _apiRoot = (location.href.includes("localhost"))
-                   ? "https://m.hattrick.org/api"
+                  //  ? "https://m.hattrick.org/api"
+                   ? "https://laptop-marcus.hattrick.local/api"
                    : `${location.protocol}//${location.hostname.replace("www", "m")}/api/v99999`
                       .replace("stage", "mstage")
                       .replace("production", "mproduction");
@@ -44,7 +46,13 @@ export class Player {
   @Listen("focus")
   async show() {
     if (!this._loading) {
-      fetch(`${ this._apiRoot }/popup/player/${this.playerId}?languageId=${this.languageId}&countryId=${this.countryId}`).then(res => res.json()).then(({ player, language, country, retired }) => {
+      let init: RequestInit;
+
+      if (this.token) {
+        init = { headers: { "hattrick-auth-token": this.token } };
+      }
+
+      this._loading = fetch(`${ this._apiRoot }/popup/player/${this.playerId}?languageId=${this.languageId}&countryId=${this.countryId}`, init).then(res => res.json()).then(({ player, language, country, retired }) => {
         this.player = player;
         this.language = language;
         this.country = country;
@@ -238,7 +246,7 @@ export class Player {
             </table>
           </div>
 
-          { false && player.isTransferListed &&
+          { "keeperSkill" in player &&
             <div class="transferPlayerSkills">
               <table>
                 <tbody>

@@ -36,3 +36,7 @@ table td {
   border-width: 0 !important;
   padding: 2px 4px 2px 2px !important;
 }
+
+.transferPlayerSkills {
+  margin-inline-start: 10px;
+}

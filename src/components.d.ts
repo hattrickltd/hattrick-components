@@ -172,6 +172,7 @@ export namespace Components {
         "playerId": number;
         "show": () => Promise<void>;
         "skillPresentation": number;
+        "token"?: string;
     }
     interface HattrickPlayoffTree {
         "baseUrl": string;
@@ -580,6 +581,7 @@ declare namespace LocalJSX {
         "languageId"?: number;
         "playerId"?: number;
         "skillPresentation"?: number;
+        "token"?: string;
     }
     interface HattrickPlayoffTree {
         "baseUrl"?: string;
