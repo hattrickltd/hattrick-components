@@ -166,6 +166,7 @@ export namespace Components {
     interface HattrickPlayer {
         "avatarSet": string;
         "countryId": number;
+        "debounce": number;
         "hide": () => Promise<void>;
         "hideNumbersAfterDenominations": boolean;
         "languageId": number;
@@ -577,6 +578,7 @@ declare namespace LocalJSX {
     interface HattrickPlayer {
         "avatarSet"?: string;
         "countryId"?: number;
+        "debounce"?: number;
         "hideNumbersAfterDenominations"?: boolean;
         "languageId"?: number;
         "playerId"?: number;

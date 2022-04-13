@@ -1,4 +1,4 @@
-import { Component, h, Host, Listen, Method, Prop, State, Fragment, FunctionalComponent } from "@stencil/core";
+import { Component, h, Host, Listen, Method, Prop, State, Fragment, FunctionalComponent, Element } from "@stencil/core";
 import { createPopper, Instance } from "@popperjs/core";
 import { currency, grouped } from "../../global/utils";
 
@@ -10,6 +10,8 @@ declare const window: any;
   scoped: true,
 })
 export class Player {
+
+  @Element() host: HTMLHattrickPlayerElement;
 
   private _content: HTMLElement;
   private _tooltip: HTMLElement;
@@ -24,6 +26,7 @@ export class Player {
   @Prop() hideNumbersAfterDenominations: boolean = false;
   @Prop() avatarSet: string = "Avatar";
   @Prop() token?: string;
+  @Prop() debounce: number = 300;
 
   @State() private player: any;
   @State() private language: any;
@@ -41,33 +44,43 @@ export class Player {
                       .replace("stage", "mstage")
                       .replace("production", "mproduction");
 
+  private timeout: any;
+
   @Method()
   @Listen("mouseenter")
   @Listen("focus")
   async show() {
-    if (!this._loading) {
-      let init: RequestInit;
+    if (this.timeout) return;
 
-      if (this.token) {
-        init = { headers: { "hattrick-auth-token": this.token } };
+    this.timeout = setTimeout(() => {
+      this.timeout = undefined;
+
+      if (!this._loading) {
+        let init: RequestInit;
+
+        if (this.token) {
+          init = { headers: { "hattrick-auth-token": this.token } };
+        }
+
+        this._loading = fetch(`${ this._apiRoot }/popup/player/${this.playerId}?languageId=${this.languageId}&countryId=${this.countryId}`, init).then(res => res.json()).then(({ player, language, country, retired }) => {
+          this.player = player;
+          this.language = language;
+          this.country = country;
+          this.retiredMessage = retired;
+        });
       }
 
-      this._loading = fetch(`${ this._apiRoot }/popup/player/${this.playerId}?languageId=${this.languageId}&countryId=${this.countryId}`, init).then(res => res.json()).then(({ player, language, country, retired }) => {
-        this.player = player;
-        this.language = language;
-        this.country = country;
-        this.retiredMessage = retired;
-      });
-    }
-
-    this._tooltip.removeAttribute("hidden");
-    this._popper.update();
+      this._tooltip.removeAttribute("hidden");
+      this._popper.update();
+    }, this.debounce);
   }
 
   @Method()
   @Listen("mouseleave")
   @Listen("blur")
   async hide() {
+    this.timeout && clearTimeout(this.timeout);
+    this.timeout = undefined;
     this._tooltip.setAttribute("hidden", "");
   }
 
