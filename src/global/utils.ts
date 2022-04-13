@@ -17,7 +17,7 @@ export function grouped(val: number): string {
 }
 
 export function currency(money: number, rate: number, name: string): string {
-  money = money / rate;
+  money = Math.floor(money / rate);
 
   if (name) {
     return grouped(money) + " " + name;

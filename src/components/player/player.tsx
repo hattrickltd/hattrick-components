@@ -1,6 +1,6 @@
 import { Component, h, Host, Listen, Method, Prop, State, Fragment, FunctionalComponent } from "@stencil/core";
 import { createPopper, Instance } from "@popperjs/core";
-import { currency } from "../../global/utils";
+import { currency, grouped } from "../../global/utils";
 
 declare const window: any;
 
@@ -180,7 +180,7 @@ export class Player {
 
                 <tr>
                   <td class="right">{ texts.players.tsi }</td>
-                  <td colSpan={2}>{ player.tsi }</td>
+                  <td colSpan={2}>{ grouped(player.tsi) }</td>
                 </tr>
 
                 <tr>
