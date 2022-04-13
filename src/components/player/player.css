@@ -1,16 +1,21 @@
 :host {
   display: inline-block;
   text-align: initial;
-  max-width: 625px;
 }
 
 .playertooltip {
   background: white;
   border: 2px solid #277F31;
   border-radius: 4px;
+  max-width: 625px;
   padding: 5px 10px;
   pointer-events: none;
   z-index: var(--player-z-index, 10);
+}
+
+.retired {
+  max-width: 400px;
+  font-style: italic;
 }
 
 /* .playertooltip[show] {

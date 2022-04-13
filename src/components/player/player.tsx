@@ -62,12 +62,14 @@ export class Player {
           init = { headers: { "hattrick-auth-token": this.token } };
         }
 
-        this._loading = fetch(`${ this._apiRoot }/popup/player/${this.playerId}?languageId=${this.languageId}&countryId=${this.countryId}`, init).then(res => res.json()).then(({ player, language, country, retired }) => {
-          this.player = player;
-          this.language = language;
-          this.country = country;
-          this.retiredMessage = retired;
-        });
+        this._loading = fetch(`${ this._apiRoot }/popup/player/${this.playerId}?languageId=${this.languageId}&countryId=${this.countryId}`, init)
+          .then(res => res.json())
+          .then(({ player, language, country, retired }) => {
+            this.player = player;
+            this.language = language;
+            this.country = country;
+            this.retiredMessage = retired;
+          });
       }
 
       this._tooltip.removeAttribute("hidden");
@@ -94,10 +96,12 @@ export class Player {
     return <Host>
       <span ref={el => this._content = el}><slot /></span>
       <div class="playertooltip playerList" hidden aria-hidden="true" ref={el => this._tooltip = el}>
-        { this.retiredMessage || <>
-          { this.player ? this.renderPlayer() : this.renderLoading() }
-        </> }
-        {}
+        { this.retiredMessage
+          ? <div class="retired">{ this.retiredMessage }</div>
+          : <>
+            { this.player ? this.renderPlayer() : this.renderLoading() }
+            </>
+        }
       </div>
     </Host>;
   }
