@@ -120,6 +120,9 @@ export class Player {
     const { player, language, country, skillPresentation, hideNumbersAfterDenominations } = this;
     const texts = language.texts;
 
+    const showSkillBar = (skillPresentation === SkillPresentation.OnlyBar || skillPresentation === SkillPresentation.BarAndText);
+    const showSkillBarTextDenomination = (showSkillBar && skillPresentation === SkillPresentation.BarAndText);
+
     const replacer = new window.HT.TagReplacer();
 
     return <>
@@ -222,14 +225,14 @@ export class Player {
                 <tr class="playerSkillsTableFormAndStamina">
                   <td class="right">{ texts.playerDetails.form }</td>
                   <td class="nowrap">
-                    { skillPresentation < 3 && <>
+                    { showSkillBar && <>
                       <hattrick-bar
                         level={ player.formNumber }
                         max={ 8 }
                         denomination={ skillPresentation === 2 && texts.labels_skills[player.formNumber] || null }
                         class={ this.getBarColorClass(player.formNumber, 8) }
                       ></hattrick-bar>
-                      { (!hideNumbersAfterDenominations || skillPresentation === 1) &&
+                      { (!hideNumbersAfterDenominations || skillPresentation === SkillPresentation.OnlyBar) &&
                         <span class="denominationNumber">{ player.formNumber }</span>
                       }
                     </> }
@@ -263,75 +266,52 @@ export class Player {
             </table>
           </div>
 
-          { "keeperSkill" in player &&
+          { ("keeperSkill" in player) &&
             <div class="transferPlayerSkills">
               <table>
                 <tbody>
-                  <tr>
-                    <td class="right">
-                      { texts.players.SkillKeeper }
-                    </td>
-                    <td colSpan={2}>
-                      <hattrick-bar level={ player.keeperSkill } denomination={ texts.labels_skills[player.keeperSkill] }></hattrick-bar>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="right">
-                      { texts.players.SkillDefending }
-                    </td>
-                    <td colSpan={2}>
-                      <hattrick-bar level={ player.defenderSkill } denomination={ texts.labels_skills[player.defenderSkill] }></hattrick-bar>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="right">
-                      { texts.players.SkillPlaymaking }
-                    </td>
-                    <td colSpan={2}>
-                      <hattrick-bar level={ player.playmakerSkill } denomination={ texts.labels_skills[player.playmakerSkill] }></hattrick-bar>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="right">
-                      { texts.players.SkillWinger }
-                    </td>
-                    <td colSpan={2}>
-                      <hattrick-bar level={ player.wingerSkill } denomination={ texts.labels_skills[player.wingerSkill] }></hattrick-bar>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="right">
-                      { texts.players.SkillPassing }
-                    </td>
-                    <td colSpan={2}>
-                      <hattrick-bar level={ player.passerSkill } denomination={ texts.labels_skills[player.passerSkill] }></hattrick-bar>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="right">
-                      { texts.players.SkillScoring }
-                    </td>
-                    <td colSpan={2}>
-                      <hattrick-bar level={ player.scorerSkill } denomination={ texts.labels_skills[player.scorerSkill] }></hattrick-bar>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="right">
-                      { texts.players.SkillSetPieces }
-                    </td>
-                    <td colSpan={2}>
-                      <hattrick-bar level={ player.kickerSkill } denomination={ texts.labels_skills[player.kickerSkill] }></hattrick-bar>
-                    </td>
-                  </tr>
-
+                  { this.renderSkillRow(texts.players.SkillKeeper, player.keeperSkill) }
+                  { this.renderSkillRow(texts.players.SkillDefending, player.defenderSkill) }
+                  { this.renderSkillRow(texts.players.SkillPlaymaking, player.playmakerSkill) }
+                  { this.renderSkillRow(texts.players.SkillWinger, player.wingerSkill) }
+                  { this.renderSkillRow(texts.players.SkillPassing, player.passerSkill) }
+                  { this.renderSkillRow(texts.players.SkillScoring, player.scorerSkill) }
+                  { this.renderSkillRow(texts.players.SkillSetPieces, player.kickerSkill) }
                 </tbody>
               </table>
             </div>
           }
-
         </div>
       </div>
     </>;
+  }
+
+  renderSkillRow(title: string, level: number) {
+    const { language, skillPresentation, hideNumbersAfterDenominations } = this;
+    const labels = language.texts.labels_skills;
+
+    const showSkillBar = (skillPresentation === SkillPresentation.OnlyBar || skillPresentation === SkillPresentation.BarAndText);
+    const showSkillBarTextDenomination = (skillPresentation === SkillPresentation.BarAndText);
+    const showLevelColumn = (showSkillBar && (skillPresentation === SkillPresentation.OnlyBar || !hideNumbersAfterDenominations))
+
+    return (
+      <tr>
+        <td class="right">
+          { title }
+        </td>
+        <td colSpan={2}>
+          { showSkillBar
+            ? <hattrick-bar level={ level } denomination={ showSkillBarTextDenomination && labels[level] || "" }></hattrick-bar>
+            : <Denomination level={ level } type="skill" text={ labels[level] } showNumber={ !hideNumbersAfterDenominations }></Denomination>
+          }
+        </td>
+        { showLevelColumn && <>
+          <td>
+            { level }
+          </td>
+        </>}
+      </tr>
+    );
   }
 }
 
@@ -365,6 +345,12 @@ function fixPlayerNames(player) {
     lastName: player.lastName || player.lastname,
     nickName: player.nickName || player.nickname,
   };
+}
+
+const enum SkillPresentation {
+  OnlyBar = 1,
+  BarAndText = 2,
+  OnlyText = 3,
 }
 
 interface IDenominationProps {
