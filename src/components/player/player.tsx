@@ -229,14 +229,14 @@ export class Player {
                       <hattrick-bar
                         level={ player.formNumber }
                         max={ 8 }
-                        denomination={ skillPresentation === 2 && texts.labels_skills[player.formNumber] || null }
+                        denomination={ showSkillBarTextDenomination && texts.labels_skills[player.formNumber] || null }
                         class={ this.getBarColorClass(player.formNumber, 8) }
                       ></hattrick-bar>
                       { (!hideNumbersAfterDenominations || skillPresentation === SkillPresentation.OnlyBar) &&
                         <span class="denominationNumber">{ player.formNumber }</span>
                       }
                     </> }
-                    { skillPresentation === 3 &&
+                    { !showSkillBar &&
                       <Denomination level={ player.formNumber } type="skill" text={ texts.labels_skills[player.formNumber] } max={ 8 } showNumber={ !hideNumbersAfterDenominations }></Denomination>
                     }
                   </td>
@@ -245,18 +245,18 @@ export class Player {
                 <tr class="playerSkillsTableFormAndStamina">
                   <td class="right">{ texts.players.stamina }</td>
                   <td class="nowrap">
-                    { skillPresentation < 3 && <>
+                    { showSkillBar && <>
                       <hattrick-bar
                         level={ player.staminaSkill }
                         max={ 9 }
-                        denomination={ skillPresentation === 2 && texts.labels_skills[player.staminaSkill] || null }
+                        denomination={ showSkillBarTextDenomination && texts.labels_skills[player.staminaSkill] || null }
                         class={ this.getBarColorClass(player.staminaSkill, 9) }
                       ></hattrick-bar>
-                      { (!hideNumbersAfterDenominations || skillPresentation === 1) &&
+                      { (!hideNumbersAfterDenominations || skillPresentation === SkillPresentation.OnlyBar) &&
                         <span class="denominationNumber">{ player.staminaSkill }</span>
                       }
                     </> }
-                    { skillPresentation === 3 &&
+                    { !showSkillBar &&
                       <Denomination level={ player.staminaSkill } type="skill" text={ texts.labels_skills[player.staminaSkill] } max={ 9 } showNumber={ !hideNumbersAfterDenominations }></Denomination>
                     }
                   </td>
