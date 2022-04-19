@@ -299,9 +299,9 @@ export class Player {
         <td class="right">
           { title }
         </td>
-        <td colSpan={2}>
+        <td class="nowrap" colSpan={2}>
           { showSkillBar
-            ? <hattrick-bar level={ level } denomination={ showSkillBarTextDenomination && labels[level] || "" }></hattrick-bar>
+            ? <hattrick-bar level={ level } denomination={ showSkillBarTextDenomination && labels[level] || null }></hattrick-bar>
             : <Denomination level={ level } type="skill" text={ labels[level] } showNumber={ !hideNumbersAfterDenominations }></Denomination>
           }
         </td>
