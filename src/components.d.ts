@@ -273,6 +273,20 @@ export namespace Components {
          */
         "staminaLabel": string;
     }
+    interface HattrickReaction {
+        "amount": number;
+        "disabled": boolean;
+        "reaction": string;
+        "reactionId": number;
+        "selected": boolean;
+        "sourceId": number;
+        "sourceTypeId": number;
+    }
+    interface HattrickReactions {
+        "reactions": string;
+        "sourceId": number;
+        "sourceTypeId": number;
+    }
     interface HattrickTimer {
         /**
           * The string for `days` which is used if the deadline is more than 72 hours away.
@@ -396,6 +410,18 @@ declare global {
         prototype: HTMLHattrickRatingElement;
         new (): HTMLHattrickRatingElement;
     };
+    interface HTMLHattrickReactionElement extends Components.HattrickReaction, HTMLStencilElement {
+    }
+    var HTMLHattrickReactionElement: {
+        prototype: HTMLHattrickReactionElement;
+        new (): HTMLHattrickReactionElement;
+    };
+    interface HTMLHattrickReactionsElement extends Components.HattrickReactions, HTMLStencilElement {
+    }
+    var HTMLHattrickReactionsElement: {
+        prototype: HTMLHattrickReactionsElement;
+        new (): HTMLHattrickReactionsElement;
+    };
     interface HTMLHattrickTimerElement extends Components.HattrickTimer, HTMLStencilElement {
     }
     var HTMLHattrickTimerElement: {
@@ -423,6 +449,8 @@ declare global {
         "hattrick-progress-arc": HTMLHattrickProgressArcElement;
         "hattrick-range": HTMLHattrickRangeElement;
         "hattrick-rating": HTMLHattrickRatingElement;
+        "hattrick-reaction": HTMLHattrickReactionElement;
+        "hattrick-reactions": HTMLHattrickReactionsElement;
         "hattrick-timer": HTMLHattrickTimerElement;
         "hattrick-tooltip": HTMLHattrickTooltipElement;
     }
@@ -699,6 +727,21 @@ declare namespace LocalJSX {
          */
         "staminaLabel"?: string;
     }
+    interface HattrickReaction {
+        "amount"?: number;
+        "disabled"?: boolean;
+        "onReaction"?: (event: CustomEvent<boolean>) => void;
+        "reaction"?: string;
+        "reactionId"?: number;
+        "selected"?: boolean;
+        "sourceId"?: number;
+        "sourceTypeId"?: number;
+    }
+    interface HattrickReactions {
+        "reactions"?: string;
+        "sourceId"?: number;
+        "sourceTypeId"?: number;
+    }
     interface HattrickTimer {
         /**
           * The string for `days` which is used if the deadline is more than 72 hours away.
@@ -749,6 +792,8 @@ declare namespace LocalJSX {
         "hattrick-progress-arc": HattrickProgressArc;
         "hattrick-range": HattrickRange;
         "hattrick-rating": HattrickRating;
+        "hattrick-reaction": HattrickReaction;
+        "hattrick-reactions": HattrickReactions;
         "hattrick-timer": HattrickTimer;
         "hattrick-tooltip": HattrickTooltip;
     }
@@ -771,6 +816,8 @@ declare module "@stencil/core" {
             "hattrick-progress-arc": LocalJSX.HattrickProgressArc & JSXBase.HTMLAttributes<HTMLHattrickProgressArcElement>;
             "hattrick-range": LocalJSX.HattrickRange & JSXBase.HTMLAttributes<HTMLHattrickRangeElement>;
             "hattrick-rating": LocalJSX.HattrickRating & JSXBase.HTMLAttributes<HTMLHattrickRatingElement>;
+            "hattrick-reaction": LocalJSX.HattrickReaction & JSXBase.HTMLAttributes<HTMLHattrickReactionElement>;
+            "hattrick-reactions": LocalJSX.HattrickReactions & JSXBase.HTMLAttributes<HTMLHattrickReactionsElement>;
             "hattrick-timer": LocalJSX.HattrickTimer & JSXBase.HTMLAttributes<HTMLHattrickTimerElement>;
             "hattrick-tooltip": LocalJSX.HattrickTooltip & JSXBase.HTMLAttributes<HTMLHattrickTooltipElement>;
         }

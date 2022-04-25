@@ -1,0 +1,44 @@
+:host {
+  --emoji-font-size: 14px;
+  --active-background: #7fa67833;
+  --active-border: #7fa678;
+  --reaction-padding: 4px 8px;
+}
+
+label {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 100px;
+  box-sizing: border-box;
+  padding: var(--reaction-padding);
+
+  cursor: pointer;
+  user-select: none;
+}
+
+input:checked + label {
+  border: 1px solid var(--active-border);
+  background: var(--active-background);
+}
+
+.reaction {
+  font-size: var(--reaction-font-size);
+  line-height: var(--reaction-font-size);
+  margin-top: 1px;
+}
+
+.amount {
+  line-height: 0;
+  margin-inline-start: 3px;
+}
+
+input {
+  appearance: none;
+  opacity: 0;
+  width: 0;
+  margin: 0;
+}

@@ -133,6 +133,16 @@
     Bars and Avatars are lazy loaded. If you look in the networks tab and then click on "load bars" or "load avatars" you'll see that new files are loaded automatically. There's no manual work for this, it happens as soon as a &lt;hattrick-bar&gt; or &lt;hattrick-avatar&gt; is added to the DOM.
   </p>
 
+  <h2>Reactions</h2>
+  <section reactions>
+    <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
+    <div examples>
+      <hattrick-reactions reactions="1👍,2👎,3😀,4🙁,5😂,6🥰,7🥳,8🤬,9😜,10😱,11😭,12🤮">
+        <hattrick-reaction reaction="👍" amount="5" reaction-id="1" source-type-id="1" source-id="1"></hattrick-reaction>
+      </hattrick-reactions>
+    </div>
+  </section>
+
   <h2>Playoffs</h2>
   <section playoffs>
     <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>

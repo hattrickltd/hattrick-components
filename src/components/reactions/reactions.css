@@ -1,0 +1,45 @@
+:host {
+  --reaction-padding: 4px 8px;
+
+  display: flex;
+  gap: 5px;
+}
+
+.add-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 100px;
+  box-sizing: border-box;
+  padding: var(--reaction-padding);
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.reaction-dropdown:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+  border: 1px solid #999;
+  border-radius: 4px;
+  gap: 2px;
+  padding: 3px;
+  max-width: 260px;
+}
+
+.reaction-dropdown button {
+  cursor: pointer;
+  padding: 8px;
+  background-color: transparent;
+  border-radius: 2px;
+  border: 0;
+  font-size: 18px;
+  box-sizing: border-box;
+}
+.reaction-dropdown button:hover, .reaction-dropdown button:active {
+  background-color: #eee;
+}
