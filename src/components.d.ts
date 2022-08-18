@@ -311,6 +311,14 @@ export namespace Components {
         "position": "top" | "bottom" | "start" | "end" | "cursor";
     }
 }
+export interface HattrickAvatarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLHattrickAvatarElement;
+}
+export interface HattrickRangeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLHattrickRangeElement;
+}
 declare global {
     interface HTMLHattrickArenaElement extends Components.HattrickArena, HTMLStencilElement {
     }
@@ -473,7 +481,7 @@ declare namespace LocalJSX {
           * Let you know when the avatar has finished loading. An array of the images loaded will be provided in the `event.detail`. Real type is `EventEmitter<Array<IAvatarImage>>`, but for TypeScript < 2.7 it needs to be generic.
           * @example ``` <hattrick-avatar onload="avatarLoaded.call(this, event.detail)"></ht-avatar>  avatarLoaded(images) {   console.log("dataUrl: ", this.printToCanvas(images).toDataURL()); } ```
          */
-        "onLoad"?: (event: CustomEvent<any>) => void;
+        "onLoad"?: (event: HattrickAvatarCustomEvent<any>) => void;
         /**
           * An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.
          */
@@ -647,19 +655,19 @@ declare namespace LocalJSX {
         /**
           * Emitted when the range loses focus.
          */
-        "onIonBlur"?: (event: CustomEvent<void>) => void;
+        "onIonBlur"?: (event: HattrickRangeCustomEvent<void>) => void;
         /**
           * Emitted when the value property has changed.
          */
-        "onIonChange"?: (event: CustomEvent<RangeChangeEventDetail>) => void;
+        "onIonChange"?: (event: HattrickRangeCustomEvent<RangeChangeEventDetail>) => void;
         /**
           * Emitted when the range has focus.
          */
-        "onIonFocus"?: (event: CustomEvent<void>) => void;
+        "onIonFocus"?: (event: HattrickRangeCustomEvent<void>) => void;
         /**
           * Emitted when the styles change.
          */
-        "onIonStyle"?: (event: CustomEvent<StyleEventDetail>) => void;
+        "onIonStyle"?: (event: HattrickRangeCustomEvent<StyleEventDetail>) => void;
         /**
           * If `true`, a pin with integer value is shown when the knob is pressed.
          */
