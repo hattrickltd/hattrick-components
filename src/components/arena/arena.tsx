@@ -36,7 +36,7 @@ export class Arena {
   }
 
   private onLoad(img: HTMLImageElement) {
-    if (this.weather > -1 && ["HalfView", "HalfViewFlipped"].indexOf(this.arenaImageType) > -1) {
+    if (this.weather > -1 && ["HalfView", "HalfViewFlipped", "User620"].includes(this.arenaImageType)) {
       window.Weather.add(img, this.weather);
     }
   }
