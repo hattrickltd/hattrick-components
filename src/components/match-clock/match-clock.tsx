@@ -189,16 +189,12 @@ export class MatchClock {
   }
 
   render() {
-    let time = this.getTime()
-                   .replace(/(\D)/g, `<span>$1</span>`)
-                   .replace(/(\d+)/g, `<bdo dir="ltr">$1</bdo>`)
-                   .replace(/(\d)/g, `<monospace>$1</monospace>`);
+    let time = this.getTime();
 
     let isCountdown = this.isCountingDown();
 
     return (
-      <Host role="timer"
-            class={{
+      <Host class={{
               "match-clock-passed-zero": !isCountdown
             }}>
         <span innerHTML={ time } dir={ !isCountdown ? "ltr" : null }></span>
