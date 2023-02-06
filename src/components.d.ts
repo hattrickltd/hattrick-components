@@ -153,6 +153,8 @@ export namespace Components {
     interface HattrickMl {
         "allowCustomContent": boolean;
         "base": string;
+        "currencyName": string;
+        "currencyRate": number;
         "internalLinkTarget": string;
         "spoilerText": string;
         "text": string;
@@ -573,6 +575,8 @@ declare namespace LocalJSX {
     interface HattrickMl {
         "allowCustomContent"?: boolean;
         "base"?: string;
+        "currencyName"?: string;
+        "currencyRate"?: number;
         "internalLinkTarget"?: string;
         "spoilerText"?: string;
         "text"?: string;

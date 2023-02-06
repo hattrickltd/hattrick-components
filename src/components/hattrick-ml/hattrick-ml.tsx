@@ -17,6 +17,9 @@ export class HattrickMl {
   @Prop() internalLinkTarget: string = "_self";
   @Prop() spoilerText: string = "Possible spoiler. Click here to show";
 
+  @Prop() currencyRate: number = 0.1;
+  @Prop() currencyName: string = "€";
+
   private parser = new HattrickMlParser();
 
   constructor() {
@@ -28,6 +31,8 @@ export class HattrickMl {
     HattrickMlParser.replacer.internalLinkTarget = this.internalLinkTarget;
     
     this.parser.spoilerText = this.spoilerText;
+    this.parser.currencyRate = this.currencyRate;
+    this.parser.currencyName = this.currencyName;
 
     return this.parser.replace(this.text, this.allowCustomContent);
   }
