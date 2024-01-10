@@ -182,6 +182,7 @@ export namespace Components {
         "bracket": number;
         "estimateNextRound": boolean;
         "expand": "expand" | "auto" | "none";
+        "forceUpdate": () => Promise<void>;
         "fromRound": number;
         "hideCollapsedLive": boolean;
         "hideCollapsedNames": boolean;
