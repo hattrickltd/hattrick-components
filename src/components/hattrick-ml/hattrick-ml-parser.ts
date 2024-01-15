@@ -5,7 +5,7 @@ export class HattrickMlParser {
 
   static replacer: HattrickMlReplacer;
 
-  private regex = /\[(link|img|b|i|u|ul|ol|li|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table|money)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
+  private regex = /\[(link|img|b|i|u|ul|ol|li|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table|money|arenacontestid|arenamatchid)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
   private requireClosing = ["img", "b", "i", "u", "ul", "ol", "li", "quote", "q", "spoiler", "td", "th", "tr", "table", "money"];
   private gotoLink = "https://www.hattrick.org/goto.ashx?path=";
 
@@ -237,6 +237,7 @@ export class HattrickMlParser {
               str = str.replace(match, HattrickMlParser.replacer.getMatchId(id, text));
               break;
             case "tournamentmatchid":
+            case "arenamatchid":
               id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getTournamentMatchId(id, text));
@@ -297,6 +298,7 @@ export class HattrickMlParser {
               str = str.replace(match, HattrickMlParser.replacer.getFederationId(id, text));
               break;
             case "tournamentid":
+            case "arenacontestid":
               id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getTournamentId(id, text));
