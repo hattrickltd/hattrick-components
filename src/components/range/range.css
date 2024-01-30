@@ -188,10 +188,10 @@
   content: "";
   z-index: -1;
 }
-:host([dir="rtl"]) .range-pin::before {
-  left: unset;
+:host-context([dir="rtl"]) .range-pin::before {
+  left: initial;
   right: 50%;
-  margin-left: unset;
+  margin-left: initial;
   margin-right: -13px;
 }
 
@@ -230,10 +230,10 @@
 
   text-align: center;
 }
-:host([dir="rtl"]) .range-knob-handle {
-  left: unset;
+:host-context([dir="rtl"]) .range-knob-handle {
+  left: initial;
   right: 0;
-  margin-left: unset;
+  margin-left: initial;
   margin-right: calc(0px - var(--knob-size) * 2 / 2);
 }
 .range-knob-handle:active,
@@ -256,8 +256,8 @@
 
   pointer-events: none;
 }
-:host([dir="rtl"]) .range-bar {
-  left: unset;
+:host-context([dir="rtl"]) .range-bar {
+  left: initial;
   right: 0;
 }
 
@@ -278,11 +278,11 @@
   z-index: 2;
   pointer-events: none;
 }
-:host([dir="rtl"]) .range-knob {
-  left: unset;
+:host-context([dir="rtl"]) .range-knob {
+  left: initial;
   right: calc(50% - var(--knob-size) / 2);
 }
 
-:host(.range-pressed) .range-bar-active {
+:host-context(.range-pressed) .range-bar-active {
   will-change: left, right;
 }

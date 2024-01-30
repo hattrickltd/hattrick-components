@@ -1,14 +1,17 @@
 import { HattrickMlReplacer } from "./hattrick-ml-replacer";
+import { currency } from "../../global/utils";
 
 export class HattrickMlParser {
 
   static replacer: HattrickMlReplacer;
 
-  private regex = /\[(link|img|b|i|u|ul|ol|li|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
-  private requireClosing = ["img", "b", "i", "u", "ul", "ol", "li", "quote", "q", "spoiler", "td", "th", "tr", "table"];
+  private regex = /\[(link|img|b|i|u|ul|ol|li|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table|money|arenacontestid|arenamatchid)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
+  private requireClosing = ["img", "b", "i", "u", "ul", "ol", "li", "quote", "q", "spoiler", "td", "th", "tr", "table", "money"];
   private gotoLink = "https://www.hattrick.org/goto.ashx?path=";
 
   spoilerText: string;
+  currencyRate: number;
+  currencyName: string;
 
   private doesRequireClosing(tag: string): boolean {
     return (this.requireClosing.indexOf(tag) > -1);
@@ -234,6 +237,7 @@ export class HattrickMlParser {
               str = str.replace(match, HattrickMlParser.replacer.getMatchId(id, text));
               break;
             case "tournamentmatchid":
+            case "arenamatchid":
               id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getTournamentMatchId(id, text));
@@ -294,6 +298,7 @@ export class HattrickMlParser {
               str = str.replace(match, HattrickMlParser.replacer.getFederationId(id, text));
               break;
             case "tournamentid":
+            case "arenacontestid":
               id = this.xss(id);
               if (!allowCustomContent || !text) text = `(${id})`;
               str = str.replace(match, HattrickMlParser.replacer.getTournamentId(id, text));
@@ -306,6 +311,15 @@ export class HattrickMlParser {
             case "table":
               text = this.replaceTable(text);
               str = str.replace(match, `<table class="htMlTable">${text}</table>`);
+              break;
+            case "money":
+              let cash = +(text.replace(",", "."));
+              if (id) {
+                id = id.replace(",", ".")
+                let postersCurrencyRate = 1 / (+id / 10) // We're doing 1 / X because the rate in the database is inverted from how it's shown in the interface.
+                cash = cash * postersCurrencyRate;
+              }
+              str = str.replace(match, currency(cash, (this.currencyRate || 10), (this.currencyName || "€"), true));
               break;
             default:
               str = str.replace(match, match.replace("[", "&lbrack;").replace("]", "&rbrack;")); // replace brackets

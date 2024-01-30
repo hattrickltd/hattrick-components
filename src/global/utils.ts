@@ -16,8 +16,12 @@ export function grouped(val: number): string {
   return val.toLocaleString("sv");
 }
 
-export function currency(money: number, rate: number, name: string): string {
-  money = Math.floor(money / rate);
+export function currency(money: number, rate: number, name: string, useDecimals: boolean = false): string {
+  money = money / rate;
+  
+  if (!useDecimals) {
+    money = Math.floor(money);
+  }
 
   if (name) {
     return grouped(money) + " " + name;
