@@ -336,6 +336,10 @@ export interface HattrickRangeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLHattrickRangeElement;
 }
+export interface HattrickReactionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLHattrickReactionElement;
+}
 declare global {
     interface HTMLHattrickArenaElement extends Components.HattrickArena, HTMLStencilElement {
     }
@@ -743,7 +747,7 @@ declare namespace LocalJSX {
     interface HattrickReaction {
         "amount"?: number;
         "disabled"?: boolean;
-        "onReaction"?: (event: CustomEvent<boolean>) => void;
+        "onReaction"?: (event: HattrickReactionCustomEvent<boolean>) => void;
         "reaction"?: string;
         "reactionId"?: number;
         "selected"?: boolean;

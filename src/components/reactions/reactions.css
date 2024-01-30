@@ -2,6 +2,7 @@
   --reaction-padding: 4px 8px;
 
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
 }
 
@@ -40,6 +41,7 @@
   font-size: 18px;
   box-sizing: border-box;
 }
-.reaction-dropdown button:hover, .reaction-dropdown button:active {
+.reaction-dropdown button:hover,
+.reaction-dropdown button:active {
   background-color: #eee;
 }
