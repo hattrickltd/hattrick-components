@@ -1,4 +1,13 @@
-import { h, Component, Prop, Listen, State, Element, Method, Host } from "@stencil/core";
+import {
+  h,
+  Component,
+  Prop,
+  Listen,
+  State,
+  Element,
+  Method,
+  Host,
+} from "@stencil/core";
 
 @Component({
   tag: "hattrick-tooltip",
@@ -6,7 +15,6 @@ import { h, Component, Prop, Listen, State, Element, Method, Host } from "@stenc
   scoped: true,
 })
 export class Tooltip {
-
   @Element() host: HTMLHattrickTooltipElement;
 
   @Prop({ reflect: true, mutable: true }) dir: string;
@@ -35,7 +43,14 @@ export class Tooltip {
    * Which side of the element the tooltip should be shown.
    * `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
    */
-  @Prop({ reflect: true }) position: "top" | "bottom" | "start" | "end" | "cursor" = "cursor";
+  @Prop({ reflect: true }) position:
+    | "top"
+    | "bottom"
+    | "start"
+    | "end"
+    | "cursor" = "cursor";
+
+  @Prop() disabled: boolean = false;
 
   @State() showTooltip: boolean = false;
   @State() cssPos: {
@@ -89,38 +104,40 @@ export class Tooltip {
         top = ev.clientY + 15; // we fake the cursor height to 15px
         left = ev.clientX;
       } else if (ev instanceof FocusEvent) {
-        let target = (ev.target as HTMLElement);
+        let target = ev.target as HTMLElement;
         top = target.offsetTop - ev.view.scrollY + target.offsetHeight;
         left = target.offsetLeft - ev.view.scrollX;
       }
 
-      return this.cssPos = {
+      return (this.cssPos = {
         top: top + "px",
         left: left + "px",
-      };
-    }
-    else if (this.position === "top") {
+      });
+    } else if (this.position === "top") {
       this.cssPos = { bottom: `calc(100% - ${hostRect.top}px)` };
 
       this.calculateHorizontalPosition(hostRect);
 
       return this.cssPos;
-    }
-    else if (this.position === "bottom") {
+    } else if (this.position === "bottom") {
       this.cssPos = { top: hostRect.bottom + "px" };
 
       this.calculateHorizontalPosition(hostRect);
 
       return this.cssPos;
-    }
-    else if ((this.ltr && this.position === "start") || (this.rtl && this.position === "end")) {
+    } else if (
+      (this.ltr && this.position === "start") ||
+      (this.rtl && this.position === "end")
+    ) {
       this.cssPos = { right: `calc(100% - ${hostRect.left}px)` };
 
       this.calculateVerticalPosition(hostRect);
 
       return this.cssPos;
-    }
-    else if ((this.ltr && this.position === "end") || (this.rtl && this.position === "start")) {
+    } else if (
+      (this.ltr && this.position === "end") ||
+      (this.rtl && this.position === "start")
+    ) {
       this.cssPos = { left: hostRect.right + "px" };
 
       this.calculateVerticalPosition(hostRect);
@@ -134,25 +151,33 @@ export class Tooltip {
       this.cssPos.bottom = `calc(100% - ${hostRect.bottom}px`;
     else if (this.arrow === "middle")
       this.cssPos.top = `calc(${hostRect.top}px + ${hostRect.height}px / 2`;
-    else
-      this.cssPos.top = `calc(${hostRect.top}px`;
+    else this.cssPos.top = `calc(${hostRect.top}px`;
   }
 
   private calculateHorizontalPosition(hostRect: ClientRect | DOMRect) {
-    if ((this.ltr && this.arrow === "end") || (this.rtl && this.arrow === "start"))
+    if (
+      (this.ltr && this.arrow === "end") ||
+      (this.rtl && this.arrow === "start")
+    )
       this.cssPos.right = `calc(100% - ${hostRect.right}px)`;
     else if (this.arrow === "middle")
       this.cssPos.left = `calc(${hostRect.left}px + ${hostRect.width}px / 2`;
-    else
-      this.cssPos.left = `${hostRect.left}px`;
+    else this.cssPos.left = `${hostRect.left}px`;
   }
 
   render() {
+    const expanded = (this.showTooltip || this.alwaysShow) && !this.disabled;
+
     return (
-      <Host role="tooltip" aria-describedby="tooltip" aria-controls="tooltip" aria-expanded={ this.showTooltip }>
+      <Host
+        role="tooltip"
+        aria-describedby="tooltip"
+        aria-controls="tooltip"
+        aria-expanded={expanded}
+      >
         <slot />
-        <div id="tooltip" style={ this.cssPos } hidden={ !this.showTooltip && !this.alwaysShow }>
-          { this.content }
+        <div id="tooltip" style={this.cssPos} hidden={!expanded}>
+          {this.content}
           <slot name="content"></slot>
         </div>
       </Host>

@@ -7,6 +7,8 @@ import {
   Fragment,
   Listen,
   forceUpdate,
+  Build,
+  State,
 } from "@stencil/core";
 import {
   computePosition,
@@ -15,6 +17,7 @@ import {
   limitShift,
   offset,
 } from "@floating-ui/dom";
+import { ReactionEvent } from "../reaction/reaction";
 
 @Component({
   tag: "hattrick-reactions",
@@ -26,41 +29,77 @@ export class Reactions {
 
   @Prop() sourceTypeId: number;
   @Prop() sourceId: number;
-  @Prop() reactions: string;
+  @Prop() reactions: Array<IReaction>;
 
-  private _unusedReactions: Array<IReaction>;
+  @Prop() disabled: boolean = false;
+  @Prop() firstReactionText?: string;
+
+  @Prop() token: string = (window as any).HT?.ngHattrick?.userToken;
+
+  @State() showUsersForReaction: IReaction;
+
+  private reactionTypes = {
+    1: { reactionTypeId: 1, emoji: "👍" },
+    2: { reactionTypeId: 2, emoji: "❤️" },
+    3: { reactionTypeId: 3, emoji: "😂" },
+    4: { reactionTypeId: 4, emoji: "🥳" },
+    5: { reactionTypeId: 5, emoji: "😮" },
+  };
+
+  private _apiRoot =
+    location.href.includes("localhost") && Build.isDev
+      ? "https://localhost/api"
+      : `${location.protocol}//${location.hostname.replace(
+          "www",
+          "m"
+        )}/api/v99999`
+          .replace("stage", "mstage")
+          .replace("production", "mproduction");
+
+  private _unusedReactions: Array<IReactionType>;
   private _addButton: HTMLElement;
   private _addDropdown: HTMLElement;
 
   componentWillLoad() {
-    let availableReactions = this.reactions.split(",").map((r) => {
-      const [_, reactionId, emoji] = /(\d*)(.*)/.exec(r.trim());
-      return {
-        reactionId: +reactionId,
-        emoji: emoji,
-      };
-    });
+    this._unusedReactions = Object.keys(this.reactionTypes)
+      .filter(
+        (reactionTypeId) =>
+          !this.reactions.find((y) => y.reactionTypeId === +reactionTypeId)
+      )
+      .map((x) => this.reactionTypes[x]);
 
-    let usedReactions = Array.from(this.host.children).map(
-      (x: HTMLHattrickReactionElement) => ({
-        reactionId: +x.reactionId,
+    this.host.addEventListener("reaction", (ev: CustomEvent<ReactionEvent>) => {
+      const target: HTMLHattrickReactionElement = ev.target as any;
+
+      fetch(`${this._apiRoot}/emoteReaction/toggleReaction`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "hattrick-auth-token": `${this.token}`,
+        },
+        body: JSON.stringify({
+          sourceTypeId: ev.detail.sourceTypeId,
+          sourceId: ev.detail.sourceId,
+          reactionTypeId: ev.detail.reactionTypeId,
+          selected: ev.detail.selected,
+        }),
       })
-    );
-
-    this._unusedReactions = availableReactions.filter(
-      (x) => !usedReactions.find((y) => y.reactionId === x.reactionId)
-    );
-
-    console.log(this._unusedReactions);
+        .then((res) => {
+          if (!res.ok) throw new Error(res.statusText);
+        })
+        .catch(() => {
+          target.toggle(!ev.detail.selected);
+        });
+    });
   }
 
   componentDidUpdate() {
-    this.refreshFloating();
+    if (this._addDropdown) this.refreshFloating();
   }
 
   @Listen("click", { target: "window" })
   onOutsideClick(_ev) {
-    this._addDropdown.hidden = true;
+    if (this._addDropdown) this._addDropdown.hidden = true;
   }
 
   private async refreshFloating() {
@@ -85,11 +124,11 @@ export class Reactions {
     forceUpdate(this);
   }
 
-  private addReaction(reaction: IReaction) {
+  private addNewReaction(reaction: IReactionType) {
     let element = document.createElement("hattrick-reaction");
     element.sourceTypeId = this.sourceTypeId;
     element.sourceId = this.sourceId;
-    element.reactionId = reaction.reactionId;
+    element.reactionTypeId = reaction.reactionTypeId;
     element.reaction = reaction.emoji;
     element.amount = 1;
     element.selected = true;
@@ -97,15 +136,79 @@ export class Reactions {
     this.host.appendChild(element);
 
     this._unusedReactions = this._unusedReactions.filter(
-      (x) => x.reactionId !== reaction.reactionId
+      (x) => x.reactionTypeId !== reaction.reactionTypeId
     );
     forceUpdate(this);
+  }
+
+  async showUsers(reaction: IReaction) {
+    if (!reaction._users) {
+      await fetch(
+        `${this._apiRoot}/emoteReaction/getReactedUsers?` +
+          new URLSearchParams({
+            sourceTypeId: this.sourceTypeId.toString(),
+            sourceId: this.sourceId.toString(),
+          }),
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "hattrick-auth-token": this.token,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((users: Array<IReactionUser>) => {
+          // add an array to all reactions, this is the identifier that the data has been fetched
+          this.reactions.forEach((x) => (x._users = []));
+
+          let reactionsMap = new Map(
+            this.reactions.map((element) => [element.reactionTypeId, element])
+          );
+
+          users.forEach((user) => {
+            (reactionsMap.get(user.reactionTypeId)._users ??= []).push(user);
+          });
+        });
+    }
+
+    this.showUsersForReaction = reaction;
   }
 
   render() {
     return (
       <Host>
-        <slot />
+        {this.reactions.map((x) => (
+          <hattrick-tooltip
+            position="top"
+            disabled={this.showUsersForReaction !== x || !x._users?.length}
+          >
+            <hattrick-reaction
+              sourceTypeId={this.sourceTypeId}
+              sourceId={this.sourceId}
+              reactionTypeId={x.reactionTypeId}
+              reaction={this.reactionTypes[x.reactionTypeId].emoji}
+              amount={x.amount}
+              selected={x.userReacted}
+              disabled={this.disabled}
+              aria-label={`Click to react with ${
+                this.reactionTypes[x.reactionTypeId].emoji
+              }`}
+              onMouseEnter={() => this.showUsers(x)}
+            />
+
+            <div slot="content">
+              {x._users?.map((user, idx) => (
+                <>
+                  {idx > 0 && ", "}
+                  {user.loginname}
+                </>
+              ))}{" "}
+              and {x.amount - x._users.length} others reacted with{" "}
+              {this.reactionTypes[x.reactionTypeId].emoji}
+            </div>
+          </hattrick-tooltip>
+        ))}
 
         {this._unusedReactions.length > 0 && (
           <>
@@ -115,24 +218,29 @@ export class Reactions {
               ref={(el) => (this._addButton = el)}
               onClick={(ev) => this.openDropdown(ev)}
             >
-              ➕
+              {(this._unusedReactions.length ===
+                Object.keys(this.reactionTypes).length &&
+                this.firstReactionText) ||
+                "➕"}
             </button>
-            <div
-              part="dropdown"
-              class="reaction-dropdown"
-              hidden
-              style={{ position: "absolute", width: "max-content" }}
-              ref={(el) => (this._addDropdown = el)}
-            >
-              {this._unusedReactions.map((x) => (
-                <button
-                  part="dropdown-button"
-                  onClick={(_) => this.addReaction(x)}
-                >
-                  {x.emoji}
-                </button>
-              ))}
-            </div>
+            {!this.disabled && (
+              <div
+                part="dropdown"
+                class="reaction-dropdown"
+                hidden
+                style={{ position: "absolute", width: "max-content" }}
+                ref={(el) => (this._addDropdown = el)}
+              >
+                {this._unusedReactions.map((x) => (
+                  <button
+                    part="dropdown-button"
+                    onClick={(_) => this.addNewReaction(x)}
+                  >
+                    {x.emoji}
+                  </button>
+                ))}
+              </div>
+            )}
           </>
         )}
       </Host>
@@ -140,7 +248,22 @@ export class Reactions {
   }
 }
 
-interface IReaction {
-  reactionId: number;
+interface IReactionType {
+  reactionTypeId: number;
   emoji?: string;
+}
+
+export interface IReaction {
+  reactionTypeId: number;
+  amount: number;
+  userReacted: boolean;
+
+  /** @private */
+  _users?: Array<IReactionUser>;
+}
+
+interface IReactionUser {
+  reactionTypeId: number;
+  userId: number;
+  loginname: string;
 }

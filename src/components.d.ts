@@ -11,6 +11,8 @@ import { IClockTexts } from "./components/match-clock/match-clock.interfaces";
 import { ILinks, IPlayoffMatch, IPlayoffTexts } from "./components/playoff-tree/playoff-tree";
 import { RangeChangeEventDetail, RangeValue } from "./components/range/range-interface";
 import { StyleEventDetail } from "./interface";
+import { ReactionEvent } from "./components/reaction/reaction";
+import { IReaction } from "./components/reactions/reactions";
 export namespace Components {
     interface HattrickArena {
         "arenaId": number;
@@ -280,15 +282,20 @@ export namespace Components {
         "amount": number;
         "disabled": boolean;
         "reaction": string;
-        "reactionId": number;
+        "reactionTypeId": number;
         "selected": boolean;
         "sourceId": number;
         "sourceTypeId": number;
+        "toggle": (value?: boolean) => Promise<void>;
+        "token": string;
     }
     interface HattrickReactions {
-        "reactions": string;
+        "disabled": boolean;
+        "firstReactionText"?: string;
+        "reactions": Array<IReaction>;
         "sourceId": number;
         "sourceTypeId": number;
+        "token": string;
     }
     interface HattrickTimer {
         /**
@@ -321,11 +328,16 @@ export namespace Components {
          */
         "content": string;
         "dir": string;
+        "disabled": boolean;
         "open": (ev?: MouseEvent) => Promise<void>;
         /**
           * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
          */
-        "position": "top" | "bottom" | "start" | "end" | "cursor";
+        "position": | "top"
+    | "bottom"
+    | "start"
+    | "end"
+    | "cursor";
     }
 }
 export interface HattrickAvatarCustomEvent<T> extends CustomEvent<T> {
@@ -747,17 +759,21 @@ declare namespace LocalJSX {
     interface HattrickReaction {
         "amount"?: number;
         "disabled"?: boolean;
-        "onReaction"?: (event: HattrickReactionCustomEvent<boolean>) => void;
+        "onReaction"?: (event: HattrickReactionCustomEvent<ReactionEvent>) => void;
         "reaction"?: string;
-        "reactionId"?: number;
+        "reactionTypeId"?: number;
         "selected"?: boolean;
         "sourceId"?: number;
         "sourceTypeId"?: number;
+        "token"?: string;
     }
     interface HattrickReactions {
-        "reactions"?: string;
+        "disabled"?: boolean;
+        "firstReactionText"?: string;
+        "reactions"?: Array<IReaction>;
         "sourceId"?: number;
         "sourceTypeId"?: number;
+        "token"?: string;
     }
     interface HattrickTimer {
         /**
@@ -789,10 +805,15 @@ declare namespace LocalJSX {
          */
         "content"?: string;
         "dir"?: string;
+        "disabled"?: boolean;
         /**
           * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
          */
-        "position"?: "top" | "bottom" | "start" | "end" | "cursor";
+        "position"?: | "top"
+    | "bottom"
+    | "start"
+    | "end"
+    | "cursor";
     }
     interface IntrinsicElements {
         "hattrick-arena": HattrickArena;
