@@ -112,7 +112,7 @@ export class Player {
   async hide() {
     this.timeout && clearTimeout(this.timeout);
     this.timeout = undefined;
-    this._tooltip.setAttribute("hidden", "");
+    this._tooltip?.setAttribute("hidden", "");
   }
 
   private async refreshFloating() {

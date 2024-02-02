@@ -2,6 +2,7 @@
   --emoji-font-size: 14px;
   --active-background: #7fa67833;
   --active-border: #7fa678;
+  --reaction-font-size: inherit;
   --reaction-padding: 4px 8px;
 }
 

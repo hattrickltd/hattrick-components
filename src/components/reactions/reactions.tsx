@@ -16,6 +16,7 @@ import {
   shift,
   limitShift,
   offset,
+  Placement,
 } from "@floating-ui/dom";
 import { ReactionEvent } from "../reaction/reaction";
 
@@ -33,10 +34,22 @@ export class Reactions {
 
   @Prop() disabled: boolean = false;
   @Prop() firstReactionText?: string;
+  @Prop() placement: Placement = "bottom-start";
+
+  @Prop() texts = {
+    pluralRule: 1,
+    clickToReact: "Click to send this reaction",
+    youReacted: "You already sent this reaction",
+    one: "[#user] reacted with [#reaction]",
+    few: "[#firsts] and [#last] reacted with [#reaction]",
+    more: "[#users] and [#remaining>>other|others] reacted with [#reaction]",
+  };
 
   @Prop() token: string = (window as any).HT?.ngHattrick?.userToken;
 
   @State() showUsersForReaction: IReaction;
+
+  private tagReplacer = new (window as any).HT.TagReplacer();
 
   private reactionTypes = {
     1: { reactionTypeId: 1, emoji: "👍" },
@@ -68,29 +81,9 @@ export class Reactions {
       )
       .map((x) => this.reactionTypes[x]);
 
-    this.host.addEventListener("reaction", (ev: CustomEvent<ReactionEvent>) => {
-      const target: HTMLHattrickReactionElement = ev.target as any;
-
-      fetch(`${this._apiRoot}/emoteReaction/toggleReaction`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "hattrick-auth-token": `${this.token}`,
-        },
-        body: JSON.stringify({
-          sourceTypeId: ev.detail.sourceTypeId,
-          sourceId: ev.detail.sourceId,
-          reactionTypeId: ev.detail.reactionTypeId,
-          selected: ev.detail.selected,
-        }),
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error(res.statusText);
-        })
-        .catch(() => {
-          target.toggle(!ev.detail.selected);
-        });
-    });
+    this.host.addEventListener("reaction", (e: CustomEvent<ReactionEvent>) =>
+      this.onReaction(e.detail)
+    );
   }
 
   componentDidUpdate() {
@@ -98,13 +91,47 @@ export class Reactions {
   }
 
   @Listen("click", { target: "window" })
-  onOutsideClick(_ev) {
+  onOutsideClick() {
     if (this._addDropdown) this._addDropdown.hidden = true;
+  }
+
+  private onReaction(detail: ReactionEvent) {
+    const { reactionTypeId, selected } = detail;
+
+    const reaction = this.reactions.find(
+      (x) => x.reactionTypeId === reactionTypeId
+    );
+
+    reaction.userReacted = selected;
+    reaction.amount += selected ? 1 : -1;
+    forceUpdate(this);
+
+    fetch(`${this._apiRoot}/emoteReaction/toggleReaction`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "hattrick-auth-token": `${this.token}`,
+      },
+      body: JSON.stringify({
+        sourceTypeId: this.sourceTypeId,
+        sourceId: this.sourceId,
+        reactionTypeId: reactionTypeId,
+        selected: selected,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(res.statusText);
+      })
+      .catch(() => {
+        reaction.userReacted = !selected;
+        reaction.amount -= selected ? 1 : -1;
+        forceUpdate(this);
+      });
   }
 
   private async refreshFloating() {
     const { x, y } = await computePosition(this._addButton, this._addDropdown, {
-      placement: "bottom-start",
+      placement: this.placement,
       middleware: [
         flip(),
         shift({ limiter: limitShift() }),
@@ -125,20 +152,25 @@ export class Reactions {
   }
 
   private addNewReaction(reaction: IReactionType) {
-    let element = document.createElement("hattrick-reaction");
-    element.sourceTypeId = this.sourceTypeId;
-    element.sourceId = this.sourceId;
-    element.reactionTypeId = reaction.reactionTypeId;
-    element.reaction = reaction.emoji;
-    element.amount = 1;
-    element.selected = true;
+    this.reactions.push({
+      reactionTypeId: reaction.reactionTypeId,
+      _users: [],
 
-    this.host.appendChild(element);
+      // onReaction will toggle amount and userReacted
+      amount: 0,
+      userReacted: false,
+    });
 
     this._unusedReactions = this._unusedReactions.filter(
       (x) => x.reactionTypeId !== reaction.reactionTypeId
     );
-    forceUpdate(this);
+
+    this.onReaction({
+      reactionTypeId: reaction.reactionTypeId,
+      selected: true,
+      sourceTypeId: this.sourceTypeId,
+      sourceId: this.sourceId,
+    });
   }
 
   async showUsers(reaction: IReaction) {
@@ -167,7 +199,8 @@ export class Reactions {
           );
 
           users.forEach((user) => {
-            (reactionsMap.get(user.reactionTypeId)._users ??= []).push(user);
+            let r = reactionsMap.get(user.reactionTypeId);
+            if (r) (r._users ??= []).push(user);
           });
         });
     }
@@ -191,22 +224,10 @@ export class Reactions {
               amount={x.amount}
               selected={x.userReacted}
               disabled={this.disabled}
-              aria-label={`Click to react with ${
-                this.reactionTypes[x.reactionTypeId].emoji
-              }`}
               onMouseEnter={() => this.showUsers(x)}
             />
 
-            <div slot="content">
-              {x._users?.map((user, idx) => (
-                <>
-                  {idx > 0 && ", "}
-                  {user.loginname}
-                </>
-              ))}{" "}
-              and {x.amount - x._users.length} others reacted with{" "}
-              {this.reactionTypes[x.reactionTypeId].emoji}
-            </div>
+            <div slot="content">{this.getTooltipText(x)}</div>
           </hattrick-tooltip>
         ))}
 
@@ -245,6 +266,51 @@ export class Reactions {
         )}
       </Host>
     );
+  }
+
+  private getTooltipText(reaction: IReaction) {
+    if (!reaction._users?.length) return <></>;
+
+    const listedAmount = reaction._users.length;
+    const remaining = reaction.amount - listedAmount;
+
+    const firsts = reaction._users.slice(0, listedAmount - 1);
+    const last = reaction._users[listedAmount - 1];
+
+    const emoji = this.reactionTypes[reaction.reactionTypeId].emoji;
+
+    const { one, few, more, pluralRule } = this.texts;
+
+    if (listedAmount === 1) {
+      return (
+        <>
+          {this.tagReplacer.replace(one, pluralRule, {
+            user: last.loginname,
+            reaction: emoji,
+          })}
+        </>
+      );
+    } else if (remaining === 0) {
+      return (
+        <>
+          {this.tagReplacer.replace(few, pluralRule, {
+            firsts: firsts.map((x) => x.loginname).join(", "),
+            last: last.loginname,
+            reaction: emoji,
+          })}
+        </>
+      );
+    } else {
+      return (
+        <>
+          {this.tagReplacer.replace(more, pluralRule, {
+            users: reaction._users.map((x) => x.loginname).join(", "),
+            remaining: remaining,
+            reaction: emoji,
+          })}
+        </>
+      );
+    }
   }
 }
 

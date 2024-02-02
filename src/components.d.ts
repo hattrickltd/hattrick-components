@@ -13,6 +13,7 @@ import { RangeChangeEventDetail, RangeValue } from "./components/range/range-int
 import { StyleEventDetail } from "./interface";
 import { ReactionEvent } from "./components/reaction/reaction";
 import { IReaction } from "./components/reactions/reactions";
+import { Placement } from "@floating-ui/dom";
 export namespace Components {
     interface HattrickArena {
         "arenaId": number;
@@ -280,21 +281,23 @@ export namespace Components {
     }
     interface HattrickReaction {
         "amount": number;
+        "ariaLabel": string;
         "disabled": boolean;
         "reaction": string;
         "reactionTypeId": number;
         "selected": boolean;
         "sourceId": number;
         "sourceTypeId": number;
-        "toggle": (value?: boolean) => Promise<void>;
         "token": string;
     }
     interface HattrickReactions {
         "disabled": boolean;
         "firstReactionText"?: string;
+        "placement": Placement;
         "reactions": Array<IReaction>;
         "sourceId": number;
         "sourceTypeId": number;
+        "texts": { pluralRule: number; clickToReact: string; youReacted: string; one: string; few: string; more: string; };
         "token": string;
     }
     interface HattrickTimer {
@@ -758,6 +761,7 @@ declare namespace LocalJSX {
     }
     interface HattrickReaction {
         "amount"?: number;
+        "ariaLabel"?: string;
         "disabled"?: boolean;
         "onReaction"?: (event: HattrickReactionCustomEvent<ReactionEvent>) => void;
         "reaction"?: string;
@@ -770,9 +774,11 @@ declare namespace LocalJSX {
     interface HattrickReactions {
         "disabled"?: boolean;
         "firstReactionText"?: string;
+        "placement"?: Placement;
         "reactions"?: Array<IReaction>;
         "sourceId"?: number;
         "sourceTypeId"?: number;
+        "texts"?: { pluralRule: number; clickToReact: string; youReacted: string; one: string; few: string; more: string; };
         "token"?: string;
     }
     interface HattrickTimer {

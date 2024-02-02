@@ -4,7 +4,6 @@ import {
   EventEmitter,
   h,
   Host,
-  Method,
   Prop,
   State,
 } from "@stencil/core";
@@ -23,6 +22,7 @@ export class Reaction {
 
   @Prop({ reflect: true }) disabled: boolean = false;
   @Prop({ mutable: true, reflect: true }) selected: boolean = false;
+  @Prop() ariaLabel: string;
 
   @Prop() token: string = (window as any).HT?.ngHattrick?.userToken;
 
@@ -30,32 +30,14 @@ export class Reaction {
 
   @Event({ eventName: "reaction" }) onReaction: EventEmitter<ReactionEvent>;
 
-  private checkbox: HTMLInputElement;
-
-  @Method()
-  async toggle(value?: boolean) {
+  private changed(ev: Event) {
     if (this.disabled) return;
-
-    if (typeof value === "undefined") {
-      this.selected = !this.selected;
-    }
-
-    this.selected = value;
-    this.checkbox.checked = value;
-    this.amount = (this.amount || 0) + (value ? 1 : -1);
-  }
-
-  private changed() {
-    if (this.disabled) return;
-
-    this.selected = this.checkbox.checked;
-    this.amount = (this.amount || 0) + (this.selected ? 1 : -1);
 
     this.onReaction.emit({
       sourceTypeId: this.sourceTypeId,
       sourceId: this.sourceId,
       reactionTypeId: this.reactionTypeId,
-      selected: this.selected,
+      selected: (ev.target as HTMLInputElement).checked,
     });
   }
 
@@ -65,12 +47,11 @@ export class Reaction {
         <input
           id="checkbox"
           part="checkbox"
-          ref={(el) => (this.checkbox = el)}
           type="checkbox"
           role="switch"
           disabled={this.disabled}
           checked={this.selected}
-          onChange={(_) => this.changed()}
+          onChange={(ev) => this.changed(ev)}
         />
         <label htmlFor="checkbox" part="label">
           <span class="reaction" part="reaction">
