@@ -25,8 +25,8 @@
   padding: 20px 25px 20px 20px;
 }
 .controls > :not(.stages) {
-  background-color: #EDF1ED;
-  border: 1px solid #DCE2DC;
+  background-color: #edf1ed;
+  border: 1px solid #dce2dc;
   position: absolute;
 }
 .controls > :not(.stages):hover {
@@ -39,35 +39,40 @@
   left: 0;
   height: calc(50% - 45px - 5px);
   width: 10px;
-  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png) center center no-repeat;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png)
+    center center no-repeat;
 }
 .control-left-down {
   bottom: 20px;
   left: 0;
   height: calc(50% - 45px - 5px);
   width: 10px;
-  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png) center center no-repeat;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/left_arrow.png)
+    center center no-repeat;
 }
 .control-up {
   top: 0;
   left: 20px;
   right: 25px;
   height: 10px;
-  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/up_arrow.png) center center no-repeat;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/up_arrow.png)
+    center center no-repeat;
 }
 .control-down {
   bottom: 0;
   left: 20px;
   right: 25px;
   height: 10px;
-  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/down_arrow.png) center center no-repeat;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/down_arrow.png)
+    center center no-repeat;
 }
 .control-right {
   top: 60px;
   bottom: 20px;
   right: 0;
   width: 10px;
-  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/right_arrow.png) center center no-repeat;
+  background: url(https://stage.hattrick.org/v2015516/App_Themes/Standard/Images/Icons/right_arrow.png)
+    center center no-repeat;
 }
 
 .stages {
@@ -84,8 +89,12 @@
   width: 12.5em;
   transition: width 300ms;
 }
-.stage > .header { margin: 0 1em; }
-.stage > .matches { padding: 0 1em; }
+.stage > .header {
+  margin: 0 1em;
+}
+.stage > .matches {
+  padding: 0 1em;
+}
 
 .stage:not(.expanded) > * {
   width: var(--collapsed-width);
@@ -101,7 +110,10 @@
   background: var(--current-stage-background);
 }
 .stage.current-stage.empty-stage .matches {
-  background: var(--current-empty-stage-background, var(--current-stage-background));
+  background: var(
+    --current-empty-stage-background,
+    var(--current-stage-background)
+  );
 }
 .stage.current-stage .matches .match {
   background: var(--current-match-background);
@@ -110,7 +122,10 @@
   background: var(--expanded-stage-background);
 }
 .stage.expanded-stage.empty-stage .matches {
-  background: var(--expanded-empty-stage-background, var(--expanded-stage-background));
+  background: var(
+    --expanded-empty-stage-background,
+    var(--expanded-stage-background)
+  );
 }
 .stage.expanded-stage .matches .match {
   background: var(--expanded-match-background);
@@ -202,7 +217,8 @@
   margin-top: -1px;
 }
 
-.demoted, .lower-entry:after {
+.demoted,
+.lower-entry:after {
   color: #d00 !important;
 }
 
@@ -220,7 +236,9 @@
   color: grey;
 }
 
-.exit, .entry, .lower-entry {
+.exit,
+.entry,
+.lower-entry {
   pointer-events: none;
 }
 
@@ -283,8 +301,12 @@
   width: 0.66em;
   border-bottom: 2px solid #ccc;
 }
-:host-context([dir="ltr"]) .exit { left: 100%; }
-:host-context([dir="rtl"]) .exit { right: 100%; }
+:host([dir="ltr"]) .exit {
+  left: 100%;
+}
+:host([dir="rtl"]) .exit {
+  right: 100%;
+}
 
 .exit.down {
   height: 2em;
@@ -298,8 +320,14 @@
   bottom: calc(50% - 1px);
   border-bottom: 2px solid #ccc;
 }
-:host-context([dir="ltr"]) .exit.up, :host-context([dir="ltr"]) .exit.down { border-right: 2px solid #ccc; }
-:host-context([dir="rtl"]) .exit.up, :host-context([dir="rtl"]) .exit.down { border-left: 2px solid #ccc; }
+:host([dir="ltr"]) .exit.up,
+:host([dir="ltr"]) .exit.down {
+  border-right: 2px solid #ccc;
+}
+:host([dir="rtl"]) .exit.up,
+:host([dir="rtl"]) .exit.down {
+  border-left: 2px solid #ccc;
+}
 
 .exit.highlight {
   /* border-right: 3px solid var(--highlight-color); */
@@ -314,7 +342,6 @@
   bottom: calc(50% - 1px);
   /* border-bottom: 3px solid var(--highlight-color); */
   border-color: var(--highlight-color);
-
 }
 
 .entry {
@@ -324,12 +351,20 @@
   border-top: 2px solid #ccc;
   transition: width 300ms;
 }
-:host-context([dir="ltr"]) .entry { left: 100%; }
-:host-context([dir="rtl"]) .entry { right: 100%; }
+:host([dir="ltr"]) .entry {
+  left: 100%;
+}
+:host([dir="rtl"]) .entry {
+  right: 100%;
+}
 
-.long .entry { width: calc(var(--collapsed-width) + 10.8em); }
+.long .entry {
+  width: calc(var(--collapsed-width) + 10.8em);
+}
 .hide-names:not(.expanded-next) .long .entry,
-.hide-next-names:not(.expanded-next) .long .entry { width: calc(var(--collapsed-width) + 3.3em); }
+.hide-next-names:not(.expanded-next) .long .entry {
+  width: calc(var(--collapsed-width) + 3.3em);
+}
 
 .up .entry {
   bottom: 100%;
