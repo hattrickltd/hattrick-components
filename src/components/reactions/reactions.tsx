@@ -102,6 +102,10 @@ export class Reactions {
       (x) => x.reactionTypeId === reactionTypeId
     );
 
+    if (!reaction) {
+      return this.addNewReaction(this.reactionTypes[reactionTypeId]);
+    }
+
     reaction.userReacted = selected;
     reaction.amount += selected ? 1 : -1;
     forceUpdate(this);
@@ -174,6 +178,8 @@ export class Reactions {
   }
 
   async showUsers(reaction: IReaction) {
+    this.showUsersForReaction = reaction;
+
     if (!reaction._users) {
       await fetch(
         `${this._apiRoot}/emoteReaction/getReactedUsers?` +
@@ -202,36 +208,50 @@ export class Reactions {
             let r = reactionsMap.get(user.reactionTypeId);
             if (r) (r._users ??= []).push(user);
           });
+
+          forceUpdate(this);
         });
     }
-
-    this.showUsersForReaction = reaction;
   }
 
   render() {
     return (
       <Host>
-        {this.reactions.map((x) => (
-          <hattrick-tooltip
-            position="top"
-            disabled={this.showUsersForReaction !== x || !x._users?.length}
-          >
-            <hattrick-reaction
-              sourceTypeId={this.sourceTypeId}
-              sourceId={this.sourceId}
-              reactionTypeId={x.reactionTypeId}
-              reaction={this.reactionTypes[x.reactionTypeId].emoji}
-              amount={x.amount}
-              selected={x.userReacted}
-              disabled={this.disabled}
-              onMouseEnter={() => this.showUsers(x)}
-            />
+        {this.reactions.length === 0 && !this.disabled ? (
+          <hattrick-reaction
+            sourceTypeId={this.sourceTypeId}
+            sourceId={this.sourceId}
+            reactionTypeId={1}
+            reaction={this.reactionTypes[1].emoji}
+            selected={false}
+          />
+        ) : (
+          this.reactions.map((x) => (
+            <hattrick-tooltip
+              position="top"
+              disabled={
+                this.showUsersForReaction !== x || x._users?.length === 0
+              }
+            >
+              <hattrick-reaction
+                sourceTypeId={this.sourceTypeId}
+                sourceId={this.sourceId}
+                reactionTypeId={x.reactionTypeId}
+                reaction={this.reactionTypes[x.reactionTypeId].emoji}
+                amount={x.amount}
+                selected={x.userReacted}
+                disabled={this.disabled}
+                onMouseEnter={() => this.showUsers(x)}
+              />
 
-            <div slot="content">{this.getTooltipText(x)}</div>
-          </hattrick-tooltip>
-        ))}
+              <div slot="content">
+                {this.getTooltipText(x) ?? this.renderLoading()}
+              </div>
+            </hattrick-tooltip>
+          ))
+        )}
 
-        {this._unusedReactions.length > 0 && (
+        {!this.disabled && this._unusedReactions.length > 0 && (
           <>
             <button
               part="add-button"
@@ -244,24 +264,22 @@ export class Reactions {
                 this.firstReactionText) ||
                 "➕"}
             </button>
-            {!this.disabled && (
-              <div
-                part="dropdown"
-                class="reaction-dropdown"
-                hidden
-                style={{ position: "absolute", width: "max-content" }}
-                ref={(el) => (this._addDropdown = el)}
-              >
-                {this._unusedReactions.map((x) => (
-                  <button
-                    part="dropdown-button"
-                    onClick={(_) => this.addNewReaction(x)}
-                  >
-                    {x.emoji}
-                  </button>
-                ))}
-              </div>
-            )}
+            <div
+              part="dropdown"
+              class="reaction-dropdown"
+              hidden
+              style={{ position: "absolute", width: "max-content" }}
+              ref={(el) => (this._addDropdown = el)}
+            >
+              {this._unusedReactions.map((x) => (
+                <button
+                  part="dropdown-button"
+                  onClick={(_) => this.addNewReaction(x)}
+                >
+                  {x.emoji}
+                </button>
+              ))}
+            </div>
           </>
         )}
       </Host>
@@ -269,7 +287,7 @@ export class Reactions {
   }
 
   private getTooltipText(reaction: IReaction) {
-    if (!reaction._users?.length) return <></>;
+    if (!reaction._users?.length) return;
 
     const listedAmount = reaction._users.length;
     const remaining = reaction.amount - listedAmount;
@@ -311,6 +329,41 @@ export class Reactions {
         </>
       );
     }
+  }
+
+  private renderLoading() {
+    return (
+      <>
+        <svg
+          class="loading-spinner"
+          width="50"
+          height="50"
+          version="1.1"
+          viewBox="0 0 50 50"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g fill="currentColor">
+            <circle cx="39" cy="11" r="3" />
+            <circle cx="45" cy="25" r="3" />
+            <circle cx="39" cy="39" r="3" />
+            <circle cx="25" cy="45" r="3" />
+            <circle cx="11" cy="39" r="3" />
+            <circle cx="5" cy="25" r="3" />
+            <circle cx="11" cy="11" r="4" />
+            <circle cx="25" cy="5" r="5" />
+            <animateTransform
+              attributeType="xml"
+              attributeName="transform"
+              type="rotate"
+              dur="800ms"
+              repeatCount="indefinite"
+              calcMode="discrete"
+              values="0 25 25; 45 25 25; 90 25 25; 135 25 25; 180 25 25; 225 25 25; 270 25 25; 315 25 25"
+            />
+          </g>
+        </svg>
+      </>
+    );
   }
 }
 

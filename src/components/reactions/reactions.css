@@ -46,3 +46,9 @@
 .reaction-dropdown button:active {
   background-color: #eee;
 }
+
+svg.loading-spinner {
+  color: white;
+  width: 25px;
+  height: 25px;
+}

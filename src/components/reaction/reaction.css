@@ -20,6 +20,9 @@ label {
   cursor: pointer;
   user-select: none;
 }
+input:disabled + label {
+  cursor: default;
+}
 
 input:checked + label {
   border: 1px solid var(--active-border);
