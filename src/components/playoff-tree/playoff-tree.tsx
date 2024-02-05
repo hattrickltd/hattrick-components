@@ -413,7 +413,7 @@ export class PlayoffTree {
     if (!this.playoff) return;
 
     return (
-      <Host dir={document.dir}>
+      <Host dir={document.dir || "ltr"}>
         {this.isDouble && <slot name="winners-bracket-title" />}
 
         {this.showRounds > 0 && this.navControls !== false && (
