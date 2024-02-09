@@ -12,7 +12,7 @@ import { ILinks, IPlayoffMatch, IPlayoffTexts } from "./components/playoff-tree/
 import { RangeChangeEventDetail, RangeValue } from "./components/range/range-interface";
 import { StyleEventDetail } from "./interface";
 import { ReactionEvent } from "./components/reaction/reaction";
-import { IReaction } from "./components/reactions/reactions";
+import { IReaction, IReactionTexts } from "./components/reactions/reactions";
 import { Placement } from "@floating-ui/dom";
 export namespace Components {
     interface HattrickArena {
@@ -292,12 +292,11 @@ export namespace Components {
     }
     interface HattrickReactions {
         "disabled": boolean;
-        "firstReactionText"?: string;
         "placement": Placement;
         "reactions": Array<IReaction>;
         "sourceId": number;
         "sourceTypeId": number;
-        "texts": { pluralRule: number; clickToReact: string; youReacted: string; one: string; few: string; more: string; };
+        "texts": IReactionTexts;
         "token": string;
     }
     interface HattrickTimer {
@@ -773,12 +772,11 @@ declare namespace LocalJSX {
     }
     interface HattrickReactions {
         "disabled"?: boolean;
-        "firstReactionText"?: string;
         "placement"?: Placement;
         "reactions"?: Array<IReaction>;
         "sourceId"?: number;
         "sourceTypeId"?: number;
-        "texts"?: { pluralRule: number; clickToReact: string; youReacted: string; one: string; few: string; more: string; };
+        "texts"?: IReactionTexts;
         "token"?: string;
     }
     interface HattrickTimer {
