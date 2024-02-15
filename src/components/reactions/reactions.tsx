@@ -76,12 +76,7 @@ export class Reactions {
       };
     }
 
-    this._unusedReactions = Object.keys(this.reactionTypes)
-      .filter(
-        (reactionTypeId) =>
-          !this.reactions.find((y) => y.reactionTypeId === +reactionTypeId)
-      )
-      .map((x) => this.reactionTypes[x]);
+    this.calculateUnusedReactions();
 
     this.host.addEventListener("reaction", (e: CustomEvent<ReactionEvent>) =>
       this.onReaction(e.detail)
@@ -97,6 +92,15 @@ export class Reactions {
     if (this._addDropdown) this._addDropdown.hidden = true;
   }
 
+  private calculateUnusedReactions() {
+    this._unusedReactions = Object.keys(this.reactionTypes)
+      .filter(
+        (reactionTypeId) =>
+          !this.reactions.find((y) => y.reactionTypeId === +reactionTypeId)
+      )
+      .map((x) => this.reactionTypes[x]);
+  }
+
   private onReaction(detail: ReactionEvent) {
     const { reactionTypeId, selected } = detail;
 
@@ -110,6 +114,14 @@ export class Reactions {
 
     reaction.userReacted = selected;
     reaction.amount += selected ? 1 : -1;
+
+    if (reaction.amount <= 0) {
+      this.reactions = this.reactions.filter(
+        (x) => x.reactionTypeId !== reactionTypeId
+      );
+      this.calculateUnusedReactions();
+    }
+
     forceUpdate(this);
 
     fetch(`${this._apiRoot}/emoteReaction/toggleReaction`, {
@@ -167,9 +179,7 @@ export class Reactions {
       userReacted: false,
     });
 
-    this._unusedReactions = this._unusedReactions.filter(
-      (x) => x.reactionTypeId !== reaction.reactionTypeId
-    );
+    this.calculateUnusedReactions();
 
     this.onReaction({
       reactionTypeId: reaction.reactionTypeId,
