@@ -1,6 +1,5 @@
 :host {
   --tooltip-max-width: 260px;
-  --reaction-padding: 4px 8px;
 
   display: flex;
   flex-wrap: wrap;
@@ -16,7 +15,8 @@
   border: 1px solid #ccc;
   border-radius: 100px;
   box-sizing: border-box;
-  padding: var(--reaction-padding);
+  padding-block: var(--reaction-padding-block, 4px);
+  padding-inline: var(--reaction-padding-inline, 8px);
 
   cursor: pointer;
   user-select: none;
