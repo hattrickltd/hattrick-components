@@ -241,7 +241,7 @@ export class Reactions {
           </hattrick-tooltip>
         ))}
 
-        {!this.disabled && (
+        {!this.disabled && this._unusedReactions?.length > 0 && (
           <>
             <button
               part="add-button"
