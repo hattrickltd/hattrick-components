@@ -30,7 +30,7 @@ export class Reactions {
 
   @Prop() sourceTypeId: number;
   @Prop() sourceId: number;
-  @Prop() reactions: Array<IReaction>;
+  @Prop() reactions: Array<IReaction> = [];
 
   @Prop() disabled: boolean = false;
   @Prop() placement: Placement = "bottom-start";
@@ -258,13 +258,9 @@ export class Reactions {
               class="add-button"
               ref={(el) => (this._addButton = el)}
               onClick={(ev) => this.openDropdown(ev)}
+              title={(this.reactions.length === 0 && this.texts.first) || ""}
             >
               {this.renderAddEmote()}
-              {this.reactions.length === 0 && this.texts.first ? (
-                <span>&nbsp; {this.texts.first}</span>
-              ) : (
-                <></>
-              )}
             </button>
             <div
               part="dropdown"
