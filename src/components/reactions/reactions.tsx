@@ -30,7 +30,7 @@ export class Reactions {
 
   @Prop() sourceTypeId: number;
   @Prop() sourceId: number;
-  @Prop() reactions: Array<IReaction>;
+  @Prop() reactions: Array<IReaction> = [];
 
   @Prop() disabled: boolean = false;
   @Prop() placement: Placement = "bottom-start";
@@ -46,9 +46,10 @@ export class Reactions {
   private reactionTypes = {
     1: { reactionTypeId: 1, emoji: "👍" },
     2: { reactionTypeId: 2, emoji: "❤️" },
-    3: { reactionTypeId: 3, emoji: "😂" },
-    4: { reactionTypeId: 4, emoji: "🥳" },
+    3: { reactionTypeId: 3, emoji: "😂", disabled: true },
+    4: { reactionTypeId: 4, emoji: "🥳", disabled: true },
     5: { reactionTypeId: 5, emoji: "😮" },
+    6: { reactionTypeId: 6, emoji: "🙁" },
   };
 
   private _apiRoot =
@@ -96,6 +97,7 @@ export class Reactions {
     this._unusedReactions = Object.keys(this.reactionTypes)
       .filter(
         (reactionTypeId) =>
+          !this.reactionTypes[reactionTypeId].disabled &&
           !this.reactions.find((y) => y.reactionTypeId === +reactionTypeId)
       )
       .map((x) => this.reactionTypes[x]);
@@ -241,7 +243,9 @@ export class Reactions {
               reaction={this.reactionTypes[x.reactionTypeId].emoji}
               amount={x.amount}
               selected={x.userReacted}
-              disabled={this.disabled}
+              disabled={
+                this.disabled || this.reactionTypes[x.reactionTypeId].disabled
+              }
               onMouseEnter={() => this.showUsers(x)}
             />
 
@@ -258,13 +262,9 @@ export class Reactions {
               class="add-button"
               ref={(el) => (this._addButton = el)}
               onClick={(ev) => this.openDropdown(ev)}
+              title={(this.reactions.length === 0 && this.texts.first) || ""}
             >
               {this.renderAddEmote()}
-              {this.reactions.length === 0 && this.texts.first ? (
-                <span>&nbsp; {this.texts.first}</span>
-              ) : (
-                <></>
-              )}
             </button>
             <div
               part="dropdown"
