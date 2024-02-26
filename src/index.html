@@ -223,6 +223,39 @@
       as a &lt;hattrick-bar&gt; or &lt;hattrick-avatar&gt; is added to the DOM.
     </p>
 
+    <h2>Field</h2>
+    <section field>
+      <h3
+        onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden"
+      >
+        Examples
+      </h3>
+      <div examples>
+        <script>
+          const examples = document.querySelector("[field] [examples]");
+          const trainingFieldElement = document.createElement("hattrick-field");
+          trainingFieldElement.flipped = true;
+          trainingFieldElement.size = 0.5;
+          trainingFieldElement.trainingPositions = {
+            102: { positionId: 102 },
+            108: { positionId: 108, partial: true },
+            111: { positionId: 111, bonus: true },
+          };
+          examples.appendChild(trainingFieldElement);
+
+          const ratingFieldElement = document.createElement("hattrick-field");
+          ratingFieldElement.flipped = true;
+          ratingFieldElement.size = 0.5;
+          ratingFieldElement.ratingPositions = {
+            102: { stars: 11.5, label: "Player rating" },
+            108: { stars: 10.5, label: "Player rating" },
+            111: { stars: 7.5, label: "Player rating" },
+          };
+          examples.appendChild(ratingFieldElement);
+        </script>
+      </div>
+    </section>
+
     <h2>Reactions</h2>
     <section reactions>
       <h3

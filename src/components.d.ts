@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ArenaImageType } from "./components/arena/arena";
 import { IAvatarImage, IAvatarPart } from "./components/avatar/avatar.interfaces";
+import { IRatingPosition, ITrainingPosition } from "./components/field/field.types";
 import { IClockTexts } from "./components/match-clock/match-clock.interfaces";
 import { ILinks, IPlayoffMatch, IPlayoffTexts } from "./components/playoff-tree/playoff-tree";
 import { RangeChangeEventDetail, RangeValue } from "./components/range/range-interface";
@@ -97,6 +98,12 @@ export namespace Components {
           * The maximum level the bar should show.
          */
         "max": number;
+    }
+    interface HattrickField {
+        "flipped": boolean;
+        "ratingPositions"?: { [positionId: number]: IRatingPosition };
+        "size": number;
+        "trainingPositions"?: { [positionId: number]: ITrainingPosition };
     }
     interface HattrickFlag {
         "leagueId": number;
@@ -373,6 +380,12 @@ declare global {
         prototype: HTMLHattrickBarElement;
         new (): HTMLHattrickBarElement;
     };
+    interface HTMLHattrickFieldElement extends Components.HattrickField, HTMLStencilElement {
+    }
+    var HTMLHattrickFieldElement: {
+        prototype: HTMLHattrickFieldElement;
+        new (): HTMLHattrickFieldElement;
+    };
     interface HTMLHattrickFlagElement extends Components.HattrickFlag, HTMLStencilElement {
     }
     var HTMLHattrickFlagElement: {
@@ -467,6 +480,7 @@ declare global {
         "hattrick-arena": HTMLHattrickArenaElement;
         "hattrick-avatar": HTMLHattrickAvatarElement;
         "hattrick-bar": HTMLHattrickBarElement;
+        "hattrick-field": HTMLHattrickFieldElement;
         "hattrick-flag": HTMLHattrickFlagElement;
         "hattrick-flip": HTMLHattrickFlipElement;
         "hattrick-match-arena": HTMLHattrickMatchArenaElement;
@@ -565,6 +579,12 @@ declare namespace LocalJSX {
           * The maximum level the bar should show.
          */
         "max"?: number;
+    }
+    interface HattrickField {
+        "flipped"?: boolean;
+        "ratingPositions"?: { [positionId: number]: IRatingPosition };
+        "size"?: number;
+        "trainingPositions"?: { [positionId: number]: ITrainingPosition };
     }
     interface HattrickFlag {
         "leagueId"?: number;
@@ -823,6 +843,7 @@ declare namespace LocalJSX {
         "hattrick-arena": HattrickArena;
         "hattrick-avatar": HattrickAvatar;
         "hattrick-bar": HattrickBar;
+        "hattrick-field": HattrickField;
         "hattrick-flag": HattrickFlag;
         "hattrick-flip": HattrickFlip;
         "hattrick-match-arena": HattrickMatchArena;
@@ -847,6 +868,7 @@ declare module "@stencil/core" {
             "hattrick-arena": LocalJSX.HattrickArena & JSXBase.HTMLAttributes<HTMLHattrickArenaElement>;
             "hattrick-avatar": LocalJSX.HattrickAvatar & JSXBase.HTMLAttributes<HTMLHattrickAvatarElement>;
             "hattrick-bar": LocalJSX.HattrickBar & JSXBase.HTMLAttributes<HTMLHattrickBarElement>;
+            "hattrick-field": LocalJSX.HattrickField & JSXBase.HTMLAttributes<HTMLHattrickFieldElement>;
             "hattrick-flag": LocalJSX.HattrickFlag & JSXBase.HTMLAttributes<HTMLHattrickFlagElement>;
             "hattrick-flip": LocalJSX.HattrickFlip & JSXBase.HTMLAttributes<HTMLHattrickFlipElement>;
             "hattrick-match-arena": LocalJSX.HattrickMatchArena & JSXBase.HTMLAttributes<HTMLHattrickMatchArenaElement>;

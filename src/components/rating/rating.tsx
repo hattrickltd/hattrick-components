@@ -6,7 +6,6 @@ import { h, Component, Prop, Host, State, Watch } from "@stencil/core";
   shadow: true,
 })
 export class Rating {
-
   // @Element() private host: HTMLElement;
 
   /** Size of element in pixels. */
@@ -19,7 +18,7 @@ export class Rating {
   @Prop() stamina: number;
 
   /** Label for the mouseover stamina */
-  @Prop() staminaLabel: string = "Stamina";
+  @Prop() staminaLabel: string = "";
 
   @State() private progressClass: string;
 
@@ -37,24 +36,33 @@ export class Rating {
   @Watch("stamina")
   private updateStaminaClass(): void {
     if (this.stamina < 0.25) this.progressClass = "stamina-verylow";
-    else if (this.stamina < 0.50) this.progressClass = "stamina-low";
+    else if (this.stamina < 0.5) this.progressClass = "stamina-low";
     else if (this.stamina < 0.75) this.progressClass = "stamina-high";
     else this.progressClass = "stamina-veryhigh";
   }
 
   render() {
     return (
-      <Host title={ `${this.staminaLabel}: ${Math.round(this.stamina * 100)}%` } style={{
-        width: this.size + "px",
-        height: this.size + "px",
-      }}>
+      <Host
+        title={
+          this.staminaLabel
+            ? `${this.staminaLabel}: ${Math.round(this.stamina * 100)}%`
+            : undefined
+        }
+        style={{
+          width: this.size + "px",
+          height: this.size + "px",
+        }}
+      >
         <span class="rating">
-          <span class="rating-full">{ Math.floor(this.rating) }</span>
-          { this.rating % 1 !== 0 &&
-            <span class="rating-half">.5</span>
-          }
+          <span class="rating-full">{Math.floor(this.rating)}</span>
+          {this.rating % 1 !== 0 && <span class="rating-half">.5</span>}
         </span>
-        <hattrick-progress-arc size={ (this.size as number) } complete={ this.stamina } class={ this.progressClass }></hattrick-progress-arc>
+        <hattrick-progress-arc
+          size={this.size as number}
+          complete={this.stamina}
+          class={this.progressClass}
+        ></hattrick-progress-arc>
       </Host>
     );
   }
