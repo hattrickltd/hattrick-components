@@ -1412,7 +1412,7 @@
       }
 
       function addBars(linkEvent) {
-        linkEvent.target.remove();
+        linkEvent?.target?.remove();
 
         const wrapper = document.getElementById("barWrapper");
         const holder1 = document.createElement("div");
@@ -1471,7 +1471,7 @@
       }
 
       function addAvatars(linkEvent) {
-        linkEvent.target.remove();
+        linkEvent?.target?.remove();
 
         const avatarSizeValue = document.getElementById("avatarSizeValue");
         const avatarParts = [
