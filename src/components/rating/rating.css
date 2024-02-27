@@ -33,7 +33,7 @@ hattrick-progress-arc {
   --progress-arc-color: var(--rating-stamina-arc-high, #f1c40a);
 }
 .stamina-veryhigh {
-  --progress-arc-color: var(--rating-stamina-arc-very-high, #31a94b);
+  --progress-arc-color: var(--rating-stamina-arc-very-high, #59965d);
 }
 
 .rating {
