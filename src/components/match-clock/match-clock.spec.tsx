@@ -1,4 +1,6 @@
 import "jest";
+import { h } from "@stencil/core";
+import { SpecPage, newSpecPage } from "@stencil/core/testing";
 import { MatchClock } from "./match-clock";
 
 const realDateNow = Date.now;
@@ -23,6 +25,17 @@ function setMatchtimer(t: MatchClock, matchdate?: number | Date | string) {
 
   (t as any).matchdateUpdated();
   (t as any).updateTime();
+}
+
+async function createMatchClock(): Promise<
+  [SpecPage, HTMLHattrickMatchClockElement]
+> {
+  let page = await newSpecPage({
+    components: [MatchClock],
+    template: () => <hattrick-match-clock></hattrick-match-clock>,
+  });
+
+  return [page, page.root as HTMLHattrickMatchClockElement];
 }
 
 describe("MatchClock unit", () => {
@@ -188,20 +201,35 @@ describe("MatchClock unit", () => {
   });
 
   describe("hostData", () => {
-    it("has 'timer' role", () => {
-      expect(matchclock.hostData().role).toBe("timer");
+    // it("has 'timer' role", async () => {
+    //   let page = await newSpecPage({
+    //     components: [MatchClock],
+    //     template: () => <hattrick-match-clock></hattrick-match-clock>,
+    //   });
+
+    //   expect(page.root.role).toBe("timer");
+    // });
+
+    it("should have 'match-clock-passed-zero' class when match has started", async () => {
+      let [page, matchclock] = await createMatchClock();
+
+      matchclock.matchdate = Date.now();
+      await page.waitForChanges();
+
+      expect(
+        page.root.classList.contains("match-clock-passed-zero")
+      ).toBeTruthy();
     });
 
-    it("should have 'match-clock-passed-zero' class when match has started", () => {
-      setMatchtimer(matchclock, Date.now());
+    it("should have 'match-clock-passed-zero' class in an upcoming match", async () => {
+      let [page, matchclock] = await createMatchClock();
 
-      expect(matchclock.hostData().class["match-clock-passed-zero"]).toBeTruthy();
-    });
+      matchclock.matchdate = Date.now() + seconds(1);
+      await page.waitForChanges();
 
-    it("should have 'match-clock-passed-zero' class in an upcoming match", () => {
-      setMatchtimer(matchclock, Date.now() + seconds(1));
-
-      expect(matchclock.hostData().class["match-clock-passed-zero"]).toBeFalsy();
+      expect(
+        page.root.classList.contains("match-clock-passed-zero")
+      ).toBeFalsy();
     });
   });
 

@@ -6,7 +6,6 @@ import { h, Component, Prop, State, Watch, Host } from "@stencil/core";
   shadow: true,
 })
 export class Timer {
-
   private _deadline: number;
   private _interval;
 
@@ -71,13 +70,13 @@ export class Timer {
       return `${days} ${this.daysText}`;
     } else if (this.seconds >= 0) {
       const hours = Math.floor(this.seconds / 60 / 60);
-      const minutes = Math.floor(this.seconds / 60 % 60);
+      const minutes = Math.floor((this.seconds / 60) % 60);
       const seconds = Math.floor(this.seconds % 60);
 
       return this.format(hours, minutes, seconds);
     } else if (this.seconds < 0 && this.keepCounting) {
       const hours = Math.floor(-this.seconds / 60 / 60);
-      const minutes = Math.floor(-this.seconds / 60 % 60);
+      const minutes = Math.floor((-this.seconds / 60) % 60);
       const seconds = Math.floor(-this.seconds % 60);
 
       return this.format(hours, minutes, seconds);
@@ -98,28 +97,37 @@ export class Timer {
 
   private format(hours: number, minutes: number, seconds: number): string {
     let result = this.pattern
-      .replace("hh", (hours > 0) ? this.padLeft(hours) : "")
-      .replace("h",  (hours > 0) ? hours.toString() : "")
+      .replace("hh", hours > 0 ? this.padLeft(hours) : "")
+      .replace("h", hours > 0 ? hours.toString() : "")
       .replace("HH", this.padLeft(hours))
-      .replace("H",  hours.toString())
+      .replace("H", hours.toString())
 
-      .replace("mm", (hours > 0 || minutes > 0) ? this.padLeft(minutes) : "")
-      .replace("m",  (hours > 0)
-                      ? this.padLeft(seconds)
-                      : (minutes > 0)
-                        ? minutes.toString()
-                        : "")
+      .replace("mm", hours > 0 || minutes > 0 ? this.padLeft(minutes) : "")
+      .replace(
+        "m",
+        hours > 0
+          ? this.padLeft(seconds)
+          : minutes > 0
+          ? minutes.toString()
+          : ""
+      )
       .replace("MM", this.padLeft(minutes))
-      .replace("M",  minutes.toString())
+      .replace("M", minutes.toString())
 
-      .replace("ss", (hours > 0 || minutes > 0 || seconds > 0) ? this.padLeft(seconds) : "")
-      .replace("s",  (hours > 0 || minutes > 0)
-                      ? this.padLeft(seconds)
-                      : (seconds > 0)
-                        ? seconds.toString()
-                        : "")
+      .replace(
+        "ss",
+        hours > 0 || minutes > 0 || seconds > 0 ? this.padLeft(seconds) : ""
+      )
+      .replace(
+        "s",
+        hours > 0 || minutes > 0
+          ? this.padLeft(seconds)
+          : seconds > 0
+          ? seconds.toString()
+          : ""
+      )
       .replace("SS", this.padLeft(seconds))
-      .replace("S",  seconds.toString());
+      .replace("S", seconds.toString());
 
     result = result.replace(/^\D*([\d:]*?)\D*$/, "$1");
 
@@ -135,11 +143,14 @@ export class Timer {
 
   render() {
     return (
-      <Host role="timer" class={{
-        "timer-passed-zero": this.keepCounting && this.seconds < 0,
-        "timer-finished": !this.keepCounting && this.seconds <= 0,
-      }}>
-        { this.getTime() }
+      <Host
+        role="timer"
+        class={{
+          "timer-passed-zero": this.keepCounting && this.seconds < 0,
+          "timer-finished": !this.keepCounting && this.seconds <= 0,
+        }}
+      >
+        {this.getTime()}
       </Host>
     );
   }
@@ -148,9 +159,16 @@ export class Timer {
 function fixDate(date: Date | string | number): Date {
   if (!date) return new Date();
 
-  if (Object.prototype.toString.call(date) === "[object Date]") return date as Date;
+  if (Object.prototype.toString.call(date) === "[object Date]")
+    return date as Date;
   if (!isNaN(date as any)) return new Date(parseInt(date.toString()));
-  if (typeof date === "string") return new Date(date.replace(/(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/, "$1T$2:$3"));
+  if (typeof date === "string")
+    return new Date(
+      date.replace(
+        /(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/,
+        "$1T$2:$3"
+      )
+    );
 
   return date as any;
 }
