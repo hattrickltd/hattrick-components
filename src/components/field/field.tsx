@@ -67,6 +67,7 @@ export class Field {
 
     return (
       <div
+        part="training-slot"
         class={{
           "training-slot": true,
           "training-slot-partial": trainingPosition.partial,
@@ -83,6 +84,7 @@ export class Field {
 
     return (
       <hattrick-rating
+        part="rating"
         rating={positionRating.stars}
         size={65}
         stamina={positionRating.stamina || 0}

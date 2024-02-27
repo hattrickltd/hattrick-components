@@ -54,11 +54,12 @@ export class Rating {
           height: this.size + "px",
         }}
       >
-        <span class="rating">
+        <span class="rating" part="rating">
           <span class="rating-full">{Math.floor(this.rating)}</span>
           {this.rating % 1 !== 0 && <span class="rating-half">.5</span>}
         </span>
         <hattrick-progress-arc
+          part="progress-arc"
           size={this.size as number}
           complete={this.stamina}
           class={this.progressClass}
