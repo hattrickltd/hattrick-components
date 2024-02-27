@@ -231,29 +231,33 @@ export class Reactions {
   render() {
     return (
       <Host>
-        {this.reactions.map((x) => (
-          <hattrick-tooltip
-            position="top"
-            disabled={this.showUsersForReaction !== x || x._users?.length === 0}
-          >
-            <hattrick-reaction
-              sourceTypeId={this.sourceTypeId}
-              sourceId={this.sourceId}
-              reactionTypeId={x.reactionTypeId}
-              reaction={this.reactionTypes[x.reactionTypeId].emoji}
-              amount={x.amount}
-              selected={x.userReacted}
+        {this.reactions
+          .filter((x) => this.reactionTypes[x.reactionTypeId])
+          .map((x) => (
+            <hattrick-tooltip
+              position="top"
               disabled={
-                this.disabled || this.reactionTypes[x.reactionTypeId].disabled
+                this.showUsersForReaction !== x || x._users?.length === 0
               }
-              onMouseEnter={() => this.showUsers(x)}
-            />
+            >
+              <hattrick-reaction
+                sourceTypeId={this.sourceTypeId}
+                sourceId={this.sourceId}
+                reactionTypeId={x.reactionTypeId}
+                reaction={this.reactionTypes[x.reactionTypeId].emoji}
+                amount={x.amount}
+                selected={x.userReacted}
+                disabled={
+                  this.disabled || this.reactionTypes[x.reactionTypeId].disabled
+                }
+                onMouseEnter={() => this.showUsers(x)}
+              />
 
-            <div slot="content">
-              {this.getTooltipText(x) ?? this.renderLoading()}
-            </div>
-          </hattrick-tooltip>
-        ))}
+              <div slot="content">
+                {this.getTooltipText(x) ?? this.renderLoading()}
+              </div>
+            </hattrick-tooltip>
+          ))}
 
         {!this.disabled && this._unusedReactions?.length > 0 && (
           <>
