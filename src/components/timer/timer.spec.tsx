@@ -129,7 +129,7 @@ describe("Timer unit", () => {
 
   describe("hostData", () => {
     it("has 'timer' role", async () => {
-      let [page, timer] = await createTimer();
+      let [_page, timer] = await createTimer();
 
       expect(timer.getAttribute("role")).toBe("timer");
     });
