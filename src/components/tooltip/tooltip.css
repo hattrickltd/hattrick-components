@@ -154,7 +154,7 @@
   top: 100%;
   border-top-color: var(
     --tooltip-border-color,
-    var(--tooltip-background, rgba(0, 0, 0, 0.75))
+    var(--tooltip-background, rgba(0, 0, 0, 0.85))
   );
 }
 
@@ -172,7 +172,7 @@
   bottom: 100%;
   border-bottom-color: var(
     --tooltip-border-color,
-    var(--tooltip-background, rgba(0, 0, 0, 0.75))
+    var(--tooltip-background, rgba(0, 0, 0, 0.85))
   );
 }
 
@@ -190,7 +190,7 @@
   left: 100%;
   border-left-color: var(
     --tooltip-border-color,
-    var(--tooltip-background, rgba(0, 0, 0, 0.75))
+    var(--tooltip-background, rgba(0, 0, 0, 0.85))
   );
 }
 
@@ -208,7 +208,7 @@
   right: 100%;
   border-right-color: var(
     --tooltip-border-color,
-    var(--tooltip-background, rgba(0, 0, 0, 0.75))
+    var(--tooltip-background, rgba(0, 0, 0, 0.85))
   );
 }
 
@@ -226,7 +226,7 @@
   right: 100%;
   border-right-color: var(
     --tooltip-border-color,
-    var(--tooltip-background, rgba(0, 0, 0, 0.75))
+    var(--tooltip-background, rgba(0, 0, 0, 0.85))
   );
 }
 
@@ -244,6 +244,6 @@
   left: 100%;
   border-left-color: var(
     --tooltip-border-color,
-    var(--tooltip-background, rgba(0, 0, 0, 0.75))
+    var(--tooltip-background, rgba(0, 0, 0, 0.85))
   );
 }
