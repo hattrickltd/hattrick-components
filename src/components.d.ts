@@ -15,16 +15,6 @@ import { StyleEventDetail } from "./interface";
 import { ReactionEvent } from "./components/reaction/reaction";
 import { IReaction, IReactionTexts } from "./components/reactions/reactions";
 import { Placement } from "@floating-ui/dom";
-export { ArenaImageType } from "./components/arena/arena";
-export { IAvatarImage, IAvatarPart } from "./components/avatar/avatar.interfaces";
-export { IRatingPosition, ITrainingPosition } from "./components/field/field.types";
-export { IClockTexts } from "./components/match-clock/match-clock.interfaces";
-export { ILinks, IPlayoffMatch, IPlayoffTexts } from "./components/playoff-tree/playoff-tree";
-export { RangeChangeEventDetail, RangeValue } from "./components/range/range-interface";
-export { StyleEventDetail } from "./interface";
-export { ReactionEvent } from "./components/reaction/reaction";
-export { IReaction, IReactionTexts } from "./components/reactions/reactions";
-export { Placement } from "@floating-ui/dom";
 export namespace Components {
     interface HattrickArena {
         "arenaId": number;
@@ -215,6 +205,8 @@ export namespace Components {
         "texts": IPlayoffTexts;
     }
     interface HattrickProgressArc {
+        "angle": number;
+        "circumference": number;
         /**
           * Expression evaluating to float [0.0, 1.0]
          */
@@ -292,7 +284,7 @@ export namespace Components {
          */
         "stamina": number;
         /**
-          * Label for the mouseover stamina
+          * Label for the mouseover, formatted as `{staminaLabel}: {stamina}%`
          */
         "staminaLabel": string;
     }
@@ -378,18 +370,7 @@ declare global {
         prototype: HTMLHattrickArenaElement;
         new (): HTMLHattrickArenaElement;
     };
-    interface HTMLHattrickAvatarElementEventMap {
-        "load": any;
-    }
     interface HTMLHattrickAvatarElement extends Components.HattrickAvatar, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLHattrickAvatarElementEventMap>(type: K, listener: (this: HTMLHattrickAvatarElement, ev: HattrickAvatarCustomEvent<HTMLHattrickAvatarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLHattrickAvatarElementEventMap>(type: K, listener: (this: HTMLHattrickAvatarElement, ev: HattrickAvatarCustomEvent<HTMLHattrickAvatarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLHattrickAvatarElement: {
         prototype: HTMLHattrickAvatarElement;
@@ -461,21 +442,7 @@ declare global {
         prototype: HTMLHattrickProgressArcElement;
         new (): HTMLHattrickProgressArcElement;
     };
-    interface HTMLHattrickRangeElementEventMap {
-        "ionChange": RangeChangeEventDetail;
-        "ionStyle": StyleEventDetail;
-        "ionFocus": void;
-        "ionBlur": void;
-    }
     interface HTMLHattrickRangeElement extends Components.HattrickRange, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLHattrickRangeElementEventMap>(type: K, listener: (this: HTMLHattrickRangeElement, ev: HattrickRangeCustomEvent<HTMLHattrickRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLHattrickRangeElementEventMap>(type: K, listener: (this: HTMLHattrickRangeElement, ev: HattrickRangeCustomEvent<HTMLHattrickRangeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLHattrickRangeElement: {
         prototype: HTMLHattrickRangeElement;
@@ -487,18 +454,7 @@ declare global {
         prototype: HTMLHattrickRatingElement;
         new (): HTMLHattrickRatingElement;
     };
-    interface HTMLHattrickReactionElementEventMap {
-        "reaction": ReactionEvent;
-    }
     interface HTMLHattrickReactionElement extends Components.HattrickReaction, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLHattrickReactionElementEventMap>(type: K, listener: (this: HTMLHattrickReactionElement, ev: HattrickReactionCustomEvent<HTMLHattrickReactionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLHattrickReactionElementEventMap>(type: K, listener: (this: HTMLHattrickReactionElement, ev: HattrickReactionCustomEvent<HTMLHattrickReactionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLHattrickReactionElement: {
         prototype: HTMLHattrickReactionElement;
@@ -727,6 +683,8 @@ declare namespace LocalJSX {
         "texts"?: IPlayoffTexts;
     }
     interface HattrickProgressArc {
+        "angle"?: number;
+        "circumference"?: number;
         /**
           * Expression evaluating to float [0.0, 1.0]
          */
@@ -820,7 +778,7 @@ declare namespace LocalJSX {
          */
         "stamina"?: number;
         /**
-          * Label for the mouseover stamina
+          * Label for the mouseover, formatted as `{staminaLabel}: {stamina}%`
          */
         "staminaLabel"?: string;
     }

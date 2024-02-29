@@ -943,6 +943,11 @@
       <div hidden attributes>
         <code>size: number</code>
         <code>complete: number [0-1]</code>
+        <code>angle: number [0-360] - which angle the arc should start</code>
+        <code
+          >circumference: number [0-360] - how full the circle should be with
+          complete=1</code
+        >
       </div>
 
       <h3
@@ -1081,10 +1086,12 @@
         Attributes
       </h3>
       <div hidden attributes>
-        <code>size: number | "small" | "large"</code>
-        <code>coratingmplete: number</code>
+        <code>size: "small" | "large" | number</code>
+        <code>rating: number</code>
         <code>stamina: number [0-1]</code>
-        <code>staminaLabel: string</code>
+        <code
+          >staminaLabel: string (formats as `{staminaLabel}: {stamina}%`)</code
+        >
       </div>
 
       <h3
@@ -1095,12 +1102,12 @@
       <div hidden variables>
         <code>--rating-background: white;</code>
         <code>--rating-color: #666;</code>
-        <code>--rating-font-weight: bold;</code>
-        <code>--rating-stamina-arc-very-low: #DD4140;</code>
-        <code>--rating-stamina-arc-low: #F5A104;</code>
-        <code>--rating-stamina-arc-high: #F1C40A;</code>
-        <code>--rating-stamina-arc-very-high: #31A94B;</code>
-        <code>--rating-stamina-arc-rest: #CCCCCC;</code>
+        <code>--rating-stamina-arc-very-low: #dd4140;</code>
+        <code>--rating-stamina-arc-low: #f5a104;</code>
+        <code>--rating-stamina-arc-high: #f1c40a;</code>
+        <code>--rating-stamina-arc-very-high: #59965d;</code>
+        <code>--rating-stamina-arc-rest: #ccc;</code>
+        <code>--rating-star-size: 8px;</code>
       </div>
 
       <h3
