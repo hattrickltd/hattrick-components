@@ -21,7 +21,7 @@
     "test.e2e": "stencil test --e2e"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.6.1"
+    "@floating-ui/dom": "^1.6.3"
   },
   "devDependencies": {
     "@stencil/core": "^4.12.4",
