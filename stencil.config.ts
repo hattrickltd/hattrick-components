@@ -16,10 +16,16 @@ export const config: Config = {
   ],
   outputTargets: [
     {
-      type: "dist"
+      type: "dist",
     },
     {
-      type: "www"
-    }
-  ]
+      type: "www",
+    },
+  ],
+  testing: {
+    testPathIgnorePatterns: [
+      "/src/components/match-arena/spec.js",
+      "/dist/collection/components/match-arena/spec.js",
+    ],
+  },
 };

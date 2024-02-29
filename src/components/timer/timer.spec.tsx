@@ -1,4 +1,7 @@
 import "jest";
+import { h } from "@stencil/core";
+import { SpecPage } from "@stencil/core/internal";
+import { newSpecPage } from "@stencil/core/testing";
 import { Timer } from "./timer";
 
 const realDateNow = Date.now;
@@ -13,6 +16,15 @@ function setDeadline(t: Timer, deadline?: number | Date | string) {
 
   (t as any).deadlineUpdated();
   (t as any).updateTime();
+}
+
+async function createTimer(): Promise<[SpecPage, HTMLHattrickTimerElement]> {
+  let page = await newSpecPage({
+    components: [Timer],
+    template: () => <hattrick-timer></hattrick-timer>,
+  });
+
+  return [page, page.root as HTMLHattrickTimerElement];
 }
 
 describe("Timer unit", () => {
@@ -86,7 +98,6 @@ describe("Timer unit", () => {
   });
 
   describe("daysText", () => {
-
     it("should show '4 days' when deadline is in 4 day", () => {
       setDeadline(timer, Date.now() + hours(24 * 4));
 
@@ -102,7 +113,6 @@ describe("Timer unit", () => {
   });
 
   describe("keepCounting", () => {
-
     it("should stop at zero if keepCounting is not set", () => {
       setDeadline(timer, Date.now() + seconds(-3));
 
@@ -118,28 +128,39 @@ describe("Timer unit", () => {
   });
 
   describe("hostData", () => {
-    it("has 'timer' role", () => {
-      expect(timer.hostData().role).toBe("timer");
+    it("has 'timer' role", async () => {
+      let [_page, timer] = await createTimer();
+
+      expect(timer.getAttribute("role")).toBe("timer");
     });
 
-    it("should get have finished class when reaching zero", () => {
-      setDeadline(timer, Date.now());
+    it("should get have finished class when reaching zero", async () => {
+      let [page, timer] = await createTimer();
 
-      expect(timer.hostData().class["timer-finished"]).toBeTruthy();
+      timer.deadline = Date.now();
+      await page.waitForChanges();
+
+      expect(timer.classList.contains("timer-finished")).toBeTruthy();
     });
 
-    it("should not have finished class when reaching zero if we'll keep counting", () => {
-      setDeadline(timer, Date.now());
+    it("should not have finished class when reaching zero if we'll keep counting", async () => {
+      let [page, timer] = await createTimer();
+
+      timer.deadline = Date.now();
       timer.keepCounting = true;
+      await page.waitForChanges();
 
-      expect(timer.hostData().class["timer-finished"]).toBeFalsy();
+      expect(timer.classList.contains("timer-finished")).toBeFalsy();
     });
 
-    it("should have passed zero class after passing zero if we'll keep counting", () => {
-      setDeadline(timer, Date.now() - seconds(1));
-      timer.keepCounting = true;
+    it("should have passed zero class after passing zero if we'll keep counting", async () => {
+      let [page, timer] = await createTimer();
 
-      expect(timer.hostData().class["timer-passed-zero"]).toBeTruthy();
+      timer.deadline = Date.now() - seconds(1);
+      timer.keepCounting = true;
+      await page.waitForChanges();
+
+      expect(timer.classList.contains("timer-passed-zero")).toBeTruthy();
     });
   });
 
@@ -157,14 +178,13 @@ describe("Timer unit", () => {
     });
 
     it("allows string Date deadlines", () => {
-      setDeadline(timer, new Date((Date.now() + seconds(61))).toISOString());
+      setDeadline(timer, new Date(Date.now() + seconds(61)).toISOString());
 
       expect((timer as any).getTime()).toBe("00:01:01");
     });
   });
 
   describe("ticks", () => {
-
     it("from 1 to 0 after a second", () => {
       setDeadline(timer, Date.now() + seconds(1));
 
