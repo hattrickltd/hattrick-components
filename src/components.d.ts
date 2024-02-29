@@ -281,6 +281,7 @@ export namespace Components {
         "value": RangeValue;
     }
     interface HattrickRating {
+        "noStar": boolean;
         /**
           * The rating to show inside the stamina.
          */
@@ -811,6 +812,7 @@ declare namespace LocalJSX {
         "value"?: RangeValue;
     }
     interface HattrickRating {
+        "noStar"?: boolean;
         /**
           * The rating to show inside the stamina.
          */

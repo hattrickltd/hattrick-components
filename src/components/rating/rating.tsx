@@ -20,6 +20,8 @@ export class Rating {
   /** Label for the mouseover, formatted as `{staminaLabel}: {stamina}%` */
   @Prop() staminaLabel: string = "";
 
+  @Prop({ reflect: true }) noStar: boolean = false;
+
   @State() private pixelSize: number;
   @State() private progressClass: string;
 
@@ -78,18 +80,20 @@ export class Rating {
             </span>
           )}
         </span>
-        <svg id="star" viewBox="0 0 8.4666665 8.4666666" version="1.1">
-          <path
-            fill="var(--rating-star-color, currentColor)"
-            d="m 4.0332499,1.1106795 c 0.5115278,-1.02023338 1.0537473,-1.00224168 1.205089,0.017639 l 0.2758722,1.871839 h 1.9490974 c 1.0720917,0 1.1486445,0.4801306 0.1700389,1.1105445 L 5.8542889,5.2388853 6.1301612,7.0835604 C 6.2815028,8.1030884 5.7862028,8.4177664 5.0302,7.7873524 L 3.6550721,6.6394134 1.8760137,7.7841774 C 0.8977607,8.4145914 0.51534959,8.0956804 1.0258192,7.0757994 L 1.9553887,5.2215992 0.57990789,4.1107019 C -0.17574211,3.4809935 0.08249119,3.0001574 1.1545831,3.0001574 H 3.1040332 L 4.0332499,1.1106795"
-          />
-        </svg>
+        {!this.noStar && (
+          <svg id="star" viewBox="0 0 8.4666665 8.4666666" version="1.1">
+            <path
+              fill="var(--rating-star-color, currentColor)"
+              d="m 4.0332499,1.1106795 c 0.5115278,-1.02023338 1.0537473,-1.00224168 1.205089,0.017639 l 0.2758722,1.871839 h 1.9490974 c 1.0720917,0 1.1486445,0.4801306 0.1700389,1.1105445 L 5.8542889,5.2388853 6.1301612,7.0835604 C 6.2815028,8.1030884 5.7862028,8.4177664 5.0302,7.7873524 L 3.6550721,6.6394134 1.8760137,7.7841774 C 0.8977607,8.4145914 0.51534959,8.0956804 1.0258192,7.0757994 L 1.9553887,5.2215992 0.57990789,4.1107019 C -0.17574211,3.4809935 0.08249119,3.0001574 1.1545831,3.0001574 H 3.1040332 L 4.0332499,1.1106795"
+            />
+          </svg>
+        )}
         <hattrick-progress-arc
           part="progress-arc"
           size={this.pixelSize}
           complete={this.stamina}
-          angle={90}
-          circumference={270}
+          angle={this.noStar ? 0 : 90}
+          circumference={this.noStar ? 360 : 270}
           class={this.progressClass}
         ></hattrick-progress-arc>
       </Host>
