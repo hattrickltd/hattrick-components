@@ -1,4 +1,12 @@
-import { h, Component, Prop, Host, State, Watch } from "@stencil/core";
+import {
+  h,
+  Fragment,
+  Component,
+  Prop,
+  Host,
+  State,
+  Watch,
+} from "@stencil/core";
 
 @Component({
   tag: "hattrick-rating",
@@ -52,6 +60,8 @@ export class Rating {
   }
 
   render() {
+    const hasRating = this.rating !== undefined && this.rating !== null;
+
     return (
       <Host
         title={
@@ -72,9 +82,9 @@ export class Rating {
           part="rating"
         >
           <span class="rating-full" part="rating-full">
-            {Math.floor(this.rating)}
+            {hasRating ? Math.floor(this.rating) : <>&nbsp;</>}
           </span>
-          {this.rating % 1 !== 0 && (
+          {hasRating && this.rating % 1 !== 0 && (
             <span class="rating-half" part="rating-half">
               .5
             </span>
@@ -91,7 +101,7 @@ export class Rating {
         <hattrick-progress-arc
           part="progress-arc"
           size={this.pixelSize}
-          complete={this.stamina}
+          complete={this.stamina || 0}
           angle={this.noStar ? 0 : 90}
           circumference={this.noStar ? 360 : 270}
           class={this.progressClass}
