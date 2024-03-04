@@ -111,6 +111,7 @@ export namespace Components {
     }
     interface HattrickField {
         "flipped": boolean;
+        "ratingNoStar": boolean;
         "ratingPositions"?: { [positionId: number]: IRatingPosition };
         "size": number;
         "trainingPositions"?: { [positionId: number]: ITrainingPosition };
@@ -631,6 +632,7 @@ declare namespace LocalJSX {
     }
     interface HattrickField {
         "flipped"?: boolean;
+        "ratingNoStar"?: boolean;
         "ratingPositions"?: { [positionId: number]: IRatingPosition };
         "size"?: number;
         "trainingPositions"?: { [positionId: number]: ITrainingPosition };

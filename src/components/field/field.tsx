@@ -23,6 +23,8 @@ export class Field {
   @Prop() trainingPositions?: { [positionId: number]: ITrainingPosition };
   @Prop() ratingPositions?: { [positionId: number]: IRatingPosition };
 
+  @Prop() ratingNoStar: boolean = false;
+
   items: IFieldItem[] = defaultFieldItems;
 
   render() {
@@ -89,6 +91,7 @@ export class Field {
         size={65}
         stamina={positionRating.stamina || 0}
         title={positionRating.label}
+        noStar={this.ratingNoStar}
       ></hattrick-rating>
     );
   }

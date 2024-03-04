@@ -3,7 +3,7 @@
   position: relative;
   transform-origin: top left;
 }
-:host-context(.rtl) :host {
+:host-context([dir="rtl"]):host {
   transform-origin: top right;
 }
 /* :host(.flipped) {
@@ -70,6 +70,13 @@
 .position-107,
 .position-111 {
   left: -110px;
+}
+
+.position-100,
+.position-103,
+.position-108,
+.position-112 {
+  left: 0;
 }
 
 .position-104,
