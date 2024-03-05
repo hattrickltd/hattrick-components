@@ -162,6 +162,10 @@
 hattrick-rating {
   margin: 5px;
 
+  --rating-stamina-stroke-width: 6px;
+  --rating-stamina-offset: 4px;
+  --rating-star-size: 20px;
+
   --rating-font-size: 24px;
   --rating-font-size-half: 18px;
 

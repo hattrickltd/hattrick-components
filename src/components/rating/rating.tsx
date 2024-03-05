@@ -6,6 +6,7 @@ import {
   Host,
   State,
   Watch,
+  Element,
 } from "@stencil/core";
 
 @Component({
@@ -14,7 +15,7 @@ import {
   shadow: true,
 })
 export class Rating {
-  // @Element() private host: HTMLElement;
+  @Element() private host: HTMLElement;
 
   /** Size of element in pixels. */
   @Prop({ mutable: true }) size: number | "small" | "large" = "small";
@@ -31,24 +32,31 @@ export class Rating {
   @Prop({ reflect: true }) noStar: boolean = false;
 
   @State() private pixelSize: number;
+  @State() private progressOffset: number;
   @State() private progressClass: string;
 
-  componentWillLoad() {
+  componentDidLoad() {
     this.handleSize();
     this.updateStaminaClass();
   }
 
   @Watch("size")
   private handleSize() {
+    this.progressOffset = parseInt(
+      getComputedStyle(this.host)
+        .getPropertyValue("--rating-stamina-offset")
+        ?.replace("px", "")
+    );
+
     if (this.size === "small") {
-      this.pixelSize = 27;
+      this.pixelSize = 28;
     } else if (this.size === "large") {
       this.pixelSize = 44;
     } else {
-      this.pixelSize = this.size as number;
+      this.pixelSize = +this.size;
     }
 
-    console.log("handleSize", this.size, this.pixelSize);
+    // console.log("handleSize", this.size, this.pixelSize, this.progressOffset);
   }
 
   @Watch("stamina")
@@ -100,7 +108,7 @@ export class Rating {
         )}
         <hattrick-progress-arc
           part="progress-arc"
-          size={this.pixelSize}
+          size={this.pixelSize - this.progressOffset * 2}
           complete={this.stamina || 0}
           angle={this.noStar ? 0 : 90}
           circumference={this.noStar ? 360 : 270}

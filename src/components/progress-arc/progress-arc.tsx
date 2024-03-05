@@ -1,4 +1,4 @@
-import { h, Component, Prop, Watch, State } from "@stencil/core";
+import { h, Component, Prop, Watch, State, Element } from "@stencil/core";
 
 @Component({
   tag: "hattrick-progress-arc",
@@ -6,13 +6,10 @@ import { h, Component, Prop, Watch, State } from "@stencil/core";
   shadow: true,
 })
 export class ProgressArc {
-  // @Element() private host: HTMLElement;
+  @Element() private host: HTMLElement;
 
   /** Size of element in pixels. */
   @Prop() size: number;
-
-  /** Width of progress arc stroke. */
-  @Prop({ mutable: true }) strokeWidth: number;
 
   /* Color/appearance of stroke */
   // @Prop() stroke: string = "black";
@@ -34,11 +31,12 @@ export class ProgressArc {
   // @Prop() background: string;
 
   @State() private offset: number;
-  @State() private strokeWidthCapped: number;
+  // @State() private strokeWidthCapped: number;
   @State() private radius: number;
   @State() private fillCircumference: number;
   @State() private backgroundTransformValue: string;
   @State() private foregroundTransformValue: string;
+  @State() private strokeWidth: number;
 
   componentWillLoad() {
     this.updateRadius();
@@ -52,14 +50,23 @@ export class ProgressArc {
     // Firefox has a bug where it doesn't handle rotations and stroke dashes correctly.
     // https://bugzilla.mozilla.org/show_bug.cgi?id=949661
     // this.offset = /firefox/i.test(navigator.userAgent) ? -89.9 : -90;
+
+    this.strokeWidth = parseInt(
+      getComputedStyle(this.host)
+        .getPropertyValue("--progress-arc-stroke-width")
+        ?.replace("px", "")
+    );
+
+    if (!this.strokeWidth) {
+      this.strokeWidth = 8;
+    }
+
     this.offset = -180 + this.angle;
 
-    this.strokeWidthCapped = Math.min(
-      this.strokeWidth || this.size / 5,
-      this.size / 2 - 1
-    );
-    this.radius = Math.max((this.size - this.strokeWidthCapped) / 2 - 1, 0);
+    this.radius = (this.size - this.strokeWidth) / 2;
     this.fillCircumference = 2 * Math.PI * this.radius;
+
+    // console.log(this.host, this.size, this.radius, this.strokeWidth);
 
     this.backgroundTransformValue = `rotate(${this.offset}, ${this.size / 2}, ${
       this.size / 2
@@ -86,6 +93,8 @@ export class ProgressArc {
           cx={this.size / 2}
           cy={this.size / 2}
           r={this.radius}
+          stroke-width={this.strokeWidth}
+          // stroke-width="var(--progress-arc-stroke-width, 3px)"
           // stroke="none"
           // stroke-width="var(--progress-arc-stroke-width, 8px)" //{this.strokeWidthCapped}
           stroke-dasharray={this.fillCircumference}
@@ -101,6 +110,7 @@ export class ProgressArc {
           cx={this.size / 2}
           cy={this.size / 2}
           r={this.radius}
+          stroke-width={this.strokeWidth}
           // stroke="none"
           // stroke-width="var(--progress-arc-stroke-width, 8px)" //{this.strokeWidthCapped}
           stroke-dasharray={this.fillCircumference}

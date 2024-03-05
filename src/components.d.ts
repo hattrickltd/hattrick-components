@@ -230,10 +230,6 @@ export namespace Components {
           * Size of element in pixels.
          */
         "size": number;
-        /**
-          * Width of progress arc stroke.
-         */
-        "strokeWidth": number;
     }
     interface HattrickRange {
         /**
@@ -746,10 +742,6 @@ declare namespace LocalJSX {
           * Size of element in pixels.
          */
         "size"?: number;
-        /**
-          * Width of progress arc stroke.
-         */
-        "strokeWidth"?: number;
     }
     interface HattrickRange {
         /**

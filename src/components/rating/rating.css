@@ -9,8 +9,8 @@
   align-items: center;
   justify-content: center;
 
-  --progress-arc-stroke-width: 3px;
-  --progress-arc-rest-color: var(--rating-stamina-arc-rest, #cccccc);
+  --rating-stamina-offset: 2px;
+  --rating-stamina-stroke-width: 3px;
 
   --rating-font-size: 11px;
   --rating-font-size-half: 7px;
@@ -23,7 +23,8 @@
 }
 
 :host([size="large"]) {
-  --progress-arc-stroke-width: 4px;
+  --rating-stamina-offset: 3px;
+  --rating-stamina-stroke-width: 4px;
 
   --rating-font-size: 18px;
   --rating-font-size-half: 14px;
@@ -39,11 +40,14 @@
 }
 
 hattrick-progress-arc {
+  --progress-arc-stroke-width: var(--rating-stamina-stroke-width);
+  --progress-arc-rest-color: var(--rating-stamina-arc-rest, #cccccc);
+
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: var(--rating-stamina-offset);
+  bottom: var(--rating-stamina-offset);
+  left: var(--rating-stamina-offset);
+  right: var(--rating-stamina-offset);
 }
 
 #star {
