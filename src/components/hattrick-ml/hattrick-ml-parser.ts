@@ -179,6 +179,19 @@ export class HattrickMlParser {
                 str = str.replace(match, match.replace("[", "&lbrack;").replace("]", "&rbrack;")); // replace brackets
               }
               break;
+            case "youtube":
+              let url = id;
+              if (allowCustomContent && url && this.isYoutubeUrl(url)) {
+                let containerClass: string = "video-container"
+
+                let html = `<div class="${containerClass}"><div><iframe src="${url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></div>`;
+
+                str = str.replace(match, html);
+              } else {
+                str = str.replace(match, match.replace("[youtube=", "[link=")); // parse as a link instead
+              }
+
+              break;
             case "b":
               str = str.replace(match, `<b>${text}</b>`);
               break;
@@ -358,6 +371,10 @@ export class HattrickMlParser {
    */
   private xss(str: string): string {
     return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  }
+
+  private isYoutubeUrl(url: string): boolean {
+    return url.includes("youtube.com/watch?v=") || url.includes("youtu.be/") || url.includes("youtube.com/embed");
   }
 
   private replaceFirst(text: string, oldValue: string, newValue: string) {
