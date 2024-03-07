@@ -519,7 +519,7 @@ export class Player {
             <Denomination
               level={level}
               type="skill"
-              text={labels[level]}
+              text={labels[Math.min(level, 20)]}
               showNumber={!hideNumbersAfterDenominations}
             ></Denomination>
           )}
