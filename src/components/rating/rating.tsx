@@ -68,6 +68,8 @@ export class Rating {
   }
 
   render() {
+    if (!this.pixelSize) return <></>;
+
     const hasRating = this.rating !== undefined && this.rating !== null;
 
     return (
