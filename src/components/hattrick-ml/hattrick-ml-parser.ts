@@ -5,7 +5,7 @@ export class HattrickMlParser {
 
   static replacer: HattrickMlReplacer;
 
-  private regex = /\[(link|img|b|i|u|ul|ol|li|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table|money|arenacontestid|arenamatchid)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
+  private regex = /\[(link|img|youtube|b|i|u|ul|ol|li|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table|money|arenacontestid|arenamatchid)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
   private requireClosing = ["img", "b", "i", "u", "ul", "ol", "li", "quote", "q", "spoiler", "td", "th", "tr", "table", "money"];
   private gotoLink = "https://www.hattrick.org/goto.ashx?path=";
 
@@ -178,6 +178,19 @@ export class HattrickMlParser {
               } else {
                 str = str.replace(match, match.replace("[", "&lbrack;").replace("]", "&rbrack;")); // replace brackets
               }
+              break;
+            case "youtube":
+              let url = id;
+              if (allowCustomContent && url && this.isYoutubeUrl(url)) {
+                let containerClass: string = "video-container"
+
+                let html = `<div class="${containerClass}"><div><iframe src="${url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></div>`;
+
+                str = str.replace(match, html);
+              } else {
+                str = str.replace(match, match.replace("[youtube=", "[link=")); // parse as a link instead
+              }
+
               break;
             case "b":
               str = str.replace(match, `<b>${text}</b>`);
@@ -358,6 +371,10 @@ export class HattrickMlParser {
    */
   private xss(str: string): string {
     return str.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  }
+
+  private isYoutubeUrl(url: string): boolean {
+    return url.includes("youtube.com/watch?v=") || url.includes("youtu.be/") || url.includes("youtube.com/embed");
   }
 
   private replaceFirst(text: string, oldValue: string, newValue: string) {
