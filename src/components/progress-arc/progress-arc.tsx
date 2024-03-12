@@ -1,4 +1,4 @@
-import { h, Component, Prop, Watch, State, Element } from "@stencil/core";
+import { h, Component, Prop, Watch, Element } from "@stencil/core";
 
 @Component({
   tag: "hattrick-progress-arc",
@@ -30,13 +30,13 @@ export class ProgressArc {
   /* Color of the background ring. */
   // @Prop() background: string;
 
-  @State() private offset: number;
-  // @State() private strokeWidthCapped: number;
-  @State() private radius: number;
-  @State() private fillCircumference: number;
-  @State() private backgroundTransformValue: string;
-  @State() private foregroundTransformValue: string;
-  @State() private strokeWidth: number;
+  private offset: number;
+  // private strokeWidthCapped: number;
+  private radius: number;
+  private fillCircumference: number;
+  private backgroundTransformValue: string;
+  private foregroundTransformValue: string;
+  private strokeWidth: number;
 
   componentWillLoad() {
     this.updateRadius();
