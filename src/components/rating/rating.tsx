@@ -76,7 +76,7 @@ export class Rating {
       <Host
         title={
           this.staminaLabel
-            ? `${this.staminaLabel}: ${Math.round(this.stamina * 100)}%`
+            ? `${this.staminaLabel}: ${Math.round((this.stamina || 0) * 100)}%`
             : undefined
         }
         style={{
