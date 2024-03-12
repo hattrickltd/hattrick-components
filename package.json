@@ -24,7 +24,7 @@
     "@floating-ui/dom": "^1.6.3"
   },
   "devDependencies": {
-    "@stencil/core": "^4.12.4",
+    "@stencil/core": "^4.12.6",
     "@stencil/eslint-plugin": "^0.4.0",
     "@types/jest": "^29.5.12",
     "eslint": "^7.32.0",
