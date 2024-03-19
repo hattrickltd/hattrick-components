@@ -45,7 +45,7 @@ export class Rating {
     this.progressOffset = parseInt(
       getComputedStyle(this.host)
         .getPropertyValue("--rating-stamina-offset")
-        ?.replace("px", "")
+        ?.replace("px", ""),
     );
 
     if (this.size === "small") {

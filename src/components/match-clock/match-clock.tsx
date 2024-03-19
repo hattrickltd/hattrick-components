@@ -7,7 +7,6 @@ import { IClockTexts } from "./match-clock.interfaces";
   shadow: true,
 })
 export class MatchClock {
-
   private _matchstart: number;
   private _interval;
 
@@ -70,7 +69,8 @@ export class MatchClock {
   @Method()
   async resume() {
     if (this._pauseTime) {
-      this.matchdate = fixDate(this.matchdate).getTime() + (Date.now() - this._pauseTime);
+      this.matchdate =
+        fixDate(this.matchdate).getTime() + (Date.now() - this._pauseTime);
       this._pauseTime = undefined;
     }
     this._interval && clearInterval(this._interval);
@@ -95,7 +95,6 @@ export class MatchClock {
   }
 
   private getTime(): string {
-
     let format = "";
     let clock = this.getMatchClock();
 
@@ -111,8 +110,11 @@ export class MatchClock {
   }
 
   private getMatchClock(): IClock {
-
-    let minutes = 0, seconds = 0, days = 0, hours = 0, labelAfterClock = "";
+    let minutes = 0,
+      seconds = 0,
+      days = 0,
+      hours = 0,
+      labelAfterClock = "";
 
     minutes = Math.floor(Math.abs(this.seconds / 60));
     seconds = Math.floor(Math.abs(this.seconds % 60));
@@ -126,7 +128,8 @@ export class MatchClock {
       if (!this.ignoreBreaks) {
         if (minutes >= 45 && minutes < 45 + this.halftimeBreak) {
           // is in halftime
-          if (this.texts.halftime) labelAfterClock = " (" + this.texts.halftime + ")";
+          if (this.texts.halftime)
+            labelAfterClock = " (" + this.texts.halftime + ")";
           minutes = 45 + this.halftimeBreak - minutes - 1;
           seconds = 60 - seconds;
           if (seconds === 60) {
@@ -139,9 +142,13 @@ export class MatchClock {
         }
 
         if (this.overtimeBreak > 0) {
-          if (minutes >= 90 + this.addedMinutes && minutes < 90 + this.addedMinutes + this.overtimeBreak) {
+          if (
+            minutes >= 90 + this.addedMinutes &&
+            minutes < 90 + this.addedMinutes + this.overtimeBreak
+          ) {
             // is in overtime break
-            if (this.texts.overtimeBreak) labelAfterClock = " (" + this.texts.overtimeBreak + ")";
+            if (this.texts.overtimeBreak)
+              labelAfterClock = " (" + this.texts.overtimeBreak + ")";
             minutes = 90 + this.addedMinutes + this.overtimeBreak - minutes - 1;
             seconds = 60 - seconds;
             if (seconds === 60) {
@@ -150,8 +157,9 @@ export class MatchClock {
             }
           } else if (minutes >= 90 + this.addedMinutes + this.overtimeBreak) {
             // is in overtime
-            if (this.texts.overtime) labelAfterClock = " (" + this.texts.overtime + ")";
-            minutes -= (this.addedMinutes + this.overtimeBreak);
+            if (this.texts.overtime)
+              labelAfterClock = " (" + this.texts.overtime + ")";
+            minutes -= this.addedMinutes + this.overtimeBreak;
           }
         }
       }
@@ -160,17 +168,21 @@ export class MatchClock {
     return { minutes, seconds, days, hours, labelAfterClock };
   }
 
-  private format(clock: IClock, format: string, texts: IClockTexts = {} as any): string {
+  private format(
+    clock: IClock,
+    format: string,
+    texts: IClockTexts = {} as any,
+  ): string {
     // if texts contains these letters, it'll break unless we reformat it first
     format = format
       .replace("DD", "{0}")
-      .replace("D",  "{1}")
+      .replace("D", "{1}")
       .replace("HH", "{2}")
-      .replace("H",  "{3}")
+      .replace("H", "{3}")
       .replace("MM", "{4}")
-      .replace("M",  "{5}")
+      .replace("M", "{5}")
       .replace("SS", "{6}")
-      .replace("S",  "{7}");
+      .replace("S", "{7}");
 
     return format
       .replace("{0}", this.padLeft(clock.days) + (texts.days || ""))
@@ -194,10 +206,12 @@ export class MatchClock {
     let isCountdown = this.isCountingDown();
 
     return (
-      <Host class={{
-              "match-clock-passed-zero": !isCountdown
-            }}>
-        <span innerHTML={ time } dir={ !isCountdown ? "ltr" : null }></span>
+      <Host
+        class={{
+          "match-clock-passed-zero": !isCountdown,
+        }}
+      >
+        <span innerHTML={time} dir={!isCountdown ? "ltr" : null}></span>
       </Host>
     );
   }
@@ -206,9 +220,16 @@ export class MatchClock {
 function fixDate(date: Date | string | number): Date {
   if (!date) return new Date();
 
-  if (Object.prototype.toString.call(date) === "[object Date]") return date as Date;
+  if (Object.prototype.toString.call(date) === "[object Date]")
+    return date as Date;
   if (!isNaN(date as any)) return new Date(parseInt(date.toString()));
-  if (typeof date === "string") return new Date(date.replace(/(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/, "$1T$2:$3"));
+  if (typeof date === "string")
+    return new Date(
+      date.replace(
+        /(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/,
+        "$1T$2:$3",
+      ),
+    );
 
   return date as any;
 }

@@ -10,33 +10,41 @@ declare const window: any;
   scoped: true,
 })
 export class Arena {
-
   @Element() host: HTMLStencilElement;
 
   @Prop({ mutable: true }) arenaId!: number;
   @Prop() arenaImageType: ArenaImageType = "User220";
   @Prop() weather: number = -1;
   @Prop() capacity: number = 0;
-  @Prop() resourceUrl: string = "https://res.hattrick.org"
+  @Prop() resourceUrl: string = "https://res.hattrick.org";
   @Prop() forceUploadReload: string = "";
 
   render() {
     const { arenaId, weather } = this;
 
-    let src = (arenaId > 0) ? this.getArenaImage(this.arenaImageType) : this.getDefaultImage(this.arenaImageType);
+    let src =
+      arenaId > 0
+        ? this.getArenaImage(this.arenaImageType)
+        : this.getDefaultImage(this.arenaImageType);
 
-    return <Host>
-      <div key={ `${ arenaId }_${ weather }` }>
-        <img src={ src }
-             onError={ _ => this.onError() }
-             onLoad={ ({ target }) => this.onLoad(target as HTMLImageElement) }
-        />
-      </div>
-    </Host>; 
+    return (
+      <Host>
+        <div key={`${arenaId}_${weather}`}>
+          <img
+            src={src}
+            onError={(_) => this.onError()}
+            onLoad={({ target }) => this.onLoad(target as HTMLImageElement)}
+          />
+        </div>
+      </Host>
+    );
   }
 
   private onLoad(img: HTMLImageElement) {
-    if (this.weather > -1 && ["HalfView", "HalfViewFlipped", "User620"].includes(this.arenaImageType)) {
+    if (
+      this.weather > -1 &&
+      ["HalfView", "HalfViewFlipped", "User620"].includes(this.arenaImageType)
+    ) {
       window.Weather.add(img, this.weather);
     }
   }
@@ -44,22 +52,25 @@ export class Arena {
   private onError() {
     let parentLink = this.host.closest("a");
     if (parentLink) {
-      parentLink.href = parentLink.href.replace(generateIdPath(this.arenaId), "default/" + this.getCapacityInterval());
+      parentLink.href = parentLink.href.replace(
+        generateIdPath(this.arenaId),
+        "default/" + this.getCapacityInterval(),
+      );
     }
-    
+
     this.arenaId = 0;
   }
 
   private getArenaImage(size: ArenaImageType): string {
     const { arenaId, resourceUrl, forceUploadReload } = this;
 
-    let src = `${ resourceUrl }/arenas/${ generateIdPath(arenaId) }/${ this.getFileName(size) }`
+    let src = `${resourceUrl}/arenas/${generateIdPath(arenaId)}/${this.getFileName(size)}`;
     if (forceUploadReload) src += "?r=" + forceUploadReload;
 
     return src;
   }
   private getDefaultImage(size: ArenaImageType): string {
-    return `${ this.resourceUrl }/arenas/default/${ this.getCapacityInterval() }/${ this.getFileName(size) }`;
+    return `${this.resourceUrl}/arenas/default/${this.getCapacityInterval()}/${this.getFileName(size)}`;
   }
 
   private getCapacityInterval(): number {
@@ -76,16 +87,26 @@ export class Arena {
 
   private getFileName(size: ArenaImageType): string {
     switch (size) {
-      case "User220" : return "custom-220-100.jpg";
-      case "User620" : return "custom-620-0.jpg";
-      case "HalfView" : return "half_view.jpg";
-      case "HalfViewFlipped" : return "half_view_reverse.jpg";
-      case "PenaltyArea" : return "half_view_zoom.jpg";
+      case "User220":
+        return "custom-220-100.jpg";
+      case "User620":
+        return "custom-620-0.jpg";
+      case "HalfView":
+        return "half_view.jpg";
+      case "HalfViewFlipped":
+        return "half_view_reverse.jpg";
+      case "PenaltyArea":
+        return "half_view_zoom.jpg";
     }
   }
 }
 
-export type ArenaImageType = "User220" | "User620" | "HalfView" | "HalfViewFlipped" | "PenaltyArea";
+export type ArenaImageType =
+  | "User220"
+  | "User620"
+  | "HalfView"
+  | "HalfViewFlipped"
+  | "PenaltyArea";
 
 function generateIdPath(id: number) {
   return [

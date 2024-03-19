@@ -23,16 +23,29 @@ export class Bar {
     const capWidth = this.getCapWidth();
 
     return (
-      <Host aria-label={ this.denomination || `${this.level} / ${this.cap || this.max}` }>
-        { this.level !== this.max &&
-          <div class="max" style={{ "width": `100%` }}>{ this.denomination }</div>
+      <Host
+        aria-label={
+          this.denomination || `${this.level} / ${this.cap || this.max}`
         }
-        { capWidth >= 1 &&
-          <div class="cap" style={{ "width": `${ capWidth }%` }}>{ this.denomination }</div>
-        }
-        { skillWidth >= 1 &&
-          <div class={{ "level": true, "capped": this.isCap }} style={{ "width": `${ skillWidth }%`}}>{ this.denomination }</div>
-        }
+      >
+        {this.level !== this.max && (
+          <div class="max" style={{ width: `100%` }}>
+            {this.denomination}
+          </div>
+        )}
+        {capWidth >= 1 && (
+          <div class="cap" style={{ width: `${capWidth}%` }}>
+            {this.denomination}
+          </div>
+        )}
+        {skillWidth >= 1 && (
+          <div
+            class={{ level: true, capped: this.isCap }}
+            style={{ width: `${skillWidth}%` }}
+          >
+            {this.denomination}
+          </div>
+        )}
       </Host>
     );
   }
@@ -41,13 +54,13 @@ export class Bar {
   private getSkillWidth(): number {
     if (this.level <= 0) return 0;
     if (this.level > this.max) return 100;
-    return this.level / this.max * 100;
+    return (this.level / this.max) * 100;
   }
 
   /** Get the percentage width of the cap column */
   private getCapWidth(): number {
     if (!this.hasCapBar()) return 0;
-    return this.cap / this.max * 100;
+    return (this.cap / this.max) * 100;
   }
 
   private hasCapBar(): boolean {

@@ -52,15 +52,15 @@ export class Player {
   private _root = location.href.includes(".hattrick.local")
     ? "/htweb"
     : location.href.includes("localhost")
-    ? "https://www.hattrick.org"
-    : "";
+      ? "https://www.hattrick.org"
+      : "";
 
   private _apiRoot = location.href.includes("localhost")
     ? "https://m.hattrick.org/api"
     : // ? "https://laptop-marcus.hattrick.local/api"
       `${location.protocol}//${location.hostname.replace(
         "www",
-        "m"
+        "m",
       )}/api/v99999`
         .replace("stage", "mstage")
         .replace("production", "mproduction");
@@ -89,7 +89,7 @@ export class Player {
 
         this._loading = fetch(
           `${this._apiRoot}/popup/player/${this.playerId}?languageId=${this.languageId}&countryId=${this.countryId}`,
-          init
+          init,
         )
           .then((res) => res.json())
           .then(({ player, language, country, retired }) => {
@@ -326,7 +326,7 @@ export class Player {
                         {
                           years: player.years,
                           days: player.days,
-                        }
+                        },
                       )}
                     </td>
                   </tr>
@@ -346,9 +346,9 @@ export class Player {
                           salary: currency(
                             player.salary,
                             country.currencyRate,
-                            country.currencyName
+                            country.currencyName,
                           ),
-                        }
+                        },
                       )}
                     </td>
                   </tr>
@@ -420,7 +420,7 @@ export class Player {
                             }
                             class={this.getBarColorClass(
                               player.staminaSkill,
-                              9
+                              9,
                             )}
                           ></hattrick-bar>
                           {(!hideNumbersAfterDenominations ||
@@ -454,31 +454,31 @@ export class Player {
                   <tbody>
                     {this.renderSkillRow(
                       texts.players.SkillKeeper,
-                      player.keeperSkill
+                      player.keeperSkill,
                     )}
                     {this.renderSkillRow(
                       texts.players.SkillDefending,
-                      player.defenderSkill
+                      player.defenderSkill,
                     )}
                     {this.renderSkillRow(
                       texts.players.SkillPlaymaking,
-                      player.playmakerSkill
+                      player.playmakerSkill,
                     )}
                     {this.renderSkillRow(
                       texts.players.SkillWinger,
-                      player.wingerSkill
+                      player.wingerSkill,
                     )}
                     {this.renderSkillRow(
                       texts.players.SkillPassing,
-                      player.passerSkill
+                      player.passerSkill,
                     )}
                     {this.renderSkillRow(
                       texts.players.SkillScoring,
-                      player.scorerSkill
+                      player.scorerSkill,
                     )}
                     {this.renderSkillRow(
                       texts.players.SkillSetPieces,
-                      player.kickerSkill
+                      player.kickerSkill,
                     )}
                   </tbody>
                 </table>
@@ -579,7 +579,7 @@ interface IDenominationProps {
 }
 const Denomination: FunctionalComponent<IDenominationProps> = (
   props,
-  _children
+  _children,
 ) => (
   <>
     <a
@@ -600,7 +600,7 @@ const Denomination: FunctionalComponent<IDenominationProps> = (
 
 function jsxReplacer(
   text: string,
-  context: { [tag: string]: string | (() => string) }
+  context: { [tag: string]: string | (() => string) },
 ) {
   let tagRegex = /\[#?(.*?)\]/gi;
   let tagResult;

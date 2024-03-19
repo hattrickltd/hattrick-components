@@ -79,17 +79,17 @@ export class PlayoffTree {
 
     if (matches) {
       this.stages = Array.from(
-        matches.reduce(this.groupByStage.bind(this), [])
+        matches.reduce(this.groupByStage.bind(this), []),
       );
       this.upper = Array.from(
         matches
           .filter((x) => x.bracket === Bracket.Upper)
-          .reduce(this.groupByStage.bind(this), [])
+          .reduce(this.groupByStage.bind(this), []),
       );
       this.lower = Array.from(
         matches
           .filter((x) => x.bracket === Bracket.Lower)
-          .reduce(this.groupByStage.bind(this), [])
+          .reduce(this.groupByStage.bind(this), []),
       );
 
       this.allUpper = this.upper.filter((x) => !!x);
@@ -160,7 +160,7 @@ export class PlayoffTree {
 
             this.upper[idx] = this.upper[idx].slice(
               startFrom,
-              startFrom + nrOfMatches
+              startFrom + nrOfMatches,
             );
           }
 
@@ -202,7 +202,7 @@ export class PlayoffTree {
   private getStageTitle(
     stage: IPlayoffMatch[],
     _stageIdx: number,
-    long: boolean
+    long: boolean,
   ): string {
     if (stage.length === 0) return "";
 
@@ -253,28 +253,28 @@ export class PlayoffTree {
         this.allUpper.findIndex((x) => x?.[0]?.matchRound === matchRound) + 1;
       tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(
-        this.texts.single[long ? "roundX" : "roundXShort"]
+        this.texts.single[long ? "roundX" : "roundXShort"],
       );
     } else if (isUpperBracket && this.texts.lower) {
       matchRound =
         this.allUpper.findIndex((x) => x?.[0]?.matchRound === matchRound) + 1;
       tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(
-        this.texts.upper[long ? "roundX" : "roundXShort"]
+        this.texts.upper[long ? "roundX" : "roundXShort"],
       );
     } else if (!isUpperBracket && this.texts.lower) {
       matchRound =
         this.allLower.findIndex((x) => x?.[0]?.matchRound === matchRound) + 1;
       tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(
-        this.texts.lower[long ? "roundX" : "roundXShort"]
+        this.texts.lower[long ? "roundX" : "roundXShort"],
       );
     } else if (this.texts.double) {
       matchRound =
         this.stages.findIndex((x) => x?.[0]?.matchRound === matchRound) + 1;
       tagReplacer.addTag("matchRound", matchRound);
       return tagReplacer.replace(
-        this.texts.double[long ? "roundX" : "roundXShort"]
+        this.texts.double[long ? "roundX" : "roundXShort"],
       );
     }
   }
@@ -299,7 +299,7 @@ export class PlayoffTree {
     match: IPlayoffMatch,
     bracket: IPlayoffStages,
     stageIdx: number,
-    matchIdx: number
+    matchIdx: number,
   ): IPlayoffMatch[] {
     if (this._cachedEntries.hasOwnProperty(match.matchId))
       return this._cachedEntries[match.matchId];
@@ -357,7 +357,7 @@ export class PlayoffTree {
         // in double elimiation we might want to step two steps so first round is never empty.
         if (
           this.playoff.some(
-            (m) => m.bracket === 2 && m.matchRound === this.fromRound
+            (m) => m.bracket === 2 && m.matchRound === this.fromRound,
           )
         )
           this.fromRound -= 1;
@@ -368,7 +368,7 @@ export class PlayoffTree {
         // in double elimiation we might want to step two steps so first round is never empty.
         if (
           this.playoff.some(
-            (m) => m.bracket === 2 && m.matchRound === this.fromRound
+            (m) => m.bracket === 2 && m.matchRound === this.fromRound,
           )
         )
           this.fromRound -= 1;
@@ -380,7 +380,7 @@ export class PlayoffTree {
         if (
           this.fromRound > 2 &&
           this.playoff.some(
-            (m) => m.bracket === 2 && m.matchRound === this.fromRound
+            (m) => m.bracket === 2 && m.matchRound === this.fromRound,
           )
         )
           this.fromRound += 1;
@@ -405,7 +405,7 @@ export class PlayoffTree {
     if (!stage?.filter((x) => x.matchId).length) return null;
     return this.links.live.replace(
       "{0}",
-      stage.map((x) => x.matchId).join(",")
+      stage.map((x) => x.matchId).join(","),
     );
   }
 
@@ -455,7 +455,7 @@ export class PlayoffTree {
 
             <div class="stages upper">
               {this.upper.map((stage, stageIdx) =>
-                this.renderStage(stage, stageIdx, true)
+                this.renderStage(stage, stageIdx, true),
               )}
             </div>
           </div>
@@ -463,7 +463,7 @@ export class PlayoffTree {
         {(this.showRounds === 0 || this.navControls === false) && (
           <div class="stages upper">
             {this.upper.map((stage, stageIdx) =>
-              this.renderStage(stage, stageIdx, true)
+              this.renderStage(stage, stageIdx, true),
             )}
           </div>
         )}
@@ -473,7 +473,7 @@ export class PlayoffTree {
             <slot name="losers-bracket-title" />
             <div class="stages lower">
               {this.lower.map((stage, stageIdx) =>
-                this.renderStage(stage, stageIdx, false)
+                this.renderStage(stage, stageIdx, false),
               )}
             </div>
           </>
@@ -485,7 +485,7 @@ export class PlayoffTree {
   private renderStage(
     stage: IPlayoffMatch[],
     stageIdx: number,
-    isUpper: boolean
+    isUpper: boolean,
   ) {
     // let stageRound = stage[0]?.matchRound - this.matchRoundsBeforePlayoff;
     let stageRound = stageIdx + this.fromRound;
@@ -578,8 +578,8 @@ export class PlayoffTree {
               match,
               isUpper ? this.upper : this.lower,
               stageIdx,
-              matchIdx
-            )
+              matchIdx,
+            ),
           )}
         </div>
       </div>
@@ -590,7 +590,7 @@ export class PlayoffTree {
     match: IPlayoffMatch,
     bracket: IPlayoffStages,
     stageIdx: number,
-    matchIdx: number
+    matchIdx: number,
   ) {
     let isUpperBracket: boolean =
       (match.bracket || Bracket.Upper) === Bracket.Upper;

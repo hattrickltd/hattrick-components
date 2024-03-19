@@ -54,7 +54,7 @@ export class ProgressArc {
     this.strokeWidth = parseInt(
       getComputedStyle(this.host)
         .getPropertyValue("--progress-arc-stroke-width")
-        ?.replace("px", "")
+        ?.replace("px", ""),
     );
 
     if (!this.strokeWidth) {

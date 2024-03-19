@@ -44,7 +44,11 @@ export const createSwipeBackGesture = (
      * or values greater than 1 which should not be possible.
      * Need to investigate more to find where the issue is.
      */
-    onEndHandler(shouldComplete, (stepValue <= 0) ? 0.01 : clamp(0, stepValue, 0.9999), realDur);
+    onEndHandler(
+      shouldComplete,
+      stepValue <= 0 ? 0.01 : clamp(0, stepValue, 0.9999),
+      realDur,
+    );
   };
 
   return createGesture({
@@ -55,6 +59,6 @@ export const createSwipeBackGesture = (
     canStart,
     onStart: onStartHandler,
     onMove,
-    onEnd
+    onEnd,
   });
 };

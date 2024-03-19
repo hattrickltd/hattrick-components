@@ -1,4 +1,15 @@
-import { h, Component, Element, Prop, State, Watch, Event, EventEmitter, Method, Host } from "@stencil/core";
+import {
+  h,
+  Component,
+  Element,
+  Prop,
+  State,
+  Watch,
+  Event,
+  EventEmitter,
+  Method,
+  Host,
+} from "@stencil/core";
 import { waitForIntersection } from "../../global/lazy-loading";
 import { IAvatarPart, IAvatarImage } from "./avatar.interfaces";
 
@@ -12,10 +23,9 @@ const facecardSize = { width: 110, height: 155 };
   shadow: true,
 })
 export class Avatar {
-
   @Element() private host: HTMLHattrickAvatarElement;
 
-  private avatarSize: { width: number, height: number } = facecardSize;
+  private avatarSize: { width: number; height: number } = facecardSize;
 
   private silhouettePath: string = "silhouettes/sil[nr].png";
   private facecardPath: string = "backgrounds/card1.png";
@@ -25,7 +35,7 @@ export class Avatar {
 
   /** An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. */
   @Prop() parts: IAvatarPart[] | number | string;
-  
+
   /** Allows overriding the default kit by ID. */
   @Prop() kitId?: number = 0;
 
@@ -90,7 +100,7 @@ export class Avatar {
   @Watch("kitId")
   private async updateAvatar() {
     this.images = [];
-    this.pendingImages.forEach((img) => img.src = "");
+    this.pendingImages.forEach((img) => (img.src = ""));
     this.pendingImages = [];
 
     let options: IAvatarOptions = {
@@ -99,7 +109,7 @@ export class Avatar {
       facecard: this.facecard,
     };
 
-    this.avatarSize = {...(options.facecard) ? facecardSize : originalSize}; // make a new copy so we can safely change it later without affecting other instances.
+    this.avatarSize = { ...(options.facecard ? facecardSize : originalSize) }; // make a new copy so we can safely change it later without affecting other instances.
 
     if (this.base.includes("AvatarNew")) {
       this.avatarSize.width = 208;
@@ -110,16 +120,15 @@ export class Avatar {
       this.avatarSize.height = this.avatarSize.width;
     }
 
-    await (this.lazy
-      ? waitForIntersection(this.host)
-      : Promise.resolve()
-    );
+    await (this.lazy ? waitForIntersection(this.host) : Promise.resolve());
 
     this.loadAvatar(this.parts, options);
   }
 
-  private loadAvatar(parts: IAvatarPart[] | number | string, options: IAvatarOptions): Promise<any> {
-
+  private loadAvatar(
+    parts: IAvatarPart[] | number | string,
+    options: IAvatarOptions,
+  ): Promise<any> {
     options = { background: false, injury: false, facecard: false, ...options };
 
     let promises: Promise<IAvatarImage>[] = [];
@@ -135,42 +144,55 @@ export class Avatar {
 
       if (options.facecard) {
         insertIdx++;
-        promises.push(this.loadFacecard().then((img) => {
-          if (!this.composed) this.addImage(img, 0);
-          return img;
-        }));
+        promises.push(
+          this.loadFacecard().then((img) => {
+            if (!this.composed) this.addImage(img, 0);
+            return img;
+          }),
+        );
       }
 
       parts.forEach((a) => {
         if (!this.shouldIncludePart(a, options)) return;
 
         if (this.kitId && a.url.indexOf("res.hattrick.org") > -1) {
-          a.url = a.url.replace(/\d+?\/\d+?\/\d+?\/\d+?\//, this.getKitPath(this.kitId) + "/");
+          a.url = a.url.replace(
+            /\d+?\/\d+?\/\d+?\/\d+?\//,
+            this.getKitPath(this.kitId) + "/",
+          );
         }
 
         let idx = insertIdx++;
 
-        promises.push(this.loadAvatarPart(a, options).then((img) => {
-          if (!this.composed) this.addImage(img, idx);
-          return img;
-        }));
+        promises.push(
+          this.loadAvatarPart(a, options).then((img) => {
+            if (!this.composed) this.addImage(img, idx);
+            return img;
+          }),
+        );
       });
     } else if (typeof parts === "string" && parts.startsWith("data:")) {
-      promises.push(this.loadDataUrl(this.parts as string).then((img) => {
-        if (!this.composed) this.images = [img];
-        return img;
-      }));
+      promises.push(
+        this.loadDataUrl(this.parts as string).then((img) => {
+          if (!this.composed) this.images = [img];
+          return img;
+        }),
+      );
     } else {
-      promises.push(this.loadSilhouette(parts as number, options).then((img) => {
-        if (!this.composed) this.images = [img];
-        return img;
-      }));
+      promises.push(
+        this.loadSilhouette(parts as number, options).then((img) => {
+          if (!this.composed) this.images = [img];
+          return img;
+        }),
+      );
     }
 
-    return Promise.all(promises).then((images) => {
-      if (this.composed) this.images = images;
-      this.load.emit(images);
-    }).catch(_ => {});
+    return Promise.all(promises)
+      .then((images) => {
+        if (this.composed) this.images = images;
+        this.load.emit(images);
+      })
+      .catch((_) => {});
   }
 
   private addImage(img: IAvatarImage, atIdx: number = 0) {
@@ -179,15 +201,22 @@ export class Avatar {
     this.images = temp;
   }
 
-  private shouldIncludePart(part: IAvatarPart, options: IAvatarOptions): boolean {
+  private shouldIncludePart(
+    part: IAvatarPart,
+    options: IAvatarOptions,
+  ): boolean {
     if (!part || !part.url) return false;
-    if (!options.background && part.url.indexOf("background") > -1) return false;
+    if (!options.background && part.url.indexOf("background") > -1)
+      return false;
     if (!options.injury && part.url.indexOf("injur") > -1) return false; // filenames are: fXinjury.png or injuredbutplaying
 
     return true;
   }
 
-  private loadAvatarPart(part: IAvatarPart, options: IAvatarOptions): Promise<IAvatarImage> {
+  private loadAvatarPart(
+    part: IAvatarPart,
+    options: IAvatarOptions,
+  ): Promise<IAvatarImage> {
     return new Promise((resolve, reject) => {
       let img = this.createImage();
       this.pendingImages.push(img);
@@ -199,16 +228,17 @@ export class Avatar {
         src = src.substring(src.indexOf("silhouettes/"));
       }
 
-      src = (src.indexOf("//") > -1)
-        ? src.replace("//", "https://")
-        : this.base + src;
+      src =
+        src.indexOf("//") > -1
+          ? src.replace("//", "https://")
+          : this.base + src;
 
       img.onload = () => {
         this.pendingImages.splice(this.pendingImages.indexOf(img), 1);
         resolve({
           img: img,
-          x: part.x - ((options.facecard) ? 0 : 9),
-          y: part.y - ((options.facecard) ? 0 : 10),
+          x: part.x - (options.facecard ? 0 : 9),
+          y: part.y - (options.facecard ? 0 : 10),
         });
       };
       img.onerror = () => reject();
@@ -232,11 +262,17 @@ export class Avatar {
       };
       img.onerror = () => reject();
 
-      img.src = this.base.split("/").slice(0, -2).join("/") + "/Avatar/" + this.facecardPath;
+      img.src =
+        this.base.split("/").slice(0, -2).join("/") +
+        "/Avatar/" +
+        this.facecardPath;
     });
   }
 
-  private loadSilhouette(silhouetteId: number, options: IAvatarOptions): Promise<IAvatarImage> {
+  private loadSilhouette(
+    silhouetteId: number,
+    options: IAvatarOptions,
+  ): Promise<IAvatarImage> {
     return new Promise((resolve, reject) => {
       let img = this.createImage();
       this.pendingImages.push(img);
@@ -272,7 +308,9 @@ export class Avatar {
   }
 
   private _getSilhouetteUrl(seed: number, facecard: boolean): string {
-    let rnd = ((seed) ? seed % 12 + 1 : Math.floor(Math.random() * 11) + 1).toString();
+    let rnd = (
+      seed ? (seed % 12) + 1 : Math.floor(Math.random() * 11) + 1
+    ).toString();
 
     if (!facecard) rnd += "_3";
 
@@ -289,10 +327,10 @@ export class Avatar {
 
   private getKitPath(kitId) {
     return [
-        this.generateId(kitId, 100000),
-        this.generateId(kitId, 10000),
-        this.generateId(kitId, 1000),
-        kitId,
+      this.generateId(kitId, 100000),
+      this.generateId(kitId, 10000),
+      this.generateId(kitId, 1000),
+      kitId,
     ].join("/");
   }
   private generateId(id, range) {
@@ -320,8 +358,9 @@ export class Avatar {
      }
    */
   @Method()
-  async printToCanvas(images: Array<IAvatarImage> = this.images): Promise<HTMLCanvasElement> {
-
+  async printToCanvas(
+    images: Array<IAvatarImage> = this.images,
+  ): Promise<HTMLCanvasElement> {
     let canvas = document.createElement("canvas");
     let context = canvas.getContext("2d");
 
@@ -337,16 +376,17 @@ export class Avatar {
 
   render() {
     return (
-      <Host role="img" class={{
-        "round": this.round,
-        "square": this.square,
-        "has-facecard": this.facecard,
-        "no-background": !this.background,
-        "avatarnew": this.base.includes("AvatarNew"),
-      }}>
-        { this.images.map((part) =>
-          this.renderImagePart(part)
-        )}
+      <Host
+        role="img"
+        class={{
+          round: this.round,
+          square: this.square,
+          "has-facecard": this.facecard,
+          "no-background": !this.background,
+          avatarnew: this.base.includes("AvatarNew"),
+        }}
+      >
+        {this.images.map((part) => this.renderImagePart(part))}
         <slot />
       </Host>
     );
@@ -364,7 +404,10 @@ export class Avatar {
       //   height = (this.facecard ? facecardSize : originalSize).height * 1.26;
       // }
 
-      if (part.img.src.includes("res.hattrick.org") || part.img.src.includes("card1")) {
+      if (
+        part.img.src.includes("res.hattrick.org") ||
+        part.img.src.includes("card1")
+      ) {
         // console.log("body", part.x, part.y, part.img.naturalWidth, part.img.naturalHeight, width, height);
         width = (this.facecard ? facecardSize : originalSize).width;
         height = (this.facecard ? facecardSize : originalSize).height;
@@ -387,12 +430,15 @@ export class Avatar {
     // multiplier = 1;
 
     return (
-      <img src={part.img.src} style={{
-        "width": part.img.naturalWidth / width * multiplier * 100 + "%",
-        "height": part.img.naturalHeight / height * multiplier * 100 + "%",
-        "left": part.x / this.avatarSize.width * 100 - leftOffset + "%",
-        "top": part.y / this.avatarSize.height * 100 + "%",
-      }} />
+      <img
+        src={part.img.src}
+        style={{
+          width: (part.img.naturalWidth / width) * multiplier * 100 + "%",
+          height: (part.img.naturalHeight / height) * multiplier * 100 + "%",
+          left: (part.x / this.avatarSize.width) * 100 - leftOffset + "%",
+          top: (part.y / this.avatarSize.height) * 100 + "%",
+        }}
+      />
     );
   }
 }

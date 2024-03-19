@@ -6,7 +6,6 @@ import { h, Component, Prop } from "@stencil/core";
   shadow: true,
 })
 export class Flip {
-
   /**
    * If the container should be flipped (showing back) or not.
    */
@@ -30,4 +29,3 @@ export class Flip {
     );
   }
 }
-

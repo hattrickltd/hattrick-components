@@ -9,10 +9,9 @@ export const createPointerEvents = (
   pointerUp: any,
   options: {
     passive?: boolean;
-    capture?: boolean
-  }
+    capture?: boolean;
+  },
 ) => {
-
   let rmTouchStart: (() => void) | undefined;
   let rmTouchMove: (() => void) | undefined;
   let rmTouchEnd: (() => void) | undefined;
@@ -34,7 +33,12 @@ export const createPointerEvents = (
       rmTouchEnd = addEventListener(el, "touchend", handleTouchEnd, options);
     }
     if (!rmTouchCancel) {
-      rmTouchCancel = addEventListener(el, "touchcancel", handleTouchEnd, options);
+      rmTouchCancel = addEventListener(
+        el,
+        "touchcancel",
+        handleTouchEnd,
+        options,
+      );
     }
   };
 
@@ -46,10 +50,20 @@ export const createPointerEvents = (
       return;
     }
     if (!rmMouseMove && pointerMove) {
-      rmMouseMove = addEventListener(getDocument(el), "mousemove", pointerMove, options);
+      rmMouseMove = addEventListener(
+        getDocument(el),
+        "mousemove",
+        pointerMove,
+        options,
+      );
     }
     if (!rmMouseUp) {
-      rmMouseUp = addEventListener(getDocument(el), "mouseup", handleMouseUp, options);
+      rmMouseUp = addEventListener(
+        getDocument(el),
+        "mouseup",
+        handleMouseUp,
+        options,
+      );
     }
   };
 
@@ -105,13 +119,22 @@ export const createPointerEvents = (
       }
       rmTouchStart = rmMouseStart = undefined;
       stop();
-
     } else {
       if (!rmTouchStart) {
-        rmTouchStart = addEventListener(el, "touchstart", handleTouchStart, options);
+        rmTouchStart = addEventListener(
+          el,
+          "touchstart",
+          handleTouchStart,
+          options,
+        );
       }
       if (!rmMouseStart) {
-        rmMouseStart = addEventListener(el, "mousedown", handleMouseDown, options);
+        rmMouseStart = addEventListener(
+          el,
+          "mousedown",
+          handleMouseDown,
+          options,
+        );
       }
     }
   };
@@ -124,7 +147,7 @@ export const createPointerEvents = (
   return {
     enable,
     stop,
-    destroy
+    destroy,
   };
 };
 

@@ -57,7 +57,7 @@ export class Reactions {
       ? "https://localhost/api"
       : `${location.protocol}//${location.hostname.replace(
           "www",
-          "m"
+          "m",
         )}/api/v99999`
           .replace("stage", "mstage")
           .replace("production", "mproduction");
@@ -80,7 +80,7 @@ export class Reactions {
     this.calculateUnusedReactions();
 
     this.host.addEventListener("reaction", (e: CustomEvent<ReactionEvent>) =>
-      this.onReaction(e.detail)
+      this.onReaction(e.detail),
     );
   }
 
@@ -98,7 +98,7 @@ export class Reactions {
       .filter(
         (reactionTypeId) =>
           !this.reactionTypes[reactionTypeId].disabled &&
-          !this.reactions.find((y) => y.reactionTypeId === +reactionTypeId)
+          !this.reactions.find((y) => y.reactionTypeId === +reactionTypeId),
       )
       .map((x) => this.reactionTypes[x]);
   }
@@ -107,7 +107,7 @@ export class Reactions {
     const { reactionTypeId, selected } = detail;
 
     const reaction = this.reactions.find(
-      (x) => x.reactionTypeId === reactionTypeId
+      (x) => x.reactionTypeId === reactionTypeId,
     );
 
     if (!reaction) {
@@ -119,7 +119,7 @@ export class Reactions {
 
     if (reaction.amount <= 0) {
       this.reactions = this.reactions.filter(
-        (x) => x.reactionTypeId !== reactionTypeId
+        (x) => x.reactionTypeId !== reactionTypeId,
       );
       this.calculateUnusedReactions();
     }
@@ -207,7 +207,7 @@ export class Reactions {
             "Content-Type": "application/json",
             "hattrick-auth-token": this.token,
           },
-        }
+        },
       )
         .then((res) => res.json())
         .then((users: Array<IReactionUser>) => {
@@ -215,7 +215,7 @@ export class Reactions {
           this.reactions.forEach((x) => (x._users = []));
 
           let reactionsMap = new Map(
-            this.reactions.map((element) => [element.reactionTypeId, element])
+            this.reactions.map((element) => [element.reactionTypeId, element]),
           );
 
           users.forEach((user) => {

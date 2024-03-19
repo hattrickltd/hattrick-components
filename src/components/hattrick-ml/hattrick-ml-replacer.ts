@@ -1,5 +1,4 @@
 export class HattrickMlReplacer {
-
   base: string = "";
   internalLinkTarget: string = "_self";
 
@@ -42,7 +41,11 @@ export class HattrickMlReplacer {
   getYouthLeagueId(youthLeagueId: number | string, text: string): string {
     return `<a href="${this.base}/World/Series/YouthSeries.aspx?YouthLeagueId=${youthLeagueId}" target="${this.internalLinkTarget}">${text}</a>`;
   }
-  getPost(threadId: number | string, postnumber: number | string, text: string): string {
+  getPost(
+    threadId: number | string,
+    postnumber: number | string,
+    text: string,
+  ): string {
     return `<a href="${this.base}/Forum/Read.aspx?t=${threadId}&n=${postnumber}&mr=0" target="${this.internalLinkTarget}">${text}</a>`;
   }
   getArticleId(articleIdId: number | string, text: string): string {

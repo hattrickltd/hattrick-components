@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html dir="ltr" lang="en">
   <head>
     <meta charset="utf-8" />
@@ -147,7 +147,12 @@
       hattrick-timer,
       hattrick-match-clock {
         display: block;
-        font: 14px "Fira Sans", Verdana, Geneva, Tahoma, sans-serif;
+        font:
+          14px "Fira Sans",
+          Verdana,
+          Geneva,
+          Tahoma,
+          sans-serif;
         --match-clock-monospace-width: 8px;
       }
 
@@ -266,7 +271,7 @@
       <div examples>
         <script>
           const reactionsContainer = document.querySelector(
-            "[reactions] [examples]"
+            "[reactions] [examples]",
           );
           const reactions = document.createElement("hattrick-reactions");
           reactions.sourceTypeId = 1;
@@ -1499,7 +1504,7 @@
 
         const avatarHolder = document.getElementById("avatarHolder");
         const avatarHolderSmaller = document.getElementById(
-          "avatarHolderSmaller"
+          "avatarHolderSmaller",
         );
 
         [
@@ -1533,11 +1538,11 @@
 
             document.body.style.setProperty(
               "--avatar-size",
-              parseInt(e.target.value) / 100
+              parseInt(e.target.value) / 100,
             );
             avatarHolderSmaller.style.setProperty(
               "--avatar-size",
-              parseInt(e.target.value) / 100 / 2
+              parseInt(e.target.value) / 100 / 2,
             );
           });
       }

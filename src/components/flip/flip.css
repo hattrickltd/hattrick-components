@@ -17,10 +17,11 @@
   transition: transform var(--flip-duration, 1s);
 }
 
-.front, .back {
+.front,
+.back {
   backface-visibility: hidden;
-  transition: opacity .2s linear .3s;
-  
+  transition: opacity 0.2s linear 0.3s;
+
   position: absolute;
   width: 100%;
   height: 100%;
@@ -30,14 +31,26 @@
   align-items: center;
 }
 
-.front { opacity: 1; }
-.back { opacity: 0; }
+.front {
+  opacity: 1;
+}
+.back {
+  opacity: 0;
+}
 
-:host([flipped]) .front { opacity: 0; }
-:host([flipped]) .back { opacity: 1; }
+:host([flipped]) .front {
+  opacity: 0;
+}
+:host([flipped]) .back {
+  opacity: 1;
+}
 
-:host([direction="x"]) .back { transform: rotateX(180deg); }
-:host([direction="y"]) .back { transform: rotateY(180deg); }
+:host([direction="x"]) .back {
+  transform: rotateX(180deg);
+}
+:host([direction="y"]) .back {
+  transform: rotateY(180deg);
+}
 
 :host([flipped][direction="x"]) .wrapper {
   transform: rotateX(180deg);
@@ -51,7 +64,8 @@
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   /* The transformations for IE doesn't work so well, so we make some hacking here. */
 
-  .front, .back {
+  .front,
+  .back {
     transform: none !important;
     position: absolute;
     top: 0;

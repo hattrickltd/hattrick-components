@@ -1,4 +1,3 @@
-
 :host {
   display: block;
   height: 14px;
@@ -8,7 +7,9 @@
   position: relative;
 }
 
-.level, .cap, .max {
+.level,
+.cap,
+.max {
   position: absolute;
   overflow: hidden;
   height: 100%;
@@ -17,35 +18,35 @@
 }
 
 .level {
-  background-color: var(--bar-level-background, #59965D);
-  color: var(--bar-level-color, #F7F7F7);
+  background-color: var(--bar-level-background, #59965d);
+  color: var(--bar-level-color, #f7f7f7);
 }
 
 .cap {
-  background-color: var(--bar-cap-background, #CACACA);
+  background-color: var(--bar-cap-background, #cacaca);
   color: var(--bar-cap-color, black);
 }
 
 .max {
-  background-color: var(--bar-max-background, #ECECEC);
-  color: var(--bar-max-color, #3F7137);
+  background-color: var(--bar-max-background, #ececec);
+  color: var(--bar-max-color, #3f7137);
 }
 
 .level.capped {
-  background-color: var(--bar-capped-background, #FFC000);
+  background-color: var(--bar-capped-background, #ffc000);
   color: var(--bar-capped-color, black);
 }
 
 :host(.verylow) .level {
-  background-color: var(--bar-verylow-background, #DD4140);
+  background-color: var(--bar-verylow-background, #dd4140);
   color: var(--bar-verylow-color, #f7f8f7);
 }
 :host(.low) .level {
-  background-color: var(--bar-low-background, #F5A104);
+  background-color: var(--bar-low-background, #f5a104);
   color: var(--bar-low-color, black);
 }
 :host(.high) .level {
-  background-color: var(--bar-high-background, #F1C40A);
+  background-color: var(--bar-high-background, #f1c40a);
   color: var(--bar-high-color, black);
 }
 :host(.veryhigh) .level {

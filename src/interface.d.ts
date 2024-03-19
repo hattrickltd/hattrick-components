@@ -1,5 +1,4 @@
-
-export type Side = 'start' | 'end';
+export type Side = "start" | "end";
 
 export interface StyleEventDetail {
   [styleName: string]: boolean;

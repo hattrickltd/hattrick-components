@@ -5,7 +5,7 @@
 
 .playertooltip {
   background: white;
-  border: 2px solid #277F31;
+  border: 2px solid #277f31;
   border-radius: 4px;
   max-width: 625px;
   padding: 5px 10px;
@@ -22,8 +22,12 @@
   display: block;
 } */
 
-.loading { padding: 75px 200px; }
-.bar-max { width: 100%; }
+.loading {
+  padding: 75px 200px;
+}
+.bar-max {
+  width: 100%;
+}
 
 .player-information {
   margin-bottom: 10px;
@@ -35,7 +39,9 @@ hattrick-bar {
   margin-bottom: -2px;
   margin-top: 1px;
 }
-hattrick-avatar { margin-inline-end: 15px; }
+hattrick-avatar {
+  margin-inline-end: 15px;
+}
 
 table td {
   border-width: 0 !important;

@@ -1,4 +1,3 @@
-
 export interface IAvatarPart {
   url: string;
   x: number;

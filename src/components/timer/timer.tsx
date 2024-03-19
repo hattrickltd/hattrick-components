@@ -108,23 +108,23 @@ export class Timer {
         hours > 0
           ? this.padLeft(seconds)
           : minutes > 0
-          ? minutes.toString()
-          : ""
+            ? minutes.toString()
+            : "",
       )
       .replace("MM", this.padLeft(minutes))
       .replace("M", minutes.toString())
 
       .replace(
         "ss",
-        hours > 0 || minutes > 0 || seconds > 0 ? this.padLeft(seconds) : ""
+        hours > 0 || minutes > 0 || seconds > 0 ? this.padLeft(seconds) : "",
       )
       .replace(
         "s",
         hours > 0 || minutes > 0
           ? this.padLeft(seconds)
           : seconds > 0
-          ? seconds.toString()
-          : ""
+            ? seconds.toString()
+            : "",
       )
       .replace("SS", this.padLeft(seconds))
       .replace("S", seconds.toString());
@@ -166,8 +166,8 @@ function fixDate(date: Date | string | number): Date {
     return new Date(
       date.replace(
         /(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/,
-        "$1T$2:$3"
-      )
+        "$1T$2:$3",
+      ),
     );
 
   return date as any;

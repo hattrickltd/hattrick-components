@@ -40,7 +40,9 @@
   // white-space: nowrap;
   */
 
-  transition: margin 0.3s, opacity 0.3s;
+  transition:
+    margin 0.3s,
+    opacity 0.3s;
   transition-delay: var(--tooltip-delay, 0s);
 }
 #tooltip[hidden] {

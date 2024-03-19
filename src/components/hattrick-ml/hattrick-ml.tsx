@@ -7,7 +7,6 @@ import { HattrickMlReplacer } from "./hattrick-ml-replacer";
   shadow: false,
 })
 export class HattrickMl {
-
   @Element() host: HTMLHattrickMlElement;
 
   @Prop() text: string;
@@ -29,7 +28,7 @@ export class HattrickMl {
   private parseHattrickMl(): string {
     HattrickMlParser.replacer.base = this.base;
     HattrickMlParser.replacer.internalLinkTarget = this.internalLinkTarget;
-    
+
     this.parser.spoilerText = this.spoilerText;
     this.parser.currencyRate = this.currencyRate;
     this.parser.currencyName = this.currencyName;
@@ -38,8 +37,10 @@ export class HattrickMl {
   }
 
   render() {
-    return <Host>
-      <div innerHTML={ this.parseHattrickMl() }></div>
-    </Host>;
+    return (
+      <Host>
+        <div innerHTML={this.parseHattrickMl()}></div>
+      </Host>
+    );
   }
 }

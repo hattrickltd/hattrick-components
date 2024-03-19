@@ -217,7 +217,7 @@ describe("MatchClock unit", () => {
       await page.waitForChanges();
 
       expect(
-        page.root.classList.contains("match-clock-passed-zero")
+        page.root.classList.contains("match-clock-passed-zero"),
       ).toBeTruthy();
     });
 
@@ -228,7 +228,7 @@ describe("MatchClock unit", () => {
       await page.waitForChanges();
 
       expect(
-        page.root.classList.contains("match-clock-passed-zero")
+        page.root.classList.contains("match-clock-passed-zero"),
       ).toBeFalsy();
     });
   });

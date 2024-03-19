@@ -1,4 +1,3 @@
-
 export function generateIdPath(id: number) {
   return [
     generateId(id, 100000),
@@ -16,9 +15,14 @@ export function grouped(val: number): string {
   return val.toLocaleString("sv");
 }
 
-export function currency(money: number, rate: number, name: string, useDecimals: boolean = false): string {
+export function currency(
+  money: number,
+  rate: number,
+  name: string,
+  useDecimals: boolean = false,
+): string {
   money = money / rate;
-  
+
   if (!useDecimals) {
     money = Math.floor(money);
   }

@@ -16,7 +16,7 @@ export const createGesture = (config: GestureConfig): Gesture => {
     maxAngle: 40,
     threshold: 10,
 
-    ...config
+    ...config,
   };
 
   const canStart = finalConfig.canStart;
@@ -42,14 +42,18 @@ export const createGesture = (config: GestureConfig): Gesture => {
     deltaY: 0,
     currentTime: 0,
     event: undefined as any,
-    data: undefined
+    data: undefined,
   };
 
-  const pan = createPanRecognizer(finalConfig.direction, finalConfig.threshold, finalConfig.maxAngle);
+  const pan = createPanRecognizer(
+    finalConfig.direction,
+    finalConfig.threshold,
+    finalConfig.maxAngle,
+  );
   const gesture = GESTURE_CONTROLLER.createGesture({
     name: config.gestureName,
     priority: config.gesturePriority,
-    disableScroll: config.disableScroll
+    disableScroll: config.disableScroll,
   });
 
   const pointerDown = (ev: UIEvent): boolean => {
@@ -205,8 +209,8 @@ export const createGesture = (config: GestureConfig): Gesture => {
     pointerUp,
     {
       capture: false,
-      passive
-    }
+      passive,
+    },
   );
 
   const abortGesture = () => {
@@ -231,7 +235,7 @@ export const createGesture = (config: GestureConfig): Gesture => {
     destroy() {
       gesture.destroy();
       pointerEvents.destroy();
-    }
+    },
   };
 };
 
@@ -247,7 +251,7 @@ const calcGestureData = (detail: GestureDetail, ev: UIEvent | undefined) => {
 
   const currentX = detail.currentX;
   const currentY = detail.currentY;
-  const timestamp = detail.currentTime = now(ev);
+  const timestamp = (detail.currentTime = now(ev));
   const timeDelta = timestamp - prevT;
   if (timeDelta > 0 && timeDelta < 100) {
     const velocityX = (currentX - prevX) / timeDelta;

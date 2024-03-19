@@ -9,8 +9,13 @@ interface HapticNotificationOptions {
 
 const HapticEngine = {
   getEngine() {
-    const win = (window as any);
-    return (win.TapticEngine) || (win.Capacitor && win.Capacitor.isPluginAvailable("Haptics") && win.Capacitor.Plugins.Haptics);
+    const win = window as any;
+    return (
+      win.TapticEngine ||
+      (win.Capacitor &&
+        win.Capacitor.isPluginAvailable("Haptics") &&
+        win.Capacitor.Plugins.Haptics)
+    );
   },
   available() {
     return !!this.getEngine();
@@ -19,7 +24,7 @@ const HapticEngine = {
     return !!(window as any).TapticEngine;
   },
   isCapacitor() {
-    const win = (window as any);
+    const win = window as any;
     return !!win.Capacitor;
   },
   impact(options: HapticImpactOptions) {
@@ -27,7 +32,9 @@ const HapticEngine = {
     if (!engine) {
       return;
     }
-    const style = this.isCapacitor() ? options.style.toUpperCase() : options.style;
+    const style = this.isCapacitor()
+      ? options.style.toUpperCase()
+      : options.style;
     engine.impact({ style });
   },
   notification(options: HapticNotificationOptions) {
@@ -35,7 +42,9 @@ const HapticEngine = {
     if (!engine) {
       return;
     }
-    const style = this.isCapacitor() ? options.style.toUpperCase() : options.style;
+    const style = this.isCapacitor()
+      ? options.style.toUpperCase()
+      : options.style;
     engine.notification({ style });
   },
   selection() {
@@ -73,7 +82,7 @@ const HapticEngine = {
     } else {
       engine.gestureSelectionEnd();
     }
-  }
+  },
 };
 
 /**

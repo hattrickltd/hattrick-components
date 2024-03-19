@@ -11,7 +11,6 @@ declare const window: any;
   scoped: true,
 })
 export class MatchArena {
-
   @Element() host: HTMLStencilElement;
 
   @Prop({ mutable: true }) arenaId!: number;
@@ -20,9 +19,9 @@ export class MatchArena {
   @Prop() homeColor: string = "#6ecdea";
   @Prop() awayColor: string = "#d15e5e";
 
-  @Prop() resourceUrl: string = "https://res.hattrick.org"
+  @Prop() resourceUrl: string = "https://res.hattrick.org";
   @Prop() forceUploadReload: string = "";
-  
+
   private matchArena: HTMLImageElement;
   private mask: HTMLImageElement;
   private canvas: HTMLCanvasElement;
@@ -34,20 +33,24 @@ export class MatchArena {
   render() {
     const { arenaId } = this;
 
-    let src = (arenaId > 0) ? this.getArenaImage("arena") : this.getDefaultImage("arena");
+    let src =
+      arenaId > 0 ? this.getArenaImage("arena") : this.getDefaultImage("arena");
 
-    return <Host>
-      <canvas ref={ el => this.canvas = el }></canvas>
-      <div key={ `${ arenaId }` }>
-        <img src={ src }
-             onError={ _ => this.onError() }
-             onLoad={ ev => {
-               this.matchArena = ev.target as HTMLImageElement;
-               this.onLoad();
-             }}
-        />
-      </div>
-    </Host>; 
+    return (
+      <Host>
+        <canvas ref={(el) => (this.canvas = el)}></canvas>
+        <div key={`${arenaId}`}>
+          <img
+            src={src}
+            onError={(_) => this.onError()}
+            onLoad={(ev) => {
+              this.matchArena = ev.target as HTMLImageElement;
+              this.onLoad();
+            }}
+          />
+        </div>
+      </Host>
+    );
   }
 
   private onLoad() {
@@ -55,7 +58,14 @@ export class MatchArena {
 
     if (matchArena && mask) {
       let spec = new window.SpecGen();
-      spec.drawSpectators(matchArena, mask, canvas, amount, homeColor, awayColor);
+      spec.drawSpectators(
+        matchArena,
+        mask,
+        canvas,
+        amount,
+        homeColor,
+        awayColor,
+      );
     }
   }
 
@@ -68,18 +78,21 @@ export class MatchArena {
 
   private loadMask() {
     let mask = new Image();
-    mask.src = (this.arenaId > 0) ? this.getArenaImage("mask") : this.getDefaultImage("mask");
+    mask.src =
+      this.arenaId > 0
+        ? this.getArenaImage("mask")
+        : this.getDefaultImage("mask");
     mask.crossOrigin = "Anonymous";
     mask.onload = () => {
       this.mask = mask;
       this.onLoad();
-    }
+    };
   }
 
   private getArenaImage(type: MatchArenaImageType): string {
     const { arenaId, resourceUrl, forceUploadReload } = this;
 
-    let src = `${ resourceUrl }/arenas/${ generateIdPath(arenaId) }/${ this.getFileName(type) }`
+    let src = `${resourceUrl}/arenas/${generateIdPath(arenaId)}/${this.getFileName(type)}`;
     if (forceUploadReload) src += "?r=" + forceUploadReload;
 
     return src;
@@ -88,20 +101,22 @@ export class MatchArena {
     const { capacity, resourceUrl } = this;
 
     if (capacity >= 50_000) {
-      return `${ resourceUrl }/arenas/default/50000/${ this.getFileName(type) }`;
+      return `${resourceUrl}/arenas/default/50000/${this.getFileName(type)}`;
     } else if (capacity >= 28_000) {
-      return `${ resourceUrl }/arenas/default/28000/${ this.getFileName(type) }`;
+      return `${resourceUrl}/arenas/default/28000/${this.getFileName(type)}`;
     } else if (capacity >= 20_000) {
-      return `${ resourceUrl }/arenas/default/20000/${ this.getFileName(type) }`;
+      return `${resourceUrl}/arenas/default/20000/${this.getFileName(type)}`;
     } else {
-      return `${ resourceUrl }/arenas/default/12000/${ this.getFileName(type) }`;
+      return `${resourceUrl}/arenas/default/12000/${this.getFileName(type)}`;
     }
   }
 
   private getFileName(type: MatchArenaImageType): string {
     switch (type) {
-      case "arena" : return "closeup.png";
-      case "mask" : return "closeup_mask.png";
+      case "arena":
+        return "closeup.png";
+      case "mask":
+        return "closeup_mask.png";
     }
   }
 }

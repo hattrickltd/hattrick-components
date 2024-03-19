@@ -6,7 +6,6 @@ import { waitForIntersection } from "../../global/lazy-loading";
   shadow: false,
 })
 export class Picture {
-
   @Element() host: HTMLHattrickPictureElement;
 
   @Prop() src: string;
@@ -28,7 +27,7 @@ export class Picture {
     return (
       <picture>
         <slot />
-        <img src={ this.src } alt={ this.alt } srcset={ this.srcset } />
+        <img src={this.src} alt={this.alt} srcset={this.srcset} />
       </picture>
     );
   }

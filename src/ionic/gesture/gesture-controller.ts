@@ -1,6 +1,4 @@
-
 class GestureController {
-
   private gestureId = 0;
   private requestedStart = new Map<number, number>();
   private disabledGestures = new Map<string, Set<number>>();
@@ -16,7 +14,7 @@ class GestureController {
       this.newID(),
       config.name,
       config.priority || 0,
-      !!config.disableScroll
+      !!config.disableScroll,
     );
   }
 
@@ -28,7 +26,7 @@ class GestureController {
       this,
       this.newID(),
       opts.disable,
-      !!opts.disableScroll
+      !!opts.disableScroll,
     );
   }
 
@@ -48,7 +46,7 @@ class GestureController {
     const requestedStart = this.requestedStart;
     let maxPriority = -10000;
 
-    requestedStart.forEach(value => {
+    requestedStart.forEach((value) => {
       maxPriority = Math.max(maxPriority, value);
     });
 
@@ -56,7 +54,9 @@ class GestureController {
       this.capturedId = id;
       requestedStart.clear();
 
-      const event = new CustomEvent("ionGestureCaptured", { detail: { gestureName } });
+      const event = new CustomEvent("ionGestureCaptured", {
+        detail: { gestureName },
+      });
       document.dispatchEvent(event);
       return true;
     }
@@ -147,7 +147,7 @@ class GestureDelegate {
     private id: number,
     private name: string,
     priority: number,
-    private disableScroll: boolean
+    private disableScroll: boolean,
   ) {
     this.priority = priority * 1000000 + id;
     this.ctrl = ctrl;
@@ -199,14 +199,13 @@ class GestureDelegate {
 }
 
 class BlockerDelegate {
-
   private ctrl?: GestureController;
 
   constructor(
     ctrl: GestureController,
     private id: number,
     private disable: string[] | undefined,
-    private disableScroll: boolean
+    private disableScroll: boolean,
   ) {
     this.ctrl = ctrl;
   }
