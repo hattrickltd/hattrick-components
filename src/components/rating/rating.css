@@ -15,8 +15,10 @@
   --rating-font-size: 11px;
   --rating-font-size-half: 7px;
 
-  --rating-font-size-long: 8px;
+  --rating-font-size-long: 11px;
   --rating-font-size-long-half: 7px;
+
+  --letter-spacing-long: -1px;
 
   --rating-star-size: 8px;
   --rating-star-color: currentColor;
@@ -31,6 +33,8 @@
 
   --rating-font-size-long: 14px;
   --rating-font-size-long-half: 10px;
+
+  --letter-spacing-long: inherit;
 
   --rating-star-size: 13px;
 }
@@ -83,6 +87,7 @@ hattrick-progress-arc {
 }
 .rating-long .rating-full {
   font-size: var(--rating-font-size-long);
+  letter-spacing: var(--letter-spacing-long);
 }
 .rating-long .rating-half {
   font-size: var(--rating-font-size-long-half);
