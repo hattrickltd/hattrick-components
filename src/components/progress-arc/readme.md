@@ -16,13 +16,27 @@ This is a Stencil fork of [angular-progress-arc](https://github.com/jesujcastill
 
 ## Properties
 
-| Property           | Attribute           | Description                                                    | Type      |
-| ------------------ | ------------------- | -------------------------------------------------------------- | --------- |
-| `complete`         | `complete`          | Expression evaluating to float [0.0, 1.0]                      | `number`  |
-| `counterClockwise` | `counter-clockwise` | Indicating if the progress should instead be counter clockwise | `boolean` |
-| `size`             | `size`              | Size of element in pixels.                                     | `number`  |
-| `strokeWidth`      | `stroke-width`      | Width of progress arc stroke.                                  | `number`  |
+| Property           | Attribute           | Description                                                    | Type      | Default     |
+| ------------------ | ------------------- | -------------------------------------------------------------- | --------- | ----------- |
+| `angle`            | `angle`             |                                                                | `number`  | `0`         |
+| `circumference`    | `circumference`     |                                                                | `number`  | `360`       |
+| `complete`         | `complete`          | Expression evaluating to float [0.0, 1.0]                      | `number`  | `undefined` |
+| `counterClockwise` | `counter-clockwise` | Indicating if the progress should instead be counter clockwise | `boolean` | `false`     |
+| `size`             | `size`              | Size of element in pixels.                                     | `number`  | `undefined` |
 
+
+## Dependencies
+
+### Used by
+
+ - [hattrick-rating](../rating)
+
+### Graph
+```mermaid
+graph TD;
+  hattrick-rating --> hattrick-progress-arc
+  style hattrick-progress-arc fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

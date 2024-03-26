@@ -41,21 +41,57 @@ With a design inspired by [ngx-charts tooltips](https://github.com/swimlane/ngx-
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                                                                                               | Type                                                |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| `arrow`    | `arrow`    | The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom. | `"start"`, `"middle"`, `"end"`, `"none"`            |
-| `content`  | `content`  | The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.                                                                                                                            | `string`                                            |
-| `dir`      | `dir`      |                                                                                                                                                                                                                           | `string`                                            |
-| `position` | `position` | Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.                                                                  | `"top"`, `"bottom"`, `"start"`, `"end"`, `"cursor"` |
+| Property     | Attribute     | Description                                                                                                                                                                                                               | Type                                                | Default     |
+| ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ----------- |
+| `alwaysShow` | `always-show` |                                                                                                                                                                                                                           | `boolean`                                           | `false`     |
+| `arrow`      | `arrow`       | The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom. | `"end" \| "middle" \| "none" \| "start"`            | `"none"`    |
+| `content`    | `content`     | The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.                                                                                                                            | `string`                                            | `""`        |
+| `dir`        | `dir`         |                                                                                                                                                                                                                           | `string`                                            | `undefined` |
+| `disabled`   | `disabled`    |                                                                                                                                                                                                                           | `boolean`                                           | `false`     |
+| `position`   | `position`    | Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.                                                                  | `"bottom" \| "cursor" \| "end" \| "start" \| "top"` | `"cursor"`  |
 
 
 ## Methods
 
-| Method  | Description |
-| ------- | ----------- |
-| `close` |             |
-| `open`  |             |
+### `close() => Promise<void>`
 
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `open(ev?: MouseEvent) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name | Type         | Description |
+| ---- | ------------ | ----------- |
+| `ev` | `MouseEvent` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
+## Dependencies
+
+### Used by
+
+ - [hattrick-reactions](../reactions)
+
+### Graph
+```mermaid
+graph TD;
+  hattrick-reactions --> hattrick-tooltip
+  style hattrick-tooltip fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

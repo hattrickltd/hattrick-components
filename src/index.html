@@ -1423,6 +1423,13 @@
           timer.texts = texts;
           wrapper.appendChild(timer);
         }
+
+        let timer = document.createElement("hattrick-match-clock");
+        timer.matchdate = Date.now() - 104.9 * 60 * 1000;
+        timer.finishedDate = Date.now() + 0.1 * 60 * 1000;
+        // timer.countUpFormat = "M'";
+        // timer.texts = texts;
+        wrapper.appendChild(timer);
       }
 
       function addBars(linkEvent) {

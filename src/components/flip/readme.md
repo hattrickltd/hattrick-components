@@ -32,10 +32,10 @@ document.getElementById("flip").flipped = true;
 
 ## Properties
 
-| Property    | Attribute   | Description                                                                 | Type         |
-| ----------- | ----------- | --------------------------------------------------------------------------- | ------------ |
-| `direction` | `direction` | If the flip container should rotate horizontally (x) or vertically (y).     | `"x"`, `"y"` |
-| `flipped`   | `flipped`   | If the flip container should rotate horizontally (`x`) or vertically (`y`). | `boolean`    |
+| Property    | Attribute   | Description                                                                 | Type         | Default     |
+| ----------- | ----------- | --------------------------------------------------------------------------- | ------------ | ----------- |
+| `direction` | `direction` | If the flip container should rotate horizontally (`x`) or vertically (`y`). | `"x" \| "y"` | `undefined` |
+| `flipped`   | `flipped`   | If the container should be flipped (showing back) or not.                   | `boolean`    | `undefined` |
 
 
 ----------------------------------------------

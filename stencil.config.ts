@@ -21,6 +21,9 @@ export const config: Config = {
     {
       type: "www",
     },
+    {
+      type: "docs-readme",
+    },
   ],
   testing: {
     testPathIgnorePatterns: [

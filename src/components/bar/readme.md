@@ -37,16 +37,27 @@ Currently is at level 4, can reach (cap at) 6, but 8 is the max for this type of
 
 ## Properties
 
-| Property       | Attribute      | Description                                                                                           | Type      |
-| -------------- | -------------- | ----------------------------------------------------------------------------------------------------- | --------- |
-| `cap`          | `cap`          | If there's a max before the end of the bar (e.g. maxed youth skill).                                  | `number`  |
-| `denomination` | `denomination` | The denomination of the skill level                                                                   | `string`  |
-| `isCap`        | `is-cap`       | If the sublevel is the same as the levelCap.                                                          | `boolean` |
-| `label`        | `label`        | The label shown inside the bar                                                                        | `string`  |
-| `lazy`         | `lazy`         | Set to false to load the bar directly, as opposed to loading it when it's visible within the viewport | `boolean` |
-| `level`        | `level`        | The level of the bar.                                                                                 | `number`  |
-| `max`          | `max`          | The maximum level the bar should show.                                                                | `number`  |
+| Property       | Attribute      | Description                                                          | Type      | Default     |
+| -------------- | -------------- | -------------------------------------------------------------------- | --------- | ----------- |
+| `cap`          | `cap`          | If there's a max before the end of the bar (e.g. maxed youth skill). | `number`  | `0`         |
+| `denomination` | `denomination` | The denomination of the skill level                                  | `string`  | `""`        |
+| `isCap`        | `is-cap`       | If the sublevel is the same as the levelCap.                         | `boolean` | `false`     |
+| `level`        | `level`        | The level of the bar.                                                | `number`  | `undefined` |
+| `max`          | `max`          | The maximum level the bar should show.                               | `number`  | `20`        |
 
+
+## Dependencies
+
+### Used by
+
+ - [hattrick-player](../player)
+
+### Graph
+```mermaid
+graph TD;
+  hattrick-player --> hattrick-bar
+  style hattrick-bar fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

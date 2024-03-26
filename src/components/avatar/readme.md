@@ -71,31 +71,60 @@ Additionally, you can create silhouettes by settings `avatar.parts` to a number.
 
 ## Properties
 
-| Property     | Attribute    | Description                                                                                                          | Type                                |
-| ------------ | ------------ | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `background` | `background` | Set whether or not the background should be shown.                                                                   | `boolean`                           |
-| `base`       | `base`       | the base route to the avatars, can be either a relative or absolute url                                              | `string`                            |
-| `facecard`   | `facecard`   | Set whether or not the surrounding card should be shown.                                                             | `boolean`                           |
-| `injury`     | `injury`     | Set this to false to remove the bandages on injured and bruised players.                                             | `boolean`                           |
-| `lazy`       | `lazy`       | Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport             | `boolean`                           |
-| `parts`      | --           | An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette. | `IAvatarPart[]`, `number`, `string` |
-| `round`      | `round`      | Set to true to generate a circular avatar by cutting off the bottom.                                                 | `boolean`                           |
-| `square`     | `square`     | Set to true to generate a square avatar by cutting off the bottom.                                                   | `boolean`                           |
+| Property     | Attribute     | Description                                                                                                                                                                                                                                                               | Type                                | Default          |
+| ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | ---------------- |
+| `background` | `background`  | Set whether or not the background should be shown.                                                                                                                                                                                                                        | `boolean`                           | `true`           |
+| `base`       | `base`        | the base route to the avatars, can be either a relative or absolute url.                                                                                                                                                                                                  | `string`                            | `"/Img/Avatar/"` |
+| `composed`   | `composed`    | Set to true if you want all parts to finish loading before showing the avatar. This will make the first paint much slower, but the avatar will never be just partially visible. The time to when the full avatar is printed will not be affected by this setting however. | `boolean`                           | `false`          |
+| `facecard`   | `facecard`    | Set whether or not the surrounding card should be shown.                                                                                                                                                                                                                  | `boolean`                           | `true`           |
+| `injury`     | `injury`      | Set this to false to remove the bandages on injured and bruised players.                                                                                                                                                                                                  | `boolean`                           | `true`           |
+| `kitId`      | `kit-id`      | Allows overriding the default kit by ID.                                                                                                                                                                                                                                  | `number`                            | `0`              |
+| `lazy`       | `lazy`        | Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport.                                                                                                                                                                 | `boolean`                           | `true`           |
+| `lazyMargin` | `lazy-margin` | How soon before the avatar comes into view should we start loading it? Accepts CSS-like margin value.                                                                                                                                                                     | `string`                            | ``250px``        |
+| `parts`      | `parts`       | An array (or a JSON formatted string) with the parts that builds up the avatar, or a number to display a silhouette.                                                                                                                                                      | `IAvatarPart[] \| number \| string` | `undefined`      |
+| `round`      | `round`       | Set to true to generate a circular avatar by cutting off the bottom.                                                                                                                                                                                                      | `boolean`                           | `false`          |
+| `square`     | `square`      | Set to true to generate a square avatar by cutting off the bottom.                                                                                                                                                                                                        | `boolean`                           | `false`          |
 
 
 ## Events
 
-| Event  | Description |
-| ------ | ----------- |
-| `load` | Let you know when the avatar has finished loading. An array of the images loaded will be provided in the `event.detail`. Real type is `EventEmitter<Array<IAvatarImage>>`, but for TypeScript < 2.7 it needs to be generic. |
+| Event  | Description                                                                                                                                                                                                                 | Type               |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `load` | Let you know when the avatar has finished loading. An array of the images loaded will be provided in the `event.detail`. Real type is `EventEmitter<Array<IAvatarImage>>`, but for TypeScript < 2.7 it needs to be generic. | `CustomEvent<any>` |
 
 
 ## Methods
 
-| Method          | Description |
-| --------------- | ----------- |
-| `printToCanvas` | Prints the images to a canvas. Useful together with `.toDataURL()`. This may be useful for faster loading at a later time. |
+### `printToCanvas(images?: Array<IAvatarImage>) => Promise<HTMLCanvasElement>`
 
+Prints the images to a canvas. Useful together with `.toDataURL()`.
+This may be useful for faster loading at a later time.
+
+#### Parameters
+
+| Name     | Type             | Description                                                                        |
+| -------- | ---------------- | ---------------------------------------------------------------------------------- |
+| `images` | `IAvatarImage[]` | The avatar parts to print. Defaults to the images already loaded by the component. |
+
+#### Returns
+
+Type: `Promise<HTMLCanvasElement>`
+
+
+
+
+## Dependencies
+
+### Used by
+
+ - [hattrick-player](../player)
+
+### Graph
+```mermaid
+graph TD;
+  hattrick-player --> hattrick-avatar
+  style hattrick-avatar fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

@@ -31,12 +31,13 @@ _This component doesn't have any CSS variables_
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                     | Type                       |
-| -------------- | --------------- | ----------------------------------------------------------------------------------------------- | -------------------------- |
-| `daysText`     | `days-text`     | The string for `days` which is used if the deadline is more than 72 hours away.                 | `string`                   |
-| `deadline`     | --              | At what time should the clock reach 00:00:00.                                                   | `Date`, `string`, `number` |
-| `keepCounting` | `keep-counting` | If the timer should start counting upwards again after reaching 0.                              | `boolean`                  |
-| `maxHours`     | `max-hours`     | After how many hours should it start showing _x days_. Change text via the `daysText` property. | `number`                   |
+| Property       | Attribute       | Description                                                                                     | Type                       | Default      |
+| -------------- | --------------- | ----------------------------------------------------------------------------------------------- | -------------------------- | ------------ |
+| `daysText`     | `days-text`     | The string for `days` which is used if the deadline is more than 72 hours away.                 | `string`                   | `"days"`     |
+| `deadline`     | `deadline`      | At what time should the clock reach 00:00:00.                                                   | `Date \| number \| string` | `undefined`  |
+| `keepCounting` | `keep-counting` | If the timer should start counting upwards again after reaching 0.                              | `boolean`                  | `false`      |
+| `maxHours`     | `max-hours`     | After how many hours should it start showing _x days_. Change text via the `daysText` property. | `number`                   | `72`         |
+| `pattern`      | `pattern`       |                                                                                                 | `string`                   | `"HH:MM:SS"` |
 
 
 ----------------------------------------------

@@ -13,11 +13,18 @@ export class MatchClock {
   /** Positive value means we're counting down towards 0. */
   @State() private seconds: number;
 
-  /** Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match.. */
+  /** Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match. */
   @Prop() texts: IClockTexts = {} as any;
 
   /** At what time the match starts. */
   @Prop({ mutable: true }) matchdate: Date | string | number;
+
+  /**
+   * At what time the timer should stop.
+   * If not set, it will continue forever.
+   * If paused, the finishedDate will be pushed forward.
+   */
+  @Prop({ mutable: true }) finishedDate?: Date | string | number;
 
   /** How many minutes of added time the match has. */
   @Prop() addedMinutes: number = 0;
@@ -71,6 +78,12 @@ export class MatchClock {
     if (this._pauseTime) {
       this.matchdate =
         fixDate(this.matchdate).getTime() + (Date.now() - this._pauseTime);
+
+      if (this.finishedDate) {
+        this.finishedDate =
+          fixDate(this.finishedDate).getTime() + (Date.now() - this._pauseTime);
+      }
+
       this._pauseTime = undefined;
     }
     this._interval && clearInterval(this._interval);
@@ -82,12 +95,25 @@ export class MatchClock {
       if (this.speed > 1) {
         this._matchstart -= interval * (this.speed - 1);
       }
-      this.updateTime();
+
+      if (this.didPassFinishedDate()) {
+        this.seconds = Math.ceil(
+          (this._matchstart - fixDate(this.finishedDate).getTime()) / 1000,
+        );
+        clearInterval(this._interval);
+      } else {
+        this.updateTime();
+      }
     }, interval);
   }
 
+  private didPassFinishedDate() {
+    if (!this.finishedDate) return false;
+    return Date.now() >= fixDate(this.finishedDate).getTime();
+  }
+
   private updateTime() {
-    this.seconds = Math.floor((this._matchstart - Date.now()) / 1000);
+    this.seconds = Math.ceil((this._matchstart - Date.now()) / 1000);
   }
 
   private isCountingDown(): boolean {
@@ -141,25 +167,28 @@ export class MatchClock {
           minutes -= this.halftimeBreak;
         }
 
-        if (this.overtimeBreak > 0) {
-          if (
-            minutes >= 90 + this.addedMinutes &&
-            minutes < 90 + this.addedMinutes + this.overtimeBreak
-          ) {
-            // is in overtime break
-            if (this.texts.overtimeBreak)
-              labelAfterClock = " (" + this.texts.overtimeBreak + ")";
-            minutes = 90 + this.addedMinutes + this.overtimeBreak - minutes - 1;
-            seconds = 60 - seconds;
-            if (seconds === 60) {
-              seconds = 0;
-              minutes += 1;
+        if (!this.didPassFinishedDate()) {
+          if (this.overtimeBreak > 0) {
+            if (
+              minutes >= 90 + this.addedMinutes &&
+              minutes < 90 + this.addedMinutes + this.overtimeBreak
+            ) {
+              // is in overtime break
+              if (this.texts.overtimeBreak)
+                labelAfterClock = " (" + this.texts.overtimeBreak + ")";
+              minutes =
+                90 + this.addedMinutes + this.overtimeBreak - minutes - 1;
+              seconds = 60 - seconds;
+              if (seconds === 60) {
+                seconds = 0;
+                minutes += 1;
+              }
+            } else if (minutes >= 90 + this.addedMinutes + this.overtimeBreak) {
+              // is in overtime
+              if (this.texts.overtime)
+                labelAfterClock = " (" + this.texts.overtime + ")";
+              minutes -= this.addedMinutes + this.overtimeBreak;
             }
-          } else if (minutes >= 90 + this.addedMinutes + this.overtimeBreak) {
-            // is in overtime
-            if (this.texts.overtime)
-              labelAfterClock = " (" + this.texts.overtime + ")";
-            minutes -= this.addedMinutes + this.overtimeBreak;
           }
         }
       }

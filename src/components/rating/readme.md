@@ -30,13 +30,42 @@ Used to display a Hattrick rating. Uses [progress-arc](../progress-arc/) to disp
 
 ## Properties
 
-| Property       | Attribute       | Description                            | Type                           |
-| -------------- | --------------- | -------------------------------------- | ------------------------------ |
-| `rating`       | `rating`        | The rating to show inside the stamina. | `number`                       |
-| `size`         | --              | Size of element in pixels.             | `number`, `"small"`, `"large"` |
-| `staminaLabel` | `stamina-label` | Label for the mouseover stamina        | `string`                       |
-| `stamina`      | `stamina`       | Stamina in percentage between 0 and 1. | `number`                       |
+| Property       | Attribute       | Description                                                        | Type                           | Default     |
+| -------------- | --------------- | ------------------------------------------------------------------ | ------------------------------ | ----------- |
+| `noStar`       | `no-star`       |                                                                    | `boolean`                      | `false`     |
+| `rating`       | `rating`        | The rating to show inside the stamina.                             | `number`                       | `undefined` |
+| `size`         | `size`          | Size of element in pixels.                                         | `"large" \| "small" \| number` | `"small"`   |
+| `stamina`      | `stamina`       | Stamina in percentage between 0 and 1.                             | `number`                       | `undefined` |
+| `staminaLabel` | `stamina-label` | Label for the mouseover, formatted as `{staminaLabel}: {stamina}%` | `string`                       | `""`        |
 
+
+## Shadow Parts
+
+| Part             | Description |
+| ---------------- | ----------- |
+| `"progress-arc"` |             |
+| `"rating"`       |             |
+| `"rating-full"`  |             |
+| `"rating-half"`  |             |
+
+
+## Dependencies
+
+### Used by
+
+ - [hattrick-field](../field)
+
+### Depends on
+
+- [hattrick-progress-arc](../progress-arc)
+
+### Graph
+```mermaid
+graph TD;
+  hattrick-rating --> hattrick-progress-arc
+  hattrick-field --> hattrick-rating
+  style hattrick-rating fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 
