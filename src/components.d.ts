@@ -143,6 +143,9 @@ export namespace Components {
           * How many minutes of added time the match has.
          */
         "addedMinutes": number;
+        /**
+          * Format of the timer. Defaults to `MM:SS`, an alternative might include `M'`.
+         */
         "countUpFormat": string;
         /**
           * At what time the timer should stop. If not set, it will continue forever. If paused, the finishedDate will be pushed forward.
@@ -166,6 +169,10 @@ export namespace Components {
         "overtimeBreak": number;
         "pause": () => Promise<void>;
         "resume": () => Promise<void>;
+        /**
+          * If true there's no halftime or overtime countdowns, it just shows 45/90 during the pause.
+         */
+        "skipPauseTimers": boolean;
         /**
           * How fast the clock should tick. Defaults to 1. 2 means twice as fast.
          */
@@ -664,6 +671,9 @@ declare namespace LocalJSX {
           * How many minutes of added time the match has.
          */
         "addedMinutes"?: number;
+        /**
+          * Format of the timer. Defaults to `MM:SS`, an alternative might include `M'`.
+         */
         "countUpFormat"?: string;
         /**
           * At what time the timer should stop. If not set, it will continue forever. If paused, the finishedDate will be pushed forward.
@@ -685,6 +695,10 @@ declare namespace LocalJSX {
           * How many minutes break does the match have before overtime starts.
          */
         "overtimeBreak"?: number;
+        /**
+          * If true there's no halftime or overtime countdowns, it just shows 45/90 during the pause.
+         */
+        "skipPauseTimers"?: boolean;
         /**
           * How fast the clock should tick. Defaults to 1. 2 means twice as fast.
          */

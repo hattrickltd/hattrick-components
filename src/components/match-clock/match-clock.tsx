@@ -41,6 +41,10 @@ export class MatchClock {
   /** How fast the clock should tick. Defaults to 1. 2 means twice as fast. */
   @Prop() speed: number = 1;
 
+  /** If true there's no halftime or overtime countdowns, it just shows 45/90 during the pause. */
+  @Prop() skipPauseTimers: boolean = false;
+
+  /** Format of the timer. Defaults to `MM:SS`, an alternative might include `M'`. */
   @Prop() countUpFormat: string = "MM:SS";
 
   connectedCallback() {
@@ -76,12 +80,10 @@ export class MatchClock {
   @Method()
   async resume() {
     if (this._pauseTime) {
-      this.matchdate =
-        fixDate(this.matchdate).getTime() + (Date.now() - this._pauseTime);
+      this.matchdate = fixDate(this.matchdate).getTime() + (Date.now() - this._pauseTime);
 
       if (this.finishedDate) {
-        this.finishedDate =
-          fixDate(this.finishedDate).getTime() + (Date.now() - this._pauseTime);
+        this.finishedDate = fixDate(this.finishedDate).getTime() + (Date.now() - this._pauseTime);
       }
 
       this._pauseTime = undefined;
@@ -97,9 +99,7 @@ export class MatchClock {
       }
 
       if (this.didPassFinishedDate()) {
-        this.seconds = Math.ceil(
-          (this._matchstart - fixDate(this.finishedDate).getTime()) / 1000,
-        );
+        this.seconds = Math.ceil((this._matchstart - fixDate(this.finishedDate).getTime()) / 1000);
         clearInterval(this._interval);
       } else {
         this.updateTime();
@@ -152,15 +152,20 @@ export class MatchClock {
       minutes = minutes % 60;
     } else {
       if (!this.ignoreBreaks) {
-        if (minutes >= 45 && minutes < 45 + this.halftimeBreak) {
-          // is in halftime
-          if (this.texts.halftime)
-            labelAfterClock = " (" + this.texts.halftime + ")";
-          minutes = 45 + this.halftimeBreak - minutes - 1;
-          seconds = 60 - seconds;
-          if (seconds === 60) {
+        const isInHalftimeBreak = minutes >= 45 && minutes < 45 + this.halftimeBreak;
+
+        if (isInHalftimeBreak) {
+          if (this.skipPauseTimers) {
+            minutes = 45;
             seconds = 0;
-            minutes += 1;
+          } else {
+            if (this.texts.halftime) labelAfterClock = " (" + this.texts.halftime + ")";
+            minutes = 45 + this.halftimeBreak - minutes - 1;
+            seconds = 60 - seconds;
+            if (seconds === 60) {
+              seconds = 0;
+              minutes += 1;
+            }
           }
         } else if (minutes >= 45 + this.halftimeBreak) {
           // is in second half
@@ -169,24 +174,27 @@ export class MatchClock {
 
         if (!this.didPassFinishedDate()) {
           if (this.overtimeBreak > 0) {
-            if (
+            const isInOvertimeBreak =
               minutes >= 90 + this.addedMinutes &&
-              minutes < 90 + this.addedMinutes + this.overtimeBreak
-            ) {
-              // is in overtime break
-              if (this.texts.overtimeBreak)
-                labelAfterClock = " (" + this.texts.overtimeBreak + ")";
-              minutes =
-                90 + this.addedMinutes + this.overtimeBreak - minutes - 1;
-              seconds = 60 - seconds;
-              if (seconds === 60) {
+              minutes < 90 + this.addedMinutes + this.overtimeBreak;
+
+            if (isInOvertimeBreak) {
+              if (this.skipPauseTimers) {
+                minutes = 90;
                 seconds = 0;
-                minutes += 1;
+              } else {
+                if (this.texts.overtimeBreak)
+                  labelAfterClock = " (" + this.texts.overtimeBreak + ")";
+                minutes = 90 + this.addedMinutes + this.overtimeBreak - minutes - 1;
+                seconds = 60 - seconds;
+                if (seconds === 60) {
+                  seconds = 0;
+                  minutes += 1;
+                }
               }
             } else if (minutes >= 90 + this.addedMinutes + this.overtimeBreak) {
               // is in overtime
-              if (this.texts.overtime)
-                labelAfterClock = " (" + this.texts.overtime + ")";
+              if (this.texts.overtime) labelAfterClock = " (" + this.texts.overtime + ")";
               minutes -= this.addedMinutes + this.overtimeBreak;
             }
           }
@@ -197,11 +205,7 @@ export class MatchClock {
     return { minutes, seconds, days, hours, labelAfterClock };
   }
 
-  private format(
-    clock: IClock,
-    format: string,
-    texts: IClockTexts = {} as any,
-  ): string {
+  private format(clock: IClock, format: string, texts: IClockTexts = {} as any): string {
     // if texts contains these letters, it'll break unless we reformat it first
     format = format
       .replace("DD", "{0}")
@@ -249,15 +253,11 @@ export class MatchClock {
 function fixDate(date: Date | string | number): Date {
   if (!date) return new Date();
 
-  if (Object.prototype.toString.call(date) === "[object Date]")
-    return date as Date;
+  if (Object.prototype.toString.call(date) === "[object Date]") return date as Date;
   if (!isNaN(date as any)) return new Date(parseInt(date.toString()));
   if (typeof date === "string")
     return new Date(
-      date.replace(
-        /(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/,
-        "$1T$2:$3",
-      ),
+      date.replace(/(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/, "$1T$2:$3"),
     );
 
   return date as any;
