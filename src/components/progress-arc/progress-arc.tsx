@@ -68,37 +68,39 @@ export class ProgressArc {
     if (this.complete === 1 && circumference === 360) progressDashArray = null;
 
     return (
-      <svg
-        style={{
-          width: this.size + "px",
-          height: this.size + "px",
-          transform: `rotate(${offset}deg)`,
-        }}
-      >
-        <circle
-          class="track"
-          cx={size / 2}
-          cy={size / 2}
-          r={(size - strokeWidth) / 2}
-          fill="none"
-          stroke-width={strokeWidth}
-          stroke-dasharray={trackDashArray}
-          pathLength={100}
-        ></circle>
-        {this.complete > 0 && (
+      <Host role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={100 * this.complete}>
+        <svg
+          style={{
+            width: this.size + "px",
+            height: this.size + "px",
+            transform: `rotate(${offset}deg)`,
+          }}
+        >
           <circle
-            class="progress"
+            class="track"
             cx={size / 2}
             cy={size / 2}
             r={(size - strokeWidth) / 2}
             fill="none"
             stroke-width={strokeWidth}
-            stroke-dasharray={progressDashArray}
-            stroke-dashoffset={progressDashOffset}
+            stroke-dasharray={trackDashArray}
             pathLength={100}
           ></circle>
-        )}
-      </svg>
+          {this.complete > 0 && (
+            <circle
+              class="progress"
+              cx={size / 2}
+              cy={size / 2}
+              r={(size - strokeWidth) / 2}
+              fill="none"
+              stroke-width={strokeWidth}
+              stroke-dasharray={progressDashArray}
+              stroke-dashoffset={progressDashOffset}
+              pathLength={100}
+            ></circle>
+          )}
+        </svg>
+      </Host>
     );
   }
 }
