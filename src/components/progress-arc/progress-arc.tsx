@@ -1,4 +1,4 @@
-import { h, Component, Prop, Watch, Element } from "@stencil/core";
+import { h, Component, Prop, Watch, Element, Host } from "@stencil/core";
 
 @Component({
   tag: "hattrick-progress-arc",
@@ -53,8 +53,19 @@ export class ProgressArc {
   }
 
   render() {
-    const circumferenceDecimal = this.circumference / 360;
-    const { size, strokeWidth, offset } = this;
+    const { size, strokeWidth, offset, circumference } = this;
+    const circumferenceDecimal = circumference / 360;
+
+    let trackDashArray = 100 * circumferenceDecimal;
+    let progressDashArray = 100;
+    let progressDashOffset = 100 - this.complete * 100 * circumferenceDecimal;
+
+    // If the circumference is 360, we don't need a dash array since we'll just fill the whole thing.
+    if (circumference === 360) trackDashArray = null;
+
+    // The dash array creates a gap in the stroke, so if we want a full circle we
+    // simply don't use the dash array since we'll just fill the whole thing.
+    if (this.complete === 1 && circumference === 360) progressDashArray = null;
 
     return (
       <svg
@@ -71,20 +82,22 @@ export class ProgressArc {
           r={(size - strokeWidth) / 2}
           fill="none"
           stroke-width={strokeWidth}
-          stroke-dasharray={100 * circumferenceDecimal}
+          stroke-dasharray={trackDashArray}
           pathLength={100}
         ></circle>
-        <circle
-          class="progress"
-          cx={size / 2}
-          cy={size / 2}
-          r={(size - strokeWidth) / 2}
-          fill="none"
-          stroke-width={strokeWidth}
-          stroke-dasharray={100}
-          stroke-dashoffset={100 - this.complete * 100 * circumferenceDecimal}
-          pathLength={100}
-        ></circle>
+        {this.complete > 0 && (
+          <circle
+            class="progress"
+            cx={size / 2}
+            cy={size / 2}
+            r={(size - strokeWidth) / 2}
+            fill="none"
+            stroke-width={strokeWidth}
+            stroke-dasharray={progressDashArray}
+            stroke-dashoffset={progressDashOffset}
+            pathLength={100}
+          ></circle>
+        )}
       </svg>
     );
   }
