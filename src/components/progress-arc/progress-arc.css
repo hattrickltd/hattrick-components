@@ -2,6 +2,16 @@
   display: inline-block;
 }
 
+.track {
+  stroke: var(--progress-arc-rest-color, transparent);
+  /* stroke-dasharray: 75; */
+}
+.progress {
+  stroke: var(--progress-arc-color, black);
+  /* stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - 0 * 0.75); */
+}
+
 circle {
   stroke-width: var(--progress-arc-stroke-width, 8px);
   stroke: var(--progress-arc-color, black);

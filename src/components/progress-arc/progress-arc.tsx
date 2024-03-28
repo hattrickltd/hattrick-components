@@ -68,9 +68,7 @@ export class ProgressArc {
 
     // console.log(this.host, this.size, this.radius, this.strokeWidth);
 
-    this.backgroundTransformValue = `rotate(${this.offset}, ${this.size / 2}, ${
-      this.size / 2
-    })`;
+    this.backgroundTransformValue = `rotate(${this.offset}, ${this.size / 2}, ${this.size / 2})`;
 
     this.foregroundTransformValue = `rotate(${this.angle - 90}, ${
       this.size / 2
@@ -84,9 +82,34 @@ export class ProgressArc {
 
   render() {
     const circumferenceDecimal = this.circumference / 360;
+    console.log(this.complete, (1 - this.complete) * circumferenceDecimal * 100);
+
+    const { size, strokeWidth } = this;
 
     return (
       <svg style={{ width: this.size + "px", height: this.size + "px" }}>
+        <circle
+          class="track"
+          cx={size / 2}
+          cy={size / 2}
+          r={(size - strokeWidth) / 2}
+          fill="none"
+          stroke-width={strokeWidth}
+          stroke-dasharray={100 * circumferenceDecimal}
+          pathLength={100}
+        ></circle>
+        <circle
+          class="progress"
+          cx={size / 2}
+          cy={size / 2}
+          r={(size - strokeWidth) / 2}
+          fill="none"
+          stroke-width={strokeWidth}
+          stroke-dasharray={100}
+          stroke-dashoffset={100 - this.complete * 100 * circumferenceDecimal}
+          pathLength={100}
+        ></circle>
+        {/*
         <circle
           id="background"
           fill="none"
@@ -120,7 +143,7 @@ export class ProgressArc {
             this.fillCircumference
           }
           transform={this.foregroundTransformValue}
-        />
+        />*/}
       </svg>
     );
   }
