@@ -27,16 +27,8 @@ export class ProgressArc {
 
   @Prop() circumference: number = 360;
 
-  /* Color of the background ring. */
-  // @Prop() background: string;
-
-  private offset: number;
-  // private strokeWidthCapped: number;
-  private radius: number;
-  private fillCircumference: number;
-  private backgroundTransformValue: string;
-  private foregroundTransformValue: string;
   private strokeWidth: number;
+  private offset: number;
 
   componentWillLoad() {
     this.updateRadius();
@@ -47,10 +39,6 @@ export class ProgressArc {
   }
 
   private updateRadius() {
-    // Firefox has a bug where it doesn't handle rotations and stroke dashes correctly.
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=949661
-    // this.offset = /firefox/i.test(navigator.userAgent) ? -89.9 : -90;
-
     this.strokeWidth = parseInt(
       getComputedStyle(this.host)
         .getPropertyValue("--progress-arc-stroke-width")
@@ -61,33 +49,21 @@ export class ProgressArc {
       this.strokeWidth = 8;
     }
 
-    this.offset = -180 + this.angle;
-
-    this.radius = (this.size - this.strokeWidth) / 2;
-    this.fillCircumference = 2 * Math.PI * this.radius;
-
-    // console.log(this.host, this.size, this.radius, this.strokeWidth);
-
-    this.backgroundTransformValue = `rotate(${this.offset}, ${this.size / 2}, ${this.size / 2})`;
-
-    this.foregroundTransformValue = `rotate(${this.angle - 90}, ${
-      this.size / 2
-    }, ${this.size / 2})`;
+    this.offset = this.angle - 90;
   }
-
-  // private hasRestColor(): boolean {
-  //   console.log(this.host.style.getPropertyValue("--progress-arc-rest-color"));
-  //   return !!this.host.style.getPropertyValue("--progress-arc-rest-color");
-  // }
 
   render() {
     const circumferenceDecimal = this.circumference / 360;
-    console.log(this.complete, (1 - this.complete) * circumferenceDecimal * 100);
-
-    const { size, strokeWidth } = this;
+    const { size, strokeWidth, offset } = this;
 
     return (
-      <svg style={{ width: this.size + "px", height: this.size + "px" }}>
+      <svg
+        style={{
+          width: this.size + "px",
+          height: this.size + "px",
+          transform: `rotate(${offset}deg)`,
+        }}
+      >
         <circle
           class="track"
           cx={size / 2}
@@ -109,41 +85,6 @@ export class ProgressArc {
           stroke-dashoffset={100 - this.complete * 100 * circumferenceDecimal}
           pathLength={100}
         ></circle>
-        {/*
-        <circle
-          id="background"
-          fill="none"
-          cx={this.size / 2}
-          cy={this.size / 2}
-          r={this.radius}
-          stroke-width={this.strokeWidth}
-          // stroke-width="var(--progress-arc-stroke-width, 3px)"
-          // stroke="none"
-          // stroke-width="var(--progress-arc-stroke-width, 8px)" //{this.strokeWidthCapped}
-          stroke-dasharray={this.fillCircumference}
-          stroke-dashoffset={
-            (this.counterClockwise ? 1 : -1) *
-            (1 - circumferenceDecimal) *
-            this.fillCircumference
-          }
-          transform={this.backgroundTransformValue}
-        />
-        <circle
-          fill="none"
-          cx={this.size / 2}
-          cy={this.size / 2}
-          r={this.radius}
-          stroke-width={this.strokeWidth}
-          // stroke="none"
-          // stroke-width="var(--progress-arc-stroke-width, 8px)" //{this.strokeWidthCapped}
-          stroke-dasharray={this.fillCircumference}
-          stroke-dashoffset={
-            (this.counterClockwise ? -1 : 1) *
-            (1 - this.complete * circumferenceDecimal) *
-            this.fillCircumference
-          }
-          transform={this.foregroundTransformValue}
-        />*/}
       </svg>
     );
   }
