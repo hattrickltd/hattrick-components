@@ -30,13 +30,13 @@ Used to display a Hattrick rating. Uses [progress-arc](../progress-arc/) to disp
 
 ## Properties
 
-| Property       | Attribute       | Description                                                        | Type                           | Default     |
-| -------------- | --------------- | ------------------------------------------------------------------ | ------------------------------ | ----------- |
-| `noStar`       | `no-star`       |                                                                    | `boolean`                      | `false`     |
-| `rating`       | `rating`        | The rating to show inside the stamina.                             | `number`                       | `undefined` |
-| `size`         | `size`          | Size of element in pixels.                                         | `"large" \| "small" \| number` | `"small"`   |
-| `stamina`      | `stamina`       | Stamina in percentage between 0 and 1.                             | `number`                       | `undefined` |
-| `staminaLabel` | `stamina-label` | Label for the mouseover, formatted as `{staminaLabel}: {stamina}%` | `string`                       | `""`        |
+| Property       | Attribute       | Description                                                        | Type                                       | Default     |
+| -------------- | --------------- | ------------------------------------------------------------------ | ------------------------------------------ | ----------- |
+| `noStar`       | `no-star`       |                                                                    | `boolean`                                  | `false`     |
+| `rating`       | `rating`        | The rating to show inside the stamina.                             | `number`                                   | `undefined` |
+| `size`         | `size`          | Size of element in pixels.                                         | `"large" \| "medium" \| "small" \| number` | `"small"`   |
+| `stamina`      | `stamina`       | Stamina in percentage between 0 and 1.                             | `number`                                   | `undefined` |
+| `staminaLabel` | `stamina-label` | Label for the mouseover, formatted as `{staminaLabel}: {stamina}%` | `string`                                   | `""`        |
 
 
 ## Shadow Parts

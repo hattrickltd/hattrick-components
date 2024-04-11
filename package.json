@@ -1,6 +1,6 @@
 {
   "name": "@hattrickltd/hattrick-components",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "Web components for Hattrick.org.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
