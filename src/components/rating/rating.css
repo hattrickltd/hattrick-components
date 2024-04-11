@@ -24,6 +24,21 @@
   --rating-star-color: currentColor;
 }
 
+:host([size="medium"]) {
+  --rating-stamina-offset: 3px;
+  --rating-stamina-stroke-width: 3px;
+
+  --rating-font-size: 14px;
+  --rating-font-size-half: 11px;
+
+  --rating-font-size-long: 11px;
+  --rating-font-size-long-half: 10px;
+
+  --letter-spacing-long: -0.5px;
+
+  --rating-star-size: 11px;
+}
+
 :host([size="large"]) {
   --rating-stamina-offset: 3px;
   --rating-stamina-stroke-width: 4px;

@@ -297,7 +297,7 @@ export namespace Components {
         /**
           * Size of element in pixels.
          */
-        "size": number | "small" | "large";
+        "size": number | "small" | "medium" | "large";
         /**
           * Stamina in percentage between 0 and 1.
          */
@@ -836,7 +836,7 @@ declare namespace LocalJSX {
         /**
           * Size of element in pixels.
          */
-        "size"?: number | "small" | "large";
+        "size"?: number | "small" | "medium" | "large";
         /**
           * Stamina in percentage between 0 and 1.
          */

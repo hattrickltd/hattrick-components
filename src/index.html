@@ -973,10 +973,11 @@
 
       <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Attributes</h3>
       <div hidden attributes>
-        <code>size: "small" | "large" | number</code>
+        <code>size: "small" | "medium" | "large" | number = "small"</code>
         <code>rating: number</code>
         <code>stamina: number [0-1]</code>
         <code>staminaLabel: string (formats as `{staminaLabel}: {stamina}%`)</code>
+        <code>noStar: boolean = false</code>
       </div>
 
       <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">
@@ -995,20 +996,7 @@
 
       <h3 onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Examples</h3>
       <div style="background-color: #40823c8a; padding: 10px" examples>
-        <div>You can use predefined size: <code>size="large"</code> (same as size="44")*</div>
-        <hattrick-rating size="large" rating="7" stamina="0.2"></hattrick-rating>
-        <hattrick-rating size="large" rating="7.5" stamina="0.4"></hattrick-rating>
-        <hattrick-rating size="large" rating="14" stamina="0.6"></hattrick-rating>
-        <hattrick-rating size="large" rating="14.5" stamina="0.8"></hattrick-rating>
-        <hattrick-rating size="large"></hattrick-rating>
-        <br />
-        <hattrick-rating size="large" rating="7" stamina="0.2" no-star></hattrick-rating>
-        <hattrick-rating size="large" rating="7.5" stamina="0.4" no-star></hattrick-rating>
-        <hattrick-rating size="large" rating="14" stamina="0.6" no-star></hattrick-rating>
-        <hattrick-rating size="large" rating="14.5" stamina="0.8" no-star></hattrick-rating>
-        <hattrick-rating size="large" no-star></hattrick-rating>
-        <br /><br />
-        <div>Or: <code>size="small"</code> (same as size="29")*</div>
+        <div>You can use default size: <code>size="small"</code></div>
         <hattrick-rating
           size="small"
           rating="7"
@@ -1065,12 +1053,81 @@
         ></hattrick-rating>
         <hattrick-rating size="small" no-star></hattrick-rating>
         <br /><br />
+        <div>Or: <code>size="medium"</code></div>
+        <hattrick-rating
+          size="medium"
+          rating="7"
+          stamina="0.2"
+          stamina-label="Kondition"
+        ></hattrick-rating>
+        <hattrick-rating
+          size="medium"
+          rating="7.5"
+          stamina="0.4"
+          stamina-label="Kondition"
+        ></hattrick-rating>
+        <hattrick-rating
+          size="medium"
+          rating="14"
+          stamina="0.6"
+          stamina-label="Kondition"
+        ></hattrick-rating>
+        <hattrick-rating
+          size="medium"
+          rating="14.5"
+          stamina="0.8"
+          stamina-label="Kondition"
+        ></hattrick-rating>
+        <hattrick-rating size="medium"></hattrick-rating>
+        <br />
+        <hattrick-rating
+          size="medium"
+          rating="7"
+          stamina="0.2"
+          stamina-label="Kondition"
+          no-star
+        ></hattrick-rating>
+        <hattrick-rating
+          size="medium"
+          rating="7.5"
+          stamina="0.4"
+          stamina-label="Kondition"
+          no-star
+        ></hattrick-rating>
+        <hattrick-rating
+          size="medium"
+          rating="14"
+          stamina="0.6"
+          stamina-label="Kondition"
+          no-star
+        ></hattrick-rating>
+        <hattrick-rating
+          size="medium"
+          rating="14.5"
+          stamina="0.8"
+          stamina-label="Kondition"
+          no-star
+        ></hattrick-rating>
+        <hattrick-rating size="medium" no-star></hattrick-rating>
+        <br /><br />
+        <div>Or: <code>size="large"</code></div>
+        <hattrick-rating size="large" rating="7" stamina="0.2"></hattrick-rating>
+        <hattrick-rating size="large" rating="7.5" stamina="0.4"></hattrick-rating>
+        <hattrick-rating size="large" rating="14" stamina="0.6"></hattrick-rating>
+        <hattrick-rating size="large" rating="14.5" stamina="0.8"></hattrick-rating>
+        <hattrick-rating size="large"></hattrick-rating>
+        <br />
+        <hattrick-rating size="large" rating="7" stamina="0.2" no-star></hattrick-rating>
+        <hattrick-rating size="large" rating="7.5" stamina="0.4" no-star></hattrick-rating>
+        <hattrick-rating size="large" rating="14" stamina="0.6" no-star></hattrick-rating>
+        <hattrick-rating size="large" rating="14.5" stamina="0.8" no-star></hattrick-rating>
+        <hattrick-rating size="large" no-star></hattrick-rating>
+        <br /><br />
         <div>
-          Or you can define yourself <code>size="29"</code>. Note however how the second stamina bar
-          and font doesn't adjust with manual sizes. You have to manually set
-          <code>font-size</code>, <code>--progress-arc-stroke-width</code>.
+          Or you can define yourself <code>size="44"</code>. Note however how the last stamina bar
+          and font doesn't adjust with manual sizes. You have to manually set relevant CSS variables
+          to get the right proportions.
         </div>
-        <hattrick-rating size="44" rating="14.5" stamina="0.2"></hattrick-rating>
         <hattrick-rating size="29" rating="14.5" stamina="0.6"></hattrick-rating>
         <hattrick-rating
           class="small-rating"
@@ -1078,8 +1135,8 @@
           rating="14.5"
           stamina="0.8"
         ></hattrick-rating>
+        <hattrick-rating size="44" rating="14.5" stamina="0.2"></hattrick-rating>
         <br />
-        <hattrick-rating size="44" rating="14.5" stamina="0.2" no-star></hattrick-rating>
         <hattrick-rating size="29" rating="14.5" stamina="0.6" no-star></hattrick-rating>
         <hattrick-rating
           class="small-rating"
@@ -1088,6 +1145,7 @@
           stamina="0.8"
           no-star
         ></hattrick-rating>
+        <hattrick-rating size="44" rating="14.5" stamina="0.2" no-star></hattrick-rating>
       </div>
     </section>
 

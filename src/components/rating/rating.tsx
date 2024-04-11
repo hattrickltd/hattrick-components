@@ -1,13 +1,4 @@
-import {
-  h,
-  Fragment,
-  Component,
-  Prop,
-  Host,
-  State,
-  Watch,
-  Element,
-} from "@stencil/core";
+import { h, Fragment, Component, Prop, Host, State, Watch, Element } from "@stencil/core";
 
 @Component({
   tag: "hattrick-rating",
@@ -18,7 +9,7 @@ export class Rating {
   @Element() private host: HTMLElement;
 
   /** Size of element in pixels. */
-  @Prop({ mutable: true }) size: number | "small" | "large" = "small";
+  @Prop({ mutable: true }) size: number | "small" | "medium" | "large" = "small";
 
   /** The rating to show inside the stamina. */
   @Prop() rating: number;
@@ -43,13 +34,13 @@ export class Rating {
   @Watch("size")
   private handleSize() {
     this.progressOffset = parseInt(
-      getComputedStyle(this.host)
-        .getPropertyValue("--rating-stamina-offset")
-        ?.replace("px", ""),
+      getComputedStyle(this.host).getPropertyValue("--rating-stamina-offset")?.replace("px", ""),
     );
 
     if (this.size === "small") {
       this.pixelSize = 28;
+    } else if (this.size === "medium") {
+      this.pixelSize = 36;
     } else if (this.size === "large") {
       this.pixelSize = 44;
     } else {
@@ -86,7 +77,7 @@ export class Rating {
       >
         <span
           class={{
-            rating: true,
+            "rating": true,
             "rating-long": this.rating >= 10 && this.rating % 1 !== 0,
           }}
           part="rating"
