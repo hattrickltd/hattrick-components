@@ -738,6 +738,30 @@ const TAGS = {
     canHaveContent: true,
     requireId: false,
   },
+  regionid: {
+    name: "regionid",
+    tag: "regionid",
+    canHaveContent: false,
+    requireId: true,
+  },
+  hattrickleagueid: {
+    name: "hattrickleagueid",
+    tag: "hattrickleagueid",
+    canHaveContent: false,
+    requireId: true,
+  },
+  stadiumid: {
+    name: "stadiumid",
+    tag: "stadiumid",
+    canHaveContent: false,
+    requireId: true,
+  },
+  forumid: {
+    name: "forumid",
+    tag: "forumid",
+    canHaveContent: false,
+    requireId: true,
+  },
 
   //    //"table": { tag: "table", canHaveContent: true, requireId: false, children: {
   //    //    "tr": { tag: "tr", canHaveContent: true, requireId: false, children: {
