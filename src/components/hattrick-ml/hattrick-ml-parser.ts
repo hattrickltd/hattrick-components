@@ -5,7 +5,7 @@ export class HattrickMlParser {
   static replacer: HattrickMlReplacer;
 
   private regex =
-    /\[(link|img|youtube|b|i|u|ul|ol|li|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table|money|arenacontestid|arenamatchid)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
+    /\[(link|img|youtube|b|i|u|ul|ol|li|quote|q|br|hr|playerid|youthplayerid|matchid|youthmatchid|teamid|youthteamid|ntteamid|leagueid|youthleagueid|message|post|allianceid|federationid|userid|articleid|spoiler|tournamentid|tournamentmatchid|kitid|table|money|arenacontestid|arenamatchid|regionid|hattrickleagueid|stadiumid|forumid)(?:=([^\]]*?)| ([a-z]*?=[^\]]*?)?)?\](?:(?!.*?\[\1[=.*?|\]]*?\]))(?:(.*?)(\[\/\1\]))?/gi;
   private requireClosing = [
     "img",
     "b",
@@ -432,6 +432,38 @@ export class HattrickMlParser {
                   this.currencyName || "€",
                   true,
                 ),
+              );
+              break;
+            case "regionid":
+              id = this.xss(id);
+              if (!allowCustomContent || !text) text = `(${id})`;
+              str = str.replace(
+                match,
+                HattrickMlParser.replacer.getRegionId(id, text),
+              );
+              break;
+            case "hattrickleagueid":
+              id = this.xss(id);
+              if (!allowCustomContent || !text) text = `(${id})`;
+              str = str.replace(
+                match,
+                HattrickMlParser.replacer.getHattrickLeagueId(id, text),
+              );
+              break;
+            case "stadiumid":
+              id = this.xss(id);
+              if (!allowCustomContent || !text) text = `(${id})`;
+              str = str.replace(
+                match,
+                HattrickMlParser.replacer.getStadiumId(id, text),
+              );
+              break;
+            case "forumid":
+              id = this.xss(id);
+              if (!allowCustomContent || !text) text = `(${id})`;
+              str = str.replace(
+                match,
+                HattrickMlParser.replacer.getForumId(id, text),
               );
               break;
             default:
