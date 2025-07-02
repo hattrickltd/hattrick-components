@@ -60,4 +60,16 @@ export class HattrickMlReplacer {
   getKitId(kitId: number | string, text: string): string {
     return `<a href="${this.base}/Community/KitSearch/?KitID=${kitId}" target="${this.internalLinkTarget}">${text}</a>`;
   }
+  getRegionId(regionId: number | string, text: string): string {
+    return `<a href="${this.base}/World/Regions/Region.aspx?RegionID=${regionId}" target="${this.internalLinkTarget}">${text}</a>`;
+  }
+  getHattrickLeagueId(leagueId: number | string, text: string): string {
+    return `<a href="${this.base}/World/Leagues/League.aspx?LeagueID=${leagueId}" target="${this.internalLinkTarget}">${text}</a>`;
+  }
+  getStadiumId(stadiumId: number | string, text: string): string {
+    return `<a href="${this.base}/Club/Stadium/?stadiumId=${stadiumId}" target="${this.internalLinkTarget}">${text}</a>`;
+  }
+  getForumId(forumId: number | string, text: string): string {
+    return `<a href="${this.base}/Forum/Overview.aspx?f=${forumId}" target="${this.internalLinkTarget}">${text}</a>`;
+  }
 }
