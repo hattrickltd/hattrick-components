@@ -11,13 +11,7 @@ import {
   Element,
   forceUpdate,
 } from "@stencil/core";
-import {
-  computePosition,
-  flip,
-  shift,
-  limitShift,
-  offset,
-} from "@floating-ui/dom";
+import { computePosition, flip, shift, limitShift, offset } from "@floating-ui/dom";
 import { currency, grouped } from "../../global/utils";
 
 declare const window: any;
@@ -58,10 +52,7 @@ export class Player {
   private _apiRoot = location.href.includes("localhost")
     ? "https://m.hattrick.org/api"
     : // ? "https://laptop-marcus.hattrick.local/api"
-      `${location.protocol}//${location.hostname.replace(
-        "www",
-        "m",
-      )}/api/v99999`
+      `${location.protocol}//${location.hostname.replace("www", "m")}/api/v99999`
         .replace("stage", "mstage")
         .replace("production", "mproduction");
 
@@ -118,11 +109,7 @@ export class Player {
   private async refreshFloating() {
     const { x, y } = await computePosition(this._content, this._tooltip, {
       placement: "bottom-start",
-      middleware: [
-        flip(),
-        shift({ limiter: limitShift() }),
-        offset({ mainAxis: 5 }),
-      ],
+      middleware: [flip(), shift({ limiter: limitShift() }), offset({ mainAxis: 5 })],
     });
 
     Object.assign(this._tooltip.style, {
@@ -165,13 +152,7 @@ export class Player {
   }
 
   renderPlayer() {
-    const {
-      player,
-      language,
-      country,
-      skillPresentation,
-      hideNumbersAfterDenominations,
-    } = this;
+    const { player, language, country, skillPresentation, hideNumbersAfterDenominations } = this;
     const texts = language.texts;
 
     const showSkillBar =
@@ -185,9 +166,7 @@ export class Player {
     return (
       <>
         <h3 class="float_left">
-          {0 < player.playerNumber &&
-            player.playerNumber < 100 &&
-            `${player.playerNumber}.`}{" "}
+          {0 < player.playerNumber && player.playerNumber < 100 && `${player.playerNumber}.`}{" "}
           {getFullPlayerName(player)}{" "}
           {player.health >= 1 && (
             <i
@@ -203,10 +182,7 @@ export class Player {
             class="flag inner"
             tabIndex={-1}
           >
-            <hattrick-flag
-              leagueId={player.leagueId}
-              title={player.leagueName}
-            ></hattrick-flag>
+            <hattrick-flag leagueId={player.leagueId} title={player.leagueName}></hattrick-flag>
           </a>
         </span>
         <br class="clear" />
@@ -269,7 +245,10 @@ export class Player {
               <Denomination
                 level={player.experience}
                 type="skill"
-                text={texts.labels_skills[player.experience]}
+                text={
+                  texts.labels_skills[Math.min(player.experience, 20)] +
+                  (player.experience > 20 ? ` (+${player.experience - 20})` : "")
+                }
                 showNumber={!hideNumbersAfterDenominations}
               />
             ),
@@ -354,9 +333,7 @@ export class Player {
                   </tr>
 
                   <tr>
-                    <td class="right">
-                      {texts.transferList.specialty.replace(":", "")}
-                    </td>
+                    <td class="right">{texts.transferList.specialty.replace(":", "")}</td>
                     <td colSpan={2}>
                       {player.specialty > 0 ? (
                         <>
@@ -385,11 +362,8 @@ export class Player {
                             class={this.getBarColorClass(player.formNumber, 8)}
                           ></hattrick-bar>
                           {(!hideNumbersAfterDenominations ||
-                            skillPresentation ===
-                              SkillPresentation.OnlyBar) && (
-                            <span class="denominationNumber">
-                              {player.formNumber}
-                            </span>
+                            skillPresentation === SkillPresentation.OnlyBar) && (
+                            <span class="denominationNumber">{player.formNumber}</span>
                           )}
                         </>
                       )}
@@ -418,17 +392,11 @@ export class Player {
                                 texts.labels_skills[player.staminaSkill]) ||
                               null
                             }
-                            class={this.getBarColorClass(
-                              player.staminaSkill,
-                              9,
-                            )}
+                            class={this.getBarColorClass(player.staminaSkill, 9)}
                           ></hattrick-bar>
                           {(!hideNumbersAfterDenominations ||
-                            skillPresentation ===
-                              SkillPresentation.OnlyBar) && (
-                            <span class="denominationNumber">
-                              {player.staminaSkill}
-                            </span>
+                            skillPresentation === SkillPresentation.OnlyBar) && (
+                            <span class="denominationNumber">{player.staminaSkill}</span>
                           )}
                         </>
                       )}
@@ -452,34 +420,13 @@ export class Player {
               <div class="transferPlayerSkills">
                 <table>
                   <tbody>
-                    {this.renderSkillRow(
-                      texts.players.SkillKeeper,
-                      player.keeperSkill,
-                    )}
-                    {this.renderSkillRow(
-                      texts.players.SkillDefending,
-                      player.defenderSkill,
-                    )}
-                    {this.renderSkillRow(
-                      texts.players.SkillPlaymaking,
-                      player.playmakerSkill,
-                    )}
-                    {this.renderSkillRow(
-                      texts.players.SkillWinger,
-                      player.wingerSkill,
-                    )}
-                    {this.renderSkillRow(
-                      texts.players.SkillPassing,
-                      player.passerSkill,
-                    )}
-                    {this.renderSkillRow(
-                      texts.players.SkillScoring,
-                      player.scorerSkill,
-                    )}
-                    {this.renderSkillRow(
-                      texts.players.SkillSetPieces,
-                      player.kickerSkill,
-                    )}
+                    {this.renderSkillRow(texts.players.SkillKeeper, player.keeperSkill)}
+                    {this.renderSkillRow(texts.players.SkillDefending, player.defenderSkill)}
+                    {this.renderSkillRow(texts.players.SkillPlaymaking, player.playmakerSkill)}
+                    {this.renderSkillRow(texts.players.SkillWinger, player.wingerSkill)}
+                    {this.renderSkillRow(texts.players.SkillPassing, player.passerSkill)}
+                    {this.renderSkillRow(texts.players.SkillScoring, player.scorerSkill)}
+                    {this.renderSkillRow(texts.players.SkillSetPieces, player.kickerSkill)}
                   </tbody>
                 </table>
               </div>
@@ -497,12 +444,10 @@ export class Player {
     const showSkillBar =
       skillPresentation === SkillPresentation.OnlyBar ||
       skillPresentation === SkillPresentation.BarAndText;
-    const showSkillBarTextDenomination =
-      skillPresentation === SkillPresentation.BarAndText;
+    const showSkillBarTextDenomination = skillPresentation === SkillPresentation.BarAndText;
     const showLevelColumn =
       showSkillBar &&
-      (skillPresentation === SkillPresentation.OnlyBar ||
-        !hideNumbersAfterDenominations);
+      (skillPresentation === SkillPresentation.OnlyBar || !hideNumbersAfterDenominations);
 
     return (
       <tr>
@@ -511,15 +456,13 @@ export class Player {
           {showSkillBar ? (
             <hattrick-bar
               level={level}
-              denomination={
-                (showSkillBarTextDenomination && labels[level]) || null
-              }
+              denomination={(showSkillBarTextDenomination && labels[Math.min(level, 20)]) || null}
             ></hattrick-bar>
           ) : (
             <Denomination
               level={level}
               type="skill"
-              text={labels[Math.min(level, 20)]}
+              text={labels[Math.min(level, 20)] + (level > 20 ? ` (+${level - 20})` : "")}
               showNumber={!hideNumbersAfterDenominations}
             ></Denomination>
           )}
@@ -578,30 +521,25 @@ interface IDenominationProps {
   showNumber?: boolean;
 }
 const Denomination: FunctionalComponent<IDenominationProps> = (
-  props,
+  { level, text, max, type, showNumber },
   _children,
 ) => (
   <>
     <a
       href={`/Help/Rules/AppDenominations.aspx?lt=${
-        props.type || "skill"
-      }&amp;ll=${props.level}#${props.type || "skill"}`}
-      title={`${props.level}/${props.max || 20}`}
+        type || "skill"
+      }&amp;ll=${level}#${type || "skill"}`}
+      title={`${level}/${max || 20}`}
       class="skill"
       tabIndex={-1}
     >
-      {props.text}
+      {text}
     </a>
-    {props.showNumber !== false && (
-      <span class="shy denominationNumber">({props.level})</span>
-    )}
+    {showNumber !== false && <span class="shy denominationNumber">({level})</span>}
   </>
 );
 
-function jsxReplacer(
-  text: string,
-  context: { [tag: string]: string | (() => string) },
-) {
+function jsxReplacer(text: string, context: { [tag: string]: string | (() => string) }) {
   let tagRegex = /\[#?(.*?)\]/gi;
   let tagResult;
 
