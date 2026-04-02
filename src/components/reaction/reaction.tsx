@@ -1,12 +1,4 @@
-import {
-  Component,
-  Event,
-  EventEmitter,
-  h,
-  Host,
-  Prop,
-  State,
-} from "@stencil/core";
+import { Component, Event, EventEmitter, h, Host, Prop, State } from "@stencil/core";
 
 @Component({
   tag: "hattrick-reaction",
@@ -23,8 +15,6 @@ export class Reaction {
   @Prop({ reflect: true }) disabled: boolean = false;
   @Prop({ mutable: true, reflect: true }) selected: boolean = false;
   @Prop() ariaLabel: string;
-
-  @Prop() token: string = (window as any).HT?.ngHattrick?.userToken;
 
   @State() users: Array<string>;
 

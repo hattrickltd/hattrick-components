@@ -10,14 +10,7 @@ import {
   Build,
   State,
 } from "@stencil/core";
-import {
-  computePosition,
-  flip,
-  shift,
-  limitShift,
-  offset,
-  Placement,
-} from "@floating-ui/dom";
+import { computePosition, flip, shift, limitShift, offset, Placement } from "@floating-ui/dom";
 import { ReactionEvent } from "../reaction/reaction";
 
 @Component({
@@ -37,7 +30,7 @@ export class Reactions {
 
   @Prop() texts: IReactionTexts;
 
-  @Prop() token: string = (window as any).HT?.ngHattrick?.userToken;
+  @Prop() token?: string;
 
   @State() showUsersForReaction: IReaction;
 
@@ -55,10 +48,7 @@ export class Reactions {
   private _apiRoot =
     location.href.includes("localhost") && Build.isDev
       ? "https://localhost/api"
-      : `${location.protocol}//${location.hostname.replace(
-          "www",
-          "m",
-        )}/api/v99999`
+      : `${location.protocol}//${location.hostname.replace("www", "m")}/api/v99999`
           .replace("stage", "mstage")
           .replace("production", "mproduction");
 
@@ -106,9 +96,7 @@ export class Reactions {
   private onReaction(detail: ReactionEvent) {
     const { reactionTypeId, selected } = detail;
 
-    const reaction = this.reactions.find(
-      (x) => x.reactionTypeId === reactionTypeId,
-    );
+    const reaction = this.reactions.find((x) => x.reactionTypeId === reactionTypeId);
 
     if (!reaction) {
       return this.addNewReaction(this.reactionTypes[reactionTypeId]);
@@ -118,9 +106,7 @@ export class Reactions {
     reaction.amount += selected ? 1 : -1;
 
     if (reaction.amount <= 0) {
-      this.reactions = this.reactions.filter(
-        (x) => x.reactionTypeId !== reactionTypeId,
-      );
+      this.reactions = this.reactions.filter((x) => x.reactionTypeId !== reactionTypeId);
       this.calculateUnusedReactions();
     }
 
@@ -130,7 +116,7 @@ export class Reactions {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "hattrick-auth-token": `${this.token}`,
+        "hattrick-auth-token": this.token ?? (window as any).HT?.ngHattrick?.userToken,
       },
       body: JSON.stringify({
         sourceTypeId: this.sourceTypeId,
@@ -152,11 +138,7 @@ export class Reactions {
   private async refreshFloating() {
     const { x, y } = await computePosition(this._addButton, this._addDropdown, {
       placement: this.placement,
-      middleware: [
-        flip(),
-        shift({ limiter: limitShift() }),
-        offset({ mainAxis: 5 }),
-      ],
+      middleware: [flip(), shift({ limiter: limitShift() }), offset({ mainAxis: 5 })],
     });
 
     Object.assign(this._addDropdown.style, {
@@ -205,7 +187,7 @@ export class Reactions {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "hattrick-auth-token": this.token,
+            "hattrick-auth-token": this.token ?? (window as any).HT?.ngHattrick?.userToken,
           },
         },
       )
@@ -236,9 +218,7 @@ export class Reactions {
           .map((x) => (
             <hattrick-tooltip
               position="top"
-              disabled={
-                this.showUsersForReaction !== x || x._users?.length === 0
-              }
+              disabled={this.showUsersForReaction !== x || x._users?.length === 0}
             >
               <hattrick-reaction
                 sourceTypeId={this.sourceTypeId}
@@ -247,15 +227,11 @@ export class Reactions {
                 reaction={this.reactionTypes[x.reactionTypeId].emoji}
                 amount={x.amount}
                 selected={x.userReacted}
-                disabled={
-                  this.disabled || this.reactionTypes[x.reactionTypeId].disabled
-                }
+                disabled={this.disabled || this.reactionTypes[x.reactionTypeId].disabled}
                 onMouseEnter={() => this.showUsers(x)}
               />
 
-              <div slot="content">
-                {this.getTooltipText(x) ?? this.renderLoading()}
-              </div>
+              <div slot="content">{this.getTooltipText(x) ?? this.renderLoading()}</div>
             </hattrick-tooltip>
           ))}
 
@@ -278,10 +254,7 @@ export class Reactions {
               ref={(el) => (this._addDropdown = el)}
             >
               {this._unusedReactions.map((x) => (
-                <button
-                  part="dropdown-button"
-                  onClick={(_) => this.addNewReaction(x)}
-                >
+                <button part="dropdown-button" onClick={(_) => this.addNewReaction(x)}>
                   {x.emoji}
                 </button>
               ))}
@@ -339,12 +312,7 @@ export class Reactions {
 
   private renderAddEmote() {
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path
           fill="currentColor"
           d="M7 9.5C7 8.67 7.67 8 8.5 8s1.5.67 1.5 1.5S9.33 11 8.5 11S7 10.33 7 9.5zm5 8c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5zm3.5-6.5c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8S14 8.67 14 9.5s.67 1.5 1.5 1.5zM22 1h-2v2h-2v2h2v2h2V5h2V3h-2V1zm-2 11c0 4.42-3.58 8-8 8s-8-3.58-8-8s3.58-8 8-8c1.46 0 2.82.4 4 1.08V2.84A9.929 9.929 0 0 0 11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12c0-1.05-.17-2.05-.47-3H19.4c.38.93.6 1.94.6 3z"
