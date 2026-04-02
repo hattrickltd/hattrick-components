@@ -316,7 +316,6 @@ export namespace Components {
         "selected": boolean;
         "sourceId": number;
         "sourceTypeId": number;
-        "token": string;
     }
     interface HattrickReactions {
         "disabled": boolean;
@@ -325,7 +324,7 @@ export namespace Components {
         "sourceId": number;
         "sourceTypeId": number;
         "texts": IReactionTexts;
-        "token": string;
+        "token"?: string;
     }
     interface HattrickTimer {
         /**
@@ -856,7 +855,6 @@ declare namespace LocalJSX {
         "selected"?: boolean;
         "sourceId"?: number;
         "sourceTypeId"?: number;
-        "token"?: string;
     }
     interface HattrickReactions {
         "disabled"?: boolean;
