@@ -110,10 +110,7 @@
   background: var(--current-stage-background);
 }
 .stage.current-stage.empty-stage .matches {
-  background: var(
-    --current-empty-stage-background,
-    var(--current-stage-background)
-  );
+  background: var(--current-empty-stage-background, var(--current-stage-background));
 }
 .stage.current-stage .matches .match {
   background: var(--current-match-background);
@@ -122,10 +119,7 @@
   background: var(--expanded-stage-background);
 }
 .stage.expanded-stage.empty-stage .matches {
-  background: var(
-    --expanded-empty-stage-background,
-    var(--expanded-stage-background)
-  );
+  background: var(--expanded-empty-stage-background, var(--expanded-stage-background));
 }
 .stage.expanded-stage .matches .match {
   background: var(--expanded-match-background);
@@ -240,6 +234,14 @@
 .entry,
 .lower-entry {
   pointer-events: none;
+  border: 0 solid #ccc;
+}
+
+.highlight {
+  border-color: var(--highlight-color);
+}
+.highlight .entry {
+  border-top-color: var(--highlight-color);
 }
 
 .lower-entry {
@@ -248,7 +250,7 @@
   width: 10px;
   right: 100%;
   position: absolute;
-  border-left: 2px solid #ccc;
+  border-left-width: 2px;
 }
 .lower-entry:after {
   content: "⬇";
@@ -260,16 +262,13 @@
   padding: 0px 2px;
 }
 
-.highlight.lower-entry {
-  border-color: var(--highlight-color) !important;
-}
 .highlight.lower-entry:after {
   background-color: #eee;
-  border-color: var(--highlight-color) !important;
+  border-color: var(--highlight-color);
 }
 .lower-entry.up {
   bottom: calc(75%);
-  border-bottom: 2px solid #ccc;
+  border-bottom-width: 2px;
 }
 .lower-entry.down:after {
   right: 50%;
@@ -277,7 +276,7 @@
 }
 .lower-entry.down {
   top: calc(75%);
-  border-top: 2px solid #ccc;
+  border-top-width: 2px;
 }
 .lower-entry.up:after {
   right: 50%;
@@ -285,8 +284,8 @@
 }
 .lower-entry.start {
   height: 0;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
 }
 .lower-entry.start:after {
   right: calc(100% + 2px);
@@ -299,7 +298,7 @@
   position: absolute;
   top: 50%;
   width: 0.66em;
-  border-bottom: 2px solid #ccc;
+  border-bottom-width: 2px;
 }
 :host([dir="ltr"]) .exit {
   left: 100%;
@@ -311,44 +310,30 @@
 .exit.down {
   height: 2em;
   top: calc(50% - 1px);
-  border-top: 2px solid #ccc;
+  border-top-width: 2px;
   border-bottom: initial;
+  border-inline-end-width: 2px;
 }
 .exit.up {
   height: 2em;
   top: initial;
   bottom: calc(50% - 1px);
-  border-bottom: 2px solid #ccc;
-}
-:host([dir="ltr"]) .exit.up,
-:host([dir="ltr"]) .exit.down {
-  border-right: 2px solid #ccc;
-}
-:host([dir="rtl"]) .exit.up,
-:host([dir="rtl"]) .exit.down {
-  border-left: 2px solid #ccc;
+  border-bottom-width: 2px;
+  border-inline-end-width: 2px;
 }
 
-.exit.highlight {
-  /* border-right: 3px solid var(--highlight-color); */
-  border-color: var(--highlight-color);
-}
 .exit.down.highlight {
   top: calc(50% - 1px);
-  /* border-top: 3px solid var(--highlight-color); */
-  border-color: var(--highlight-color);
 }
 .exit.up.highlight {
   bottom: calc(50% - 1px);
-  /* border-bottom: 3px solid var(--highlight-color); */
-  border-color: var(--highlight-color);
 }
 
 .entry {
   box-sizing: border-box;
   position: absolute;
   width: 1.3em;
-  border-top: 2px solid #ccc;
+  border-top-width: 2px;
   transition: width 300ms;
 }
 :host([dir="ltr"]) .entry {
@@ -371,11 +356,6 @@
 }
 .down .entry {
   top: 100%;
-}
-
-.highlight .entry {
-  /* border-top: 3px solid var(--highlight-color); */
-  border-top-color: var(--highlight-color);
 }
 
 .promoted:after {
