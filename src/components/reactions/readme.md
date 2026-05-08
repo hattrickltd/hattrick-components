@@ -7,15 +7,15 @@
 
 ## Properties
 
-| Property       | Attribute        | Description | Type                                                                                                                                                                 | Default                                     |
-| -------------- | ---------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| `disabled`     | `disabled`       |             | `boolean`                                                                                                                                                            | `false`                                     |
-| `placement`    | `placement`      |             | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start"` | `"bottom-start"`                            |
-| `reactions`    | --               |             | `IReaction[]`                                                                                                                                                        | `[]`                                        |
-| `sourceId`     | `source-id`      |             | `number`                                                                                                                                                             | `undefined`                                 |
-| `sourceTypeId` | `source-type-id` |             | `number`                                                                                                                                                             | `undefined`                                 |
-| `texts`        | --               |             | `IReactionTexts`                                                                                                                                                     | `undefined`                                 |
-| `token`        | `token`          |             | `string`                                                                                                                                                             | `(window as any).HT?.ngHattrick?.userToken` |
+| Property       | Attribute        | Description | Type                                                                                                                                                                 | Default          |
+| -------------- | ---------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `disabled`     | `disabled`       |             | `boolean`                                                                                                                                                            | `false`          |
+| `placement`    | `placement`      |             | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start"` | `"bottom-start"` |
+| `reactions`    | --               |             | `IReaction[]`                                                                                                                                                        | `[]`             |
+| `sourceId`     | `source-id`      |             | `number`                                                                                                                                                             | `undefined`      |
+| `sourceTypeId` | `source-type-id` |             | `number`                                                                                                                                                             | `undefined`      |
+| `texts`        | --               |             | `IReactionTexts`                                                                                                                                                     | `undefined`      |
+| `token`        | `token`          |             | `string`                                                                                                                                                             | `undefined`      |
 
 
 ## Shadow Parts

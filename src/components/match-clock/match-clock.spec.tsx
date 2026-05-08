@@ -1,14 +1,12 @@
-import "jest";
-import { h } from "@stencil/core";
-import { SpecPage, newSpecPage } from "@stencil/core/testing";
+import { vi, describe, it, expect, beforeEach, beforeAll, afterAll, h, render } from "@stencil/vitest";
 import { MatchClock } from "./match-clock";
 
 const realDateNow = Date.now;
 const now = Date.now();
 
-const hours = (h) => h * 1000 * 60 * 60;
-const minutes = (m) => m * 1000 * 60;
-const seconds = (s) => s * 1000;
+const hours = (n: number) => n * 1000 * 60 * 60;
+const minutes = (m: number) => m * 1000 * 60;
+const seconds = (s: number) => s * 1000;
 
 const texts = {
   days: "d",
@@ -27,15 +25,8 @@ function setMatchtimer(t: MatchClock, matchdate?: number | Date | string) {
   (t as any).updateTime();
 }
 
-async function createMatchClock(): Promise<
-  [SpecPage, HTMLHattrickMatchClockElement]
-> {
-  let page = await newSpecPage({
-    components: [MatchClock],
-    template: () => <hattrick-match-clock></hattrick-match-clock>,
-  });
-
-  return [page, page.root as HTMLHattrickMatchClockElement];
+async function createMatchClock() {
+  return render<HTMLHattrickMatchClockElement>(<hattrick-match-clock></hattrick-match-clock>);
 }
 
 describe("MatchClock unit", () => {
@@ -46,7 +37,7 @@ describe("MatchClock unit", () => {
   });
 
   beforeAll(() => {
-    Date.now = jest.fn().mockReturnValue(now);
+    Date.now = vi.fn().mockReturnValue(now);
   });
   afterAll(() => {
     Date.now = realDateNow;
@@ -211,25 +202,21 @@ describe("MatchClock unit", () => {
     // });
 
     it("should have 'match-clock-passed-zero' class when match has started", async () => {
-      let [page, matchclock] = await createMatchClock();
+      let { root: matchclock, waitForChanges } = await createMatchClock();
 
       matchclock.matchdate = Date.now();
-      await page.waitForChanges();
+      await waitForChanges();
 
-      expect(
-        page.root.classList.contains("match-clock-passed-zero"),
-      ).toBeTruthy();
+      expect(matchclock.classList.contains("match-clock-passed-zero")).toBeTruthy();
     });
 
     it("should have 'match-clock-passed-zero' class in an upcoming match", async () => {
-      let [page, matchclock] = await createMatchClock();
+      let { root: matchclock, waitForChanges } = await createMatchClock();
 
       matchclock.matchdate = Date.now() + seconds(1);
-      await page.waitForChanges();
+      await waitForChanges();
 
-      expect(
-        page.root.classList.contains("match-clock-passed-zero"),
-      ).toBeFalsy();
+      expect(matchclock.classList.contains("match-clock-passed-zero")).toBeFalsy();
     });
   });
 

@@ -25,10 +25,4 @@ export const config: Config = {
       type: "docs-readme",
     },
   ],
-  testing: {
-    testPathIgnorePatterns: [
-      "/src/components/match-arena/spec.js",
-      "/dist/collection/components/match-arena/spec.js",
-    ],
-  },
 };

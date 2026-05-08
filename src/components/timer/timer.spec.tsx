@@ -1,15 +1,12 @@
-import "jest";
-import { h } from "@stencil/core";
-import { SpecPage } from "@stencil/core/internal";
-import { newSpecPage } from "@stencil/core/testing";
+import { vi, describe, it, expect, beforeEach, beforeAll, afterAll, h, render } from "@stencil/vitest";
 import { Timer } from "./timer";
 
 const realDateNow = Date.now;
 const now = Date.now();
 
-const hours = (h) => h * 1000 * 60 * 60;
-const minutes = (m) => m * 1000 * 60;
-const seconds = (s) => s * 1000;
+const hours = (n: number) => n * 1000 * 60 * 60;
+const minutes = (n: number) => n * 1000 * 60;
+const seconds = (n: number) => n * 1000;
 
 function setDeadline(t: Timer, deadline?: number | Date | string) {
   if (deadline) t.deadline = deadline;
@@ -18,13 +15,8 @@ function setDeadline(t: Timer, deadline?: number | Date | string) {
   (t as any).updateTime();
 }
 
-async function createTimer(): Promise<[SpecPage, HTMLHattrickTimerElement]> {
-  let page = await newSpecPage({
-    components: [Timer],
-    template: () => <hattrick-timer></hattrick-timer>,
-  });
-
-  return [page, page.root as HTMLHattrickTimerElement];
+async function createTimer() {
+  return render<HTMLHattrickTimerElement>(<hattrick-timer></hattrick-timer>);
 }
 
 describe("Timer unit", () => {
@@ -35,7 +27,7 @@ describe("Timer unit", () => {
   });
 
   beforeAll(() => {
-    Date.now = jest.fn().mockReturnValue(now);
+    Date.now = vi.fn().mockReturnValue(now);
   });
   afterAll(() => {
     Date.now = realDateNow;
@@ -129,36 +121,36 @@ describe("Timer unit", () => {
 
   describe("hostData", () => {
     it("has 'timer' role", async () => {
-      let [_page, timer] = await createTimer();
+      let { root: timer } = await createTimer();
 
       expect(timer.getAttribute("role")).toBe("timer");
     });
 
     it("should get have finished class when reaching zero", async () => {
-      let [page, timer] = await createTimer();
+      let { root: timer, waitForChanges } = await createTimer();
 
       timer.deadline = Date.now();
-      await page.waitForChanges();
+      await waitForChanges();
 
       expect(timer.classList.contains("timer-finished")).toBeTruthy();
     });
 
     it("should not have finished class when reaching zero if we'll keep counting", async () => {
-      let [page, timer] = await createTimer();
+      let { root: timer, waitForChanges } = await createTimer();
 
       timer.deadline = Date.now();
       timer.keepCounting = true;
-      await page.waitForChanges();
+      await waitForChanges();
 
       expect(timer.classList.contains("timer-finished")).toBeFalsy();
     });
 
     it("should have passed zero class after passing zero if we'll keep counting", async () => {
-      let [page, timer] = await createTimer();
+      let { root: timer, waitForChanges } = await createTimer();
 
       timer.deadline = Date.now() - seconds(1);
       timer.keepCounting = true;
-      await page.waitForChanges();
+      await waitForChanges();
 
       expect(timer.classList.contains("timer-passed-zero")).toBeTruthy();
     });
@@ -188,12 +180,12 @@ describe("Timer unit", () => {
     it("from 1 to 0 after a second", () => {
       setDeadline(timer, Date.now() + seconds(1));
 
-      Date.now = jest.fn(() => now + 1);
+      Date.now = vi.fn(() => now + 1);
       setDeadline(timer);
 
       expect((timer as any).getTime()).toBe("00:00:00");
 
-      Date.now = jest.fn(() => now + 1000);
+      Date.now = vi.fn(() => now + 1000);
       setDeadline(timer);
 
       expect((timer as any).getTime()).toBe("00:00:00");

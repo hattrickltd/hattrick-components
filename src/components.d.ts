@@ -28,43 +28,66 @@ export { Placement } from "@floating-ui/dom";
 export namespace Components {
     interface HattrickArena {
         "arenaId": number;
+        /**
+          * @default "User220"
+         */
         "arenaImageType": ArenaImageType;
+        /**
+          * @default 0
+         */
         "capacity": number;
+        /**
+          * @default ""
+         */
         "forceUploadReload": string;
+        /**
+          * @default "https://res.hattrick.org"
+         */
         "resourceUrl": string;
+        /**
+          * @default -1
+         */
         "weather": number;
     }
     interface HattrickAvatar {
         /**
           * Set whether or not the background should be shown.
+          * @default true
          */
         "background"?: boolean;
         /**
           * the base route to the avatars, can be either a relative or absolute url.
+          * @default "/Img/Avatar/"
          */
         "base": string;
         /**
           * Set to true if you want all parts to finish loading before showing the avatar. This will make the first paint much slower, but the avatar will never be just partially visible. The time to when the full avatar is printed will not be affected by this setting however.
+          * @default false
          */
         "composed"?: boolean;
         /**
           * Set whether or not the surrounding card should be shown.
+          * @default true
          */
         "facecard"?: boolean;
         /**
           * Set this to false to remove the bandages on injured and bruised players.
+          * @default true
          */
         "injury"?: boolean;
         /**
           * Allows overriding the default kit by ID.
+          * @default 0
          */
         "kitId"?: number;
         /**
           * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport.
+          * @default true
          */
         "lazy"?: boolean;
         /**
           * How soon before the avatar comes into view should we start loading it? Accepts CSS-like margin value.
+          * @default `250px`
          */
         "lazyMargin"?: string;
         /**
@@ -80,24 +103,29 @@ export namespace Components {
         "printToCanvas": (images?: Array<IAvatarImage>) => Promise<HTMLCanvasElement>;
         /**
           * Set to true to generate a circular avatar by cutting off the bottom.
+          * @default false
          */
         "round"?: boolean;
         /**
           * Set to true to generate a square avatar by cutting off the bottom.
+          * @default false
          */
         "square"?: boolean;
     }
     interface HattrickBar {
         /**
           * If there's a max before the end of the bar (e.g. maxed youth skill).
+          * @default 0
          */
         "cap": number;
         /**
           * The denomination of the skill level
+          * @default ""
          */
         "denomination": string;
         /**
           * If the sublevel is the same as the levelCap.
+          * @default false
          */
         "isCap": boolean;
         /**
@@ -106,13 +134,23 @@ export namespace Components {
         "level": number;
         /**
           * The maximum level the bar should show.
+          * @default 20
          */
         "max": number;
     }
     interface HattrickField {
+        /**
+          * @default false
+         */
         "flipped": boolean;
+        /**
+          * @default false
+         */
         "ratingNoStar": boolean;
         "ratingPositions"?: { [positionId: number]: IRatingPosition };
+        /**
+          * @default 1
+         */
         "size": number;
         "trainingPositions"?: { [positionId: number]: ITrainingPosition };
     }
@@ -130,21 +168,41 @@ export namespace Components {
         "flipped": boolean;
     }
     interface HattrickMatchArena {
+        /**
+          * @default 0
+         */
         "amount": number;
         "arenaId": number;
+        /**
+          * @default "#d15e5e"
+         */
         "awayColor": string;
+        /**
+          * @default 0
+         */
         "capacity": number;
+        /**
+          * @default ""
+         */
         "forceUploadReload": string;
+        /**
+          * @default "#6ecdea"
+         */
         "homeColor": string;
+        /**
+          * @default "https://res.hattrick.org"
+         */
         "resourceUrl": string;
     }
     interface HattrickMatchClock {
         /**
           * How many minutes of added time the match has.
+          * @default 0
          */
         "addedMinutes": number;
         /**
           * Format of the timer. Defaults to `MM:SS`, an alternative might include `M'`.
+          * @default "MM:SS"
          */
         "countUpFormat": string;
         /**
@@ -153,10 +211,12 @@ export namespace Components {
         "finishedDate"?: Date | string | number;
         /**
           * How many minutes break does the match have between first and second half.
+          * @default 15
          */
         "halftimeBreak": number;
         /**
           * If we should ignore halftime and overtime breaks when calculating the time shown. Defaults to false.
+          * @default false
          */
         "ignoreBreaks": boolean;
         /**
@@ -165,29 +225,51 @@ export namespace Components {
         "matchdate": Date | string | number;
         /**
           * How many minutes break does the match have before overtime starts.
+          * @default 5
          */
         "overtimeBreak": number;
         "pause": () => Promise<void>;
         "resume": () => Promise<void>;
         /**
           * If true there's no halftime or overtime countdowns, it just shows 45/90 during the pause.
+          * @default false
          */
         "skipPauseTimers": boolean;
         /**
           * How fast the clock should tick. Defaults to 1. 2 means twice as fast.
+          * @default 1
          */
         "speed": number;
         /**
           * Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match.
+          * @default {} as any
          */
         "texts": IClockTexts;
     }
     interface HattrickMl {
+        /**
+          * @default false
+         */
         "allowCustomContent": boolean;
+        /**
+          * @default ""
+         */
         "base": string;
+        /**
+          * @default "€"
+         */
         "currencyName": string;
+        /**
+          * @default 0.1
+         */
         "currencyRate": number;
+        /**
+          * @default "_self"
+         */
         "internalLinkTarget": string;
+        /**
+          * @default "Possible spoiler. Click here to show"
+         */
         "spoilerText": string;
         "text": string;
     }
@@ -198,36 +280,87 @@ export namespace Components {
         "srcset"?: string;
     }
     interface HattrickPlayer {
+        /**
+          * @default "Avatar"
+         */
         "avatarSet": string;
         "countryId": number;
+        /**
+          * @default 300
+         */
         "debounce": number;
         "hide": () => Promise<void>;
+        /**
+          * @default false
+         */
         "hideNumbersAfterDenominations": boolean;
+        /**
+          * @default 2
+         */
         "languageId": number;
         "playerId": number;
         "show": () => Promise<void>;
+        /**
+          * @default 2
+         */
         "skillPresentation": number;
         "token"?: string;
     }
     interface HattrickPlayoffTree {
         "baseUrl": string;
+        /**
+          * @default 1
+         */
         "bracket": number;
+        /**
+          * @default false
+         */
         "estimateNextRound": boolean;
+        /**
+          * @default "auto"
+         */
         "expand": "expand" | "auto" | "none";
         "forceUpdate": () => Promise<void>;
+        /**
+          * @default 1
+         */
         "fromRound": number;
+        /**
+          * @default true
+         */
         "hideCollapsedLive": boolean;
+        /**
+          * @default true
+         */
         "hideCollapsedNames": boolean;
         "links": ILinks;
+        /**
+          * @default 0
+         */
         "matchRoundsBeforePlayoff": number;
+        /**
+          * @default undefined
+         */
         "navControls": boolean | undefined;
         "playoff": Array<IPlayoffMatch>;
+        /**
+          * @default false
+         */
         "pyjamas": boolean;
+        /**
+          * @default 0
+         */
         "showRounds": number;
         "texts": IPlayoffTexts;
     }
     interface HattrickProgressArc {
+        /**
+          * @default 0
+         */
         "angle": number;
+        /**
+          * @default 360
+         */
         "circumference": number;
         /**
           * Expression evaluating to float [0.0, 1.0]
@@ -235,6 +368,7 @@ export namespace Components {
         "complete": number;
         /**
           * Indicating if the progress should instead be counter clockwise
+          * @default false
          */
         "counterClockwise": boolean;
         /**
@@ -245,50 +379,64 @@ export namespace Components {
     interface HattrickRange {
         /**
           * How long, in milliseconds, to wait to trigger the `ionChange` event after each change in the range value.
+          * @default 0
          */
         "debounce": number;
         /**
           * If `true`, the user cannot interact with the range.
+          * @default false
          */
         "disabled": boolean;
         /**
           * Show two knobs.
+          * @default false
          */
         "dualKnobs": boolean;
         /**
           * Maximum integer value of the range.
+          * @default 100
          */
         "max": number;
         /**
           * Minimum integer value of the range.
+          * @default 0
          */
         "min": number;
         /**
           * The name of the control, which is submitted with the form data.
+          * @default ""
          */
         "name": string;
         /**
           * If `true`, a pin with integer value is shown when the knob is pressed.
+          * @default false
          */
         "pin": boolean;
         /**
           * If `true`, the knob snaps to tick marks evenly spaced based on the step property value.
+          * @default false
          */
         "snaps": boolean;
         /**
           * Specifies the value granularity.
+          * @default 1
          */
         "step": number;
         /**
           * If `true`, tick marks are displayed based on the step value. Only applies when `snaps` is `true`.
+          * @default true
          */
         "ticks": boolean;
         /**
           * the value of the range.
+          * @default 0
          */
         "value": RangeValue;
     }
     interface HattrickRating {
+        /**
+          * @default false
+         */
         "noStar": boolean;
         /**
           * The rating to show inside the stamina.
@@ -296,6 +444,7 @@ export namespace Components {
         "rating": number;
         /**
           * Size of element in pixels.
+          * @default "small"
          */
         "size": number | "small" | "medium" | "large";
         /**
@@ -304,22 +453,38 @@ export namespace Components {
         "stamina": number;
         /**
           * Label for the mouseover, formatted as `{staminaLabel}: {stamina}%`
+          * @default ""
          */
         "staminaLabel": string;
     }
     interface HattrickReaction {
         "amount": number;
         "ariaLabel": string;
+        /**
+          * @default false
+         */
         "disabled": boolean;
         "reaction": string;
         "reactionTypeId": number;
+        /**
+          * @default false
+         */
         "selected": boolean;
         "sourceId": number;
         "sourceTypeId": number;
     }
     interface HattrickReactions {
+        /**
+          * @default false
+         */
         "disabled": boolean;
+        /**
+          * @default "bottom-start"
+         */
         "placement": Placement;
+        /**
+          * @default []
+         */
         "reactions": Array<IReaction>;
         "sourceId": number;
         "sourceTypeId": number;
@@ -329,6 +494,7 @@ export namespace Components {
     interface HattrickTimer {
         /**
           * The string for `days` which is used if the deadline is more than 72 hours away.
+          * @default "days"
          */
         "daysText": string;
         /**
@@ -337,30 +503,44 @@ export namespace Components {
         "deadline": Date | string | number;
         /**
           * If the timer should start counting upwards again after reaching 0.
+          * @default false
          */
         "keepCounting": boolean;
         /**
           * After how many hours should it start showing _x days_. Change text via the `daysText` property.
+          * @default 72
          */
         "maxHours": number;
+        /**
+          * @default "HH:MM:SS"
+         */
         "pattern": string;
     }
     interface HattrickTooltip {
+        /**
+          * @default false
+         */
         "alwaysShow": boolean;
         /**
           * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
+          * @default "none"
          */
         "arrow": "start" | "middle" | "end" | "none";
         "close": () => Promise<void>;
         /**
           * The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.
+          * @default ""
          */
         "content": string;
         "dir": string;
+        /**
+          * @default false
+         */
         "disabled": boolean;
         "open": (ev?: MouseEvent) => Promise<void>;
         /**
           * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
+          * @default "cursor"
          */
         "position": | "top"
     | "bottom"
@@ -555,45 +735,70 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
+
     interface HattrickArena {
         "arenaId": number;
+        /**
+          * @default "User220"
+         */
         "arenaImageType"?: ArenaImageType;
+        /**
+          * @default 0
+         */
         "capacity"?: number;
+        /**
+          * @default ""
+         */
         "forceUploadReload"?: string;
+        /**
+          * @default "https://res.hattrick.org"
+         */
         "resourceUrl"?: string;
+        /**
+          * @default -1
+         */
         "weather"?: number;
     }
     interface HattrickAvatar {
         /**
           * Set whether or not the background should be shown.
+          * @default true
          */
         "background"?: boolean;
         /**
           * the base route to the avatars, can be either a relative or absolute url.
+          * @default "/Img/Avatar/"
          */
         "base"?: string;
         /**
           * Set to true if you want all parts to finish loading before showing the avatar. This will make the first paint much slower, but the avatar will never be just partially visible. The time to when the full avatar is printed will not be affected by this setting however.
+          * @default false
          */
         "composed"?: boolean;
         /**
           * Set whether or not the surrounding card should be shown.
+          * @default true
          */
         "facecard"?: boolean;
         /**
           * Set this to false to remove the bandages on injured and bruised players.
+          * @default true
          */
         "injury"?: boolean;
         /**
           * Allows overriding the default kit by ID.
+          * @default 0
          */
         "kitId"?: number;
         /**
           * Set to false to load the avatar directly, as opposed to loading it when it's visible within the viewport.
+          * @default true
          */
         "lazy"?: boolean;
         /**
           * How soon before the avatar comes into view should we start loading it? Accepts CSS-like margin value.
+          * @default `250px`
          */
         "lazyMargin"?: string;
         /**
@@ -607,24 +812,29 @@ declare namespace LocalJSX {
         "parts"?: IAvatarPart[] | number | string;
         /**
           * Set to true to generate a circular avatar by cutting off the bottom.
+          * @default false
          */
         "round"?: boolean;
         /**
           * Set to true to generate a square avatar by cutting off the bottom.
+          * @default false
          */
         "square"?: boolean;
     }
     interface HattrickBar {
         /**
           * If there's a max before the end of the bar (e.g. maxed youth skill).
+          * @default 0
          */
         "cap"?: number;
         /**
           * The denomination of the skill level
+          * @default ""
          */
         "denomination"?: string;
         /**
           * If the sublevel is the same as the levelCap.
+          * @default false
          */
         "isCap"?: boolean;
         /**
@@ -633,13 +843,23 @@ declare namespace LocalJSX {
         "level"?: number;
         /**
           * The maximum level the bar should show.
+          * @default 20
          */
         "max"?: number;
     }
     interface HattrickField {
+        /**
+          * @default false
+         */
         "flipped"?: boolean;
+        /**
+          * @default false
+         */
         "ratingNoStar"?: boolean;
         "ratingPositions"?: { [positionId: number]: IRatingPosition };
+        /**
+          * @default 1
+         */
         "size"?: number;
         "trainingPositions"?: { [positionId: number]: ITrainingPosition };
     }
@@ -657,21 +877,41 @@ declare namespace LocalJSX {
         "flipped"?: boolean;
     }
     interface HattrickMatchArena {
+        /**
+          * @default 0
+         */
         "amount"?: number;
         "arenaId": number;
+        /**
+          * @default "#d15e5e"
+         */
         "awayColor"?: string;
+        /**
+          * @default 0
+         */
         "capacity"?: number;
+        /**
+          * @default ""
+         */
         "forceUploadReload"?: string;
+        /**
+          * @default "#6ecdea"
+         */
         "homeColor"?: string;
+        /**
+          * @default "https://res.hattrick.org"
+         */
         "resourceUrl"?: string;
     }
     interface HattrickMatchClock {
         /**
           * How many minutes of added time the match has.
+          * @default 0
          */
         "addedMinutes"?: number;
         /**
           * Format of the timer. Defaults to `MM:SS`, an alternative might include `M'`.
+          * @default "MM:SS"
          */
         "countUpFormat"?: string;
         /**
@@ -680,10 +920,12 @@ declare namespace LocalJSX {
         "finishedDate"?: Date | string | number;
         /**
           * How many minutes break does the match have between first and second half.
+          * @default 15
          */
         "halftimeBreak"?: number;
         /**
           * If we should ignore halftime and overtime breaks when calculating the time shown. Defaults to false.
+          * @default false
          */
         "ignoreBreaks"?: boolean;
         /**
@@ -692,27 +934,49 @@ declare namespace LocalJSX {
         "matchdate"?: Date | string | number;
         /**
           * How many minutes break does the match have before overtime starts.
+          * @default 5
          */
         "overtimeBreak"?: number;
         /**
           * If true there's no halftime or overtime countdowns, it just shows 45/90 during the pause.
+          * @default false
          */
         "skipPauseTimers"?: boolean;
         /**
           * How fast the clock should tick. Defaults to 1. 2 means twice as fast.
+          * @default 1
          */
         "speed"?: number;
         /**
           * Various strings for localizing. Days, hours, minutes and seconds are used pre-match. Halftime, overtimeBreak and overtime post match.
+          * @default {} as any
          */
         "texts"?: IClockTexts;
     }
     interface HattrickMl {
+        /**
+          * @default false
+         */
         "allowCustomContent"?: boolean;
+        /**
+          * @default ""
+         */
         "base"?: string;
+        /**
+          * @default "€"
+         */
         "currencyName"?: string;
+        /**
+          * @default 0.1
+         */
         "currencyRate"?: number;
+        /**
+          * @default "_self"
+         */
         "internalLinkTarget"?: string;
+        /**
+          * @default "Possible spoiler. Click here to show"
+         */
         "spoilerText"?: string;
         "text"?: string;
     }
@@ -723,33 +987,84 @@ declare namespace LocalJSX {
         "srcset"?: string;
     }
     interface HattrickPlayer {
+        /**
+          * @default "Avatar"
+         */
         "avatarSet"?: string;
         "countryId"?: number;
+        /**
+          * @default 300
+         */
         "debounce"?: number;
+        /**
+          * @default false
+         */
         "hideNumbersAfterDenominations"?: boolean;
+        /**
+          * @default 2
+         */
         "languageId"?: number;
         "playerId"?: number;
+        /**
+          * @default 2
+         */
         "skillPresentation"?: number;
         "token"?: string;
     }
     interface HattrickPlayoffTree {
         "baseUrl"?: string;
+        /**
+          * @default 1
+         */
         "bracket"?: number;
+        /**
+          * @default false
+         */
         "estimateNextRound"?: boolean;
+        /**
+          * @default "auto"
+         */
         "expand"?: "expand" | "auto" | "none";
+        /**
+          * @default 1
+         */
         "fromRound"?: number;
+        /**
+          * @default true
+         */
         "hideCollapsedLive"?: boolean;
+        /**
+          * @default true
+         */
         "hideCollapsedNames"?: boolean;
         "links"?: ILinks;
+        /**
+          * @default 0
+         */
         "matchRoundsBeforePlayoff"?: number;
+        /**
+          * @default undefined
+         */
         "navControls"?: boolean | undefined;
         "playoff"?: Array<IPlayoffMatch>;
+        /**
+          * @default false
+         */
         "pyjamas"?: boolean;
+        /**
+          * @default 0
+         */
         "showRounds"?: number;
         "texts"?: IPlayoffTexts;
     }
     interface HattrickProgressArc {
+        /**
+          * @default 0
+         */
         "angle"?: number;
+        /**
+          * @default 360
+         */
         "circumference"?: number;
         /**
           * Expression evaluating to float [0.0, 1.0]
@@ -757,6 +1072,7 @@ declare namespace LocalJSX {
         "complete"?: number;
         /**
           * Indicating if the progress should instead be counter clockwise
+          * @default false
          */
         "counterClockwise"?: boolean;
         /**
@@ -767,26 +1083,32 @@ declare namespace LocalJSX {
     interface HattrickRange {
         /**
           * How long, in milliseconds, to wait to trigger the `ionChange` event after each change in the range value.
+          * @default 0
          */
         "debounce"?: number;
         /**
           * If `true`, the user cannot interact with the range.
+          * @default false
          */
         "disabled"?: boolean;
         /**
           * Show two knobs.
+          * @default false
          */
         "dualKnobs"?: boolean;
         /**
           * Maximum integer value of the range.
+          * @default 100
          */
         "max"?: number;
         /**
           * Minimum integer value of the range.
+          * @default 0
          */
         "min"?: number;
         /**
           * The name of the control, which is submitted with the form data.
+          * @default ""
          */
         "name"?: string;
         /**
@@ -807,26 +1129,34 @@ declare namespace LocalJSX {
         "onIonStyle"?: (event: HattrickRangeCustomEvent<StyleEventDetail>) => void;
         /**
           * If `true`, a pin with integer value is shown when the knob is pressed.
+          * @default false
          */
         "pin"?: boolean;
         /**
           * If `true`, the knob snaps to tick marks evenly spaced based on the step property value.
+          * @default false
          */
         "snaps"?: boolean;
         /**
           * Specifies the value granularity.
+          * @default 1
          */
         "step"?: number;
         /**
           * If `true`, tick marks are displayed based on the step value. Only applies when `snaps` is `true`.
+          * @default true
          */
         "ticks"?: boolean;
         /**
           * the value of the range.
+          * @default 0
          */
         "value"?: RangeValue;
     }
     interface HattrickRating {
+        /**
+          * @default false
+         */
         "noStar"?: boolean;
         /**
           * The rating to show inside the stamina.
@@ -834,6 +1164,7 @@ declare namespace LocalJSX {
         "rating"?: number;
         /**
           * Size of element in pixels.
+          * @default "small"
          */
         "size"?: number | "small" | "medium" | "large";
         /**
@@ -842,23 +1173,39 @@ declare namespace LocalJSX {
         "stamina"?: number;
         /**
           * Label for the mouseover, formatted as `{staminaLabel}: {stamina}%`
+          * @default ""
          */
         "staminaLabel"?: string;
     }
     interface HattrickReaction {
         "amount"?: number;
         "ariaLabel"?: string;
+        /**
+          * @default false
+         */
         "disabled"?: boolean;
         "onReaction"?: (event: HattrickReactionCustomEvent<ReactionEvent>) => void;
         "reaction"?: string;
         "reactionTypeId"?: number;
+        /**
+          * @default false
+         */
         "selected"?: boolean;
         "sourceId"?: number;
         "sourceTypeId"?: number;
     }
     interface HattrickReactions {
+        /**
+          * @default false
+         */
         "disabled"?: boolean;
+        /**
+          * @default "bottom-start"
+         */
         "placement"?: Placement;
+        /**
+          * @default []
+         */
         "reactions"?: Array<IReaction>;
         "sourceId"?: number;
         "sourceTypeId"?: number;
@@ -868,6 +1215,7 @@ declare namespace LocalJSX {
     interface HattrickTimer {
         /**
           * The string for `days` which is used if the deadline is more than 72 hours away.
+          * @default "days"
          */
         "daysText"?: string;
         /**
@@ -876,28 +1224,42 @@ declare namespace LocalJSX {
         "deadline"?: Date | string | number;
         /**
           * If the timer should start counting upwards again after reaching 0.
+          * @default false
          */
         "keepCounting"?: boolean;
         /**
           * After how many hours should it start showing _x days_. Change text via the `daysText` property.
+          * @default 72
          */
         "maxHours"?: number;
+        /**
+          * @default "HH:MM:SS"
+         */
         "pattern"?: string;
     }
     interface HattrickTooltip {
+        /**
+          * @default false
+         */
         "alwaysShow"?: boolean;
         /**
           * The position of the arrow. Will be ignored if `position` is not set. `start` will put the arrow to the left or top. `middle` will put the arrow to the middle or center. `end` will put the arrow to the right or bottom.
+          * @default "none"
          */
         "arrow"?: "start" | "middle" | "end" | "none";
         /**
           * The content of the title. Can also be set with `slot="content"` to enable HTML in the tooltip.
+          * @default ""
          */
         "content"?: string;
         "dir"?: string;
+        /**
+          * @default false
+         */
         "disabled"?: boolean;
         /**
           * Which side of the element the tooltip should be shown. `cursor` will put it approximately below the cursor. Using `cursor` will also disable animations.
+          * @default "cursor"
          */
         "position"?: | "top"
     | "bottom"
@@ -905,51 +1267,214 @@ declare namespace LocalJSX {
     | "end"
     | "cursor";
     }
+
+    interface HattrickArenaAttributes {
+        "arenaId": number;
+        "arenaImageType": ArenaImageType;
+        "weather": number;
+        "capacity": number;
+        "resourceUrl": string;
+        "forceUploadReload": string;
+    }
+    interface HattrickAvatarAttributes {
+        "base": string;
+        "parts": string;
+        "kitId": number;
+        "background": boolean;
+        "facecard": boolean;
+        "injury": boolean;
+        "round": boolean;
+        "square": boolean;
+        "lazy": boolean;
+        "lazyMargin": string;
+        "composed": boolean;
+    }
+    interface HattrickBarAttributes {
+        "level": number;
+        "max": number;
+        "cap": number;
+        "isCap": boolean;
+        "denomination": string;
+    }
+    interface HattrickFieldAttributes {
+        "flipped": boolean;
+        "size": number;
+        "ratingNoStar": boolean;
+    }
+    interface HattrickFlagAttributes {
+        "leagueId": number;
+    }
+    interface HattrickFlipAttributes {
+        "flipped": boolean;
+        "direction": "x" | "y";
+    }
+    interface HattrickMatchArenaAttributes {
+        "arenaId": number;
+        "amount": number;
+        "capacity": number;
+        "homeColor": string;
+        "awayColor": string;
+        "resourceUrl": string;
+        "forceUploadReload": string;
+    }
+    interface HattrickMatchClockAttributes {
+        "matchdate": string;
+        "finishedDate": string;
+        "addedMinutes": number;
+        "halftimeBreak": number;
+        "overtimeBreak": number;
+        "ignoreBreaks": boolean;
+        "speed": number;
+        "skipPauseTimers": boolean;
+        "countUpFormat": string;
+    }
+    interface HattrickMlAttributes {
+        "text": string;
+        "allowCustomContent": boolean;
+        "base": string;
+        "internalLinkTarget": string;
+        "spoilerText": string;
+        "currencyRate": number;
+        "currencyName": string;
+    }
+    interface HattrickPictureAttributes {
+        "src": string;
+        "srcset": string;
+        "alt": string;
+        "lazyMargin": string;
+    }
+    interface HattrickPlayerAttributes {
+        "playerId": number;
+        "countryId": number;
+        "languageId": number;
+        "skillPresentation": number;
+        "hideNumbersAfterDenominations": boolean;
+        "avatarSet": string;
+        "token": string;
+        "debounce": number;
+    }
+    interface HattrickPlayoffTreeAttributes {
+        "expand": "expand" | "auto" | "none";
+        "hideCollapsedNames": boolean;
+        "hideCollapsedLive": boolean;
+        "estimateNextRound": boolean;
+        "baseUrl": string;
+        "matchRoundsBeforePlayoff": number;
+        "fromRound": number;
+        "showRounds": number;
+        "bracket": number;
+        "navControls": boolean | undefined;
+        "pyjamas": boolean;
+    }
+    interface HattrickProgressArcAttributes {
+        "size": number;
+        "counterClockwise": boolean;
+        "complete": number;
+        "angle": number;
+        "circumference": number;
+    }
+    interface HattrickRangeAttributes {
+        "debounce": number;
+        "name": string;
+        "dualKnobs": boolean;
+        "min": number;
+        "max": number;
+        "pin": boolean;
+        "snaps": boolean;
+        "step": number;
+        "ticks": boolean;
+        "disabled": boolean;
+        "value": RangeValue;
+    }
+    interface HattrickRatingAttributes {
+        "size": string;
+        "rating": number;
+        "stamina": number;
+        "staminaLabel": string;
+        "noStar": boolean;
+    }
+    interface HattrickReactionAttributes {
+        "sourceTypeId": number;
+        "sourceId": number;
+        "reactionTypeId": number;
+        "reaction": string;
+        "amount": number;
+        "disabled": boolean;
+        "selected": boolean;
+        "ariaLabel": string;
+    }
+    interface HattrickReactionsAttributes {
+        "sourceTypeId": number;
+        "sourceId": number;
+        "disabled": boolean;
+        "placement": Placement;
+        "token": string;
+    }
+    interface HattrickTimerAttributes {
+        "daysText": string;
+        "deadline": string;
+        "keepCounting": boolean;
+        "maxHours": number;
+        "pattern": string;
+    }
+    interface HattrickTooltipAttributes {
+        "dir": string;
+        "alwaysShow": boolean;
+        "arrow": "start" | "middle" | "end" | "none";
+        "content": string;
+        "position": | "top"
+    | "bottom"
+    | "start"
+    | "end"
+    | "cursor";
+        "disabled": boolean;
+    }
+
     interface IntrinsicElements {
-        "hattrick-arena": HattrickArena;
-        "hattrick-avatar": HattrickAvatar;
-        "hattrick-bar": HattrickBar;
-        "hattrick-field": HattrickField;
-        "hattrick-flag": HattrickFlag;
-        "hattrick-flip": HattrickFlip;
-        "hattrick-match-arena": HattrickMatchArena;
-        "hattrick-match-clock": HattrickMatchClock;
-        "hattrick-ml": HattrickMl;
-        "hattrick-picture": HattrickPicture;
-        "hattrick-player": HattrickPlayer;
-        "hattrick-playoff-tree": HattrickPlayoffTree;
-        "hattrick-progress-arc": HattrickProgressArc;
-        "hattrick-range": HattrickRange;
-        "hattrick-rating": HattrickRating;
-        "hattrick-reaction": HattrickReaction;
-        "hattrick-reactions": HattrickReactions;
-        "hattrick-timer": HattrickTimer;
-        "hattrick-tooltip": HattrickTooltip;
+        "hattrick-arena": Omit<HattrickArena, keyof HattrickArenaAttributes> & { [K in keyof HattrickArena & keyof HattrickArenaAttributes]?: HattrickArena[K] } & { [K in keyof HattrickArena & keyof HattrickArenaAttributes as `attr:${K}`]?: HattrickArenaAttributes[K] } & { [K in keyof HattrickArena & keyof HattrickArenaAttributes as `prop:${K}`]?: HattrickArena[K] } & OneOf<"arenaId", HattrickArena["arenaId"], HattrickArenaAttributes["arenaId"]>;
+        "hattrick-avatar": Omit<HattrickAvatar, keyof HattrickAvatarAttributes> & { [K in keyof HattrickAvatar & keyof HattrickAvatarAttributes]?: HattrickAvatar[K] } & { [K in keyof HattrickAvatar & keyof HattrickAvatarAttributes as `attr:${K}`]?: HattrickAvatarAttributes[K] } & { [K in keyof HattrickAvatar & keyof HattrickAvatarAttributes as `prop:${K}`]?: HattrickAvatar[K] };
+        "hattrick-bar": Omit<HattrickBar, keyof HattrickBarAttributes> & { [K in keyof HattrickBar & keyof HattrickBarAttributes]?: HattrickBar[K] } & { [K in keyof HattrickBar & keyof HattrickBarAttributes as `attr:${K}`]?: HattrickBarAttributes[K] } & { [K in keyof HattrickBar & keyof HattrickBarAttributes as `prop:${K}`]?: HattrickBar[K] };
+        "hattrick-field": Omit<HattrickField, keyof HattrickFieldAttributes> & { [K in keyof HattrickField & keyof HattrickFieldAttributes]?: HattrickField[K] } & { [K in keyof HattrickField & keyof HattrickFieldAttributes as `attr:${K}`]?: HattrickFieldAttributes[K] } & { [K in keyof HattrickField & keyof HattrickFieldAttributes as `prop:${K}`]?: HattrickField[K] };
+        "hattrick-flag": Omit<HattrickFlag, keyof HattrickFlagAttributes> & { [K in keyof HattrickFlag & keyof HattrickFlagAttributes]?: HattrickFlag[K] } & { [K in keyof HattrickFlag & keyof HattrickFlagAttributes as `attr:${K}`]?: HattrickFlagAttributes[K] } & { [K in keyof HattrickFlag & keyof HattrickFlagAttributes as `prop:${K}`]?: HattrickFlag[K] };
+        "hattrick-flip": Omit<HattrickFlip, keyof HattrickFlipAttributes> & { [K in keyof HattrickFlip & keyof HattrickFlipAttributes]?: HattrickFlip[K] } & { [K in keyof HattrickFlip & keyof HattrickFlipAttributes as `attr:${K}`]?: HattrickFlipAttributes[K] } & { [K in keyof HattrickFlip & keyof HattrickFlipAttributes as `prop:${K}`]?: HattrickFlip[K] };
+        "hattrick-match-arena": Omit<HattrickMatchArena, keyof HattrickMatchArenaAttributes> & { [K in keyof HattrickMatchArena & keyof HattrickMatchArenaAttributes]?: HattrickMatchArena[K] } & { [K in keyof HattrickMatchArena & keyof HattrickMatchArenaAttributes as `attr:${K}`]?: HattrickMatchArenaAttributes[K] } & { [K in keyof HattrickMatchArena & keyof HattrickMatchArenaAttributes as `prop:${K}`]?: HattrickMatchArena[K] } & OneOf<"arenaId", HattrickMatchArena["arenaId"], HattrickMatchArenaAttributes["arenaId"]>;
+        "hattrick-match-clock": Omit<HattrickMatchClock, keyof HattrickMatchClockAttributes> & { [K in keyof HattrickMatchClock & keyof HattrickMatchClockAttributes]?: HattrickMatchClock[K] } & { [K in keyof HattrickMatchClock & keyof HattrickMatchClockAttributes as `attr:${K}`]?: HattrickMatchClockAttributes[K] } & { [K in keyof HattrickMatchClock & keyof HattrickMatchClockAttributes as `prop:${K}`]?: HattrickMatchClock[K] };
+        "hattrick-ml": Omit<HattrickMl, keyof HattrickMlAttributes> & { [K in keyof HattrickMl & keyof HattrickMlAttributes]?: HattrickMl[K] } & { [K in keyof HattrickMl & keyof HattrickMlAttributes as `attr:${K}`]?: HattrickMlAttributes[K] } & { [K in keyof HattrickMl & keyof HattrickMlAttributes as `prop:${K}`]?: HattrickMl[K] };
+        "hattrick-picture": Omit<HattrickPicture, keyof HattrickPictureAttributes> & { [K in keyof HattrickPicture & keyof HattrickPictureAttributes]?: HattrickPicture[K] } & { [K in keyof HattrickPicture & keyof HattrickPictureAttributes as `attr:${K}`]?: HattrickPictureAttributes[K] } & { [K in keyof HattrickPicture & keyof HattrickPictureAttributes as `prop:${K}`]?: HattrickPicture[K] };
+        "hattrick-player": Omit<HattrickPlayer, keyof HattrickPlayerAttributes> & { [K in keyof HattrickPlayer & keyof HattrickPlayerAttributes]?: HattrickPlayer[K] } & { [K in keyof HattrickPlayer & keyof HattrickPlayerAttributes as `attr:${K}`]?: HattrickPlayerAttributes[K] } & { [K in keyof HattrickPlayer & keyof HattrickPlayerAttributes as `prop:${K}`]?: HattrickPlayer[K] };
+        "hattrick-playoff-tree": Omit<HattrickPlayoffTree, keyof HattrickPlayoffTreeAttributes> & { [K in keyof HattrickPlayoffTree & keyof HattrickPlayoffTreeAttributes]?: HattrickPlayoffTree[K] } & { [K in keyof HattrickPlayoffTree & keyof HattrickPlayoffTreeAttributes as `attr:${K}`]?: HattrickPlayoffTreeAttributes[K] } & { [K in keyof HattrickPlayoffTree & keyof HattrickPlayoffTreeAttributes as `prop:${K}`]?: HattrickPlayoffTree[K] };
+        "hattrick-progress-arc": Omit<HattrickProgressArc, keyof HattrickProgressArcAttributes> & { [K in keyof HattrickProgressArc & keyof HattrickProgressArcAttributes]?: HattrickProgressArc[K] } & { [K in keyof HattrickProgressArc & keyof HattrickProgressArcAttributes as `attr:${K}`]?: HattrickProgressArcAttributes[K] } & { [K in keyof HattrickProgressArc & keyof HattrickProgressArcAttributes as `prop:${K}`]?: HattrickProgressArc[K] };
+        "hattrick-range": Omit<HattrickRange, keyof HattrickRangeAttributes> & { [K in keyof HattrickRange & keyof HattrickRangeAttributes]?: HattrickRange[K] } & { [K in keyof HattrickRange & keyof HattrickRangeAttributes as `attr:${K}`]?: HattrickRangeAttributes[K] } & { [K in keyof HattrickRange & keyof HattrickRangeAttributes as `prop:${K}`]?: HattrickRange[K] };
+        "hattrick-rating": Omit<HattrickRating, keyof HattrickRatingAttributes> & { [K in keyof HattrickRating & keyof HattrickRatingAttributes]?: HattrickRating[K] } & { [K in keyof HattrickRating & keyof HattrickRatingAttributes as `attr:${K}`]?: HattrickRatingAttributes[K] } & { [K in keyof HattrickRating & keyof HattrickRatingAttributes as `prop:${K}`]?: HattrickRating[K] };
+        "hattrick-reaction": Omit<HattrickReaction, keyof HattrickReactionAttributes> & { [K in keyof HattrickReaction & keyof HattrickReactionAttributes]?: HattrickReaction[K] } & { [K in keyof HattrickReaction & keyof HattrickReactionAttributes as `attr:${K}`]?: HattrickReactionAttributes[K] } & { [K in keyof HattrickReaction & keyof HattrickReactionAttributes as `prop:${K}`]?: HattrickReaction[K] };
+        "hattrick-reactions": Omit<HattrickReactions, keyof HattrickReactionsAttributes> & { [K in keyof HattrickReactions & keyof HattrickReactionsAttributes]?: HattrickReactions[K] } & { [K in keyof HattrickReactions & keyof HattrickReactionsAttributes as `attr:${K}`]?: HattrickReactionsAttributes[K] } & { [K in keyof HattrickReactions & keyof HattrickReactionsAttributes as `prop:${K}`]?: HattrickReactions[K] };
+        "hattrick-timer": Omit<HattrickTimer, keyof HattrickTimerAttributes> & { [K in keyof HattrickTimer & keyof HattrickTimerAttributes]?: HattrickTimer[K] } & { [K in keyof HattrickTimer & keyof HattrickTimerAttributes as `attr:${K}`]?: HattrickTimerAttributes[K] } & { [K in keyof HattrickTimer & keyof HattrickTimerAttributes as `prop:${K}`]?: HattrickTimer[K] };
+        "hattrick-tooltip": Omit<HattrickTooltip, keyof HattrickTooltipAttributes> & { [K in keyof HattrickTooltip & keyof HattrickTooltipAttributes]?: HattrickTooltip[K] } & { [K in keyof HattrickTooltip & keyof HattrickTooltipAttributes as `attr:${K}`]?: HattrickTooltipAttributes[K] } & { [K in keyof HattrickTooltip & keyof HattrickTooltipAttributes as `prop:${K}`]?: HattrickTooltip[K] };
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "hattrick-arena": LocalJSX.HattrickArena & JSXBase.HTMLAttributes<HTMLHattrickArenaElement>;
-            "hattrick-avatar": LocalJSX.HattrickAvatar & JSXBase.HTMLAttributes<HTMLHattrickAvatarElement>;
-            "hattrick-bar": LocalJSX.HattrickBar & JSXBase.HTMLAttributes<HTMLHattrickBarElement>;
-            "hattrick-field": LocalJSX.HattrickField & JSXBase.HTMLAttributes<HTMLHattrickFieldElement>;
-            "hattrick-flag": LocalJSX.HattrickFlag & JSXBase.HTMLAttributes<HTMLHattrickFlagElement>;
-            "hattrick-flip": LocalJSX.HattrickFlip & JSXBase.HTMLAttributes<HTMLHattrickFlipElement>;
-            "hattrick-match-arena": LocalJSX.HattrickMatchArena & JSXBase.HTMLAttributes<HTMLHattrickMatchArenaElement>;
-            "hattrick-match-clock": LocalJSX.HattrickMatchClock & JSXBase.HTMLAttributes<HTMLHattrickMatchClockElement>;
-            "hattrick-ml": LocalJSX.HattrickMl & JSXBase.HTMLAttributes<HTMLHattrickMlElement>;
-            "hattrick-picture": LocalJSX.HattrickPicture & JSXBase.HTMLAttributes<HTMLHattrickPictureElement>;
-            "hattrick-player": LocalJSX.HattrickPlayer & JSXBase.HTMLAttributes<HTMLHattrickPlayerElement>;
-            "hattrick-playoff-tree": LocalJSX.HattrickPlayoffTree & JSXBase.HTMLAttributes<HTMLHattrickPlayoffTreeElement>;
-            "hattrick-progress-arc": LocalJSX.HattrickProgressArc & JSXBase.HTMLAttributes<HTMLHattrickProgressArcElement>;
-            "hattrick-range": LocalJSX.HattrickRange & JSXBase.HTMLAttributes<HTMLHattrickRangeElement>;
-            "hattrick-rating": LocalJSX.HattrickRating & JSXBase.HTMLAttributes<HTMLHattrickRatingElement>;
-            "hattrick-reaction": LocalJSX.HattrickReaction & JSXBase.HTMLAttributes<HTMLHattrickReactionElement>;
-            "hattrick-reactions": LocalJSX.HattrickReactions & JSXBase.HTMLAttributes<HTMLHattrickReactionsElement>;
-            "hattrick-timer": LocalJSX.HattrickTimer & JSXBase.HTMLAttributes<HTMLHattrickTimerElement>;
-            "hattrick-tooltip": LocalJSX.HattrickTooltip & JSXBase.HTMLAttributes<HTMLHattrickTooltipElement>;
+            "hattrick-arena": LocalJSX.IntrinsicElements["hattrick-arena"] & JSXBase.HTMLAttributes<HTMLHattrickArenaElement>;
+            "hattrick-avatar": LocalJSX.IntrinsicElements["hattrick-avatar"] & JSXBase.HTMLAttributes<HTMLHattrickAvatarElement>;
+            "hattrick-bar": LocalJSX.IntrinsicElements["hattrick-bar"] & JSXBase.HTMLAttributes<HTMLHattrickBarElement>;
+            "hattrick-field": LocalJSX.IntrinsicElements["hattrick-field"] & JSXBase.HTMLAttributes<HTMLHattrickFieldElement>;
+            "hattrick-flag": LocalJSX.IntrinsicElements["hattrick-flag"] & JSXBase.HTMLAttributes<HTMLHattrickFlagElement>;
+            "hattrick-flip": LocalJSX.IntrinsicElements["hattrick-flip"] & JSXBase.HTMLAttributes<HTMLHattrickFlipElement>;
+            "hattrick-match-arena": LocalJSX.IntrinsicElements["hattrick-match-arena"] & JSXBase.HTMLAttributes<HTMLHattrickMatchArenaElement>;
+            "hattrick-match-clock": LocalJSX.IntrinsicElements["hattrick-match-clock"] & JSXBase.HTMLAttributes<HTMLHattrickMatchClockElement>;
+            "hattrick-ml": LocalJSX.IntrinsicElements["hattrick-ml"] & JSXBase.HTMLAttributes<HTMLHattrickMlElement>;
+            "hattrick-picture": LocalJSX.IntrinsicElements["hattrick-picture"] & JSXBase.HTMLAttributes<HTMLHattrickPictureElement>;
+            "hattrick-player": LocalJSX.IntrinsicElements["hattrick-player"] & JSXBase.HTMLAttributes<HTMLHattrickPlayerElement>;
+            "hattrick-playoff-tree": LocalJSX.IntrinsicElements["hattrick-playoff-tree"] & JSXBase.HTMLAttributes<HTMLHattrickPlayoffTreeElement>;
+            "hattrick-progress-arc": LocalJSX.IntrinsicElements["hattrick-progress-arc"] & JSXBase.HTMLAttributes<HTMLHattrickProgressArcElement>;
+            "hattrick-range": LocalJSX.IntrinsicElements["hattrick-range"] & JSXBase.HTMLAttributes<HTMLHattrickRangeElement>;
+            "hattrick-rating": LocalJSX.IntrinsicElements["hattrick-rating"] & JSXBase.HTMLAttributes<HTMLHattrickRatingElement>;
+            "hattrick-reaction": LocalJSX.IntrinsicElements["hattrick-reaction"] & JSXBase.HTMLAttributes<HTMLHattrickReactionElement>;
+            "hattrick-reactions": LocalJSX.IntrinsicElements["hattrick-reactions"] & JSXBase.HTMLAttributes<HTMLHattrickReactionsElement>;
+            "hattrick-timer": LocalJSX.IntrinsicElements["hattrick-timer"] & JSXBase.HTMLAttributes<HTMLHattrickTimerElement>;
+            "hattrick-tooltip": LocalJSX.IntrinsicElements["hattrick-tooltip"] & JSXBase.HTMLAttributes<HTMLHattrickTooltipElement>;
         }
     }
 }

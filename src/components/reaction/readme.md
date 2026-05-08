@@ -7,17 +7,16 @@
 
 ## Properties
 
-| Property         | Attribute          | Description | Type      | Default                                     |
-| ---------------- | ------------------ | ----------- | --------- | ------------------------------------------- |
-| `amount`         | `amount`           |             | `number`  | `undefined`                                 |
-| `ariaLabel`      | `aria-label`       |             | `string`  | `undefined`                                 |
-| `disabled`       | `disabled`         |             | `boolean` | `false`                                     |
-| `reaction`       | `reaction`         |             | `string`  | `undefined`                                 |
-| `reactionTypeId` | `reaction-type-id` |             | `number`  | `undefined`                                 |
-| `selected`       | `selected`         |             | `boolean` | `false`                                     |
-| `sourceId`       | `source-id`        |             | `number`  | `undefined`                                 |
-| `sourceTypeId`   | `source-type-id`   |             | `number`  | `undefined`                                 |
-| `token`          | `token`            |             | `string`  | `(window as any).HT?.ngHattrick?.userToken` |
+| Property         | Attribute          | Description | Type      | Default     |
+| ---------------- | ------------------ | ----------- | --------- | ----------- |
+| `amount`         | `amount`           |             | `number`  | `undefined` |
+| `ariaLabel`      | `aria-label`       |             | `string`  | `undefined` |
+| `disabled`       | `disabled`         |             | `boolean` | `false`     |
+| `reaction`       | `reaction`         |             | `string`  | `undefined` |
+| `reactionTypeId` | `reaction-type-id` |             | `number`  | `undefined` |
+| `selected`       | `selected`         |             | `boolean` | `false`     |
+| `sourceId`       | `source-id`        |             | `number`  | `undefined` |
+| `sourceTypeId`   | `source-type-id`   |             | `number`  | `undefined` |
 
 
 ## Events
