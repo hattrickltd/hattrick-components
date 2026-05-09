@@ -1,4 +1,5 @@
 import { Config } from "@stencil/core";
+import { angularOutputTarget } from "@stencil/angular-output-target";
 
 export const config: Config = {
   namespace: "hattrick-components",
@@ -24,5 +25,11 @@ export const config: Config = {
     {
       type: "docs-readme",
     },
+    angularOutputTarget({
+      componentCorePackage: "@hattrickltd/hattrick-components",
+      outputType: "component",
+      directivesProxyFile: "../Site.Hattrick.Angular/src/hattrick-common/stencil-generated/components.ts",
+      directivesArrayFile: "../Site.Hattrick.Angular/src/hattrick-common/stencil-generated/index.ts",
+    }),
   ],
 };
