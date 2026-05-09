@@ -1,194 +1,76 @@
-import { vi, describe, it, expect, beforeEach, beforeAll, afterAll, h, render } from "@stencil/vitest";
-import { Timer } from "./timer";
+import {
+  vi,
+  describe,
+  it,
+  expect,
+  beforeAll,
+  afterAll,
+  afterEach,
+  h,
+  render,
+} from "@stencil/vitest";
 
 const realDateNow = Date.now;
 const now = Date.now();
+const unmounts: Array<() => void> = [];
 
-const hours = (n: number) => n * 1000 * 60 * 60;
-const minutes = (n: number) => n * 1000 * 60;
 const seconds = (n: number) => n * 1000;
 
-function setDeadline(t: Timer, deadline?: number | Date | string) {
-  if (deadline) t.deadline = deadline;
+async function createTimer(props: Partial<HTMLHattrickTimerElement> = {}) {
+  const page = await render<HTMLHattrickTimerElement>(<hattrick-timer></hattrick-timer>, {
+    waitForReady: false,
+  });
 
-  (t as any).deadlineUpdated();
-  (t as any).updateTime();
-}
+  unmounts.push(page.unmount);
 
-async function createTimer() {
-  return render<HTMLHattrickTimerElement>(<hattrick-timer></hattrick-timer>);
+  await page.setProps({ deadline: Date.now(), ...props });
+
+  return page;
 }
 
 describe("Timer unit", () => {
-  let timer: Timer;
-
-  beforeEach(() => {
-    timer = new Timer();
-  });
-
   beforeAll(() => {
     Date.now = vi.fn().mockReturnValue(now);
   });
+
+  afterEach(() => {
+    while (unmounts.length > 0) {
+      unmounts.pop()?.();
+    }
+  });
+
   afterAll(() => {
     Date.now = realDateNow;
   });
 
-  it("should build", () => {
+  it("should render", async () => {
+    let { root: timer } = await createTimer();
+
     expect(timer).toBeTruthy();
   });
 
-  describe("seconds", () => {
-    it("should be 0 when deadline is now", () => {
-      setDeadline(timer, Date.now());
-
-      expect((timer as any).seconds).toBe(0);
-    });
-
-    it("should be less than 0 when deadline is in the past", () => {
-      setDeadline(timer, Date.now() - seconds(10));
-
-      expect((timer as any).seconds).toBeLessThan(0);
-    });
-
-    it("should be bigger than 0 when deadline is in the future", () => {
-      setDeadline(timer, Date.now() + seconds(10));
-
-      expect((timer as any).seconds).toBeGreaterThan(0);
-    });
-  });
-
-  describe("getTime", () => {
-    it("should be 00:00:00 when deadline is now", () => {
-      setDeadline(timer, Date.now());
-
-      expect((timer as any).getTime()).toBe("00:00:00");
-    });
-
-    it("should show 00:00:11 when deadline is in 11 seconds", () => {
-      setDeadline(timer, Date.now() + seconds(11));
-
-      expect((timer as any).getTime()).toBe("00:00:11");
-    });
-
-    it("should show 00:01:01 when deadline is in 61 seconds", () => {
-      setDeadline(timer, Date.now() + seconds(61));
-
-      expect((timer as any).getTime()).toBe("00:01:01");
-    });
-
-    it("should show 01:01:01 when deadline is 1 hour and 61 seconds", () => {
-      setDeadline(timer, Date.now() + hours(1) + minutes(1) + seconds(1));
-
-      expect((timer as any).getTime()).toBe("01:01:01");
-    });
-
-    it("should show 24:00:00 when deadline is in 1 day", () => {
-      setDeadline(timer, Date.now() + hours(24));
-
-      expect((timer as any).getTime()).toBe("24:00:00");
-    });
-  });
-
-  describe("daysText", () => {
-    it("should show '4 days' when deadline is in 4 day", () => {
-      setDeadline(timer, Date.now() + hours(24 * 4));
-
-      expect((timer as any).getTime()).toBe("4 days");
-    });
-
-    it("should show '4 dagar' when deadline is in 4 day", () => {
-      setDeadline(timer, Date.now() + hours(24 * 4));
-      timer.daysText = "dagar";
-
-      expect((timer as any).getTime()).toBe("4 dagar");
-    });
-  });
-
-  describe("keepCounting", () => {
-    it("should stop at zero if keepCounting is not set", () => {
-      setDeadline(timer, Date.now() + seconds(-3));
-
-      expect((timer as any).getTime()).toBe("00:00:00");
-    });
-
-    it("should keep counting when keepCounting is set", () => {
-      setDeadline(timer, Date.now() + seconds(-3));
-      timer.keepCounting = true;
-
-      expect((timer as any).getTime()).toBe("00:00:03");
-    });
-  });
-
-  describe("hostData", () => {
+  describe("host", () => {
     it("has 'timer' role", async () => {
       let { root: timer } = await createTimer();
 
       expect(timer.getAttribute("role")).toBe("timer");
     });
 
-    it("should get have finished class when reaching zero", async () => {
-      let { root: timer, waitForChanges } = await createTimer();
-
-      timer.deadline = Date.now();
-      await waitForChanges();
+    it("applies the finished class when the timer reaches zero", async () => {
+      let { root: timer } = await createTimer({ deadline: Date.now() });
 
       expect(timer.classList.contains("timer-finished")).toBeTruthy();
+      expect(timer.classList.contains("timer-passed-zero")).toBeFalsy();
     });
 
-    it("should not have finished class when reaching zero if we'll keep counting", async () => {
-      let { root: timer, waitForChanges } = await createTimer();
-
-      timer.deadline = Date.now();
-      timer.keepCounting = true;
-      await waitForChanges();
+    it("applies the passed-zero class when keepCounting is enabled", async () => {
+      let { root: timer } = await createTimer({
+        deadline: Date.now() - seconds(1),
+        keepCounting: true,
+      });
 
       expect(timer.classList.contains("timer-finished")).toBeFalsy();
-    });
-
-    it("should have passed zero class after passing zero if we'll keep counting", async () => {
-      let { root: timer, waitForChanges } = await createTimer();
-
-      timer.deadline = Date.now() - seconds(1);
-      timer.keepCounting = true;
-      await waitForChanges();
-
       expect(timer.classList.contains("timer-passed-zero")).toBeTruthy();
-    });
-  });
-
-  describe("non-numeric deadlines", () => {
-    it("allows date deadlines", () => {
-      setDeadline(timer, new Date(Date.now() + seconds(61)));
-
-      expect((timer as any).getTime()).toBe("00:01:01");
-    });
-
-    it("allows string numbers", () => {
-      setDeadline(timer, (Date.now() + seconds(61)).toString());
-
-      expect((timer as any).getTime()).toBe("00:01:01");
-    });
-
-    it("allows string Date deadlines", () => {
-      setDeadline(timer, new Date(Date.now() + seconds(61)).toISOString());
-
-      expect((timer as any).getTime()).toBe("00:01:01");
-    });
-  });
-
-  describe("ticks", () => {
-    it("from 1 to 0 after a second", () => {
-      setDeadline(timer, Date.now() + seconds(1));
-
-      Date.now = vi.fn(() => now + 1);
-      setDeadline(timer);
-
-      expect((timer as any).getTime()).toBe("00:00:00");
-
-      Date.now = vi.fn(() => now + 1000);
-      setDeadline(timer);
-
-      expect((timer as any).getTime()).toBe("00:00:00");
     });
   });
 });

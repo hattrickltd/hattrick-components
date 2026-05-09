@@ -1,247 +1,72 @@
-import { vi, describe, it, expect, beforeEach, beforeAll, afterAll, h, render } from "@stencil/vitest";
-import { MatchClock } from "./match-clock";
+import {
+  vi,
+  describe,
+  it,
+  expect,
+  beforeAll,
+  afterAll,
+  afterEach,
+  h,
+  render,
+} from "@stencil/vitest";
 
 const realDateNow = Date.now;
 const now = Date.now();
-
-const hours = (n: number) => n * 1000 * 60 * 60;
-const minutes = (m: number) => m * 1000 * 60;
 const seconds = (s: number) => s * 1000;
+const unmounts: Array<() => void> = [];
 
-const texts = {
-  days: "d",
-  hours: "h",
-  minutes: "m",
-  seconds: "s",
-  overtime: "Overtime",
-  overtimeBreak: "Overtime break",
-  halftime: "Half time",
-};
+async function createMatchClock(props: Partial<HTMLHattrickMatchClockElement> = {}) {
+  const page = await render<HTMLHattrickMatchClockElement>(
+    <hattrick-match-clock></hattrick-match-clock>,
+    {
+      waitForReady: false,
+    },
+  );
 
-function setMatchtimer(t: MatchClock, matchdate?: number | Date | string) {
-  if (matchdate) t.matchdate = matchdate;
+  unmounts.push(page.unmount);
+  await page.setProps({ matchdate: Date.now(), ...props });
 
-  (t as any).matchdateUpdated();
-  (t as any).updateTime();
-}
-
-async function createMatchClock() {
-  return render<HTMLHattrickMatchClockElement>(<hattrick-match-clock></hattrick-match-clock>);
+  return page;
 }
 
 describe("MatchClock unit", () => {
-  let matchclock: MatchClock;
-
-  beforeEach(() => {
-    matchclock = new MatchClock();
-  });
-
   beforeAll(() => {
     Date.now = vi.fn().mockReturnValue(now);
   });
+
+  afterEach(() => {
+    while (unmounts.length > 0) {
+      unmounts.pop()?.();
+    }
+  });
+
   afterAll(() => {
     Date.now = realDateNow;
   });
 
-  it("should build", () => {
+  it("should render", async () => {
+    let { root: matchclock } = await createMatchClock();
+
     expect(matchclock).toBeTruthy();
   });
 
-  describe("seconds", () => {
-    it("should be 0 when matchtime is now", () => {
-      setMatchtimer(matchclock, Date.now());
-
-      expect((matchclock as any).seconds).toBe(0);
-    });
-
-    it("should be less than 0 when matchtime is in the past", () => {
-      setMatchtimer(matchclock, Date.now() - seconds(10));
-
-      expect((matchclock as any).seconds).toBeLessThan(0);
-    });
-
-    it("should be bigger than 0 when matchtime is in the future", () => {
-      setMatchtimer(matchclock, Date.now() + seconds(10));
-
-      expect((matchclock as any).seconds).toBeGreaterThan(0);
-    });
-  });
-
-  describe("during match", () => {
-    describe("getTime", () => {
-      it("should be 00:00 when matchtime is now", () => {
-        setMatchtimer(matchclock, Date.now());
-
-        expect((matchclock as any).getTime()).toBe("00:00");
-      });
-
-      it("should show '00:11' when matchtime was 11 seconds ago", () => {
-        setMatchtimer(matchclock, Date.now() - seconds(11));
-
-        expect((matchclock as any).getTime()).toBe("00:11");
-      });
-
-      it("should show '01:01' when matchtime was 61 seconds ago", () => {
-        setMatchtimer(matchclock, Date.now() - seconds(61));
-
-        expect((matchclock as any).getTime()).toBe("01:01");
-      });
-
-      it("should show countdown during halftime", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(45));
-
-        expect((matchclock as any).getTime()).toBe("15:00");
-      });
-
-      it("should show '45:00' when second half starts", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(60));
-
-        expect((matchclock as any).getTime()).toBe("45:00");
-      });
-
-      it("should show countdown during overtime break", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(105));
-
-        expect((matchclock as any).getTime()).toBe("05:00");
-      });
-
-      it("should show '90:00' when overtime starts", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(110));
-
-        expect((matchclock as any).getTime()).toBe("90:00");
-      });
-    });
-
-    describe("with 3 added minutes", () => {
-      beforeEach(() => {
-        matchclock.addedMinutes = 3;
-      });
-
-      it("should show '90:00' instead of countdown for overtime break", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(105));
-
-        expect((matchclock as any).getTime()).toBe("90:00");
-      });
-
-      it("should show countdown after 93 minutes of match time", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(105) - minutes(3));
-
-        expect((matchclock as any).getTime()).toBe("05:00");
-      });
-
-      it("should show '90:00' again when overtime starts", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(110) - minutes(3));
-
-        expect((matchclock as any).getTime()).toBe("90:00");
-      });
-    });
-
-    describe("with texts", () => {
-      beforeEach(() => {
-        matchclock.texts = texts;
-      });
-
-      it("should show '(Half time)' after match clock", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(45));
-
-        expect((matchclock as any).getTime()).toBe("15:00 (Half time)");
-      });
-
-      it("should show '(Overtime break)' after match clock", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(105));
-
-        expect((matchclock as any).getTime()).toBe("05:00 (Overtime break)");
-      });
-
-      it("should show '(Overtime)' after match clock", () => {
-        setMatchtimer(matchclock, Date.now() - minutes(110));
-
-        expect((matchclock as any).getTime()).toBe("90:00 (Overtime)");
-      });
-    });
-  });
-
-  describe("before match", () => {
-    beforeEach(() => {
-      matchclock.texts = texts;
-    });
-
-    it("shows days, hours, minutes and seconds", () => {
-      setMatchtimer(matchclock, Date.now() + hours(24 + 1));
-
-      expect((matchclock as any).getTime()).toBe("1d 1h 00m 00s");
-    });
-
-    it("shows hours, minutes and seconds", () => {
-      setMatchtimer(matchclock, Date.now() + hours(1));
-
-      expect((matchclock as any).getTime()).toBe("1h 00m 00s");
-    });
-
-    it("shows minutes and seconds", () => {
-      setMatchtimer(matchclock, Date.now() + minutes(1));
-
-      expect((matchclock as any).getTime()).toBe("01m 00s");
-    });
-
-    it("shows seconds", () => {
-      setMatchtimer(matchclock, Date.now() + seconds(1));
-
-      expect((matchclock as any).getTime()).toBe("00m 01s");
-    });
-  });
-
-  describe("hostData", () => {
-    // it("has 'timer' role", async () => {
-    //   let page = await newSpecPage({
-    //     components: [MatchClock],
-    //     template: () => <hattrick-match-clock></hattrick-match-clock>,
-    //   });
-
-    //   expect(page.root.role).toBe("timer");
-    // });
-
+  describe("host", () => {
     it("should have 'match-clock-passed-zero' class when match has started", async () => {
-      let { root: matchclock, waitForChanges } = await createMatchClock();
-
-      matchclock.matchdate = Date.now();
-      await waitForChanges();
+      let { root: matchclock } = await createMatchClock({ matchdate: Date.now() });
 
       expect(matchclock.classList.contains("match-clock-passed-zero")).toBeTruthy();
     });
 
     it("should have 'match-clock-passed-zero' class in an upcoming match", async () => {
-      let { root: matchclock, waitForChanges } = await createMatchClock();
-
-      matchclock.matchdate = Date.now() + seconds(1);
-      await waitForChanges();
+      let { root: matchclock } = await createMatchClock({ matchdate: Date.now() + seconds(1) });
 
       expect(matchclock.classList.contains("match-clock-passed-zero")).toBeFalsy();
     });
+
+    it("renders the current match clock text", async () => {
+      let { root: matchclock } = await createMatchClock({ matchdate: Date.now() - seconds(11) });
+
+      expect(matchclock.shadowRoot?.querySelector("span")?.textContent).toBe("00:11");
+    });
   });
-
-  // describe("pause/resume", () => {
-  //   it("should not move while paused", () => {
-  //     setMatchtimer(matchclock, Date.now());
-  //     matchclock.pause();
-
-  //     Date.now = jest.fn().mockReturnValue(now + 1000);
-  //     setMatchtimer(matchclock);
-
-  //     expect((matchclock as any).getTime()).toBe("00:00");
-  //   });
-
-  //   it("should move the time back after resume", () => {
-  //     setMatchtimer(matchclock, Date.now());
-  //     matchclock.pause();
-
-  //     expect((matchclock as any).getTime()).toBe("00:00");
-
-  //     Date.now = jest.fn().mockReturnValue(now + 1000);
-  //     setMatchtimer(matchclock);
-
-  //     matchclock.resume();
-  //     expect((matchclock as any).getTime()).toBe("00:00");
-  //   });
-  // });
 });

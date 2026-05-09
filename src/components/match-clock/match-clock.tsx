@@ -1,5 +1,13 @@
 import { h, Component, Prop, State, Watch, Method, Host } from "@stencil/core";
 import { IClockTexts } from "./match-clock.interfaces";
+import {
+  didPassFinishedDate,
+  fixDate,
+  getMatchClockClassState,
+  getMatchClockSeconds,
+  getMatchClockText,
+  isMatchClockCountingDown,
+} from "./match-clock.logic";
 
 @Component({
   tag: "hattrick-match-clock",
@@ -108,165 +116,44 @@ export class MatchClock {
   }
 
   private didPassFinishedDate() {
-    if (!this.finishedDate) return false;
-    return Date.now() >= fixDate(this.finishedDate).getTime();
+    return didPassFinishedDate(this.finishedDate);
   }
 
   private updateTime() {
-    this.seconds = Math.ceil((this._matchstart - Date.now()) / 1000);
+    this.seconds = getMatchClockSeconds(this._matchstart);
   }
 
   private isCountingDown(): boolean {
-    return this.seconds > 0;
+    return isMatchClockCountingDown(this.seconds);
   }
 
   private getTime(): string {
-    let format = "";
-    let clock = this.getMatchClock();
-
-    if (this.isCountingDown()) {
-      if (clock.days !== 0) format = "D H MM SS";
-      else if (clock.hours !== 0) format = "H MM SS";
-      else format = "MM SS";
-
-      return this.format(clock, format, this.texts);
-    } else {
-      return this.format(clock, this.countUpFormat) + clock.labelAfterClock;
-    }
-  }
-
-  private getMatchClock(): IClock {
-    let minutes = 0,
-      seconds = 0,
-      days = 0,
-      hours = 0,
-      labelAfterClock = "";
-
-    minutes = Math.floor(Math.abs(this.seconds / 60));
-    seconds = Math.floor(Math.abs(this.seconds % 60));
-
-    if (this.isCountingDown()) {
-      hours = Math.floor(minutes / 60);
-      days = Math.floor(hours / 24);
-      hours = hours % 24;
-      minutes = minutes % 60;
-    } else {
-      if (!this.ignoreBreaks) {
-        const isInHalftimeBreak = minutes >= 45 && minutes < 45 + this.halftimeBreak;
-
-        if (isInHalftimeBreak) {
-          if (this.skipPauseTimers) {
-            minutes = 45;
-            seconds = 0;
-          } else {
-            if (this.texts.halftime) labelAfterClock = " (" + this.texts.halftime + ")";
-            minutes = 45 + this.halftimeBreak - minutes - 1;
-            seconds = 60 - seconds;
-            if (seconds === 60) {
-              seconds = 0;
-              minutes += 1;
-            }
-          }
-        } else if (minutes >= 45 + this.halftimeBreak) {
-          // is in second half
-          minutes -= this.halftimeBreak;
-        }
-
-        if (!this.didPassFinishedDate()) {
-          if (this.overtimeBreak > 0) {
-            const isInOvertimeBreak =
-              minutes >= 90 + this.addedMinutes &&
-              minutes < 90 + this.addedMinutes + this.overtimeBreak;
-
-            if (isInOvertimeBreak) {
-              if (this.skipPauseTimers) {
-                minutes = 90;
-                seconds = 0;
-              } else {
-                if (this.texts.overtimeBreak)
-                  labelAfterClock = " (" + this.texts.overtimeBreak + ")";
-                minutes = 90 + this.addedMinutes + this.overtimeBreak - minutes - 1;
-                seconds = 60 - seconds;
-                if (seconds === 60) {
-                  seconds = 0;
-                  minutes += 1;
-                }
-              }
-            } else if (minutes >= 90 + this.addedMinutes + this.overtimeBreak) {
-              // is in overtime
-              if (this.texts.overtime) labelAfterClock = " (" + this.texts.overtime + ")";
-              minutes -= this.addedMinutes + this.overtimeBreak;
-            }
-          }
-        }
-      }
-    }
-
-    return { minutes, seconds, days, hours, labelAfterClock };
-  }
-
-  private format(clock: IClock, format: string, texts: IClockTexts = {} as any): string {
-    // if texts contains these letters, it'll break unless we reformat it first
-    format = format
-      .replace("DD", "{0}")
-      .replace("D", "{1}")
-      .replace("HH", "{2}")
-      .replace("H", "{3}")
-      .replace("MM", "{4}")
-      .replace("M", "{5}")
-      .replace("SS", "{6}")
-      .replace("S", "{7}");
-
-    return format
-      .replace("{0}", this.padLeft(clock.days) + (texts.days || ""))
-      .replace("{1}", clock.days.toString() + (texts.days || ""))
-      .replace("{2}", this.padLeft(clock.hours) + (texts.hours || ""))
-      .replace("{3}", clock.hours.toString() + (texts.hours || ""))
-      .replace("{4}", this.padLeft(clock.minutes) + (texts.minutes || ""))
-      .replace("{5}", clock.minutes.toString() + (texts.minutes || ""))
-      .replace("{6}", this.padLeft(clock.seconds) + (texts.seconds || ""))
-      .replace("{7}", clock.seconds.toString() + (texts.seconds || ""));
-  }
-
-  private padLeft(val: number): string {
-    if (val < 10) return "0" + val;
-    else return val.toString();
+    return getMatchClockText(this.seconds, {
+      texts: this.texts,
+      addedMinutes: this.addedMinutes,
+      halftimeBreak: this.halftimeBreak,
+      overtimeBreak: this.overtimeBreak,
+      ignoreBreaks: this.ignoreBreaks,
+      finishedDate: this.finishedDate,
+      skipPauseTimers: this.skipPauseTimers,
+      countUpFormat: this.countUpFormat,
+    });
   }
 
   render() {
     let time = this.getTime();
 
     let isCountdown = this.isCountingDown();
+    const classState = getMatchClockClassState(this.seconds);
 
     return (
       <Host
         class={{
-          "match-clock-passed-zero": !isCountdown,
+          "match-clock-passed-zero": classState.passedZero,
         }}
       >
         <span innerHTML={time} dir={!isCountdown ? "ltr" : null}></span>
       </Host>
     );
   }
-}
-
-function fixDate(date: Date | string | number): Date {
-  if (!date) return new Date();
-
-  if (Object.prototype.toString.call(date) === "[object Date]") return date as Date;
-  if (!isNaN(date as any)) return new Date(parseInt(date.toString()));
-  if (typeof date === "string")
-    return new Date(
-      date.replace(/(\d{4}-\d{2}-\d{2}).(\d{2}:\d{2}:\d{2}.*?\+\d{2}).?(\d{2})/, "$1T$2:$3"),
-    );
-
-  return date as any;
-}
-
-interface IClock {
-  minutes: number;
-  seconds: number;
-  days: number;
-  hours: number;
-  labelAfterClock: string;
 }
