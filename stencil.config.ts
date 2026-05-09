@@ -27,9 +27,10 @@ export const config: Config = {
     },
     angularOutputTarget({
       componentCorePackage: "@hattrickltd/hattrick-components",
+      excludeComponents: ["hattrick-reaction"],
       outputType: "component",
-      directivesProxyFile: "../Site.Hattrick.Angular/src/hattrick-common/stencil-generated/components.ts",
-      directivesArrayFile: "../Site.Hattrick.Angular/src/hattrick-common/stencil-generated/index.ts",
+      directivesProxyFile: "./packages/angular-workspace/src/lib/stencil-generated/components.ts",
+      directivesArrayFile: "./packages/angular-workspace/src/lib/stencil-generated/index.ts",
     }),
   ],
 };

@@ -1,6 +1,6 @@
 {
   "name": "@hattrickltd/hattrick-components",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Web components for Hattrick.org.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -13,7 +13,10 @@
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build",
+    "build": "npm run build:angular",
+    "build:stencil": "stencil build",
+    "build:angular": "npm run build:stencil && npm --prefix packages/angular-workspace run build",
+    "publish:angular": "npm publish ./packages/angular-workspace/dist/hattrick-components --access=public",
     "dev": "stencil build --dev --watch --serve",
     "start": "npm run dev",
     "test": "stencil-test --prod",
