@@ -1,8 +1,11 @@
 {
   "name": "@hattrickltd/hattrick-components-angular",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Angular wrappers for @hattrickltd/hattrick-components.",
   "license": "MIT",
+  "type": "module",
+  "module": "dist/hattrick-components/fesm2022/hattrickltd-hattrick-components-angular.mjs",
+  "typings": "dist/hattrick-components/types/hattrickltd-hattrick-components-angular.d.ts",
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
@@ -17,7 +20,7 @@
     "rxjs": "^7.8.0"
   },
   "dependencies": {
-    "@hattrickltd/hattrick-components": "^0.3.2",
+    "@hattrickltd/hattrick-components": "^0.3.4",
     "tslib": "^2.3.0"
   },
   "devDependencies": {

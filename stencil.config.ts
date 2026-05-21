@@ -25,10 +25,14 @@ export const config: Config = {
     {
       type: "docs-readme",
     },
+    {
+      type: "dist-custom-elements",
+      customElementsExportBehavior: "single-export-module",
+    },
     angularOutputTarget({
       componentCorePackage: "@hattrickltd/hattrick-components",
       excludeComponents: ["hattrick-reaction"],
-      outputType: "component",
+      outputType: "scam",
       directivesProxyFile: "./packages/angular-workspace/src/lib/stencil-generated/components.ts",
       directivesArrayFile: "./packages/angular-workspace/src/lib/stencil-generated/index.ts",
     }),

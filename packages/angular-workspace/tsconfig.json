@@ -15,8 +15,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "paths": {
-      "@hattrickltd/hattrick-components": ["../../dist/types/components.d.ts"],
-      "@hattrickltd/hattrick-components/dist/loader": ["../../dist/loader/index.d.ts"]
+      "@hattrickltd/hattrick-components": ["../../dist/types/components.d.ts"]
     }
   },
   "angularCompilerOptions": {

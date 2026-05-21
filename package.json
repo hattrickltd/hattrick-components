@@ -1,6 +1,6 @@
 {
   "name": "@hattrickltd/hattrick-components",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Web components for Hattrick.org.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -8,7 +8,28 @@
   "es2017": "dist/esm/index.esm.js",
   "jsnext:main": "dist/esm/index.esm.js",
   "types": "dist/types/components.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs.js",
+      "default": "./dist/index.js"
+    },
+    "./components": {
+      "types": "./dist/types/components.d.ts",
+      "default": "./dist/components/index.js"
+    },
+    "./components/*.js": {
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.js"
+    },
+    "./loader": {
+      "import": "./dist/loader/index.es2017.js",
+      "default": "./dist/loader/index.js"
+    }
+  },
   "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
   "files": [
     "dist/"
   ],
