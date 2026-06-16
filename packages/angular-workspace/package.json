@@ -6,7 +6,7 @@
   "type": "module",
   "module": "dist/hattrick-components/fesm2022/hattrickltd-hattrick-components-angular.mjs",
   "typings": "dist/hattrick-components/types/hattrickltd-hattrick-components-angular.d.ts",
-  "sideEffects": false,
+  "sideEffects": true,
   "publishConfig": {
     "access": "public"
   },
