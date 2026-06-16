@@ -1,6 +1,6 @@
 {
   "name": "@hattrickltd/hattrick-components-angular",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Angular wrappers for @hattrickltd/hattrick-components.",
   "license": "MIT",
   "type": "module",
