@@ -90,6 +90,7 @@ export class Player {
             this.retiredMessage = retired;
             forceUpdate(this);
           });
+          
       }
 
       this._tooltip.removeAttribute("hidden");
@@ -288,16 +289,16 @@ export class Player {
               <table>
                 <tbody>
                   <tr>
-                    <td class="right">{texts.labels_pagetexts.owner}</td>
-                    <td colSpan={2} class="nowrap">
-                      <a href="#" tabIndex={-1}>
+                    <td class="right min-width nowrap">{texts.labels_pagetexts.owner}</td>
+                    <td colSpan={2}>
+                      <a href="#" tabIndex={-1} class="line-clamp-1">
                         {player.teamname}
                       </a>
                     </td>
                   </tr>
 
                   <tr>
-                    <td class="right">{texts.players.age}</td>
+                    <td class="right min-width nowrap">{texts.players.age}</td>
                     <td colSpan={2} class="nowrap">
                       {replacer.replace(
                         texts.mobilePlayers.ageYearsAndDays,
@@ -311,12 +312,12 @@ export class Player {
                   </tr>
 
                   <tr>
-                    <td class="right">{texts.players.tsi}</td>
+                    <td class="right min-width nowrap">{texts.players.tsi}</td>
                     <td colSpan={2}>{grouped(player.tsi)}</td>
                   </tr>
 
                   <tr>
-                    <td class="right">{texts.labels_pagetexts.wage}</td>
+                    <td class="right min-width nowrap">{texts.labels_pagetexts.wage}</td>
                     <td colSpan={2} class="nowrap">
                       {replacer.replace(
                         texts.labels_pagetexts.salaryperweek,
@@ -333,7 +334,9 @@ export class Player {
                   </tr>
 
                   <tr>
-                    <td class="right">{texts.transferList.specialty.replace(":", "")}</td>
+                    <td class="right min-width nowrap">
+                      {texts.transferList.specialty.replace(":", "")}
+                    </td>
                     <td colSpan={2}>
                       {player.specialty > 0 ? (
                         <>
@@ -347,7 +350,7 @@ export class Player {
                   </tr>
 
                   <tr class="playerSkillsTableFormAndStamina">
-                    <td class="right">{texts.playerDetails.form}</td>
+                    <td class="right min-width nowrap">{texts.playerDetails.form}</td>
                     <td class="nowrap">
                       {showSkillBar && (
                         <>
@@ -380,7 +383,7 @@ export class Player {
                   </tr>
 
                   <tr class="playerSkillsTableFormAndStamina">
-                    <td class="right">{texts.players.stamina}</td>
+                    <td class="right min-width nowrap">{texts.players.stamina}</td>
                     <td class="nowrap">
                       {showSkillBar && (
                         <>

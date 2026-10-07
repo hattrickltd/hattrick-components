@@ -56,3 +56,20 @@ table td {
 .transferPlayerSkills {
   margin-inline-start: 10px;
 }
+.expand {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.min-width {
+  width: 1%;
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+  word-break: break-all;
+}
+
